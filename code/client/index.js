@@ -11,7 +11,7 @@ $(function(){
         }else if($(e.target).html() == '算子管理'){
             $("#algorithmPage").show()
             getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
-            $("#mouldPage").hide()
+            $("#mouldPage").hide() 
         }
     })
     $('body').on('click','#getAllMb',(e) => {
