@@ -12,6 +12,7 @@
     <link href="./plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
     <link href="./plugins/topology/layout.css" rel="stylesheet">
     <link href="./lkr.css" rel="stylesheet">
+    <link href="./LogicMath.css" rel="stylesheet">
     <!-- <link href="css/lanrenzhijia.css" type="text/css" rel="stylesheet" /> -->
     <!-- 矢量图标库 -->
     <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
@@ -39,8 +40,165 @@
             background-repeat: no-repeat;
         }
     </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            showProcessingMessages: false,
+            tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+        });
+    </script>
+    <script type="text/javascript" src="./MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+    <script>
+            $(function() {
+                var content = "";
+                var Preview = {
+                delay: 150,        
+                preview: null,    
+                buffer: null,      
+                timeout: null,     
+                mjRunning: false,  
+                mjPending: false,  
+                oldText: null,    
+                Init: function () {
+                    this.preview = document.getElementById("MathPreview");
+                    this.buffer = document.getElementById("MathBuffer");
+                },
+                SwapBuffers: function () {
+                    var buffer = this.preview, preview = this.buffer;
+                    this.buffer = buffer; this.preview = preview;
+                    buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
+                    preview.style.position = ""; preview.style.visibility = "";
+                },
+                Update: function () {
+                    if (this.timeout) {clearTimeout(this.timeout)}
+                    this.timeout = setTimeout(this.callback,this.delay);
+                },
+                CreatePreview: function () {
+                    Preview.timeout = null;
+                    if (this.mjPending) return;
+                    var text = content;
+                    if (text === this.oldtext) return;
+                    if (this.mjRunning) {
+                    this.mjPending = true;
+                    MathJax.Hub.Queue(["CreatePreview",this]);
+                    } else {
+                    this.buffer.innerHTML = this.oldtext = text;
+                    this.mjRunning = true;
+                    MathJax.Hub.Queue(
+                    ["Typeset",MathJax.Hub,this.buffer],
+                    ["PreviewDone",this]
+                    );
+                    }
+                },
+                PreviewDone: function () {
+                    this.mjRunning = this.mjPending = false;
+                    this.SwapBuffers();
+                }
+            };
+            Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+            Preview.callback.autoReset = true;  
+            Preview.Init();
+            $("#MathInput").on("input", function(val) {
+                content = "$"+$(this).val()+"$";
+                Preview.Update();
+                $.ajax({
+                    type:"get",   
+                    url:urlConfig.host+'/mark/getMark',
+                    data:{
+                        target:$(this).val()
+                    },
+                    success: function(data) {
+                        console.log(data)
+                        let  str = ''
+                        data.map(item => {
+                        
+                            str +=`<div>
+                                    <div class="width-100">
+                                        <span>变量</span>
+                                        <input type="text" :disabled="true" value="${item}">
+                                    </div>
+                                    <div class="width-100 width-select">
+                                        <span>类型</span>
+                                        <select placeholder="请选择">
+                                            <option value="0">常量</option>
+                                            <option value="1">数据项</option>
+                                            <option value="2">其他模块计算结果</option>
+                                        </select>
+                                    </div>
+                                    <div class="width-100"> 
+                                            <span>取值</span>
+                                            <input type="text">
+                                    </div>
+                                </div>`                       
+                        })
+                        $(".MathJaxEdit").html(str)    
+                    }
+                })  
+            });
+        });
+    </script>
 </head>
 <body>
+    <!-- yjl -->
+    <div id="suanfaType">
+        <div>
+            <select placeholder="选择算子类型" >
+                <option value="0" >请选择算子类型</option>
+                <option value="1" >算法公式</option>
+                <option value="2">逻辑运算</option>
+            </select>
+        </div>
+    </div>
+    <div class="Frame">
+        <div class="title">
+            <span>公式编辑</span>
+            <span onclick="FrameClose()" style="cursor: pointer;">X</span>
+        </div>
+        <div class="form-group">
+            <div>
+                <span class="form-input">公式编辑</span>
+                <input id="MathInput" onblur="Preview.Update()" type="text">
+            </div>
+                <div>
+                    <span  class="form-input">公式预览</span>
+                    <div id="MathPreview" ></div>
+                    <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
+                </div>
+
+        </div>
+        <div class="MathJaxEdit">
+        </div>
+        <div class="frame-foot">
+            <div class="button" onclick='ConfirmFrame()'>确定</div>
+        </div>
+    </div>
+    <div class="Logic">
+        <div class="title">
+            <span>公式编辑</span>
+            <span onclick="LogicClose()" style="cursor: pointer;">X</span>
+        </div>
+        <div class="LogicForm">
+            <div>
+                <span>字段</span>
+                <select name="" class="Logic-form-label" id="LogicOne">
+                    <option value="">请选择字段</option>
+                </select>
+                <span>逻辑条件</span>
+                <select name="" class="Logic-form-label" id="LogicTwo">
+                    <option value="">请选择逻辑条件</option>
+                </select>
+                <span>取值</span>
+                <select name="" class="Logic-form-label" id="LogicThree">
+                    <option value="">请选择取值</option>
+                </select>
+            </div>
+        </div>
+        <div class="frame-foot">
+            <div class="button" onclick='ConfirmLogic()'>确定</div>
+        </div>
+    </div>
+    <!-- yjl -->
+
     <div class="lkr-frame" id='lkrFrameDel'>
         <div class="lkr-frame-div" style="height: 150px;">
             <!-- <div class="lkr-frame-tilte">
@@ -1193,6 +1351,21 @@
 
 <script src="topology/topology_es5.js"></script>
 <script>
+    document.querySelector('select').onchange = function(){
+       if(this.value == 1){
+            $(".Logic").attr("style","display:none;");
+            $(".Frame").attr("style","display:block;");          
+            $("#suanfaType").css('display', "none");
+       }
+       if(this.value == 2){
+            $(".Frame").attr("style","display:none;");
+            $(".Logic").attr("style","display:block;");
+            $("#suanfaType").css('display', "none");
+       }
+    }
+
+
+    
     window.bigData = {
         mouldParam:[],
         actionTab:'基础模块',

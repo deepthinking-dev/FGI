@@ -1098,7 +1098,9 @@ var Topology = {
                             };
                             let nodeId = data.id
                             if(nodeId.indexOf('模板') != -1){
-                                alert('新建算子')
+                                // alert('新建算子')
+                                console.log(nodeId.split('模板')[0])
+                                $("#suanfaType").css('display', "block");
                             }
                             
                             locked = data.locked;

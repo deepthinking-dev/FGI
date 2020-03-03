@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MathJax</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../plugins/bootstrap/3.3.5/bootstrap.min.css">
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .Frame{
+            position: relative;
+            height: 593px;
+            width: 589px;
+            display: flex;
+            /* justify-content: center;
+            align-items: center; */
+            background-image: url(../static/FrameBg.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            margin:0 auto;
+            position: relative;
+            top: 15%; 
+        }
+        .form-group{
+            position: relative;
+            top: 100px;
+            margin: 0 auto;
+        }
+        #MathInput{
+            padding-left: 10px;
+        }
+        #MathBuffer{
+            line-height: 50px;
+            border: 1px solid;
+            padding: 3px;
+            margin-top: 5px;
+            top: 0px;
+            left: 0px;
+            min-height: 50px;
+            background: #fff;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            showProcessingMessages: false,
+            tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+        });
+    </script>
+    <script type="text/javascript" src="MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <script src="../plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
+    <script src="../plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+    <script>
+        $(function() {
+            var content = "";
+            var Preview = {
+            delay: 150,        
+            preview: null,    
+            buffer: null,      
+            timeout: null,     
+            mjRunning: false,  
+            mjPending: false,  
+            oldText: null,    
+            Init: function () {
+                this.preview = document.getElementById("MathPreview");
+                this.buffer = document.getElementById("MathBuffer");
+            },
+            SwapBuffers: function () {
+                var buffer = this.preview, preview = this.buffer;
+                this.buffer = buffer; this.preview = preview;
+                buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
+                preview.style.position = ""; preview.style.visibility = "";
+            },
+            Update: function () {
+                if (this.timeout) {clearTimeout(this.timeout)}
+                this.timeout = setTimeout(this.callback,this.delay);
+            },
+            CreatePreview: function () {
+                Preview.timeout = null;
+                if (this.mjPending) return;
+                var text = content;
+                if (text === this.oldtext) return;
+                if (this.mjRunning) {
+                this.mjPending = true;
+                MathJax.Hub.Queue(["CreatePreview",this]);
+                } else {
+                this.buffer.innerHTML = this.oldtext = text;
+                this.mjRunning = true;
+                MathJax.Hub.Queue(
+                ["Typeset",MathJax.Hub,this.buffer],
+                ["PreviewDone",this]
+                );
+                }
+            },
+            PreviewDone: function () {
+                this.mjRunning = this.mjPending = false;
+                this.SwapBuffers();
+            }
+        };
+        Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+        Preview.callback.autoReset = true;  
+        Preview.Init();
+        $("#MathInput").on("input", function(val) {
+            content = "$"+$(this).val()+"$";
+            Preview.Update();
+        });
+    });
+</script>
+</head>
+
+<body>
+    <div class="Frame">
+        <div>
+            <span>公式编辑</span>
+        </div>
+        <div class="form-group">
+            <input id="MathInput" onblur="Preview.Update()" type="text" style="width: 350px;height: 45px;">
+            <div id="MathPreview" style="padding: 3px; width:100%; margin-top:5px"></div>
+            <div id="MathBuffer" style="border:1px solid; padding: 3px; width:100%; margin-top:5px; 
+                  visibility:hidden; position:absolute; top:0; left: 0"></div>
+        </div>
+    </div>
+</body>
+
+</html>
