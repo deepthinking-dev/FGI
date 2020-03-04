@@ -78,7 +78,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         AlgorithmModel algorithmModel=new AlgorithmModel();
         TableAlgorithm tableAlgorithm=selectByPrimaryKey(Integer.parseInt(algthId));
         TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
-        tableFuncCriteria.createCriteria().andValvalueEqualTo(algthId);
+        tableFuncCriteria.createCriteria().andModuleidEqualTo(Integer.parseInt(algthId));
         List<TableFunc> tableFuncs=tableFuncMapper.selectByExample(tableFuncCriteria);
         algorithmModel.setTableAlgorithm(tableAlgorithm);
         algorithmModel.setTableFuncs(tableFuncs);
@@ -134,11 +134,11 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             logger.info("算子与其他算子存在关联关系，无法删除");
             return 3;
         }
-        deleteByPrimaryKey(Integer.parseInt(algthId));
         //删除参数信息
         tableFuncCriteria.clear();
         tableFuncCriteria.createCriteria().andModuleidEqualTo(Integer.parseInt(algthId));
         tableFuncMapper.deleteByExample(tableFuncCriteria);
+        deleteByPrimaryKey(Integer.parseInt(algthId));
         return 1;
     }
 
