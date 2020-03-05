@@ -7,8 +7,8 @@ var http = require('http');    // 加载http服务api模块
 var fs = require('fs');      // 加载fs文件服务api模块
 var server = new http.Server();  // 创建新的HTTP服务器
 var urlapi = require('url');    // 创建url路由api模块
-server.listen(8002);       // 监听端口8000
-console.log(8002);
+server.listen(8001);       // 监听端口8000
+console.log(8001);
 
 // 使用on方法注册事件处理,该事件一直被监听,任何的请求都会进入回调函数,执行相应的操作
 server.on('request', function(request, response) { // 当有request请求的时候触发处理函数  

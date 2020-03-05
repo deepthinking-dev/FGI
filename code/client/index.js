@@ -11,7 +11,7 @@ $(function(){
         }else if($(e.target).html() == '算子管理'){
             $("#algorithmPage").show()
             getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
-            $("#mouldPage").hide() 
+            $("#mouldPage").hide()
         }
     })
     $('body').on('click','#getAllMb',(e) => {
@@ -30,7 +30,8 @@ $(function(){
                     window.addAlgorithm({
                         name: 'rectangle',
                         icon: 'icon-rectangle',
-                        id:item[datas.id]+type,
+                        id:item[datas.id],
+                        type:type,
                         data: {
                             id:item[datas.id]+type,
                             text: item[datas.name],
@@ -107,6 +108,79 @@ $(function(){
     $('body').on('click','.lkr-list-del',(e) => {
         window.bigData.delmoduleId = $(e.target).data('id')
         $('#lkrFrameDel').fadeToggle(500)
+    })
+    // 点击删除算子
+    $('body').on('click','.lkr-list-delAlgorithm',(e) => {
+        debugger
+        window.bigData.delAlgorithmId = $(e.target).data('id')
+        $('#lkrAlgorithm').fadeToggle(500)
+    })
+      // 点击编辑算子
+    $('body').on('click','.lkr-list-editAlgorithm',(e) => {
+        debugger
+        window.bigData.editAlgorithmId = $(e.target).data('id')
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+            data:{
+                algthId:window.bigData.editAlgorithmId
+            },
+            success: function(data) {
+                console.log(data)
+                let str =``
+                if(data.tableFuncs.length>0){
+                 
+                    data.tableFuncs.map(item=>{
+                        str += `<div class="MathJaxParam">
+                                    <div class="width-30">
+                                        <span>变量</span>
+                                        <input type="text" :disabled="true" value="${item.varname}" class="MathJaxInput1">
+                                    </div>
+                                    <div class="width-30 width-select">
+                                        <span>类型</span>
+                                        <select id="selectId" value="${item.vartype}" onchange="gradeChange()" class="MathJaxInput2">
+                                            <option value="">请选择</option>
+                                            <option value="0">常量</option>
+                                            <option value="1">数据项</option>
+                                            <option value="2">其他模块计算结果</option>
+                                        </select>
+                                    </div>
+                                    <div class="width-30"> 
+                                            <span>取值</span>
+                                            <input type="text" class="MathJaxInput3" value="${item.valvalue}">
+                                    </div>
+                                    <div class="width-100"> 
+                                            <span>描述</span>
+                                            <input type="text" class="MathJaxInput4" value="${item.remark}">
+                                    </div>
+                                </div>`
+                    })
+                }
+                $('.Frame').append(`
+                <div class="form-group">
+                        <div>
+                            <span class="form-span">算子名称</span>
+                            <input class="form-input" type="text" id="algorithmname" value="${data.tableAlgorithm.algorithmname}">
+                        </div>
+                    <div>
+                        <span class="form-span">公式编辑</span>
+                        <input id="MathInput" onblur="Preview.Update()" type="text" value="${data.tableAlgorithm.algorithmfun}">
+                    </div>
+                        <div>
+                            <span  class="form-span">公式预览</span>
+                            <div id="MathPreview" ></div>
+                            <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
+                        </div>
+        
+                </div>
+                <div class="form-group MathJaxEdit">
+                    ${str}
+                </div>     
+                
+            </div>`)
+                $('.Frame').fadeToggle(500)
+            }
+        })
+       
     })
 })
 
