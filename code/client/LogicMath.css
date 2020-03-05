@@ -1,5 +1,5 @@
 
-
+/* 公式编辑弹框 */
 .Frame{
     position: absolute;
     height: 593px;
@@ -16,22 +16,7 @@
     left: 30%;
     z-index: 2;
 }
-.Logic{
-    position: absolute;
-    height: 593px;
-    width: 589px;
-    /* display: flex; */
-    display: none;
-    /* justify-content: center;
-    align-items: center; */
-    background-image: url(./static/FrameBg.png);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    margin:0 auto;
-    top: 15%; 
-    left: 30%;
-    z-index: 2;
-}
+
 .form-group{
     position: relative;
     top: 70px;
@@ -117,32 +102,13 @@
     float: right;
     right: 50px;
 }
-.Logic .title{
-    position: absolute;
-    width: 100%;
-    top: 20px;
-    height: 40px
-}
-.Logic .title span{
-    position: relative;
-    font-size: 16px;
-    color: #fff;
-    top: 10px;
-    left: 50px;
-}
-.Logic .title span:last-child{
-    text-align: right;
-    position: absolute;
-    top: 10px;
-    float: right;
-    right: 50px;
-}
+
 .MathJaxEdit{
     position: relative;
     top: 80px;
     margin: 0 auto;
     width: 88%;
-    height: 275px;
+    height: 200px;
     overflow: auto;
 }
 .MathJaxEdit div{
@@ -154,6 +120,14 @@
     margin:10px 0 ;
     width: 30%;
     float: left;
+}
+.isShow2{
+    position: relative;
+    display: none;
+}
+.isShow3{
+    position: relative;
+    display: none;
 }
 .MathJaxEdit .width-100{
     position: relative;
@@ -186,6 +160,43 @@
     width: 100px;
     font-size: 14px;
 }
+/* 逻辑运算弹框 */
+.Logic{
+    position: absolute;
+    height: 593px;
+    width: 589px;
+    /* display: flex; */
+    display: none;
+    /* justify-content: center;
+    align-items: center; */
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    top: 15%; 
+    left: 30%;
+    z-index: 2;
+}
+.Logic .title{
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    height: 40px
+}
+.Logic .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 50px;
+}
+.Logic .title span:last-child{
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    float: right;
+    right: 50px;
+}
 .LogicForm{
     position: relative;
     top: 100px;
@@ -206,6 +217,7 @@
     line-height: 32px;
     margin-right: 15px;
 }
+/* 算子类型选择弹框 */
 #suanfaType{
     position: fixed;
     z-index: 999;
@@ -213,19 +225,36 @@
     height: 100%;
     background: rgba(0,0,0,0.5);
     display: none;
+   
 }
-#suanfaType div{
-    width: 200px;
+#suanfaType .suanzi{
+    width: 300px;
+    height: 240px;
     margin: 0 auto;
     position: relative;
     top: 150px;
     z-index: 3px;
+    background: #031d3f;
 }
-#suanfaType div select{
-    margin: 0 auto;
+#suanfaType .suanzi select{
+    margin: 60px;
     text-align: center;
-    width: 100%;
+    width: 180px;
     height: 44px;
+}
+#suanfaType button{
+    font-size: 12px;
+    display: inline-block;
+    padding: 5px 15px;
+    background-image: url(./static/botton.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: #00beff;
+    cursor: pointer;
+    border-radius: 3px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
 }
 .frame-foot{
     position: absolute;
@@ -242,4 +271,96 @@
     color: #00beff;
     cursor: pointer;
     border-radius: 3px;
+}
+/* 字段信息弹框 */
+#fields{
+    position: absolute;
+    height: 593px;
+    width: 589px;
+    /* display: flex; */
+    display: none;
+    /* justify-content: center;
+    align-items: center; */
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    top: 15%; 
+    left: 30%;
+    z-index: 3;
+}
+#fields .title{
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    height: 40px
+}
+#fields .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 50px;
+}
+#fields .title span:last-child{
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    float: right;
+    right: 50px;
+}
+#fields .fieldsContent{
+    position: relative;
+    top: 85px;
+    margin: 0 auto;
+    width: 100%;
+}
+.fieldsContent table{
+    position: relative;
+    width: 400px;
+    margin: 0 auto;
+    border: 1px solid #fff;
+}
+
+.fieldsContent table thead{
+    position: relative;
+    width: 400px;
+    margin: 0 auto;
+}
+table th,tr{
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+}
+table th{
+    border-bottom: 1px solid #fff;
+    width: 133px;
+}
+table tr{
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+table tr:nth-child(even) {
+    background: #4295ec;
+}
+.fieldsList{
+    height: 320px;
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
+table tr td{
+    width: 32%;
+    position: relative;
+    display: inline-block;
+}
+table tr:hover{
+    background:#31458f !important;
+} 
+table .backcolor{
+    background:#00beff !important;
 }

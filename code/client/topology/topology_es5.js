@@ -1112,6 +1112,7 @@ var Topology = {
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
+                                window.bigData.formulaType = 'add'
                             }
                             
                             locked = data.locked;

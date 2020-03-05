@@ -1,3 +1,4 @@
+
 $(function(){
     $("#selectAll").click((e) => {
         $("input:checkbox[name='item']").each((i,v) => {
@@ -111,14 +112,13 @@ $(function(){
     })
     // 点击删除算子
     $('body').on('click','.lkr-list-delAlgorithm',(e) => {
-        debugger
         window.bigData.delAlgorithmId = $(e.target).data('id')
         $('#lkrAlgorithm').fadeToggle(500)
     })
       // 点击编辑算子
     $('body').on('click','.lkr-list-editAlgorithm',(e) => {
-        debugger
-        window.bigData.editAlgorithmId = $(e.target).data('id')
+        window.bigData.editAlgorithmId = $(e.target).data('id');
+        window.bigData.formulaType = 'edit'
         $.ajax({
             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
             data:{
@@ -126,61 +126,88 @@ $(function(){
             },
             success: function(data) {
                 console.log(data)
-                let str =``
+                $('#algorithmname').attr({"value":data.tableAlgorithm.algorithmname,"id":data.tableAlgorithm.id});
                 if(data.tableFuncs.length>0){
-                 
-                    data.tableFuncs.map(item=>{
-                        str += `<div class="MathJaxParam">
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.changeBds(data.tableAlgorithm.algorithmfun);
+                    let str =``
+                    data.tableFuncs.map((item)=>{
+                        str +=`<div class="MathJaxParam">
                                     <div class="width-30">
                                         <span>变量</span>
-                                        <input type="text" :disabled="true" value="${item.varname}" class="MathJaxInput1">
+                                        <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1">
                                     </div>
                                     <div class="width-30 width-select">
                                         <span>类型</span>
-                                        <select id="selectId" value="${item.vartype}" onchange="gradeChange()" class="MathJaxInput2">
+                                        <select id="${item.id}" class="MathJaxInput2">
                                             <option value="">请选择</option>
-                                            <option value="0">常量</option>
-                                            <option value="1">数据项</option>
-                                            <option value="2">其他模块计算结果</option>
+                                            <option value="常量">常量</option>
+                                            <option value="数据项">数据项</option>   
+                                            <option value="其他模块计算结果">其他模块计算结果</option>
                                         </select>
                                     </div>
-                                    <div class="width-30"> 
-                                            <span>取值</span>
+                                    <div class="width-30 isShow1"> 
+                                            <span>取值</span >
                                             <input type="text" class="MathJaxInput3" value="${item.valvalue}">
+                                    </div>
+                                    <div class="width-30 isShow2"> 
+                                        <span>数据项</span>
+                                        <input type="text" class="MathJaxInput3 inputFields"  onclick="getFilds"  readonly="readonly">
+                                    </div>
+                                    <div class="width-30 isShow3"> 
+                                            <span>其他公式</span>
+                                            <input type="text" class="MathJaxInput3"  readonly="readonly">
                                     </div>
                                     <div class="width-100"> 
                                             <span>描述</span>
                                             <input type="text" class="MathJaxInput4" value="${item.remark}">
                                     </div>
-                                </div>`
-                    })
+                                </div>`  
+                        })
+                    $(".MathJaxEdit").html(str)   
+                   for(let j=0;j<data.tableFuncs.length;j++){
+                       for(k=0;k<$('.MathJaxParam').length;k++){
+                           let vType = data.tableFuncs[j].vartype
+                           if(j == k){
+                            $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
+                            if(vType == "常量"){
+                                $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                            }
+                            if(vType == "数据项"){
+                                $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                            }
+                            if(vType == "其他模块计算结果"){
+                                $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                $('.MathJaxParam').eq(k).find(".isShow3").attr("style","display:block;");
+                            }
+                           }                     
+                       }                      
+                   }
                 }
-                $('.Frame').append(`
-                <div class="form-group">
-                        <div>
-                            <span class="form-span">算子名称</span>
-                            <input class="form-input" type="text" id="algorithmname" value="${data.tableAlgorithm.algorithmname}">
-                        </div>
-                    <div>
-                        <span class="form-span">公式编辑</span>
-                        <input id="MathInput" onblur="Preview.Update()" type="text" value="${data.tableAlgorithm.algorithmfun}">
-                    </div>
-                        <div>
-                            <span  class="form-span">公式预览</span>
-                            <div id="MathPreview" ></div>
-                            <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
-                        </div>
-        
-                </div>
-                <div class="form-group MathJaxEdit">
-                    ${str}
-                </div>     
                 
-            </div>`)
                 $('.Frame').fadeToggle(500)
             }
         })
        
     })
+    //点击数据项
+
+    $('body').on('click','.inputFields',(e) => {
+        window.filed.inputFieldsTarget = $(e.target)
+        $('#fields').fadeToggle(500)
+    })
+     // 点击删除算子
+     $('body').on('click','.fieldsList tr',(e) => {
+        window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
+        $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
+    })
+    
+ 
 })
+
 
