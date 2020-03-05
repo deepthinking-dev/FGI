@@ -1109,10 +1109,13 @@ var Topology = {
                                 "data": data
                             };
                             let nodeId = data.id
+                            debugger
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
                                 window.bigData.formulaType = 'add'
+                                let ModuleId =nodeId.substring(0,nodeId.length-2)
+                                window.bigData.formulaModuleId = ModuleId
                             }
                             
                             locked = data.locked;

@@ -117,6 +117,7 @@ $(function(){
     })
       // 点击编辑算子
     $('body').on('click','.lkr-list-editAlgorithm',(e) => {
+        debugger
         window.bigData.editAlgorithmId = $(e.target).data('id');
         window.bigData.formulaType = 'edit'
         $.ajax({
@@ -126,10 +127,11 @@ $(function(){
             },
             success: function(data) {
                 console.log(data)
-                $('#algorithmname').attr({"value":data.tableAlgorithm.algorithmname,"id":data.tableAlgorithm.id});
+                $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
+                window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                window.changeBds(data.tableAlgorithm.algorithmfun);
                 if(data.tableFuncs.length>0){
-                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
-                    window.changeBds(data.tableAlgorithm.algorithmfun);
+
                     let str =``
                     data.tableFuncs.map((item)=>{
                         str +=`<div class="MathJaxParam">
@@ -139,7 +141,7 @@ $(function(){
                                     </div>
                                     <div class="width-30 width-select">
                                         <span>类型</span>
-                                        <select id="${item.id}" class="MathJaxInput2">
+                                        <select formulaid="${item.id}" class="MathJaxInput2">
                                             <option value="">请选择</option>
                                             <option value="常量">常量</option>
                                             <option value="数据项">数据项</option>   
@@ -148,11 +150,11 @@ $(function(){
                                     </div>
                                     <div class="width-30 isShow1"> 
                                             <span>取值</span >
-                                            <input type="text" class="MathJaxInput3" value="${item.valvalue}">
+                                            <input type="text" class="MathJaxInput3">
                                     </div>
                                     <div class="width-30 isShow2"> 
                                         <span>数据项</span>
-                                        <input type="text" class="MathJaxInput3 inputFields"  onclick="getFilds"  readonly="readonly">
+                                        <input type="text" class="MathJaxInput3 inputFields"  readonly="readonly">
                                     </div>
                                     <div class="width-30 isShow3"> 
                                             <span>其他公式</span>
@@ -174,16 +176,19 @@ $(function(){
                                 $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                                $('.MathJaxParam').eq(k).find(".isShow1").find('input').attr("value",data.tableFuncs[j].valvalue)
                             }
                             if(vType == "数据项"){
                                 $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                                $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
                             }
                             if(vType == "其他模块计算结果"){
                                 $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
                                 $('.MathJaxParam').eq(k).find(".isShow3").attr("style","display:block;");
+                                $('.MathJaxParam').eq(k).find(".isShow3").find('input').attr("value",data.tableFuncs[j].valvalue)
                             }
                            }                     
                        }                      

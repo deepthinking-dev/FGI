@@ -206,10 +206,10 @@
             <span onclick="FrameClose()" style="cursor: pointer;">X</span>
         </div>
         <div class="form-group">
-                <div>
-                    <span class="form-span">算子名称</span>
-                    <input class="form-input" type="text" id="algorithmname" >
-                </div>
+            <div>
+                <span class="form-span">算子名称</span>
+                <input id="AlgorithmnameY" class="form-input" type="text" >
+            </div>
             <div>
                 <span class="form-span">公式编辑</span>
                 <input id="MathInput" onblur="Preview.Update()" type="text">
@@ -1444,7 +1444,8 @@
         delAlgorithmId:'',
         editAlgorithmId:'',
         editFormula:'',
-        formulaType:'add'
+        formulaType:'add',
+        formulaModuleId:''
     }
     window.filed ={
         inputFieldsTarget:'',

@@ -7,7 +7,7 @@
     }
     //选择算子类型
     function selectFormula(){
-        var formulatype = document.getElementById('formulaType').value
+        let formulatype = document.getElementById('formulaType').value
         if(formulatype == 1){
             $(".Logic").attr("style","display:none;");
             $(".Frame").attr("style","display:block;");          
@@ -63,21 +63,21 @@
     })
     //提交算子信息及公式编辑
     function ConfirmFrame(){
-        
+        debugger
         let tableAl ={
             algorithmauthor:"111",
             algorithmfun:$('#MathInput').val(),
-            algorithmname:$('#algorithmname').val(),
+            algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:0,
             des:"",
             ispublic:0,
-            moduleid:window.bigData.editmoduleId,
+            moduleid:window.bigData.formulaModuleId,
             remark:"",
             tno:0
         }
         let tableF=[]
         let tableModule={
-            moduleid:window.bigData.editmoduleId,
+            moduleid:window.bigData.formulaModuleId,
             remark:"",
             username:""
         }
@@ -85,21 +85,30 @@
         if(MathJaxParamLength.length > 0){
             for(let i=0;i<MathJaxParamLength.length;i++){
                 let obj ={}
-                if(window.bigData.formulaType = 'edit'){
-                    obj.id = $('.MathJaxInput2').attr('id')
+                if(window.bigData.formulaType == 'edit'){
+                    obj.id = MathJaxParamLength.eq(i).find('.MathJaxInput2').attr("formulaid")
+                    obj.moduleid =$('#AlgorithmnameY').attr("tableAlmoduleid")
+                }else{
+                    obj.moduleid = window.bigData.formulaModuleId
                 }
-                obj.moduleid = window.bigData.editmoduleId
+                obj.vartype = MathJaxParamLength.eq(i).find('.MathJaxInput2 option:selected').text()
+                if( obj.vartype == '数据项'){
+                    obj.valvalue = MathJaxParamLength.eq(i).find('.inputFields').attr("value")
+                }else{
+                    obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()
+                }
+                
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()
-                obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()
                 obj.varname = MathJaxParamLength.eq(i).find('.MathJaxInput1').val()
-                obj.vartype = MathJaxParamLength.eq(i).find('#selectId option:selected').text()
+               
                 tableF.push(obj)
             }
             
         }
-        if(window.bigData.formulaType = 'edit'){
-            tableAl.id =  $('#algorithmname').attr("id")
-            tableModule.id=$('#algorithmname').attr("id")
+        if(window.bigData.formulaType == 'edit'){
+            tableAl.moduleid = $('#AlgorithmnameY').attr("tableAlmoduleid")
+            tableAl.id =  $('#AlgorithmnameY').attr("tableAlgorithmid")
+            tableModule.moduleid = $('#AlgorithmnameY').attr("tableAlmoduleid")
         }
         let param = {
             tableAlgorithm:tableAl,
