@@ -1,0 +1,55 @@
+{
+    "Role": [
+        {
+            "des": "3",
+            "rolename": "2",
+            "remark": "4",
+            "tno": "1"
+        },
+        {
+            "des": "3",
+            "rolename": "2",
+            "remark": "4",
+            "tno": "2"
+        }
+    ],
+    "Algorithm": [
+        {
+            "algorithmauthor": "作者3",
+            "algorithmtype": 3,
+            "des": "描述3",
+            "algorithmfun": "3",
+            "ispublic": 1,
+            "remark": "1",
+            "algorithmname":"算子3",
+            "moduleid": 1,
+            "tno" : "1"
+        },
+        {
+            "algorithmauthor": "作者3",
+            "algorithmtype": 3,
+            "des": "描述3",
+            "algorithmfun": "3",
+            "ispublic": 1,
+            "remark": "1",
+            "algorithmname":"算子3",
+            "moduleid": 1,
+            "tno" : "2"
+        }
+   ],
+    "AlgorithmRole": [
+        {
+            "des": "描述1",
+            "roleid": 1,
+            "remark": "备注1",
+            "algorithmid": 1
+        },
+        {
+            "des": "描述2",
+            "roleid": 2,
+            "remark": "备注2",
+            "algorithmid": 2
+        }
+    ]
+    
+}

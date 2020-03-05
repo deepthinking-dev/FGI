@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="[e|E]xample$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+
+	<commentGenerator>
+		<property name="suppressDate" value="true" />
+	</commentGenerator>
+
+	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+		connectionURL="jdbc:mysql://leng45.eicp.net:3306/CRSwi-DataShield" userId="root"
+		password="noroot">
+	</jdbcConnection>
+
+	<javaTypeResolver>
+		<property name="forceBigDecimals" value="false" />
+	</javaTypeResolver>
+
+	<!-- generate Model -->
+	<javaModelGenerator targetPackage="deepthinking.fgi.domain"
+		targetProject="src/main/java">
+		<property name="enableSubPackages" value="true" />
+		<property name="trimStrings" value="true" />
+	</javaModelGenerator>
+
+
+	<!-- 自动生成mapper接口, ANNOTATEDMAPPER(注解) -->
+	<javaClientGenerator type="ANNOTATEDMAPPER"
+		targetPackage="deepthinking.fgi.dao.mapper" implementationPackage="deepthinking.fgi.dao.mapper.impl"
+		targetProject="src/main/java">
+		<property name="enableSubPackages" value="true" />
+	</javaClientGenerator>
+<!-- 	<table tableName="t_datashield_device" ></table>
+	<table tableName="t_dictionary" ></table>
+    <table tableName="t_dictionary_value" ></table>
+    <table tableName="t_firmware" ></table>
+	<table tableName="t_inspection_line" ></table>
+	<table tableName="t_inspection_point" ></table>
+	<table tableName="t_instrument" ></table>
+	<table tableName="t_orgnization" ></table>
+	<table tableName="t_staff" ></table> -->
+    <table tableName="t_dsdata_record" ></table>
+	</context>
+</generatorConfiguration>  
