@@ -22,6 +22,7 @@ $(function(){
         getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
     })
     function getAllData(url,datas,type,param){
+        debugger
         $.ajax({
             url:urlConfig.host+url,
             data:param,
@@ -32,6 +33,7 @@ $(function(){
                         name: 'rectangle',
                         icon: 'icon-rectangle',
                         id:item[datas.id],
+                        moduleid:item.moduleid,
                         type:type,
                         data: {
                             id:item[datas.id]+type,
@@ -64,7 +66,7 @@ $(function(){
     $('body').on('click','#mouldPage .active-taps',(e) => {
         $('.active-taps').each((i,v) => {
             $(v).css('color','#ffffff')
-        })
+    })
         window.bigData.actionTab = $(e.target).data('name')
         $(e.target).css('color','rgb(255, 217, 0)')
         window.onRender()
@@ -120,6 +122,7 @@ $(function(){
         debugger
         window.bigData.editAlgorithmId = $(e.target).data('id');
         window.bigData.formulaType = 'edit'
+        window.bigData.formulaModuleId = $(e.target).attr('data-moduleid');
         $.ajax({
             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
             data:{
@@ -134,14 +137,14 @@ $(function(){
 
                     let str =``
                     data.tableFuncs.map((item)=>{
-                        str +=`<div class="MathJaxParam">
+                        str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.moduleid}">
                                     <div class="width-30">
                                         <span>变量</span>
                                         <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1">
                                     </div>
                                     <div class="width-30 width-select">
                                         <span>类型</span>
-                                        <select formulaid="${item.id}" class="MathJaxInput2">
+                                        <select  class="MathJaxInput2">
                                             <option value="">请选择</option>
                                             <option value="常量">常量</option>
                                             <option value="数据项">数据项</option>   
@@ -158,7 +161,7 @@ $(function(){
                                     </div>
                                     <div class="width-30 isShow3"> 
                                             <span>其他公式</span>
-                                            <input type="text" class="MathJaxInput3"  readonly="readonly">
+                                            <input type="text" class="MathJaxInput3 otherFormula"  readonly="readonly">
                                     </div>
                                     <div class="width-100"> 
                                             <span>描述</span>
@@ -203,15 +206,84 @@ $(function(){
     //点击数据项
 
     $('body').on('click','.inputFields',(e) => {
-        window.filed.inputFieldsTarget = $(e.target)
+        window.filed.inputFieldsTarget = $(e.target);
+        debugger
+        $.ajax({
+            url:urlConfig.host+'/module/getModuleColumns',
+            data:{moduleId:window.bigData.formulaModuleId},
+            success: function(data) {
+               console.log(data)
+               let str =``
+               if(data.length>0){
+                    data.map(item=>{
+                        str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
+                                    <td class="fieldname">${item.fieldname}</td>
+                                    <td>${item.fieldtype}</td>
+                                    <td>${item.remark}</td>
+                                    remark
+                                </tr>`
+                    })
+               }else{
+                   str+= `<div style="text-align: center;">暂无数据</div>`
+               }
+               
+                
+                $(".fieldsList").html(str) 
+            }
+        })
         $('#fields').fadeToggle(500)
     })
-     // 点击删除算子
-     $('body').on('click','.fieldsList tr',(e) => {
+     // 点击选择数据项字段信息
+    $('body').on('click','.fieldsList tr',(e) => {
         window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
-    
+
+    //点击其他模块
+    $('body').on('click','.otherFormula',(e) => {
+        window.filed.inputFieldsTarget = $(e.target);
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
+            data:{
+                username:null
+            },
+            success: function(data) {
+               console.log(data)
+               let str =``
+               if(data.length>0){
+                    data.map(item=>{
+                        str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
+                                    <td class="algorithmname">${item.algorithmname}</td>
+                                    <td>${item.algorithmtype}</td>
+                                    <td>${item.algorithmfun}</td>
+                                    <td>${item.algorithmauthor}</td>
+                                    
+                                    remark
+                                </tr>`
+                    })
+               }else{
+                   str+= `<div style="text-align: center;">暂无数据</div>`
+               }
+               
+                
+                $(".otherFormulaList").html(str) 
+            }
+        })
+        $('#otherFormula').fadeToggle(500)
+        
+    })
+      // 点击选择算子信息
+    $('body').on('click','.otherFormulaList tr',(e) => {
+        window.filed.fieldname = $(e.target).parent('tr').children('.algorithmname').text();
+        $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
+    })
+
+
+    //逻辑运算删除按钮
+    $('body').on('click','.removeLogic tr',(e) => {
+        debugger
+        console.log(e)
+    })
  
 })
 

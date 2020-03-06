@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="width-30 isShow3"> 
                                         <span>其他公式</span>
-                                        <input type="text" class="MathJaxInput3"  readonly="readonly">
+                                        <input type="text" class="MathJaxInput3 otherFormula"  readonly="readonly">
                                 </div>
                                 <div class="width-100"> 
                                         <span>描述</span>
@@ -162,6 +162,32 @@
 </script>
 </head>
 <body>
+    <!-- 所有公式弹框 -->
+    <div id="otherFormula">
+            <div class="title">
+                <span>算子信息</span>
+                <span onclick="fieldsClose()" style="cursor: pointer;">X</span>
+            </div>
+            <div class="otherFormulaContent">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>算子名称</th>
+                            <th>算子类型</th>
+                            <th>公式预览</th>
+                            <th>算子作者</th>
+                            <!-- <th>算子描述</th> -->
+                        </tr>
+                    </thead>
+                    <tbody class="otherFormulaList" style="height:320px">
+                        
+                    </tbody>
+                </table>                     
+            </div>
+            <div class="frame-foot">
+                <div class="button" onclick='ConfirmotherFormula()'>确定</div>
+            </div>
+        </div>
     <!-- 数据项选择字段信息弹框 -->
     <div id="fields">
         <div class="title">
@@ -190,7 +216,7 @@
     <div id="suanfaType">
         <div class="suanzi">
             <select placeholder="选择算子类型" id="formulaType">
-                <option value="0" >请选择算子类型</option>
+                <option value="" >请选择算子类型</option>
                 <option value="1" >算法公式</option>
                 <option value="2">逻辑运算</option>
             </select>
@@ -233,20 +259,33 @@
             <span>逻辑运算</span>
             <span onclick="LogicClose()" style="cursor: pointer;">X</span>
         </div>
-        <div class="LogicForm">
+        <div class="LogicContent">
+            <button class="addButton" onclick="addLogic()">新增</button>
             <div>
-                <span>字段</span>
-                <select name="" class="Logic-form-label" id="LogicOne">
-                    <option value="">请选择字段</option>
-                </select>
-                <span>逻辑条件</span>
-                <select name="" class="Logic-form-label" id="LogicTwo">
-                    <option value="">请选择逻辑条件</option>
-                </select>
-                <span>取值</span>
-                <select name="" class="Logic-form-label" id="LogicThree">
-                    <option value="">请选择取值</option>
-                </select>
+                <form class="logicForm">
+                    <ul class="logicUl">
+                        <li class="logicLi">
+                            <select name="" class="Logic-form-field">
+                                <option value="">请选择字段</option>
+                            </select> 
+                            <select name="" class="Logic-form-label">
+                                <option value="">与</option>
+                                <option value="">或</option>
+                                <option value="">非</option>
+                                <option value=""> &lt; </option>
+                                <option value=""> &lt; =</option>
+                                <option value="">  &gt; </option>
+                                <option value="">  &gt; =</option>
+                                <option value="">=</option>
+                            </select>
+                            <!-- <select name="" class="Logic-form-label">
+                                <option value="">请选择取值</option>
+                            </select>  -->
+                            <input type="text"> 
+                            <button class="removeLogic" onclick="removeLogic(event)">删除</button>
+                        </li>
+                    </ul>
+                </form>
             </div>
         </div>
         <div class="frame-foot">
