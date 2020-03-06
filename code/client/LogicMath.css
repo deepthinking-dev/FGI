@@ -346,36 +346,36 @@
     margin: 0 auto;
     width: 100%;
 }
-.fieldsContent table{
+.fieldsContent .table{
     position: relative;
     width: 400px;
     margin: 0 auto;
     border: 1px solid #fff;
 }
 
-.fieldsContent table thead{
+.fieldsContent .table thead{
     position: relative;
     width: 400px;
     margin: 0 auto;
 }
-table th,tr{
+.table th,tr{
     height: 40px;
     line-height: 40px;
     font-size: 14px;
     color: #fff;
     text-align: center;
 }
-table th{
+.table th{
     border-bottom: 1px solid #fff;
     width: 133px;
 }
-table tr{
+.table tr{
     width: 100%;
     cursor: pointer;
     position: relative;
     display: inline-block;
 }
-table tr:nth-child(even) {
+.table tr:nth-child(even) {
     background: #4295ec;
 }
 .fieldsList{
@@ -384,15 +384,15 @@ table tr:nth-child(even) {
     width: 100%;
     overflow: auto;
 }
-.fieldsContent table tr td{
+.fieldsContent .table tr td{
     width: 32%;
     position: relative;
     display: inline-block;
 }
-table tr:hover{
+.table tr:hover{
     background:#31458f !important;
 } 
-table .backcolor{
+.table .backcolor{
     background:#00beff !important;
 }
 /* 字段信息弹框 */
@@ -444,20 +444,20 @@ table .backcolor{
     margin: 0 auto;
     width: 100%;
 }
-.otherFormulaContent table{
+.otherFormulaContent .table{
     position: relative;
     width: 450px;
     margin: 0 auto;
     border: 1px solid #fff;
 }
 
-.otherFormulaContent table thead{
+.otherFormulaContent .table thead{
     position: relative;
     width: 450px;
     margin: 0 auto;
 }
 
-.otherFormulaContent table tr td{
+.otherFormulaContent .table tr td{
     width: 24%;
     position: relative;
     display: inline-block;
