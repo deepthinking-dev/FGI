@@ -166,7 +166,7 @@
     height: 593px;
     width: 589px;
     /* display: flex; */
-    /* display: none; */
+    display: none;
     /* justify-content: center;
     align-items: center; */
     background-image: url(./static/FrameBg.png);

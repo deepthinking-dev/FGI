@@ -265,3 +265,24 @@ body{
 .navbar{
     margin-bottom: 0px;
 }
+.regulationTilte{
+    width:75%;
+    margin: auto;
+}
+.regulationFoot{
+    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+    height: 5%;
+}
+.regulationFoot>div{
+    width: 50%;
+
+    cursor: pointer;
+    color: #ebeef8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00beff;
+}

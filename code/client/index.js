@@ -9,10 +9,17 @@ $(function(){
         if($(e.target).html() == '模板管理'){
             $("#mouldPage").show()
             $("#algorithmPage").hide()
+            $("#regulationPage").hide()
         }else if($(e.target).html() == '算子管理'){
             $("#algorithmPage").show()
             getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
             $("#mouldPage").hide()
+            $("#regulationPage").hide()
+        }else if($(e.target).html() == '规则管理'){
+            $("#algorithmPage").hide()
+            getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
+            $("#mouldPage").hide()
+            $("#regulationPage").show()
         }
     })
     $('body').on('click','#getAllMb',(e) => {
@@ -20,6 +27,12 @@ $(function(){
     })
     $('body').on('click','#getAllSz',(e) => {
         getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
+    })
+    $('body').on('click','#getAllSzgz',(e) => {
+        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
+    })
+    $('body').on('click','#getAllGz',(e) => {
+        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'algorithmname'},'规则',{username:null})
     })
     function getAllData(url,datas,type,param){
         debugger
@@ -29,6 +42,7 @@ $(function(){
             success: function(data) {
                 $(".left-list").remove()
                 data.map(item => {
+                    debugger
                     window.addAlgorithm({
                         name: 'rectangle',
                         icon: 'icon-rectangle',

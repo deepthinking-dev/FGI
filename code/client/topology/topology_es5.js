@@ -916,6 +916,7 @@ var Topology = {
         });
     },
     addAlgorithm(option){
+        debugger
         if(option.type=="模板"){
             $("#algorithmMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte">${option.data.text}</div>
@@ -929,6 +930,11 @@ var Topology = {
                     <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑算子</div>
                     <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除算子</div>
                 </div>
+            </div>`);
+        }
+        if(option.type == "规则"){
+            $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+                <div class="left-list-tilte">${option.data.text}</div>
             </div>`);
         }
        
@@ -986,7 +992,7 @@ var Topology = {
                         '        </div>';
                 });
                 let algorithm = `<div id="algorithmPage"  style='display:none;'>
-                        <div class='algorithmTilte' >
+                        <div class='algorithmTilte'>
                             <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
                         </div>
                     
@@ -996,12 +1002,23 @@ var Topology = {
                             <div id='getAllSz'>已有算子</div>
                         </div>
                     </div>`
+                let rule = `<div id="regulationPage"  style='display:none;'>
+                        <div class='regulationTilte' >
+                            <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                        </div>
+                    
+                        <div id="ruleMde" class='lkr-page'></div>
+                        <div class="regulationFoot">
+                            <div id='getAllSzgz'>已有算子</div>
+                            <div id='getAllGz'>已有规则</div>
+                        </div>
+                    </div>`    
                 _html = `<div  class="lkr-pic_list"><ul class="lkr-tabs">
                 <li role="presentation" class="active-taps" data-name='模板管理' >模板管理</li>
                 <li role="presentation" class="active-taps" data-name='模板管理' >算子管理</li>
                 <li role="presentation" class="active-taps" data-name='模板管理' >规则管理</li>
             
-            </ul></div>` + _html +algorithm
+            </ul></div>` + _html + algorithm + rule
                 $("#flex_tools").html(_html);
                 $('#returnLeft').click(() => {
                     
