@@ -1,4 +1,25 @@
-
+body .form-input{
+    background-image: url(./static/rectangle.png) !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: none;
+    outline: none;
+    border: none;
+    width: 320px;
+    height: 39px;
+    padding-left: 10px;
+}
+body .inputButton{
+    background-image: url(./static/botton.png) !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: none;
+    outline: none;
+    border: none;
+    width: 112px;
+    height: 35px;
+    padding-left: 10px;
+}
 /* 公式编辑弹框 */
 .Frame{
     position: absolute;
@@ -32,27 +53,27 @@
     color: #fff;
     display: inline-block;
     width: 120px;
-    height: 45px;
+    height: 40px;
     vertical-align: top;
-    line-height: 45px;
+    line-height: 40px;
 }
 .form-group div .form-input{
     text-align: left;
     font-size: 16px;
-    color: #000;
+    color: #fff;
     display: inline-block;
-    width: 350px;
-    height: 45px;
+    /* width: 350px;
+    height: 45px; */
     vertical-align: top;
-    line-height: 45px;
+    /* line-height: 45px; */
 }
 #MathInput{
     padding-left: 10px;
     display: inline-block;
-    width: 350px;
-    height: 45px;
+    /* width: 350px;
+    height: 45px; */
     margin: 0 auto;
-    color: #000;
+    color: #fff;
 }
 #MathBuffer{
     line-height: 50px;
@@ -115,10 +136,10 @@
     width: 500px;
    margin: 0 auto;
 }
-.MathJaxEdit .width-30{
+.MathJaxEdit .width-50{
     position: relative;
     margin:10px 0 ;
-    width: 30%;
+    width: 50%;
     float: left;
 }
 .isShow2{
@@ -138,26 +159,29 @@
 .width-select{
     width: 40% !important;
 }
-.width-30 span{
+.width-50 span{
     font-size: 14px;
     color: #fff;
-    width: 60px;
+    width: 65px;
+    text-align: right;
+    margin-right: 13px;
+    display: inline-block;
 }
-.width-30 input{
+.width-50 input{
     color: #000;
-    width: 100px;
+    width: 112px;
     font-size: 14px;
     text-align: center;
 }
 .width-100 input{
     color: #000;
-    width: 100px;
+    width: 112px;
     font-size: 14px;
     text-align: center;
 }
-.width-30 select{
+.width-50 select{
     color: #000;
-    width: 100px;
+    width: 112px;
     font-size: 14px;
 }
 /* 逻辑运算弹框 */
@@ -215,7 +239,7 @@
 }
 .LogicContent div span{
     font-size: 14px;
-    color: #000;
+    color: #fff;
 }
 .logicForm{
     position: relative;
@@ -230,20 +254,20 @@
 .logicForm ul li{
     list-style: none;
     padding: 0;
-    margin: 15px 0;
+    margin: 15px;
 }
 .logicForm ul li select{
-    height: 32px;
+    height: 35px;
     font-size: 14px;
     color: #000;
-    line-height: 32px;
+    line-height: 35px;
     margin-right: 15px;
-    width: 125px;
+    width: 112px;
 }
 .logicForm ul li input{
-    width: 125px;
-    height: 32px;
-    line-height: 32px;
+    width: 112px;
+    height: 35px;
+    line-height: 35px;
 }
 .logicForm ul li button{
     margin-left: 15px;

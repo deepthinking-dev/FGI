@@ -26,7 +26,7 @@
                    let str =``
                    if(data.length>0){
                         data.map(item => {
-                            str += `<option>${item.fieldname}</option>`
+                            str += `<option value="${item.fieldname}">${item.fieldname}</option>`
                         })
                     
                    }
@@ -87,12 +87,11 @@
 
     //提交算子信息及公式编辑
     function ConfirmFrame(){
-        debugger
         let tableAl ={
             algorithmauthor:"",
             algorithmfun:$('#MathInput').val(),
             algorithmname:$('#AlgorithmnameY').val(),
-            algorithmtype:"算法公式",
+            algorithmtype:0,
             des:"",
             ispublic:0,
             moduleid:'',
@@ -169,21 +168,31 @@
         }
         
     }
-    //提交算子信息及公式编辑
+    //提交算子信息及逻辑运算
     function ConfirmLogic(){
-        debugger
         let tableAl ={
             algorithmauthor:"",
-            algorithmfun:$('#MathInput').val(),
-            algorithmname:$('#AlgorithmnameY').val(),
-            algorithmtype:"逻辑运算",
+            algorithmfun:'',
+            algorithmname:$('#LogicName').val(),
+            algorithmtype:1,
             des:"",
             ispublic:0,
             moduleid:window.bigData.formulaModuleId,
             remark:"",
             tno:""
         }
-        let tableF=[]
+        let formula=""
+        let logicLi = $('.logicLi')
+        for(let i=0;i<logicLi.length;i++){
+          
+            let obj = logicLi.eq(i).find('.Logic-form-field option:selected').text()+logicLi.eq(i).find('.Logic-form-label option:selected').text()+ logicLi.eq(i).find('.Logic-form-value').val();
+            formula += obj+ " and ";
+        }
+        if (formula.length > 0) {
+            formula = formula.substr(0, formula.length - 5);
+            tableAl.algorithmfun = formula
+        }
+        
         let tableModule={
             moduleid:window.bigData.formulaModuleId,
             remark:"",
@@ -191,7 +200,7 @@
         }
         let param = {
             tableAlgorithm:tableAl,
-            tableFuncs:tableF,
+            tableFuncs:[],
             tableModuleuserrelation:tableModule
         }
         console.log(param)
@@ -204,7 +213,7 @@
                 data:JSON.stringify(param),  
                 success: function(data) {
                     if(data == true){
-                        $(".Frame").attr("style","display:none;");
+                        $(".Logic").attr("style","display:none;");
                     }
                 }
             }) 
@@ -218,7 +227,7 @@
                 data:JSON.stringify(param),
                 success: function(data) {
                     if(data == true){
-                        $(".Frame").attr("style","display:none;");
+                        $(".Logic").attr("style","display:none;");
                     }
                 }
             }) 

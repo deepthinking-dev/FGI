@@ -916,7 +916,6 @@ var Topology = {
         });
     },
     addAlgorithm(option){
-        debugger
         if(option.type=="模板"){
             $("#algorithmMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte">${option.data.text}</div>
@@ -927,7 +926,7 @@ var Topology = {
             $("#algorithmMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte">${option.data.text}</div>
                 <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑算子</div>
+                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}' data-type='${option.algorithmtype}'>编辑算子</div>
                     <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除算子</div>
                 </div>
             </div>`);
@@ -1126,7 +1125,6 @@ var Topology = {
                                 "data": data
                             };
                             let nodeId = data.id
-                            debugger
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
