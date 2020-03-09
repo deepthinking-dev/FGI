@@ -931,18 +931,10 @@ var Topology = {
                 </div>
             </div>`);
         }
-        if((option.type).substring((option.type).length -2) == "规则"){
-            debugger
-            if((option.type).substring(0,2) == "算子" ){
-                $("#formulaMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+        if(option.type== "规则"){
+            $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                     <div class="left-list-tilte">${option.data.text}</div>
                 </div>`);
-            }
-            if((option.type).substring(0,2) == "规则" ){
-                $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
-                    <div class="left-list-tilte">${option.data.text}</div>
-                </div>`);
-            }
         }
        
     },
@@ -1013,7 +1005,7 @@ var Topology = {
                                 <div class='regulationTilte' >
                                     <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
                                 </div>
-                                <div id="formulaMde" class='lkr-page'></div>
+                               
                                 <div id="ruleMde" class='lkr-page'>
                                     <div class='ruleTitle'>
                                        <span id="Import">导入</span>
