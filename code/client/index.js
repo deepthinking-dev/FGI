@@ -17,11 +17,10 @@ $(function(){
             $("#regulationPage").hide()
         }else if($(e.target).html() == '规则管理'){
             $("#algorithmPage").hide()
-            getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子规则',{username:null})
+            getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
             $("#mouldPage").hide()
+            $(".ruleTitle").hide();
             $("#regulationPage").show()
-            $("#ruleMde").hide();
-            $('#formulaMde').show();
         }
     })
     $('body').on('click','#getAllMb',(e) => {
@@ -31,14 +30,12 @@ $(function(){
         getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
     })
     $('body').on('click','#getAllSzgz',(e) => {
-        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子规则',{username:null})
-        $("#ruleMde").hide();
-        $('#formulaMde').show();
+        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
+        $(".ruleTitle").hide();
     })
     $('body').on('click','#getAllGzgz',(e) => {
-        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'algorithmname'},'规则规则',{username:null})
-        $('#formulaMde').hide();
-        $("#ruleMde").show();
+        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'algorithmname'},'规则',{username:null})
+        $(".ruleTitle").show();
     })
     function getAllData(url,datas,type,param){
         $.ajax({
@@ -57,40 +54,6 @@ $(function(){
                             algorithmtype:item.algorithmtype,
                             data: {
                                 id:item[datas.id]+type,
-                                text: item[datas.name],
-                                rect: {
-                                    width: 200,
-                                    height: 50
-                                },
-                                font: {
-                                    fontFamily: 'Arial',
-                                    color: 'aqua',
-                                
-                                    textBaseline: 'top'
-                                },
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                paddingTop: 10,
-                                paddingBottom: 10,
-                                borderRadius: 0.1,
-                                name: 'rectangle',
-                                fillStyle:'rgba(4,44,98,0.58)',
-                                strokeStyle: '#4295ec',
-                                // image:'./static/mum1.png'
-                            }
-                        })
-                    })
-                }
-                if(type.substring(type.length -2) == "规则"){
-                    data.map(item => {
-                        window.addAlgorithm({
-                            name: 'rectangle',
-                            icon: 'icon-rectangle',
-                            id:item[datas.id],
-                            moduleid:item.moduleid,
-                            type:type,
-                            data: {
-                                id:item[datas.id]+type.substring(type.length -2),
                                 text: item[datas.name],
                                 rect: {
                                     width: 200,
