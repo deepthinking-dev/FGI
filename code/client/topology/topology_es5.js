@@ -1068,7 +1068,8 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event, data);
+                    
+                    
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1119,6 +1120,20 @@ var Topology = {
                                 selNodes = null;
                             });
                             break;
+                        case 'moveNodes':
+                            console.log(canvas.data.lines[0]);
+                            let a = Math.abs(canvas.data.lines[0].from.x - canvas.data.lines[0].to.x) 
+                            let b = Math.abs(canvas.data.lines[0].from.y - canvas.data.lines[0].to.y)
+                            let c = canvas.data.lines[0].to.x
+                            let d = canvas.data.lines[0].to.y
+                            console.log(a,b,c,d)
+                            $(`#${canvas.data.lines[0].from.id}_${canvas.data.lines[0].id}_${canvas.data.lines[0].to.id}`).css({
+                                
+                                top:d+(b/2) +"px",
+                                left:a+(c/2)+"px"
+                            })
+                            console.log(d-(b/2),a-(c/2))
+                            break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
@@ -1129,6 +1144,7 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            console.log(data,selected)
                             let nodeId = data.id
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
@@ -1145,8 +1161,20 @@ var Topology = {
                             
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
-                            // data.name = '"polyline"'
-                            // console.log('11111111111',data)
+                            // data.name = '"polyline"'      
+                            // console.log($("#ligature").show())
+                            // data.text = '4545'
+                            console.log(data,canvas)
+                            
+                            $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' >llll</span>`)
+                            $(`#${data.from.id}_${data.id}_${data.to.id}`).css({
+                                color: '#ffffff',
+                                position: 'absolute',
+                                top:data.to.y+"px",
+                                left:data.to.x+"px"
+                            })
+                            console.log($('#'+data.id))
+                            // $("body").append(`<span id='${data.id}' >llll</span>`)
                             selected = {
                                 "type": event,
                                 "data": data
