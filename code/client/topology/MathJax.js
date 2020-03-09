@@ -126,6 +126,9 @@ function ConfirmFrame(){
             tableF.push(obj)
         }
         
+    }else{
+        alert("请填写信息")
+        return false;
     }
     if(window.bigData.formulaType == 'edit'){
         tableAl.moduleid = $('#AlgorithmnameY').attr("tableAlmoduleid")
@@ -185,11 +188,21 @@ function ConfirmLogic(){
     }
     let formula=""
     let logicLi = $('.logicLi')
-    for(let i=0;i<logicLi.length;i++){
-        
-        let obj = logicLi.eq(i).find('.Logic-form-field option:selected').text()+logicLi.eq(i).find('.Logic-form-label option:selected').text()+ logicLi.eq(i).find('.Logic-form-value').val();
-        formula += obj+ " and ";
+    if(($('#LogicName').val()).trim() == ''){
+        alert("请填写逻辑运算名称")
+        return false;
     }
+    if(logicLi.length > 0){
+        for(let i=0;i<logicLi.length;i++){
+        
+            let obj = logicLi.eq(i).find('.Logic-form-field option:selected').text()+logicLi.eq(i).find('.Logic-form-label option:selected').text()+ logicLi.eq(i).find('.Logic-form-value').val();
+            formula += obj+ " and ";
+        }
+    }else{
+        alert("请至少填写一个")
+        return false;
+    }
+    
     if (formula.length > 0) {
         formula = formula.substr(0, formula.length - 5);
         tableAl.algorithmfun = formula
