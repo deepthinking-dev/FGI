@@ -124,11 +124,11 @@
                     let  str = ''
                     data.map(item => {
                         str +=`<div class="MathJaxParam">
-                                <div class="width-30">
+                                <div class="width-50">
                                     <span>变量</span>
                                     <input type="text"  readonly="readonly" value="${item}" class="MathJaxInput1 inputButton">
                                 </div>
-                                <div class="width-30 width-select">
+                                <div class="width-50 width-select">
                                     <span>类型</span>
                                     <select id="" class="MathJaxInput2 inputButton" >
                                         <option value="常量">常量</option>
@@ -162,6 +162,26 @@
 </script>
 </head>
 <body>
+    <!-- 上传导入文件框 -->
+    <div id="fileupload">
+        <div class="title">
+            <span>上传文件</span>
+            <span onclick="uploadClose()" style="cursor: pointer;">X</span>
+        </div>
+        <!-- <div id="fileUploadContent" class="fileUploadContent"></div> -->
+
+        <form class="uploadForm" name="uploadForm">
+            <input class="inputfile" name="inputfile" type="file" multiple="multiple" 
+            accept="application/json,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/xml, application/xml"/>
+            <!-- <div class="formContent" >
+                <span>文件名称</span>
+                <span>xxx.txt</span>
+                <button>删除</button>
+            </div>
+            -->
+            <button class="btn btn-primary mr10 btn-sm pointer" type="button" onclick="uploadSure()">确定</button>
+        </form>                
+    </div>
     <!-- 所有公式弹框 -->
     <div id="otherFormula">
             <div class="title">
@@ -1471,6 +1491,7 @@
 <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
 <script src="./plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="./plugins/topology/topology.bundle.js"></script>
+<script type="text/javascript" src="./plugins/jquery/fileUpload.js"></script>
 <script src='index.js'></script>
 <!-- <script src='./LogicMath.js'></script> -->
 <script src="topology/topology_es5.js"></script>

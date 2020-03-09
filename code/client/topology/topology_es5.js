@@ -931,10 +931,18 @@ var Topology = {
                 </div>
             </div>`);
         }
-        if(option.type == "规则"){
-            $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
-                <div class="left-list-tilte">${option.data.text}</div>
-            </div>`);
+        if((option.type).substring((option.type).length -2) == "规则"){
+            debugger
+            if((option.type).substring(0,2) == "算子" ){
+                $("#formulaMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+                    <div class="left-list-tilte">${option.data.text}</div>
+                </div>`);
+            }
+            if((option.type).substring(0,2) == "规则" ){
+                $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+                    <div class="left-list-tilte">${option.data.text}</div>
+                </div>`);
+            }
         }
        
     },
@@ -973,7 +981,7 @@ var Topology = {
                 console.log(str)
                 self.tools.forEach(function (val, index) {
                     _html += '<div id="mouldPage" class="lkr-page">\n' +
-                        '            <div class="title" style="margin-top:0px">' + 
+                        '       <div class="title" style="margin-top:0px">' + 
                         
                         `<span id='returnLeft' class='lkr-arrow'>◀</span><div id='pic_list' class="lkr-pic_list"><ul class="lkr-tabs">
                         <li role="presentation" class="active-taps" data-name='基础模块' >基础模块</li>${str}
@@ -991,27 +999,32 @@ var Topology = {
                         '        </div>';
                 });
                 let algorithm = `<div id="algorithmPage"  style='display:none;'>
-                        <div class='algorithmTilte'>
-                            <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
-                        </div>
-                    
-                        <div id="algorithmMde" class='lkr-page'></div>
-                        <div class="algorithmFoot">
-                            <div id='getAllMb'>可用模板</div>
-                            <div id='getAllSz'>已有算子</div>
-                        </div>
-                    </div>`
+                                    <div class='algorithmTilte'>
+                                        <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                                    </div>
+                                
+                                    <div id="algorithmMde" class='lkr-page'></div>
+                                    <div class="algorithmFoot">
+                                        <div id='getAllMb'>可用模板</div>
+                                        <div id='getAllSz'>已有算子</div>
+                                    </div>
+                                </div>`
                 let rule = `<div id="regulationPage"  style='display:none;'>
-                        <div class='regulationTilte' >
-                            <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
-                        </div>
-                    
-                        <div id="ruleMde" class='lkr-page'></div>
-                        <div class="regulationFoot">
-                            <div id='getAllSzgz'>已有算子</div>
-                            <div id='getAllGz'>已有规则</div>
-                        </div>
-                    </div>`    
+                                <div class='regulationTilte' >
+                                    <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                                </div>
+                                <div id="formulaMde" class='lkr-page'></div>
+                                <div id="ruleMde" class='lkr-page'>
+                                    <div class='ruleTitle'>
+                                       <span id="Import">导入</span>
+                                       <span id="export">导出</span>
+                                    </div>
+                                </div>
+                                <div class="regulationFoot">
+                                    <div id='getAllSzgz'>已有算子</div>
+                                    <div id='getAllGzgz'>已有规则</div>
+                                </div>
+                            </div>`    
                 _html = `<div  class="lkr-pic_list"><ul class="lkr-tabs">
                 <li role="presentation" class="active-taps" data-name='模板管理' >模板管理</li>
                 <li role="presentation" class="active-taps" data-name='模板管理' >算子管理</li>

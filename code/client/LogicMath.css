@@ -489,3 +489,58 @@ body .inputButton{
     text-overflow:ellipsis;
     white-space: nowrap;
 }
+/* 上传文件弹框 */
+#fileupload{
+    position: absolute;
+    height: 593px;
+    width: 589px;
+    /* display: flex; */
+    display: none;
+    /* justify-content: center;
+    align-items: center; */
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    top: 15%; 
+    left: 30%;
+    z-index: 2;
+}
+#fileupload .title{
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    height: 40px
+}
+#fileupload .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 50px;
+}
+#fileupload .title span:last-child{
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    float: right;
+    right: 50px;
+}
+#fileupload .uploadForm{
+    position: relative;
+    top: 85px;
+    margin: 0 auto;
+    width: 80%;
+    color: #fff;
+}
+.fileUploadContent{
+    border: none;
+    background-color: #09f;
+    color: #fff;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    width: 80px;
+    cursor: pointer;
+    height: 30px;
+}
