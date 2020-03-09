@@ -926,8 +926,8 @@ var Topology = {
             $("#algorithmMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte">${option.data.text}</div>
                 <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' >编辑算子</div>
-                    <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' >删除算子</div>
+                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}' data-type='${option.algorithmtype}'>编辑算子</div>
+                    <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除算子</div>
                 </div>
             </div>`);
         }
@@ -973,7 +973,7 @@ var Topology = {
                 console.log(str)
                 self.tools.forEach(function (val, index) {
                     _html += '<div id="mouldPage" class="lkr-page">\n' +
-                        '            <div class="title" style="margin-top:0px">' + 
+                        '       <div class="title" style="margin-top:0px">' + 
                         
                         `<span id='returnLeft' class='lkr-arrow'>◀</span><div id='pic_list' class="lkr-pic_list"><ul class="lkr-tabs">
                         <li role="presentation" class="active-taps" data-name='基础模块' >基础模块</li>${str}
@@ -1022,7 +1022,7 @@ var Topology = {
                 <li role="presentation" class="active-taps" data-name='模板管理' >算子管理</li>
                 <li role="presentation" class="active-taps" data-name='模板管理' >规则管理</li>
             
-            </ul></div>` + _html +algorithm
+            </ul></div>` + _html + algorithm + rule
                 $("#flex_tools").html(_html);
                 $('#returnLeft').click(() => {
                     
@@ -1134,6 +1134,8 @@ var Topology = {
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
                                 window.bigData.formulaType = 'add'
+                                let ModuleId =nodeId.substring(0,nodeId.length-2)
+                                window.bigData.formulaModuleId = ModuleId
                             }
                             
                             locked = data.locked;
