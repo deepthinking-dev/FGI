@@ -213,6 +213,9 @@ function ConfirmLogic(){
         remark:"",
         username:""
     }
+    if(window.bigData.formulaType == 'edit'){
+        tableAl.id = $('#LogicName').attr("tableAlgorithmid");
+    }
     let param = {
         tableAlgorithm:tableAl,
         tableFuncs:[],
@@ -272,4 +275,14 @@ function uploadSure(){
             }
         }
     }) 
+}
+
+//选择关系确定按钮
+function selectSure(){
+    let str = $('.selectRelation option:selected').text();
+    console.log(str)
+    window.currentId 
+    $('#'+window.currentId).text(str)
+    $("#selectRela").hide();
+    console.log(window.currentId )
 }

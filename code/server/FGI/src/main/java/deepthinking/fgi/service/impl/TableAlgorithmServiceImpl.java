@@ -88,22 +88,24 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     @Override
     public boolean modAlgorithmById(AlgorithmModel algorithmModel) {
         try {
-            //获取以前的算子信息，判断公式是否改变
-            TableAlgorithm old_tableAlgorithm=selectByPrimaryKey(algorithmModel.getTableAlgorithm().getId());
-            String old_algorithmFun=old_tableAlgorithm.getAlgorithmfun();
-            updateByPrimaryKey(algorithmModel.getTableAlgorithm());
-            List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-            if(tableFuncs.size()>0){
-                String new_algorithmFun=algorithmModel.getTableAlgorithm().getAlgorithmfun();
-                if(new_algorithmFun.equals(old_algorithmFun)){//一样
-                    tableFuncs.stream().forEach(fun->tableFuncMapper.updateByPrimaryKeySelective(fun));
-                }else{
-                    TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
-                    tableFuncCriteria.createCriteria().andModuleidEqualTo(algorithmModel.getTableAlgorithm().getId());
-                    tableFuncMapper.deleteByExample(tableFuncCriteria);
-                    tableFuncs.stream().forEach(fun->tableFuncMapper.insert(fun));
+            if(null!=algorithmModel.getTableFuncs()&&!"".equals(algorithmModel.getTableFuncs())){
+                //获取以前的算子信息，判断公式是否改变
+                TableAlgorithm old_tableAlgorithm=selectByPrimaryKey(algorithmModel.getTableAlgorithm().getId());
+                String old_algorithmFun=old_tableAlgorithm.getAlgorithmfun();
+                List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
+                if(tableFuncs.size()>0){
+                    String new_algorithmFun=algorithmModel.getTableAlgorithm().getAlgorithmfun();
+                    if(new_algorithmFun.equals(old_algorithmFun)){//一样
+                        tableFuncs.stream().forEach(fun->tableFuncMapper.updateByPrimaryKeySelective(fun));
+                    }else{
+                        TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
+                        tableFuncCriteria.createCriteria().andModuleidEqualTo(algorithmModel.getTableAlgorithm().getId());
+                        tableFuncMapper.deleteByExample(tableFuncCriteria);
+                        tableFuncs.stream().forEach(fun->tableFuncMapper.insert(fun));
+                    }
                 }
             }
+            updateByPrimaryKey(algorithmModel.getTableAlgorithm());
         }catch (Exception e){
             logger.error(e.getMessage());
             return false;
