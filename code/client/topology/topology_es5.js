@@ -1165,13 +1165,17 @@ var Topology = {
                             // console.log($("#ligature").show())
                             // data.text = '4545'
                             console.log(data,canvas)
-                            
-                            $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' >llll</span>`)
+                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                            $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
                             $(`#${data.from.id}_${data.id}_${data.to.id}`).css({
                                 color: '#ffffff',
                                 position: 'absolute',
-                                top:data.to.y+"px",
-                                left:data.to.x+"px"
+                                top:(data.to.y + data.from.y)/2 +"px",
+                                left:(data.to.x + data.from.x)/2+"px"
+                            })
+                            $(`#selectRela`).css({
+                                top:(data.to.y + data.from.y)/2 +"px",
+                                left:(data.to.x + data.from.x)/2+"px"
                             })
                             console.log($('#'+data.id))
                             // $("body").append(`<span id='${data.id}' >llll</span>`)
@@ -1486,6 +1490,8 @@ var Topology = {
         console.log(selNodes)
         console.log(arrow, index)
         // console.log($(e).attr("class"))
+        
+        $("#selectRela").show()
         var sum = 0;
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {

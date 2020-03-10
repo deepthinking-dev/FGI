@@ -162,6 +162,26 @@
 </script>
 </head>
 <body>
+    <!-- 关系选择 -->
+    <div id="selectRela">
+        <div>
+            <span>关系选择</span>
+            <select class="selectRelation">
+                    <option value="">与</option>
+                    <option value="">或</option>
+                    <option value="">非</option>
+                    <option value="">大于 </option>
+                    <option value="">大于等于</option>
+                    <option value="">小于 </option>
+                    <option value="">小于等于</option>
+                    <option value="">等于</option>
+                    <option value="">不等于</option>
+            </select>
+            <span>规则描述</span>
+            <textarea cols="21" rows="5"></textarea>
+            <button class="btn pointer" type="button" onclick="selectSure()">确定</button>
+        </div>
+    </div>
     <!-- 上传导入文件框 -->
     <div id="fileupload">
         <div class="title">
@@ -1511,7 +1531,6 @@
 <script src="./plugins/topology/topology.bundle.js"></script>
 <script type="text/javascript" src="./plugins/jquery/fileUpload.js"></script>
 <script src='index.js'></script>
-<!-- <script src='./LogicMath.js'></script> -->
 <script src="topology/topology_es5.js"></script>
 <script src="topology/MathJax.js"></script>
 
