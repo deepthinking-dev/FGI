@@ -1173,6 +1173,7 @@ var Topology = {
                                 top:(data.to.y + data.from.y)/2 +"px",
                                 left:(data.to.x + data.from.x)/2+"px"
                             })
+                            // 选择关系弹框
                             $(`#selectRela`).css({
                                 top:(data.to.y + data.from.y)/2 +"px",
                                 left:(data.to.x + data.from.x)/2+"px"
@@ -1490,7 +1491,7 @@ var Topology = {
         console.log(selNodes)
         console.log(arrow, index)
         // console.log($(e).attr("class"))
-        
+        //显示选择关系弹框
         $("#selectRela").show()
         var sum = 0;
         //更改选择框显示的箭头
