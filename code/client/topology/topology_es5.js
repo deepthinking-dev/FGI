@@ -1491,7 +1491,7 @@ var Topology = {
         console.log(selNodes)
         console.log(arrow, index)
         // console.log($(e).attr("class"))
-        //显示选择关系弹框
+        //显示选择关系
         $("#selectRela").show()
         var sum = 0;
         //更改选择框显示的箭头
