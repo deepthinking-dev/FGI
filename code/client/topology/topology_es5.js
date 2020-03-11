@@ -1147,7 +1147,11 @@ var Topology = {
                                     for(var j=i+1; j<arr.length; j++){
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
                                             arr.splice(j,1);
-                                            
+                                            alert('统一规则下一次算子只能使用一次')
+                                            setTimeout(function () {
+                                                selected = null;
+                                                selNodes = null;
+                                            });
                                             j--;
                                         }
                                     }
