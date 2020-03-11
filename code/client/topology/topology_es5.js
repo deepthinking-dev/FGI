@@ -1069,7 +1069,7 @@ var Topology = {
                 // 监听画布
                 function onMessage(event, data) {
                     
-                    
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1085,6 +1085,7 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            // $("#selectRela").show()
                             locked = data.locked;
                             self.initLine();
                             break;
@@ -1121,23 +1122,14 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            // canvas.data.lines.map(item => {
-                            //     if(item.from.id == data.id||item.to.id == data.id){
-                            //         console.log(canvas.data.lines[0]);
-                            //         let a = Math.abs(canvas.data.lines[0].from.x - canvas.data.lines[0].to.x) 
-                            //         let b = Math.abs(canvas.data.lines[0].from.y - canvas.data.lines[0].to.y)
-                            //         let c = canvas.data.lines[0].to.x
-                            //         let d = canvas.data.lines[0].to.y
-                            //         console.log(a,b,c,d)
-                            //         $(`#${canvas.data.lines[0].from.id}_${canvas.data.lines[0].id}_${canvas.data.lines[0].to.id}`).css({
-                                        
-                            //             top:d+(b/2) +"px",
-                            //             left:a+(c/2)+"px"
-                            //         })
-                            //         console.log(d-(b/2),a-(c/2))
-                            //     }
-                            // })
-                            
+                            canvas.data.lines.map(item => {
+                                if(item.from.id == data[0].id||item.to.id == data[0].id){
+                                    $(`#${item.id}`).css({
+                                        top:(item.to.y + item.from.y)/2 +"px",
+                                        left:(item.to.x + item.from.x)/2+"px"
+                                    })
+                                }
+                            })
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
@@ -1149,8 +1141,21 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            console.log(data,selected)
                             let nodeId = data.id
+                            function unique(arr){            
+                                for(var i=0; i<arr.length; i++){
+                                    for(var j=i+1; j<arr.length; j++){
+                                        if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
+                                            arr.splice(j,1);
+                                            
+                                            j--;
+                                        }
+                                    }
+                                }
+                                return arr;
+                            }
+                            unique(canvas.data.nodes)
+                            
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
@@ -1163,16 +1168,13 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'addLine':
-                            
+
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
-                            // data.name = '"polyline"'      
-                            // console.log($("#ligature").show())
-                            // data.text = '4545'
-                            console.log(data,canvas)
-                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                            $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                            $(`#${data.from.id}_${data.id}_${data.to.id}`).css({
+
+                            window.currentId = `${data.id}`;
+                            $('#topo_canvas div').eq(0).append(`<span id='${data.id}' ></span>`)
+                            $(`#${data.id}`).css({
                                 color: '#ffffff',
                                 position: 'absolute',
                                 top:(data.to.y + data.from.y)/2 +"px",
@@ -1183,8 +1185,8 @@ var Topology = {
                                 top:(data.to.y + data.from.y)/2 +"px",
                                 left:(data.to.x + data.from.x)/2+"px"
                             })
-                            console.log($('#'+data.id))
-                            // $("body").append(`<span id='${data.id}' >llll</span>`)
+                            $("#selectRela").show()
+
                             selected = {
                                 "type": event,
                                 "data": data
@@ -1193,6 +1195,9 @@ var Topology = {
                             self.initLine();
                             break;
                         case 'delete':
+                            data.lines.map(item => {
+                                $(`#${item.id}`).remove()
+                            })
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
                             break;
@@ -1493,11 +1498,11 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        console.log(selNodes)
-        console.log(arrow, index)
+        // console.log(selNodes)
+        // console.log(arrow, index)
         // console.log($(e).attr("class"))
         //显示选择关系
-        $("#selectRela").show()
+        // $("#selectRela").show()
         var sum = 0;
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
