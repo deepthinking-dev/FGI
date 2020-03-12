@@ -1121,23 +1121,18 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            // canvas.data.lines.map(item => {
-                            //     if(item.from.id == data.id||item.to.id == data.id){
-                            //         console.log(canvas.data.lines[0]);
-                            //         let a = Math.abs(canvas.data.lines[0].from.x - canvas.data.lines[0].to.x) 
-                            //         let b = Math.abs(canvas.data.lines[0].from.y - canvas.data.lines[0].to.y)
-                            //         let c = canvas.data.lines[0].to.x
-                            //         let d = canvas.data.lines[0].to.y
-                            //         console.log(a,b,c,d)
-                            //         $(`#${canvas.data.lines[0].from.id}_${canvas.data.lines[0].id}_${canvas.data.lines[0].to.id}`).css({
-                                        
-                            //             top:d+(b/2) +"px",
-                            //             left:a+(c/2)+"px"
-                            //         })
-                            //         console.log(d-(b/2),a-(c/2))
-                            //     }
-                            // })
-                            
+                            console.log(canvas.data.lines[0]);
+                            let a = Math.abs(canvas.data.lines[0].from.x - canvas.data.lines[0].to.x) 
+                            let b = Math.abs(canvas.data.lines[0].from.y - canvas.data.lines[0].to.y)
+                            let c = canvas.data.lines[0].to.x
+                            let d = canvas.data.lines[0].to.y
+                            console.log(a,b,c,d)
+                            $(`#${canvas.data.lines[0].from.id}_${canvas.data.lines[0].id}_${canvas.data.lines[0].to.id}`).css({
+                                
+                                top:d+(b/2) +"px",
+                                left:a+(c/2)+"px"
+                            })
+                            console.log(d-(b/2),a-(c/2))
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
