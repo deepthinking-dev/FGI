@@ -1123,22 +1123,33 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            console.log(canvas.data.lines[0]);
-                            let a = Math.abs(canvas.data.lines[0].from.x - canvas.data.lines[0].to.x) 
-                            let b = Math.abs(canvas.data.lines[0].from.y - canvas.data.lines[0].to.y)
-                            let c = canvas.data.lines[0].to.x
-                            let d = canvas.data.lines[0].to.y
-                            console.log(a,b,c,d)
-                            $(`#${canvas.data.lines[0].from.id}_${canvas.data.lines[0].id}_${canvas.data.lines[0].to.id}`).css({
-                                
-                                top:d+(b/2) +"px",
-                                left:a+(c/2)+"px"
+                            canvas.data.lines.map(item => {
+                                if(item.from.id == data[0].id||item.to.id == data[0].id){
+                                    $(`#${item.id}`).css({
+                                        top:(item.to.y + item.from.y)/2 +"px",
+                                        left:(item.to.x + item.from.x)/2+"px"
+                                    })
+                                }
                             })
-                            console.log(d-(b/2),a-(c/2))
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
+                         
+                            //去掉重复id的node（一个算子在一套规则中只能出现一次）
+                            function unique(arr){            
+                                for(var i=0; i<arr.length; i++){
+                                    for(var j=i+1; j<arr.length; j++){
+                                        if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
+                                            arr.splice(j,1);
+                                            
+                                            j--;
+                                        }
+                                    }
+                                }
+                                return arr;
+                            }
+                            unique(canvas.data.nodes)
                             break;
                         case 'addNode':
                             selNodes = [data];
@@ -1168,30 +1179,43 @@ var Topology = {
                             // console.log($("#ligature").show())
                             // data.text = '4545'
                             console.log(data,canvas)
-                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                            $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                            $(`#${data.from.id}_${data.id}_${data.to.id}`).css({
-                                color: '#ffffff',
-                                position: 'absolute',
-                                top:(data.to.y + data.from.y)/2 +"px",
-                                left:(data.to.x + data.from.x)/2+"px"
+                            // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                            // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
+                            //判断连线是否连接成功
+                            if(!data.to.id){
+                            canvas.data.lines.map((item,i) => {
+                                if(item.id == data.id){
+                                    canvas.data.lines.splice(i,1)
+                                    alert('操作失败！')
+                                    
+                                    canvas.render();
+                                    setTimeout(function () {
+                                        selected = null;
+                                        selNodes = null;
+                                    });
+                                }
                             })
-                            // 选择关系弹框
-                            $(`#selectRela`).css({
-                                top:(data.to.y + data.from.y)/2 +"px",
-                                left:(data.to.x + data.from.x)/2+"px"
-                            })
-                            $(`#selectRela`).hide();
-                            self.lineData.push(data)
-                            console.log(self.lineData)
-                            console.log($('#'+data.id))
-                            // $("body").append(`<span id='${data.id}' >llll</span>`)
-                            selected = {
-                                "type": event,
-                                "data": data
-                            };
-                            locked = data.locked;
-                            self.initLine();
+                            }else{
+                                window.currentId = `${data.id}`;
+                                $('#topo_canvas div').eq(0).append(`<span id='${data.id}' ></span>`)
+                                $(`#${data.id}`).css({
+                                    color: '#ffffff',
+                                    position: 'absolute',
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
+                                // 选择关系弹框
+                                $(`#selectRela`).css({
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
+                                selected = {
+                                    "type": event,
+                                    "data": data
+                                };
+                                locked = data.locked;
+                                self.initLine();
+                            }
                             break;
                         case 'delete':
                             $("#flex_props_home").removeClass("hidden");
@@ -1626,6 +1650,7 @@ var Topology = {
     },
     // 删除
     onRender: function () {
+        de
         canvas.data.nodes = []
         canvas.data.lines = []
         canvas.render();
