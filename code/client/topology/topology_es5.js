@@ -28,6 +28,7 @@ var Topology = {
         lineUp: 8,
         lineDown: 9
     },
+    lineData:[],
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
     tools: [
         {
@@ -1068,8 +1069,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    
-                    
+                    console.log(event,data,1111)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1081,10 +1081,12 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+                        
                             selected = {
                                 "type": event,
                                 "data": data
                             };
+                            
                             locked = data.locked;
                             self.initLine();
                             break;
@@ -1145,6 +1147,8 @@ var Topology = {
                                 "data": data
                             };
                             console.log(data,selected)
+                            //存储编辑区数据
+                           
                             let nodeId = data.id
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
@@ -1158,7 +1162,6 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'addLine':
-                            
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
                             // data.name = '"polyline"'      
@@ -1178,6 +1181,9 @@ var Topology = {
                                 top:(data.to.y + data.from.y)/2 +"px",
                                 left:(data.to.x + data.from.x)/2+"px"
                             })
+                            $(`#selectRela`).hide();
+                            self.lineData.push(data)
+                            console.log(self.lineData)
                             console.log($('#'+data.id))
                             // $("body").append(`<span id='${data.id}' >llll</span>`)
                             selected = {

@@ -286,3 +286,68 @@ function selectSure(){
     $("#selectRela").hide();
     console.log(window.currentId )
 }
+
+//保存规则（一起新增）
+function ruleSure(){
+    let algorithmRuleDataList = []
+    let spanId = $('#topo_canvas div span')
+    if(spanId.length> 0){
+        for(let i=0;i<spanId.length-1;i++){
+            debugger
+            let  id=spanId.eq(i).attr('id')
+            let str = id.split("_")
+            let ival = parseInt(str[2].substring(0,str[2].length-2)) 
+            if(isNaN(ival)){
+                
+            }
+            let obj={
+                algorithmModel:null,
+                algorithmid:str[0].substring(0,str[0].length-2),
+                des:'',
+                id:'',
+                preaAlgorithmModel:null,
+                prealgorithmid:str[2].substring(0,str[2].length-2),
+                remark:null,
+                roleId:null,
+                tableAlgorithmcondition:{
+                    algorithmroleid:'',
+                    id:'',
+                    logicrelation:spanId.eq(i).text(),
+                    logicvalue:'',
+                    remark:''
+                }
+            }
+            algorithmRuleDataList.push(obj)
+        }
+       
+    }
+
+     console.log(algorithmRuleDataList)
+     if($("#ruleName").val() == ''){
+         alert('请输入规则名称')
+         return false;
+     }
+    let algorithmRuleSaveDataModel ={
+        algorithmRuleDataModelList:algorithmRuleDataList,
+        tableRole:{
+            des:'',
+            id:'',
+            remark:'',
+            rolename:$("#ruleName").val(),
+            tno:''
+        }
+        
+    }
+    $.ajax({
+        type:"post",   
+        dataType: "json",
+        url:urlConfig.host+'/algorithmRule/saveAlgorithmRule',
+        contentType: "application/json;charset=UTF-8",
+        data:JSON.stringify(algorithmRuleSaveDataModel),
+        success: function(data) {
+            if(data == true){
+               
+            }
+        }
+    }) 
+}
