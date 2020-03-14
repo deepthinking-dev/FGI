@@ -65,7 +65,7 @@ public class AlgorithmRuleController {
             toClient.flush();
             toClient.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+
         } finally {
             try {
                 File f = new File(path);
