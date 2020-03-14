@@ -182,6 +182,15 @@ public class FileUtils {
 		}
 		return fileUrl;
 	}
+
+	/**
+	 * 获取到项目的路径
+	 * @return path
+	 */
+	public static String getProjectPath(){
+		return System.getProperty("user.dir");
+	}
+
 	
 	/*************
 	 * 删除Linux文件

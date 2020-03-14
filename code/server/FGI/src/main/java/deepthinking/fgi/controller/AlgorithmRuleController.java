@@ -46,7 +46,9 @@ public class AlgorithmRuleController {
     @ApiImplicitParam(name = "id", value = "规则编号", dataType = "integer", paramType = "query", required = true)
     public void saveAlgorithmRule2File(Integer id, HttpServletResponse response){
         String filename = UUID.randomUUID().toString();
-        String path = FileUtils.getConTextPath() + "/WEB-INF/" + filename;
+//        String path = FileUtils.getConTextPath() + "/WEB-INF/" + filename;
+        String path = FileUtils.getProjectPath() + "/" + filename;
+        System.out.println("path:" + path);
         try {
             FileUtils.writeFile(path, JSONArray.toJSON(tableRoleService.GetTableExportData(id)).toString().getBytes());
             // 以流的形式下载文件。
@@ -63,6 +65,7 @@ public class AlgorithmRuleController {
             toClient.flush();
             toClient.close();
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             try {
                 File f = new File(path);
