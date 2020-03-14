@@ -591,7 +591,6 @@ body .inputButton{
     height: 70px;
 }
 #selectRela div button{
-    position: absolute;
-    bottom: 40px;
-    right: 37px;
+    float: right;
+    margin-top: 25px;
 }

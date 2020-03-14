@@ -270,3 +270,12 @@ div{
     border-radius: 0;
     background: rgba(0, 0, 0, 0.1);
 }
+/* 规则信息 */
+.rule-flex{
+    position: relative;
+    width: 75%;
+    float: left;
+    margin: 0 auto;
+    display: none;
+    /* border:1px solid #2e60a2; */
+}

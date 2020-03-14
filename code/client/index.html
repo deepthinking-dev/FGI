@@ -179,7 +179,8 @@
             </select>
             <span>规则描述</span>
             <textarea cols="21" rows="5"></textarea>
-            <button class="btn pointer" type="button" onclick="selectSure()">确定</button>
+            <button class="btn pointer" type="button" onclick="RelateClose()" style="margin-right: 35px;">取消</button>
+            <button class="btn pointer" type="button" onclick="selectSure()" style="margin-right: 10px;">确定</button>
         </div>
     </div>
     <!-- 上传导入文件框 -->
@@ -471,14 +472,21 @@
                                 <li><span id="down_add">新建算法工程</span></li>
                                 <li><span id="canvas_open">打开算法工程</span></li>
                                 <li><span id="canvas_save">保存算法工程</span></li>
-                                <li><span id="ruleSure" onclick="ruleSure()">保存</span></li>
-                                <li><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
+                                <!-- <li><span id="ruleSure" onclick="ruleSure()">保存</span></li>
+                                <li><input id="ruleName" type="text" placeholder="请输入规则名称"></li> -->
                                 <!-- <li><span id="LogicOpen">逻辑运算</span></li> -->
                                 <!-- <li><a href="#" id="down_png">下载PNG</a></li>
                                 <li><a href="#" id="canvas_title">标题</a></li> -->
                             </ul>
                         </nav>
-
+                        <div class="rule-flex">
+                            <ul>
+                                <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
+                                <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
+                                <li><button type="button" id="ruleSure" onclick="ruleSure()">保存</button></li>
+                            </ul>
+                                
+                        </div>
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
                             
@@ -490,7 +498,7 @@
                             </div>
                         </div>
                         
-                        <div class="tools" id="flex_tools" style="position: relative;">
+                        <div class="tools" id="flex_tools" style="position: absolute;right: 30px;">
                            
                         </div>
                         <!-- <div class="props" id="flex_props">

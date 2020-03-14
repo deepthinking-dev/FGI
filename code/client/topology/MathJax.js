@@ -286,6 +286,10 @@ function selectSure(){
     $("#selectRela").hide();
     console.log(window.currentId )
 }
+//选择关系关闭按钮
+function RelateClose(){
+    $("#selectRela").hide();
+}
 
 //保存规则（一起新增）
 function ruleSure(){
@@ -296,10 +300,6 @@ function ruleSure(){
             debugger
             let  id=spanId.eq(i).attr('id')
             let str = id.split("_")
-            let ival = parseInt(str[2].substring(0,str[2].length-2)) 
-            if(isNaN(ival)){
-                
-            }
             let obj={
                 algorithmModel:null,
                 algorithmid:str[0].substring(0,str[0].length-2),
@@ -332,7 +332,7 @@ function ruleSure(){
         tableRole:{
             des:'',
             id:'',
-            remark:'',
+            remark:$("#ruleRemark").val(),
             rolename:$("#ruleName").val(),
             tno:''
         }

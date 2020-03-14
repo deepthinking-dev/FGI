@@ -229,7 +229,7 @@ body{
     display:block;
     white-space:nowrap;
     width:80%;
-    /* margin: auto; */
+    margin: auto;
     overflow:auto;
 }
 .lkr-pic_list li
@@ -291,12 +291,56 @@ body{
     border: 1px solid #00beff;
 }
 .ruleTitle{
-    position: absolute;
-    right: 52px;
-    margin-top: 10px;
+    position: relative;
+    left: 175px;
     color: #fff;
+    top: 5px;
+    height: 40px;
+    line-height: 40px;
 }
 .ruleTitle span{
     margin-left: 5px;
     cursor: pointer;
+}
+#ruleMde input{
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+#ruleMde .left-list-tilte{
+    height: 38px;
+    line-height: 38px;
+    width: 215px;
+    display: inline-block;
+    text-align: center;
+    margin-left: 8px;
+}
+.rule-flex ul{
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+.rule-flex ul li{
+    float: left;
+    list-style: none;
+    color: #fff;
+    font-size: 14px;
+    margin: 10px 20px;
+}
+.rule-flex ul li input{
+    background-color: rgba(0,0,0,0);
+    padding: 5px 15px;
+    width: 244px;
+    border: none;
+    outline: none;
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.rule-flex ul li button{
+    background-image: url(./static/botton.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 4px 15px;
 }

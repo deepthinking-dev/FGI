@@ -10,17 +10,23 @@ $(function(){
             $("#mouldPage").show()
             $("#algorithmPage").hide()
             $("#regulationPage").hide()
+            $(".rule-flex").hide();
         }else if($(e.target).html() == '算子管理'){
             $("#algorithmPage").show()
             getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
             $("#mouldPage").hide()
             $("#regulationPage").hide()
+            $(".rule-flex").hide();
         }else if($(e.target).html() == '规则管理'){
             $("#algorithmPage").hide()
+            $(".rule-flex").show();
             getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
             $("#mouldPage").hide()
             $(".ruleTitle").hide();
+            $("#ruleMde").hide();
             $("#regulationPage").show()
+            $("#formulaMde").show();
+           
         }
     })
     $('body').on('click','#getAllMb',(e) => {
@@ -32,12 +38,17 @@ $(function(){
     $('body').on('click','#getAllSzgz',(e) => {
         getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'规则',{username:null})
         $(".ruleTitle").hide();
+        $("#ruleMde").hide();
+        $("#formulaMde").show();
+        
     })
     $('body').on('click','#getAllGzgz',(e) => {
-        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'algorithmname'},'规则',{username:null})
+        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'rolename',ruleType:'规则'},'规则',{username:null})
+        $("#formulaMde").hide();
+        $("#ruleMde").show();
         $(".ruleTitle").show();
     })
-    function getAllData(url,datas,type,param){
+    function getAllData(url,datas,type,param,ruleType){
         $.ajax({
             url:urlConfig.host+url,
             data:param,
@@ -85,6 +96,7 @@ $(function(){
                             id:item[datas.id],
                             moduleid:item.moduleid,
                             type:type,
+                            ruleType:datas.ruleType,
                             data: {
                                 id:item[datas.id]+type,
                                 text: item[datas.name],

@@ -933,9 +933,17 @@ var Topology = {
             </div>`);
         }
         if(option.type== "规则"){
-            $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+            if(option.ruleType == "规则"){
+                $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+                    <input type="checkbox">
                     <div class="left-list-tilte">${option.data.text}</div>
                 </div>`);
+            }else{
+                $("#formulaMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+                    <div class="left-list-tilte">${option.data.text}</div>
+                </div>`);
+            }
+            
         }
        
     },
@@ -1005,14 +1013,14 @@ var Topology = {
                 let rule = `<div id="regulationPage"  style='display:none;'>
                                 <div class='regulationTilte' >
                                     <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
-                                </div>
-                               
-                                <div id="ruleMde" class='lkr-page'>
                                     <div class='ruleTitle'>
                                        <span id="Import">导入</span>
                                        <span id="export">导出</span>
                                     </div>
                                 </div>
+                               
+                                <div id="ruleMde" class='lkr-page'> </div>
+                                <div id="formulaMde" class='lkr-page'> </div>
                                 <div class="regulationFoot">
                                     <div id='getAllSzgz'>已有算子</div>
                                     <div id='getAllGzgz'>已有规则</div>
@@ -1178,7 +1186,7 @@ var Topology = {
                             // data.name = '"polyline"'      
                             // console.log($("#ligature").show())
                             // data.text = '4545'
-                            console.log(data,canvas)
+                            // console.log(data,canvas)
                             // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                             // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
                             //判断连线是否连接成功
@@ -1196,9 +1204,9 @@ var Topology = {
                                 }
                             })
                             }else{
-                                window.currentId = `${data.id}`;
-                                $('#topo_canvas div').eq(0).append(`<span id='${data.id}' ></span>`)
-                                $(`#${data.id}`).css({
+                                window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
+                                $('#'+window.currentId).css({
                                     color: '#ffffff',
                                     position: 'absolute',
                                     top:(data.to.y + data.from.y)/2 +"px",
@@ -1650,7 +1658,6 @@ var Topology = {
     },
     // 删除
     onRender: function () {
-        de
         canvas.data.nodes = []
         canvas.data.lines = []
         canvas.render();
