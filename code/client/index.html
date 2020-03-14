@@ -162,6 +162,21 @@
 </script>
 </head>
 <body>
+    <!-- 算子确认删除框 -->
+    <div class="lkr-frame" id='lkrRule'>
+            <div class="lkr-frame-div" style="height: 150px;">
+                <div class="lkr-frame-content">
+                    <h3>
+                        确认删除此规则?
+                    </h3>
+                    
+                </div>
+                <div class="lkr-frame-foot">
+                    <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
+                    <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
+                </div>
+            </div>
+        </div>
     <!-- 关系选择 -->
     <div id="selectRela">
         <div>
@@ -192,7 +207,7 @@
         <!-- <div id="fileUploadContent" class="fileUploadContent"></div> -->
 
         <form class="uploadForm" name="uploadForm">
-            <input class="inputfile" name="inputfile" type="file" multiple="multiple" 
+            <input class="inputfile" name="inputfile" type="file" multiple="multiple" onchange="getvl(this)"
             accept="application/json,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/xml, application/xml"/>
             <!-- <div class="formContent" >
                 <span>文件名称</span>
@@ -339,19 +354,19 @@
     </div>
     <!-- 算子确认删除框 -->
     <div class="lkr-frame" id='lkrAlgorithm'>
-            <div class="lkr-frame-div" style="height: 150px;">
-                <div class="lkr-frame-content">
-                    <h3>
-                        确认删除?
-                    </h3>
-                    
-                </div>
-                <div class="lkr-frame-foot">
-                    <div class="lkr-button" onclick='ConfirmDelAlgorithm()' style="margin-right: 10px;">确定</div>
-                    <div class="lkr-button" onclick='AlgorithmeDelClose()'>取消</div>
-                </div>
+        <div class="lkr-frame-div" style="height: 150px;">
+            <div class="lkr-frame-content">
+                <h3>
+                    确认删除此算子?
+                </h3>
+                
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='ConfirmDelAlgorithm()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='AlgorithmeDelClose()'>取消</div>
             </div>
         </div>
+    </div>
     <div class="lkr-frame" id='lkrFrameDel'>
         <div class="lkr-frame-div" style="height: 150px;">
             <!-- <div class="lkr-frame-tilte">
@@ -1858,24 +1873,39 @@
             }
         })
     }
-    //删除算子
-    function ConfirmDelAlgorithm(){
-        $.ajax({
-            url:urlConfig.host+'/operatorMaintenance/delAlgorithmById',
-            data:{algthId:window.bigData.delAlgorithmId},
-            success: function(data) {
-                if(data){
-                    window.bigData.delAlgorithmId = ''
-                    $('#lkrAlgorithm').fadeToggle(500)
-                }
-            }
-        })
-    }
-    function AlgorithmeDelClose(){
-        $('#lkrAlgorithm').fadeToggle(500)
-    }
+
     function open(){
 
+    }
+
+     //根据不同浏览器获取路径
+     function getvl(obj){
+//判断浏览器
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+        var file_url="";
+        if(Sys.ie<="6.0"){
+            //ie5.5,ie6.0
+            file_url = obj.value;
+        }else if(Sys.ie>="7.0"){
+            //ie7,ie8
+            obj.select();
+            file_url = document.selection.createRange().text;
+        }else if(Sys.firefox){
+            //fx
+            //file_url = document.getElementById("file").files[0].getAsDataURL();//获取的路径为FF识别的加密字符串
+            file_url = readFileFirefox(obj);
+        }else if(Sys.chrome){
+            file_url = obj.value;
+        }
+        alert(file_url);
+        // document.getElementById("text").innerHTML="获取文件域完整路径为："+file_url;
     }
 </script>
 </body>

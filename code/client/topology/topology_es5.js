@@ -935,8 +935,12 @@ var Topology = {
         if(option.type== "规则"){
             if(option.ruleType == "规则"){
                 $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
-                    <input type="checkbox">
+                    <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
                     <div class="left-list-tilte">${option.data.text}</div>
+                    <div class="left-list-event">
+                    <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>
+                    <div class='lkr-list-delRule lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除规则</div>
+                </div>
                 </div>`);
             }else{
                 $("#formulaMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
@@ -949,7 +953,7 @@ var Topology = {
     },
     addModel(option){
         
-        $("#mouldPage").append(`<div class="left-list"  >
+        $("#mouldPage").append(`<div class="left-list">
                                 <div class="left-list-tilte">${option.data.text}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模板</div>
@@ -1012,7 +1016,7 @@ var Topology = {
                                 </div>`
                 let rule = `<div id="regulationPage"  style='display:none;'>
                                 <div class='regulationTilte' >
-                                    <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                                    <input type='text' checked="false" class="lkr-input" style="flex:1;margin: auto;"/>
                                     <div class='ruleTitle'>
                                        <span id="Import">导入</span>
                                        <span id="export">导出</span>

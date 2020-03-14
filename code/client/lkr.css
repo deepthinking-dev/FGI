@@ -307,6 +307,10 @@ body{
     height: 18px;
     vertical-align: middle;
 }
+#ruleMde .left-list-event{
+    width: 86%;
+    margin-left: 30px;
+}
 #ruleMde .left-list-tilte{
     height: 38px;
     line-height: 38px;

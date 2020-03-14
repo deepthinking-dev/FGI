@@ -351,3 +351,43 @@ function ruleSure(){
         }
     }) 
 }
+//删除算子
+function ConfirmDelAlgorithm(){
+    $.ajax({
+        url:urlConfig.host+'/operatorMaintenance/delAlgorithmById',
+        data:{algthId:window.bigData.delAlgorithmId},
+        success: function(data) {
+            if(data){
+                window.bigData.delAlgorithmId = ''
+                $('#lkrAlgorithm').fadeToggle(500)
+                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
+            }
+        }
+    })
+}
+function AlgorithmeDelClose(){
+    $('#lkrAlgorithm').fadeToggle(500)
+}
+// 确定删除规则
+function ConfirmDelRule(){
+    $.ajax({
+        type:"get",   
+        dataType: "json",
+        url:urlConfig.host+'/algorithmRule/delAlgorithmRuleById',
+        contentType: "application/json;charset=UTF-8",
+        data:{
+            id:window.bigData.delRuleId
+        },
+        success: function(data) {
+            if(data == true){
+                window.bigData.delRuleId = ''
+                $('#lkrRule').fadeToggle(500)
+                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'rolename',ruleType:'规则'},'规则',{username:null})
+            }
+        }
+    })
+}
+//取消删除规则
+function ruleDelClose(){
+    $('#lkrRule').fadeToggle(500)
+}

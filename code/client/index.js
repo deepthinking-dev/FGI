@@ -127,6 +127,7 @@ $(function(){
             }
         })
     }
+    window.getAllData = getAllData
     $('body').on('click','#mouldPage .active-taps',(e) => {
         $('.active-taps').each((i,v) => {
             $(v).css('color','#ffffff')
@@ -583,23 +584,40 @@ $(function(){
          } 
     
     })
-
+    $('body').on('click','.ruleCheckbox',(e) => {
+        if($(e.target).parent('.left-list').parent('#ruleMde').children('.left-list').children("input[class='ruleCheckbox']:checked").length  > 1){
+            let str = $(e.target).parent('.left-list').parent('#ruleMde').children('.left-list')
+            for(let i=0;i<str.length;i++){
+                $(str[i]).children("input[class='ruleCheckbox']").prop("checked",false);
+            }
+            $(e.target).prop('checked', true);  
+        }
+    })
     //点击导出
     $('body').on('click','#export',(e) => {
-        $.ajax({
-            type:"get",   
-            dataType: "json",
-            url:urlConfig.host+'/algorithmRule/saveAlgorithmRule2File',
-            contentType: "application/json;charset=UTF-8",
-            data:{
-                id:''
-            },
-            success: function(data) {
-                if(data == true){
+        if($("input[class='ruleCheckbox']:checked").length == 0){
+            alert("至少勾选一个规则！");
+            return false;
+       } 
+       let id = $('input:checkbox:checked').attr("data-id");
+       location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id
+       
+        // $.ajax({
+        //     type:"get",   
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id,
+        //     contentType: "application/json;charset=UTF-8",
+        //     success: function(data) {
+        //         if(data == true){
                    
-                }
-            }
-        }) 
+        //         }
+        //     }
+        // }) 
+    })
+       // 点击删除规则
+    $('body').on('click','.lkr-list-delRule',(e) => {
+        window.bigData.delRuleId = $(e.target).data('id')
+        $('#lkrRule').fadeToggle(500)
     })
 })
 
