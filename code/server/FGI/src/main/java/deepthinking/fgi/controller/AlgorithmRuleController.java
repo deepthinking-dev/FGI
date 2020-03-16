@@ -6,10 +6,7 @@ import deepthinking.fgi.model.AlgorithmRuleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -132,6 +129,17 @@ public class AlgorithmRuleController {
     @ApiImplicitParam(name = "algorithmroleId", value = "算法算子关系ID", dataType = "string", paramType = "query", required = true)
     public boolean delTableAlgorithmrole(String algorithmroleId){
         return tableRoleService.delTableAlgorithmrole(algorithmroleId);
+    }
+
+    @PostMapping("/saveNewCoordinate")
+    @ApiOperation(value = "04-12 保存最新的规则下算子的坐标信息", notes = "返回保存结果", httpMethod = "POST")
+    @ApiImplicitParams({@ApiImplicitParam(name = "coordinateinfo", value = "坐标字符串", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "roleId", value = "规则ID", dataType = "string", paramType = "query", required = true)})
+    public boolean saveNewCoordinate(String coordinateinfo, String roleId){
+        if(roleId==null||roleId.equals("")){
+            return false;
+        }
+        return tableRoleService.saveNewCoordinate(coordinateinfo,Integer.parseInt(roleId));
     }
 }
 

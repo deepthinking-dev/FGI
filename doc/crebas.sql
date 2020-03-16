@@ -172,6 +172,17 @@ create table Table_Role
 
 alter table Table_Role comment 'À„∑®πÊ‘Ú';
 
+CREATE TABLE `table_algorithmcoordinate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `RoleId` int(11) NOT NULL,
+  `CoordinateInfo` blob,
+  PRIMARY KEY (`id`),
+  KEY `RoleIDF` (`RoleId`),
+  CONSTRAINT `RoleIDF` FOREIGN KEY (`RoleId`) REFERENCES `table_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 alter table Table_Algorithm add constraint FK_Reference_6 foreign key (ModuleID)
       references Table_Module (ID) on delete restrict on update restrict;
 

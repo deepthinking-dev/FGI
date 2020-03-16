@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     private TableFuncMapper funcMapper;
     @Resource
     private TableAlgorithmService tableAlgorithmService;
+    @Resource
+    private TableAlgorithmcoordinateMapper tableAlgorithmcoordinateMapper;
 
 
     @Override
@@ -252,6 +255,20 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             });
         }
         algorithmRuleSaveDataModel.setAlgorithmRuleDataModelList(data);
+        //查询坐标
+        TableAlgorithmcoordinateCriteria tableAlgorithmcoordinateCriteria=new TableAlgorithmcoordinateCriteria();
+        tableAlgorithmcoordinateCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(id));
+        List<TableAlgorithmcoordinate> info=tableAlgorithmcoordinateMapper.selectByExample(tableAlgorithmcoordinateCriteria);
+        if(info.size()>0){
+            TableAlgorithmcoordinate algorithmcoordinate=info.get(0);
+            try {
+                String coordinate=new String(algorithmcoordinate.getCoordinateinfo(),"utf8");
+                algorithmRuleSaveDataModel.setCoordinateinfo(coordinate);
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
         return algorithmRuleSaveDataModel;
     }
 
@@ -270,6 +287,9 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                         this.saveAlgorithmRuleOne(data);
                     });
                 }
+                //储存坐标
+                String coordinateinfo=algorithmRuleSaveDataModel.getCoordinateinfo();
+                saveNewCoordinate(coordinateinfo,id);
             }
             return true;
         }catch (Exception e){
@@ -369,6 +389,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             algorithmroleMapper.deleteByExample(tableAlgorithmroleCriteria);
             //删除规则本身信息
             deleteByPrimaryKey(Integer.parseInt(Id));
+            //删除坐标
+            TableAlgorithmcoordinateCriteria tableAlgorithmcoordinateCriteria=new TableAlgorithmcoordinateCriteria();
+            tableAlgorithmcoordinateCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(Id));
+            tableAlgorithmcoordinateMapper.deleteByExample(tableAlgorithmcoordinateCriteria);
             return true;
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -393,5 +417,21 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             logger.error(e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public boolean saveNewCoordinate(String coordinateinfo, int roleId) {
+        try {
+            if(coordinateinfo!=null&&!"".equals(coordinateinfo)){
+                byte[] infos=coordinateinfo.getBytes();
+                TableAlgorithmcoordinate tableAlgorithmcoordinate=new TableAlgorithmcoordinate(roleId,infos);
+                tableAlgorithmcoordinateMapper.insert(tableAlgorithmcoordinate);
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

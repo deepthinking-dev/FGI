@@ -1,6 +1,5 @@
 package deepthinking.fgi.model;
 
-import deepthinking.fgi.domain.TableAlgorithmrole;
 import deepthinking.fgi.domain.TableRole;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,13 +17,16 @@ public class AlgorithmRuleSaveDataModel {
     private TableRole tableRole;
     @ApiModelProperty(value = "算法算子关系集合")
     private List<AlgorithmRuleDataModel> algorithmRuleDataModelList;
+    @ApiModelProperty(value = "算子坐标信息字符串")
+    private String coordinateinfo;
 
     public AlgorithmRuleSaveDataModel() {
     }
 
-    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<AlgorithmRuleDataModel> algorithmRuleDataModelList) {
+    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<AlgorithmRuleDataModel> algorithmRuleDataModelList, String coordinateinfo) {
         this.tableRole = tableRole;
         this.algorithmRuleDataModelList = algorithmRuleDataModelList;
+        this.coordinateinfo = coordinateinfo;
     }
 
     public TableRole getTableRole() {
@@ -41,5 +43,13 @@ public class AlgorithmRuleSaveDataModel {
 
     public void setAlgorithmRuleDataModelList(List<AlgorithmRuleDataModel> algorithmRuleDataModelList) {
         this.algorithmRuleDataModelList = algorithmRuleDataModelList;
+    }
+
+    public String getCoordinateinfo() {
+        return coordinateinfo;
+    }
+
+    public void setCoordinateinfo(String coordinateinfo) {
+        this.coordinateinfo = coordinateinfo;
     }
 }

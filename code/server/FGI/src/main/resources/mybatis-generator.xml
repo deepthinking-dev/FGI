@@ -38,6 +38,7 @@
 		targetProject="src/main/java">
 		<property name="enableSubPackages" value="true" />
 	</javaClientGenerator>
+		<table tableName="table_algorithmcoordinate"></table>
  	<!--<table tableName="Table_Algorithm" ></table>
     <table tableName="Table_AlgorithmCondition" ></table>
     <table tableName="Table_AlgorithmRole" ></table>

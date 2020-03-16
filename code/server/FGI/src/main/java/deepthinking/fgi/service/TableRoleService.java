@@ -88,4 +88,11 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @return
      */
     boolean delTableAlgorithmrole(String algorithmroleId);
+
+    /**
+     * 保存最新的规则下算子的坐标
+     * @param coordinate
+     * @return
+     */
+    boolean saveNewCoordinate(String coordinate,int roleId);
 }
