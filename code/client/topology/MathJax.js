@@ -292,13 +292,11 @@ function RelateClose(){
 
 //保存规则（一起新增）
 function ruleSure(){
-    debugger
     let algorithmRuleDataList = []
     let spanId = $('#topo_canvas div span')
     let coordinate = ''
     if(spanId.length> 0){
         for(let i=0;i<spanId.length-1;i++){
-            debugger
             let  id=spanId.eq(i).attr('id')
             let str = id.split("_")
             let obj={
@@ -324,11 +322,10 @@ function ruleSure(){
     }
     let node =window.Topology.nodeData
     node.map(item=>{
-        let obj = (item.id).substring((0,item.id).length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
+        let obj = (item.id).substring(0,(item.id).length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
         coordinate += obj +","
-        console.log(obj)
     })
-
+    console.log(coordinate)
      console.log(algorithmRuleDataList)
      if($("#ruleName").val() == ''){
          alert('请输入规则名称')
