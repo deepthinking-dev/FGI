@@ -128,6 +128,7 @@ body{
 }
 .tools{
     width: 18%;
+    min-width: 340px;
     box-shadow: 0 0 10px 10px rgba(0,0,0,0.2);
 }
 .lkr-msg{
@@ -297,6 +298,8 @@ body{
     top: 5px;
     height: 40px;
     line-height: 40px;
+    overflow: hidden;
+    width: 100px;
 }
 .ruleTitle span{
     margin-left: 5px;

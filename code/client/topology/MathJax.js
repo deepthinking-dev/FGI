@@ -258,7 +258,7 @@ function uploadClose(){
 }
 //确定导入文件按钮
 function uploadSure(){
-    let filename = $(".inputfile").val()
+    let filename = 'F:\MyDownloads\FGI\算法规则导出.txt'
     debugger
     $.ajax({
         type:"get",   
@@ -281,10 +281,9 @@ function uploadSure(){
 function selectSure(){
     let str = $('.selectRelation option:selected').text();
     console.log(str)
-    window.currentId 
     $('#'+window.currentId).text(str)
     $("#selectRela").hide();
-    console.log(window.currentId )
+
 }
 //选择关系关闭按钮
 function RelateClose(){
@@ -293,8 +292,10 @@ function RelateClose(){
 
 //保存规则（一起新增）
 function ruleSure(){
+    debugger
     let algorithmRuleDataList = []
     let spanId = $('#topo_canvas div span')
+    let coordinate = ''
     if(spanId.length> 0){
         for(let i=0;i<spanId.length-1;i++){
             debugger
@@ -321,6 +322,12 @@ function ruleSure(){
         }
        
     }
+    let node =window.Topology.nodeData
+    node.map(item=>{
+        let obj = (item.id).substring(0,item.length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
+        coordinate += obj +","
+        console.log(obj)
+    })
 
      console.log(algorithmRuleDataList)
      if($("#ruleName").val() == ''){
@@ -329,6 +336,7 @@ function ruleSure(){
      }
     let algorithmRuleSaveDataModel ={
         algorithmRuleDataModelList:algorithmRuleDataList,
+        coordinateinfo:coordinate,
         tableRole:{
             des:'',
             id:'',

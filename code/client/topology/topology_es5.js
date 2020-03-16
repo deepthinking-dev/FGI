@@ -28,7 +28,7 @@ var Topology = {
         lineUp: 8,
         lineDown: 9
     },
-    lineData:[],
+    nodeData:[],
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
     tools: [
         {
@@ -1093,12 +1093,11 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                        
                             selected = {
                                 "type": event,
                                 "data": data
                             };
-                            
+                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                             locked = data.locked;
                             self.initLine();
                             break;
@@ -1169,6 +1168,7 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            self.nodeData.push(data)
                             console.log(data,selected)
                             //存储编辑区数据
                            
