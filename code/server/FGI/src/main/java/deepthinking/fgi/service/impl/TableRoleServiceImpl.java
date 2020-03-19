@@ -12,7 +12,6 @@ import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.service.TableAlgorithmService;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUtils;
-import deepthinking.fgi.util.JsonListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,7 @@ import java.util.Map;
  * @data 2020/2/18 16:58
  */
 @Service("tableRoleService")
+@Transactional
 public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> implements TableRoleService {
 
     private static Logger logger = LoggerFactory.getLogger(TableRoleServiceImpl.class);
@@ -261,7 +261,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         //查询坐标
         TableAlgorithmcoordinateCriteria tableAlgorithmcoordinateCriteria=new TableAlgorithmcoordinateCriteria();
         tableAlgorithmcoordinateCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(id));
-        List<TableAlgorithmcoordinate> info=tableAlgorithmcoordinateMapper.selectByExample(tableAlgorithmcoordinateCriteria);
+        List<TableAlgorithmcoordinate> info=tableAlgorithmcoordinateMapper.selectByExampleWithBLOBs(tableAlgorithmcoordinateCriteria);
         if(info.size()>0){
             TableAlgorithmcoordinate algorithmcoordinate=info.get(0);
             if(algorithmcoordinate.getCoordinateinfo()!=null){
@@ -349,6 +349,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableAlgorithmrole.setAlgorithmid(algorithmRuleDataModel.getAlgorithmid());
         tableAlgorithmrole.setPrealgorithmid(algorithmRuleDataModel.getPrealgorithmid());
         tableAlgorithmrole.setDes(algorithmRuleDataModel.getDes());
+        tableAlgorithmrole.setRemark("");
         return tableAlgorithmrole;
     }
 
