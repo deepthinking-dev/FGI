@@ -104,4 +104,7 @@ public class TableAlgorithmcoordinate {
         this.roleid = roleid;
         this.coordinateinfo = coordinateinfo;
     }
+
+    public TableAlgorithmcoordinate() {
+    }
 }

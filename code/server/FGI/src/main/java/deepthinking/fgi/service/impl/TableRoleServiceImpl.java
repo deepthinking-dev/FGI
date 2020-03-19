@@ -244,8 +244,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                 //查询对应运行条件
                 TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
                 tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(algorithmrole.getId());
-                TableAlgorithmcondition tableAlgorithmcondition=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria).get(0);
-                algorithmRuleDataModel.setTableAlgorithmcondition(tableAlgorithmcondition);
+                List<TableAlgorithmcondition> tableAlgorithmconditions=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
+                if(tableAlgorithmconditions.size()>0){
+                    TableAlgorithmcondition tableAlgorithmcondition=tableAlgorithmconditions.get(0);
+                    algorithmRuleDataModel.setTableAlgorithmcondition(tableAlgorithmcondition);
+                }
                 //查询算子信息
                 AlgorithmModel algorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getAlgorithmid().toString());
                 AlgorithmModel preAlgorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getPrealgorithmid().toString());
@@ -261,12 +264,14 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         List<TableAlgorithmcoordinate> info=tableAlgorithmcoordinateMapper.selectByExample(tableAlgorithmcoordinateCriteria);
         if(info.size()>0){
             TableAlgorithmcoordinate algorithmcoordinate=info.get(0);
-            try {
-                String coordinate=new String(algorithmcoordinate.getCoordinateinfo(),"utf8");
-                algorithmRuleSaveDataModel.setCoordinateinfo(coordinate);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
+            if(algorithmcoordinate.getCoordinateinfo()!=null){
+                try {
+                    String coordinate=new String(algorithmcoordinate.getCoordinateinfo(),"utf8");
+                    algorithmRuleSaveDataModel.setCoordinateinfo(coordinate);
+                } catch (UnsupportedEncodingException e) {
+                    logger.error(e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
         return algorithmRuleSaveDataModel;
@@ -343,6 +348,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableAlgorithmrole.setRoleid(algorithmRuleDataModel.getRoleId());
         tableAlgorithmrole.setAlgorithmid(algorithmRuleDataModel.getAlgorithmid());
         tableAlgorithmrole.setPrealgorithmid(algorithmRuleDataModel.getPrealgorithmid());
+        tableAlgorithmrole.setDes(algorithmRuleDataModel.getDes());
         return tableAlgorithmrole;
     }
 
@@ -423,7 +429,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     public boolean saveNewCoordinate(String coordinateinfo, int roleId) {
         try {
             if(coordinateinfo!=null&&!"".equals(coordinateinfo)){
-                byte[] infos=coordinateinfo.getBytes();
+                byte[] infos=coordinateinfo.getBytes("utf8");
                 TableAlgorithmcoordinate tableAlgorithmcoordinate=new TableAlgorithmcoordinate(roleId,infos);
                 tableAlgorithmcoordinateMapper.insert(tableAlgorithmcoordinate);
             }
