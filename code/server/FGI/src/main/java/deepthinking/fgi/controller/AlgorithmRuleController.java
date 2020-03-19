@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -34,11 +35,12 @@ public class AlgorithmRuleController {
     TableRoleService tableRoleService;
 
 
-    @GetMapping("/readAlgorithmRuleFromFile")
+    @PostMapping("/readAlgorithmRuleFromFile")
     @ApiOperation(value = "04-01 导入算法规则", notes = "导入算法规则", httpMethod = "GET")
-    @ApiImplicitParam(name = "filename", value = "文件路径", dataType = "string", paramType = "query", required = true)
-    public List<TableRole> readAlgorithmRuleFromFile(String filename){
-        return tableRoleService.leadByTxt(filename);
+    @ApiImplicitParam(name = "file", value = "二进制文件", dataType = "file", paramType = "query", required = true)
+    public List<TableRole> readAlgorithmRuleFromFile(@RequestParam("file") MultipartFile file){
+
+        return tableRoleService.leadByTxt(FileUtils.MultipartFileToFile(file));
     }
 
     @GetMapping("/saveAlgorithmRule2File")

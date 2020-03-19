@@ -4,6 +4,7 @@ import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.AlgorithmRuleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @Author 王若山
      * @return
      */
-    List<TableRole> leadByTxt(String filePath);
+    List<TableRole> leadByTxt(File file);
 
     /**
      * 拼装算法导出实体

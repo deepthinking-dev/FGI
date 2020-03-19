@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,12 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<TableRole> leadByTxt(String filePath) {
+    public List<TableRole> leadByTxt(File file) {
         List<TableRole> roleList = null;
         List<TableAlgorithmrole> algorithmroleList = null;
         List<TableAlgorithm> algorithmList = null;
         try{
-            String str = FileUtils.readTxtFile(filePath);
+            String str = FileUtils.readTxtFileByFile(file);
             Map map = (Map) JSON.parse(str);
             roleList = ((JSONArray) map.get("Role")).toJavaList(TableRole.class);
             algorithmroleList = ((JSONArray) map.get("AlgorithmRole")).toJavaList(TableAlgorithmrole.class);

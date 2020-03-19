@@ -20,6 +20,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import static javax.xml.transform.OutputKeys.ENCODING;
 
@@ -83,6 +84,58 @@ public class FileUtils {
 
 		return line.toString();
 
+	}
+
+	/**
+	 * 读文件
+	 * @return multiFile转file
+	 * @author 王若山
+	 */
+	public static File MultipartFileToFile(MultipartFile multiFile) {
+		// 获取文件名
+		String fileName = multiFile.getOriginalFilename();
+		// 获取文件后缀
+		String prefix = fileName.substring(fileName.lastIndexOf("."));
+		// 用当前时间作为文件名，防止生成的临时文件重复
+		try {
+			File file = File.createTempFile(System.currentTimeMillis() + "", prefix);
+
+			multiFile.transferTo(file);
+
+			return file;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 读文件
+	 *
+	 * @param filePath 读取文件路径
+	 * @return 返回字符串
+	 * @author 王若山
+	 */
+	public static String readTxtFileByFile(File file) {
+		StringBuffer stringBuffer = null;
+		BufferedReader bufferedReader = null;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "GBK"));
+			stringBuffer = new StringBuffer();
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				if ("\r".equals(line)) {
+					continue;
+				}
+				stringBuffer.append(line).append("\n");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			closeBufferedReader(bufferedReader);
+		}
+		return stringBuffer.toString();
 	}
 
 	/**
