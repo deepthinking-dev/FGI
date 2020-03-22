@@ -1136,7 +1136,7 @@ var Topology = {
                         case 'moveNodes':
                             canvas.data.lines.map(item => {
                                 if(item.from.id == data[0].id||item.to.id == data[0].id){
-                                    $(`#${item.id}`).css({
+                                    $(`#${item.from.id}_${item.id}_${item.to.id}`).css({
                                         top:(item.to.y + item.from.y)/2 +"px",
                                         left:(item.to.x + item.from.x)/2+"px"
                                     })
@@ -1225,6 +1225,8 @@ var Topology = {
                                     "type": event,
                                     "data": data
                                 };
+                                console.log(121212,data)
+                                data.name = 'polyline'
                                 locked = data.locked;
                                 self.initLine();
                             }
@@ -1377,7 +1379,7 @@ var Topology = {
         }
         self.onClickToArrow(toArrow, self.startLineStyle[toArrow1]);
         //连线类型
-        var lineType = selected.data.name;
+        var lineType = "polyline";
         self.onClickName(lineType, self.lineTypeStyle[lineType], 1);
         //线条颜色
         $("input[name=strokeStyle]").val(selected.data.strokeStyle);
