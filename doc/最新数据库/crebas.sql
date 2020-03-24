@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/3/24 21:43:55                           */
+/* Created on:     2020/3/24 22:09:57                           */
 /*==============================================================*/
 
 
@@ -89,7 +89,7 @@ create table Table_Func
             类型为数据项时，此处模块中字段名称
             类型为其他计算结果时，此处为其他模块的ID。
             ',
-   "InOut"              numeric comment '输入输出',
+   InOrOut              numeric comment '输入输出',
    Remark               varchar(500) comment '备注',
    primary key (ID)
 );
