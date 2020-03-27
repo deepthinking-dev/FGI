@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/3/24 22:09:57                           */
+/* Created on:     2020/3/27 16:23:15                           */
 /*==============================================================*/
 
 
@@ -64,7 +64,9 @@ create table Table_AlgorithmRole
    ID                   int not null comment '主键ID',
    RoleID               int comment '规则ID',
    AlgorithmID          int comment '算子ID',
+   FuncID               int comment '参数ID',
    PreAlgorithmID       int comment '前序算子ID',
+   PreFuncID            int comment '前序算子参数ID',
    Des                  varchar(500) comment '描述',
    Remark               varchar(500) comment '备注',
    primary key (ID)
