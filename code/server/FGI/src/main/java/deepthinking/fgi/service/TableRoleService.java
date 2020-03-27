@@ -1,5 +1,6 @@
 package deepthinking.fgi.service;
 
+import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.AlgorithmRuleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
@@ -63,7 +64,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
     boolean saveAlgorithmRuleBase(TableRole tableRole);
 
     /**
-     * 修改算法规则
+     * 修改算法规则某条连线的信息
      * @return
      */
     boolean modAlgorithmRule(AlgorithmRuleDataModel algorithmRuleDataModel);
@@ -95,4 +96,10 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @return
      */
     boolean saveNewCoordinate(String coordinate,int roleId);
+
+    /**
+     * 修改某个参数的动作
+     * @return
+     */
+    boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions);
 }

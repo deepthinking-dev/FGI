@@ -4,12 +4,14 @@ import deepthinking.fgi.domain.TableAlgorithmcondition;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * @author jagoLyu
  * @Description:
  * @data 2020/2/24 12:25
  */
-@ApiModel(value = "算法规则总模型,包含算子相关信息交互数据模型，算子运行条件")
+@ApiModel(value = "算法规则中一条连线代表的数据模型")
 public class AlgorithmRuleDataModel {
     @ApiModelProperty(value = "ID")
     private Integer id;
@@ -17,14 +19,18 @@ public class AlgorithmRuleDataModel {
     private Integer roleId;
     @ApiModelProperty(value = "算子ID")
     private Integer algorithmid;
-    @ApiModelProperty(value = "算子信息")
-    private AlgorithmModel algorithmModel;
+    @ApiModelProperty(value = "参数ID")
+    private Integer FuncID;
+//    @ApiModelProperty(value = "算子信息")
+//    private AlgorithmModel algorithmModel;
     @ApiModelProperty(value = "前序算子ID")
     private Integer prealgorithmid;
-    @ApiModelProperty(value = "前序算子信息")
-    private AlgorithmModel preaAlgorithmModel;
-    @ApiModelProperty(value = "算子运行条件")
-    private TableAlgorithmcondition tableAlgorithmcondition;
+    @ApiModelProperty(value = "前序算子参数ID")
+    private Integer PreFuncID;
+//    @ApiModelProperty(value = "前序算子信息")
+//    private AlgorithmModel preaAlgorithmModel;
+    @ApiModelProperty(value = "算法参数动作集合")
+    private List<TableAlgorithmcondition> algorithmconditions;
     @ApiModelProperty(value = "描述")
     private String des;
     @ApiModelProperty(value = "备注")
@@ -33,15 +39,15 @@ public class AlgorithmRuleDataModel {
     public AlgorithmRuleDataModel() {
     }
 
-    public AlgorithmRuleDataModel(Integer id, Integer roleId, Integer algorithmid, AlgorithmModel algorithmModel,
-                                  Integer prealgorithmid, AlgorithmModel preaAlgorithmModel, TableAlgorithmcondition tableAlgorithmcondition, String des, String remark) {
+    public AlgorithmRuleDataModel(Integer id, Integer roleId, Integer algorithmid, Integer funcID,
+                                  Integer prealgorithmid, Integer preFuncID, List<TableAlgorithmcondition> algorithmconditions, String des, String remark) {
         this.id = id;
         this.roleId = roleId;
         this.algorithmid = algorithmid;
-        this.algorithmModel = algorithmModel;
+        FuncID = funcID;
         this.prealgorithmid = prealgorithmid;
-        this.preaAlgorithmModel = preaAlgorithmModel;
-        this.tableAlgorithmcondition = tableAlgorithmcondition;
+        PreFuncID = preFuncID;
+        this.algorithmconditions = algorithmconditions;
         this.des = des;
         this.remark = remark;
     }
@@ -62,28 +68,44 @@ public class AlgorithmRuleDataModel {
         this.roleId = roleId;
     }
 
-    public AlgorithmModel getAlgorithmModel() {
-        return algorithmModel;
+    public Integer getAlgorithmid() {
+        return algorithmid;
     }
 
-    public void setAlgorithmModel(AlgorithmModel algorithmModel) {
-        this.algorithmModel = algorithmModel;
+    public void setAlgorithmid(Integer algorithmid) {
+        this.algorithmid = algorithmid;
     }
 
-    public AlgorithmModel getPreaAlgorithmModel() {
-        return preaAlgorithmModel;
+    public Integer getFuncID() {
+        return FuncID;
     }
 
-    public void setPreaAlgorithmModel(AlgorithmModel preaAlgorithmModel) {
-        this.preaAlgorithmModel = preaAlgorithmModel;
+    public void setFuncID(Integer funcID) {
+        FuncID = funcID;
     }
 
-    public TableAlgorithmcondition getTableAlgorithmcondition() {
-        return tableAlgorithmcondition;
+    public Integer getPrealgorithmid() {
+        return prealgorithmid;
     }
 
-    public void setTableAlgorithmcondition(TableAlgorithmcondition tableAlgorithmcondition) {
-        this.tableAlgorithmcondition = tableAlgorithmcondition;
+    public void setPrealgorithmid(Integer prealgorithmid) {
+        this.prealgorithmid = prealgorithmid;
+    }
+
+    public Integer getPreFuncID() {
+        return PreFuncID;
+    }
+
+    public void setPreFuncID(Integer preFuncID) {
+        PreFuncID = preFuncID;
+    }
+
+    public List<TableAlgorithmcondition> getAlgorithmconditions() {
+        return algorithmconditions;
+    }
+
+    public void setAlgorithmconditions(List<TableAlgorithmcondition> algorithmconditions) {
+        this.algorithmconditions = algorithmconditions;
     }
 
     public String getDes() {
@@ -100,21 +122,5 @@ public class AlgorithmRuleDataModel {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Integer getAlgorithmid() {
-        return algorithmid;
-    }
-
-    public void setAlgorithmid(Integer algorithmid) {
-        this.algorithmid = algorithmid;
-    }
-
-    public Integer getPrealgorithmid() {
-        return prealgorithmid;
-    }
-
-    public void setPrealgorithmid(Integer prealgorithmid) {
-        this.prealgorithmid = prealgorithmid;
     }
 }

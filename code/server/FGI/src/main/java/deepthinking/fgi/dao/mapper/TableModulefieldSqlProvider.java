@@ -62,6 +62,10 @@ public class TableModulefieldSqlProvider {
             sql.VALUES("FieldType", "#{fieldtype,jdbcType=VARCHAR}");
         }
         
+        if (record.getTablename() != null) {
+            sql.VALUES("TableName", "#{tablename,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
         }
@@ -85,6 +89,7 @@ public class TableModulefieldSqlProvider {
         sql.SELECT("ModuleID");
         sql.SELECT("FieldName");
         sql.SELECT("FieldType");
+        sql.SELECT("TableName");
         sql.SELECT("Remark");
         sql.FROM("table_modulefield");
         applyWhere(sql, example, false);
@@ -125,6 +130,10 @@ public class TableModulefieldSqlProvider {
             sql.SET("FieldType = #{record.fieldtype,jdbcType=VARCHAR}");
         }
         
+        if (record.getTablename() != null) {
+            sql.SET("TableName = #{record.tablename,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         }
@@ -147,6 +156,7 @@ public class TableModulefieldSqlProvider {
         sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
         sql.SET("FieldName = #{record.fieldname,jdbcType=VARCHAR}");
         sql.SET("FieldType = #{record.fieldtype,jdbcType=VARCHAR}");
+        sql.SET("TableName = #{record.tablename,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableModulefieldCriteria example = (TableModulefieldCriteria) parameter.get("example");
@@ -174,6 +184,10 @@ public class TableModulefieldSqlProvider {
         
         if (record.getFieldtype() != null) {
             sql.SET("FieldType = #{fieldtype,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTablename() != null) {
+            sql.SET("TableName = #{tablename,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {

@@ -7,11 +7,11 @@ package deepthinking.fgi.Enum;
  */
 public enum  FuncValTypeEnum{
     /**
-     * 1  字段
+     * 1  基本类型
      * 2  常量
-     * 3  算法
+     * 3  对象
      */
-    field(1),constant(2),algorithm(3);
+    baseType(1),constant(2),object(3);
 
     private int type;
 

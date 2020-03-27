@@ -58,10 +58,6 @@ public class TableModuleSqlProvider {
             sql.VALUES("SqlUrl", "#{sqlurl,jdbcType=VARCHAR}");
         }
         
-        if (record.getTab() != null) {
-            sql.VALUES("Tab", "#{tab,jdbcType=VARCHAR}");
-        }
-        
         if (record.getModulegroup() != null) {
             sql.VALUES("ModuleGroup", "#{modulegroup,jdbcType=VARCHAR}");
         }
@@ -92,7 +88,6 @@ public class TableModuleSqlProvider {
         }
         sql.SELECT("ModuleName");
         sql.SELECT("SqlUrl");
-        sql.SELECT("Tab");
         sql.SELECT("ModuleGroup");
         sql.SELECT("Des");
         sql.SELECT("Remark");
@@ -131,10 +126,6 @@ public class TableModuleSqlProvider {
             sql.SET("SqlUrl = #{record.sqlurl,jdbcType=VARCHAR}");
         }
         
-        if (record.getTab() != null) {
-            sql.SET("Tab = #{record.tab,jdbcType=VARCHAR}");
-        }
-        
         if (record.getModulegroup() != null) {
             sql.SET("ModuleGroup = #{record.modulegroup,jdbcType=VARCHAR}");
         }
@@ -164,7 +155,6 @@ public class TableModuleSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("ModuleName = #{record.modulename,jdbcType=VARCHAR}");
         sql.SET("SqlUrl = #{record.sqlurl,jdbcType=VARCHAR}");
-        sql.SET("Tab = #{record.tab,jdbcType=VARCHAR}");
         sql.SET("ModuleGroup = #{record.modulegroup,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
@@ -190,10 +180,6 @@ public class TableModuleSqlProvider {
         
         if (record.getSqlurl() != null) {
             sql.SET("SqlUrl = #{sqlurl,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getTab() != null) {
-            sql.SET("Tab = #{tab,jdbcType=VARCHAR}");
         }
         
         if (record.getModulegroup() != null) {

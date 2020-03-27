@@ -3,17 +3,8 @@ package deepthinking.fgi.dao.mapper;
 import deepthinking.fgi.domain.TableModuleuserrelation;
 import deepthinking.fgi.domain.TableModuleuserrelationCriteria;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TableModuleuserrelationMapper {
@@ -59,6 +50,7 @@ public interface TableModuleuserrelationMapper {
         "values (#{id,jdbcType=INTEGER}, #{moduleid,jdbcType=INTEGER}, ",
         "#{username,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableModuleuserrelation record);
 
     /**
@@ -68,6 +60,7 @@ public interface TableModuleuserrelationMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableModuleuserrelationSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(TableModuleuserrelation record);
 
     /**

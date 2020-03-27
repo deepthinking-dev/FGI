@@ -463,6 +463,76 @@ public class TableRoleCriteria {
             addCriterion("Remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andEntrancenoteIsNull() {
+            addCriterion("EntranceNote is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteIsNotNull() {
+            addCriterion("EntranceNote is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteEqualTo(String value) {
+            addCriterion("EntranceNote =", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteNotEqualTo(String value) {
+            addCriterion("EntranceNote <>", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteGreaterThan(String value) {
+            addCriterion("EntranceNote >", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteGreaterThanOrEqualTo(String value) {
+            addCriterion("EntranceNote >=", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteLessThan(String value) {
+            addCriterion("EntranceNote <", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteLessThanOrEqualTo(String value) {
+            addCriterion("EntranceNote <=", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteLike(String value) {
+            addCriterion("EntranceNote like", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteNotLike(String value) {
+            addCriterion("EntranceNote not like", value, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteIn(List<String> values) {
+            addCriterion("EntranceNote in", values, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteNotIn(List<String> values) {
+            addCriterion("EntranceNote not in", values, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteBetween(String value1, String value2) {
+            addCriterion("EntranceNote between", value1, value2, "entrancenote");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrancenoteNotBetween(String value1, String value2) {
+            addCriterion("EntranceNote not between", value1, value2, "entrancenote");
+            return (Criteria) this;
+        }
     }
 
     /**

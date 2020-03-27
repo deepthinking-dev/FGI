@@ -1,9 +1,5 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableAlgorithmrole;
-import deepthinking.fgi.domain.TableAlgorithmroleCriteria.Criteria;
-import deepthinking.fgi.domain.TableAlgorithmroleCriteria.Criterion;
-import deepthinking.fgi.domain.TableAlgorithmroleCriteria;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
@@ -46,10 +42,6 @@ public class TableAlgorithmroleSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_algorithmrole");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
-        }
-        
         if (record.getRoleid() != null) {
             sql.VALUES("RoleID", "#{roleid,jdbcType=INTEGER}");
         }
@@ -58,8 +50,16 @@ public class TableAlgorithmroleSqlProvider {
             sql.VALUES("AlgorithmID", "#{algorithmid,jdbcType=INTEGER}");
         }
         
+        if (record.getFuncid() != null) {
+            sql.VALUES("FuncID", "#{funcid,jdbcType=INTEGER}");
+        }
+        
         if (record.getPrealgorithmid() != null) {
             sql.VALUES("PreAlgorithmID", "#{prealgorithmid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getPrefuncid() != null) {
+            sql.VALUES("PreFuncID", "#{prefuncid,jdbcType=INTEGER}");
         }
         
         if (record.getDes() != null) {
@@ -88,7 +88,9 @@ public class TableAlgorithmroleSqlProvider {
         }
         sql.SELECT("RoleID");
         sql.SELECT("AlgorithmID");
+        sql.SELECT("FuncID");
         sql.SELECT("PreAlgorithmID");
+        sql.SELECT("PreFuncID");
         sql.SELECT("Des");
         sql.SELECT("Remark");
         sql.FROM("table_algorithmrole");
@@ -126,8 +128,16 @@ public class TableAlgorithmroleSqlProvider {
             sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
         }
         
+        if (record.getFuncid() != null) {
+            sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
+        }
+        
         if (record.getPrealgorithmid() != null) {
             sql.SET("PreAlgorithmID = #{record.prealgorithmid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getPrefuncid() != null) {
+            sql.SET("PreFuncID = #{record.prefuncid,jdbcType=INTEGER}");
         }
         
         if (record.getDes() != null) {
@@ -155,7 +165,9 @@ public class TableAlgorithmroleSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("RoleID = #{record.roleid,jdbcType=INTEGER}");
         sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
+        sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
         sql.SET("PreAlgorithmID = #{record.prealgorithmid,jdbcType=INTEGER}");
+        sql.SET("PreFuncID = #{record.prefuncid,jdbcType=INTEGER}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
@@ -182,8 +194,16 @@ public class TableAlgorithmroleSqlProvider {
             sql.SET("AlgorithmID = #{algorithmid,jdbcType=INTEGER}");
         }
         
+        if (record.getFuncid() != null) {
+            sql.SET("FuncID = #{funcid,jdbcType=INTEGER}");
+        }
+        
         if (record.getPrealgorithmid() != null) {
             sql.SET("PreAlgorithmID = #{prealgorithmid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getPrefuncid() != null) {
+            sql.SET("PreFuncID = #{prefuncid,jdbcType=INTEGER}");
         }
         
         if (record.getDes() != null) {

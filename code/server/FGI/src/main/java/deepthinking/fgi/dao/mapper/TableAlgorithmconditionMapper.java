@@ -55,10 +55,12 @@ public interface TableAlgorithmconditionMapper {
      */
     @Insert({
         "insert into table_algorithmcondition (ID, AlgorithmRoleID, ",
-        "LogicRelation, LogicValue, ",
+        "FuncID, Behavior, ",
+        "ValueSources, expression, ",
         "Remark)",
         "values (#{id,jdbcType=INTEGER}, #{algorithmroleid,jdbcType=INTEGER}, ",
-        "#{logicrelation,jdbcType=VARCHAR}, #{logicvalue,jdbcType=DECIMAL}, ",
+        "#{funcid,jdbcType=INTEGER}, #{behavior,jdbcType=VARCHAR}, ",
+        "#{valuesources,jdbcType=DECIMAL}, #{expression,jdbcType=VARCHAR}, ",
         "#{remark,jdbcType=VARCHAR})"
     })
     int insert(TableAlgorithmcondition record);
@@ -82,8 +84,10 @@ public interface TableAlgorithmconditionMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="AlgorithmRoleID", property="algorithmroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="LogicRelation", property="logicrelation", jdbcType=JdbcType.VARCHAR),
-        @Result(column="LogicValue", property="logicvalue", jdbcType=JdbcType.DECIMAL),
+        @Result(column="FuncID", property="funcid", jdbcType=JdbcType.INTEGER),
+        @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.DECIMAL),
+        @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     List<TableAlgorithmcondition> selectByExample(TableAlgorithmconditionCriteria example);
@@ -96,15 +100,17 @@ public interface TableAlgorithmconditionMapper {
      */
     @Select({
         "select",
-        "ID, AlgorithmRoleID, LogicRelation, LogicValue, Remark",
+        "ID, AlgorithmRoleID, FuncID, Behavior, ValueSources, expression, Remark",
         "from table_algorithmcondition",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="AlgorithmRoleID", property="algorithmroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="LogicRelation", property="logicrelation", jdbcType=JdbcType.VARCHAR),
-        @Result(column="LogicValue", property="logicvalue", jdbcType=JdbcType.DECIMAL),
+        @Result(column="FuncID", property="funcid", jdbcType=JdbcType.INTEGER),
+        @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.DECIMAL),
+        @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     TableAlgorithmcondition selectByPrimaryKey(Integer id);
@@ -145,8 +151,10 @@ public interface TableAlgorithmconditionMapper {
     @Update({
         "update table_algorithmcondition",
         "set AlgorithmRoleID = #{algorithmroleid,jdbcType=INTEGER},",
-          "LogicRelation = #{logicrelation,jdbcType=VARCHAR},",
-          "LogicValue = #{logicvalue,jdbcType=DECIMAL},",
+          "FuncID = #{funcid,jdbcType=INTEGER},",
+          "Behavior = #{behavior,jdbcType=VARCHAR},",
+          "ValueSources = #{valuesources,jdbcType=DECIMAL},",
+          "expression = #{expression,jdbcType=VARCHAR},",
           "Remark = #{remark,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })

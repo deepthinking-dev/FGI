@@ -1,6 +1,7 @@
 package deepthinking.fgi.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.AlgorithmRuleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
@@ -118,14 +119,14 @@ public class AlgorithmRuleController {
     }
 
     @GetMapping("/delAlgorithmRuleById")
-    @ApiOperation(value = "04-10 删除指定规则编号的算法规则", notes = "返回删除结果", httpMethod = "GET")
+    @ApiOperation(value = "04-10 删除指定规则编号的算法规则（整个规则全部删除）", notes = "返回删除结果", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "规则ID", dataType = "string", paramType = "query", required = true)
     public boolean delAlgorithmRuleById(String id){
         return tableRoleService.delAlgorithmRuleById(id);
     }
 
     @GetMapping("/delTableAlgorithmrole")
-    @ApiOperation(value = "04-11 根据算法关系ID删除一个关系", notes = "返回删除结果", httpMethod = "GET")
+    @ApiOperation(value = "04-11 根据算法关系ID删除一个关系（一条线）", notes = "返回删除结果", httpMethod = "GET")
     @ApiImplicitParam(name = "algorithmroleId", value = "算法算子关系ID", dataType = "string", paramType = "query", required = true)
     public boolean delTableAlgorithmrole(String algorithmroleId){
         return tableRoleService.delTableAlgorithmrole(algorithmroleId);
@@ -140,6 +141,11 @@ public class AlgorithmRuleController {
             return false;
         }
         return tableRoleService.saveNewCoordinate(coordinateinfo,Integer.parseInt(roleId));
+    }
+    @PostMapping("/saveFunAction")
+    @ApiOperation(value = "04-13 保存某个参数的动作信息，传入动作对象集合", notes = "返回保存结果", httpMethod = "POST")
+    public boolean saveFunAction(@ApiParam @RequestBody List<TableAlgorithmcondition> algorithmconditions){
+        return tableRoleService.saveFunAction(algorithmconditions);
     }
 }
 
