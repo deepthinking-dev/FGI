@@ -5,6 +5,7 @@ function FrameClose(){
 function LogicClose(){
     $(".Logic").attr("style","display:none;");
 }
+
 //选择算子类型
 function selectFormula(){
     let formulatype = document.getElementById('formulaType').value

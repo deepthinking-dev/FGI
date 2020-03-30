@@ -161,7 +161,133 @@
     });
 </script>
 </head>
-<body>
+<body> 
+    <!-- fgi模型表 -->
+    <div id="fgiMoName" class="lkr-frame" style="z-index: 9999; display: none;">
+        <div class="lkr-frame-div">
+            <div id="addMb">
+                <table class="lkr-table" border="1">
+                    <thead>
+                      <tr>
+                        <td>
+                            <input type="checkbox" name="item" id="selectAll"/>
+                        </td>
+                        <td>
+                            字段英文
+                        </td>
+                        <td>
+                            字段中文
+                        </td>
+                        <td>
+                            字段类型
+                        </td>
+                        <td>
+                            字段描述
+                        </td>
+                        <td>
+                            是否主键
+                        </td>
+                      </tr>
+                    </thead>
+                    <tbody >
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+      
+    </div>
+    <!-- 新建/编辑算子 -->
+    <div class="lkr-frame" id='AddAlgorithm'>
+        <div class="lkr-frame-div" style="height: 400px;">
+            <div class="lkr-frame-tilte">
+                新建/编辑算子
+                <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
+            </div>
+            <div class="lkr-frame-content">
+                <div style="margin: 15px 0;display: flex;align-items: center;">
+                    <label style="line-height: 10px;width: 100px;">作者：</label>
+                    <input type='text' id='modulegroup' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                </div>              
+                <div style="margin: 15px 0;display: flex;align-items: center;">
+                    <label style="line-height: 10px;width: 100px;">描述：</label>
+                    <textarea  type='text' id='mouldRemark' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
+                </div>
+                <div style="margin: 15px 0;display: flex;align-items: center;">
+                    <label style="line-height: 10px;width: 100px;">备注：</label>
+                    <input type='text' id='mouldName' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                </div>
+                <div style="margin: 15px 0;display: flex;align-items: center;">
+                    <label style="line-height: 10px;width: 100px;">算子类型：</label>
+                    <select id='algorithmName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                        <option>算法公式</option>
+                        <option>逻辑运算</option>
+                    </select>                    
+                </div>
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='AlgorithmConfirm()'>确定</div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- 数据模型 -->
+    <div id="dataModulePage" class="modulePage">
+        <div class="title">
+            <span>数据模型</span>
+            <span onclick="ModuleClose()" style="cursor: pointer;">X</span>
+        </div>
+        <button class="addButton" onclick="addModule()">新增</button>
+        <div class="moduleContent">
+            
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">长波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">短波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">雷达波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">长波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">短波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+            <div class="left-list" ondragstart="onDragStart" draggable="true">
+                <div class="left-list-tilte">雷达波模型</div>
+                <div class="left-list-event">
+                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
+                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
+                </div>
+            </div>
+        </div>
+        <div class="frame-foot">
+            <div class="button" onclick='ConfirmLogic()'>确定</div>
+        </div>
+    </div>
     <!-- 算子确认删除框 -->
     <div class="lkr-frame" id='lkrRule'>
             <div class="lkr-frame-div" style="height: 150px;">
@@ -269,7 +395,7 @@
         </div>
     </div>
     <!-- 选择算子类型 -->
-    <div id="suanfaType">
+    <!-- <div id="suanfaType">
         <div class="suanzi">
             <select placeholder="选择算子类型" id="formulaType">
                 <option value="" >请选择算子类型</option>
@@ -280,7 +406,7 @@
                 <button onclick="selectFormula()">确定</button>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
@@ -388,40 +514,40 @@
     <div class="lkr-frame" id='lkrFrame'>
         <div class="lkr-frame-div" style="height: 400px;">
             <div class="lkr-frame-tilte">
-                新建参数模板
+                新建模型
                 <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">模板所属组：</label>
+                    <label style="line-height: 10px;width: 80px;">模板所属组：</label>
                     <input type='text' id='modulegroup' class="lkr-input" style="flex:1;margin-left: 10px;"/>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">模板名称：</label>
+                    <label style="line-height: 10px;width: 80px;">模板名称：</label>
                     <input type='text' id='mouldName' class="lkr-input" style="flex:1;margin-left: 10px;"/>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">描述：</label>
+                    <label style="line-height: 10px;width: 80px;">描述：</label>
                     <textarea  type='text' id='mouldRemark' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">链接数据源：</label>
+                    <label style="line-height: 10px;width: 80px;">链接数据源：</label>
                     <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
                     </select>
                     <!-- <div class="lkr-button">链接数据源</div> -->
                     
                 </div>
-                <div id='addMb'>
+                <!-- <div id='addMb'>
                     <table class="lkr-table" border="1">
                         <thead>
                           <tr>
@@ -448,9 +574,9 @@
                         <tbody >
                         
                         </tbody>
-                      </table>
+                    </table>
                     
-                </div>
+                </div> -->
             </div>
             <div class="lkr-frame-foot">
                 <div class="lkr-button" onclick='Confirm()'>确定</div>
@@ -482,11 +608,14 @@
             <section class="content" id="content">
                 <div class="panel panel-default" style="background: rgba(0,0,0,0);border: none;">
                     <div class="panel-body">
-                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;">
+                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;">
                             <ul class="nav nav-pills">
-                                <li><span id="down_add">新建算法工程</span></li>
+                                <li><span id="saveRule" onclick="ruleSure()">保存规则</span></li>
+                                <li><span id="Import">导入</span></li>
+                                <li><span id="export">导出</span></li>
+                                <!-- <li><span id="down_add">新建算法工程</span></li>
                                 <li><span id="canvas_open">打开算法工程</span></li>
-                                <li><span id="canvas_save">保存算法工程</span></li>
+                                <li><span id="canvas_save">保存算法工程</span></li> -->
                                 <!-- <li><span id="ruleSure" onclick="ruleSure()">保存</span></li>
                                 <li><input id="ruleName" type="text" placeholder="请输入规则名称"></li> -->
                                 <!-- <li><span id="LogicOpen">逻辑运算</span></li> -->
@@ -494,14 +623,14 @@
                                 <li><a href="#" id="canvas_title">标题</a></li> -->
                             </ul>
                         </nav>
-                        <div class="rule-flex">
+                        <!-- <div class="rule-flex">
                             <ul>
                                 <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
                                 <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
                                 <li><button type="button" id="ruleSure" onclick="ruleSure()">保存</button></li>
                             </ul>
                                 
-                        </div>
+                        </div> -->
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
                             
@@ -513,8 +642,24 @@
                             </div>
                         </div>
                         
-                        <div class="tools" id="flex_tools" style="position: absolute;right: 30px;">
-                           
+                        <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
+                            <div class="title-page">
+                                <li><span onclick="dataModlue()">数据模型</span></li>
+                                <li><span onclick="dictionary()">字典</span></li>
+                            </div>
+                            <div class='Search'>
+                                <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                            </div>
+                           <div id="rulePage" class='lkr-page'>
+                                
+                             
+                           </div>
+                           <div id="algorithmPage" class='lkr-page' style="display: none;"></div>
+                           <div class="mouldFoot">
+                                <div onclick='editAlgorithm()'>编辑算子</div>
+                                <div id='getAllSz'>已有规则</div>
+                            </div>
+
                         </div>
                         <!-- <div class="props" id="flex_props">
                             <div class="pv5">
@@ -1545,7 +1690,25 @@
         <!-- /.content-wrapper -->
        
     </div>
-    
+      <!-- 字典信息弹窗 -->
+      <div id="dicDiv">
+        <p style="background: #0a3668;line-height: 30px"><span style="color:#fff;margin-left: 30px">字典信息</span></p>
+        <input type="button" id="addDic" value="新增">
+        <table id="dicTable"></table>
+        <input type="button" id="dicYes" value="确定">
+    </div>
+    <!-- 字典新增修改弹窗 -->
+    <div id="editDic">
+        <p id="editDicTitle" style="background: #0a3668;line-height: 30px"><span style="color:#fff;margin-left: 30px">新增字典</span></p>
+        <div  style="margin: 20px 0">
+            <span style="color: #fff;margin-left:30px;margin-right: 20px">算法名称</span><input type="text" id="editDicName">
+        </div>
+        <div>
+            <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">算法描述</span><input type="text" id="editDicDes">
+        </div>
+        <input type="button" id="editDicYes" value="确定">
+    </div>
+
 
 <script src="config.js"></script>
 <!-- jQuery 3.3.1 -->
@@ -1613,16 +1776,16 @@
         })
     })
   
-    function addFrame(){
+    function addModule(){
         window.bigData.frameType = 'add'
         // copnsole
         $('#lkrFrame').fadeToggle(500)
-        if(window.bigData.actionTab != '基础模块'){
-            $("#modulegroup").val(window.bigData.actionTab)
-            $("#modulegroup").prop('disabled',true)
-        }else{
-            $("#modulegroup").prop('disabled',false)
-        }
+        // if(window.bigData.actionTab != '基础模块'){
+        //     $("#modulegroup").val(window.bigData.actionTab)
+        //     $("#modulegroup").prop('disabled',true)
+        // }else{
+        //     $("#modulegroup").prop('disabled',false)
+        // }
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
             data:'',
@@ -1663,6 +1826,7 @@
         })
     }
     function fgiNameChange(){
+        $("#fgiMoName").fadeToggle(500)
         $("#fgiName").change((e) => {
             
             $.ajax({
@@ -1725,6 +1889,7 @@
                         mouldParam.push({
                             fieldname:item.COLUMN_NAME,
                             fieldtype:item.COLUMN_TYPE,
+                            tablename:$('#fgiName').val() == '请选择'?'':$('#fgiName').val()
                             // id:null,
                             // moduleid:null,
                             // remark:null
@@ -1739,7 +1904,6 @@
                 modulename:$("#mouldName").val(),
                 modulefields:mouldParam,
                 des:$("#mouldRemark").val(),
-                tab:$('#fgiName').val() == '请选择'?'':$('#fgiName').val(),
                 // sqlurl:null,
                 remark:'',
                 // id:null
@@ -1874,38 +2038,20 @@
         })
     }
 
-    function open(){
-
+    function dataModlue(){
+        $('#dataModulePage').fadeToggle(500)
     }
-
-     //根据不同浏览器获取路径
-     function getvl(obj){
-//判断浏览器
-        var Sys = {};
-        var ua = navigator.userAgent.toLowerCase();
-        var s;
-        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
-            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
-                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
-                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
-                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
-        var file_url="";
-        if(Sys.ie<="6.0"){
-            //ie5.5,ie6.0
-            file_url = obj.value;
-        }else if(Sys.ie>="7.0"){
-            //ie7,ie8
-            obj.select();
-            file_url = document.selection.createRange().text;
-        }else if(Sys.firefox){
-            //fx
-            //file_url = document.getElementById("file").files[0].getAsDataURL();//获取的路径为FF识别的加密字符串
-            file_url = readFileFirefox(obj);
-        }else if(Sys.chrome){
-            file_url = obj.value;
-        }
-        alert(file_url);
-        // document.getElementById("text").innerHTML="获取文件域完整路径为："+file_url;
+    function ModuleClose(){
+        $('#dataModulePage').fadeToggle(500)
+    }
+    function editAlgorithm(){
+        $('#AddAlgorithm').fadeToggle(500)
+    }
+    function AlgorithmClose(){
+        $('#AddAlgorithm').fadeToggle(500)
+    }
+    function dictionary(){
+        $('#dicDiv').fadeToggle(500)
     }
 </script>
 </body>
