@@ -254,63 +254,63 @@ public class TableFuncCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andModuleidIsNull() {
-            addCriterion("ModuleID is null");
+        public Criteria andAlgorithmidIsNull() {
+            addCriterion("AlgorithmID is null");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidIsNotNull() {
-            addCriterion("ModuleID is not null");
+        public Criteria andAlgorithmidIsNotNull() {
+            addCriterion("AlgorithmID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidEqualTo(Integer value) {
-            addCriterion("ModuleID =", value, "moduleid");
+        public Criteria andAlgorithmidEqualTo(Integer value) {
+            addCriterion("AlgorithmID =", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidNotEqualTo(Integer value) {
-            addCriterion("ModuleID <>", value, "moduleid");
+        public Criteria andAlgorithmidNotEqualTo(Integer value) {
+            addCriterion("AlgorithmID <>", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidGreaterThan(Integer value) {
-            addCriterion("ModuleID >", value, "moduleid");
+        public Criteria andAlgorithmidGreaterThan(Integer value) {
+            addCriterion("AlgorithmID >", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ModuleID >=", value, "moduleid");
+        public Criteria andAlgorithmidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("AlgorithmID >=", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidLessThan(Integer value) {
-            addCriterion("ModuleID <", value, "moduleid");
+        public Criteria andAlgorithmidLessThan(Integer value) {
+            addCriterion("AlgorithmID <", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidLessThanOrEqualTo(Integer value) {
-            addCriterion("ModuleID <=", value, "moduleid");
+        public Criteria andAlgorithmidLessThanOrEqualTo(Integer value) {
+            addCriterion("AlgorithmID <=", value, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidIn(List<Integer> values) {
-            addCriterion("ModuleID in", values, "moduleid");
+        public Criteria andAlgorithmidIn(List<Integer> values) {
+            addCriterion("AlgorithmID in", values, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidNotIn(List<Integer> values) {
-            addCriterion("ModuleID not in", values, "moduleid");
+        public Criteria andAlgorithmidNotIn(List<Integer> values) {
+            addCriterion("AlgorithmID not in", values, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidBetween(Integer value1, Integer value2) {
-            addCriterion("ModuleID between", value1, value2, "moduleid");
+        public Criteria andAlgorithmidBetween(Integer value1, Integer value2) {
+            addCriterion("AlgorithmID between", value1, value2, "algorithmid");
             return (Criteria) this;
         }
 
-        public Criteria andModuleidNotBetween(Integer value1, Integer value2) {
-            addCriterion("ModuleID not between", value1, value2, "moduleid");
+        public Criteria andAlgorithmidNotBetween(Integer value1, Integer value2) {
+            addCriterion("AlgorithmID not between", value1, value2, "algorithmid");
             return (Criteria) this;
         }
 
@@ -521,6 +521,66 @@ public class TableFuncCriteria {
 
         public Criteria andValvalueNotBetween(String value1, String value2) {
             addCriterion("ValValue not between", value1, value2, "valvalue");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIsNull() {
+            addCriterion("InOrOut is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIsNotNull() {
+            addCriterion("InOrOut is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutEqualTo(Long value) {
+            addCriterion("InOrOut =", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotEqualTo(Long value) {
+            addCriterion("InOrOut <>", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutGreaterThan(Long value) {
+            addCriterion("InOrOut >", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutGreaterThanOrEqualTo(Long value) {
+            addCriterion("InOrOut >=", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutLessThan(Long value) {
+            addCriterion("InOrOut <", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutLessThanOrEqualTo(Long value) {
+            addCriterion("InOrOut <=", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIn(List<Long> values) {
+            addCriterion("InOrOut in", values, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotIn(List<Long> values) {
+            addCriterion("InOrOut not in", values, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutBetween(Long value1, Long value2) {
+            addCriterion("InOrOut between", value1, value2, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotBetween(Long value1, Long value2) {
+            addCriterion("InOrOut not between", value1, value2, "inorout");
             return (Criteria) this;
         }
 

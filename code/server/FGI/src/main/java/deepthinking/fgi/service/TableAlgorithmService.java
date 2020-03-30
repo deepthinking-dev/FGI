@@ -1,6 +1,7 @@
 package deepthinking.fgi.service;
 
 import deepthinking.fgi.domain.TableAlgorithm;
+import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
      * @param username
      * @return
      */
-    List<TableAlgorithm> getAllAlgorithm(String username);
+    List<AlgorithmBaseInfo> getAllAlgorithm(String username);
 
     /**
      * 记录算子之间的逻辑关系（当算子有前序算子时，定义前序算子需要满足的逻辑条件，以执行后续算子）
@@ -30,7 +31,7 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
      * @param algorithmModel
      * @return
      */
-    boolean addAlgorithm(AlgorithmModel algorithmModel);
+    int addAlgorithm(AlgorithmModel algorithmModel);
 
     /**
      * 根据算子ID获取该算子相关的所有信息，包括参数以及参数关联算子信息
@@ -40,11 +41,18 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
     AlgorithmModel getAlgorithmById(String algthId);
 
     /**
-     * 修改算子信息（包括修改参数）
+     * 修改算子参数信息
      * @param algorithmModel
      * @return
      */
-    boolean modAlgorithmById(AlgorithmModel algorithmModel);
+    int modAlgorithmFuncsById(AlgorithmModel algorithmModel);
+
+    /**
+     * 修改算子基本信息
+     * @param tableAlgorithm
+     * @return
+     */
+    int modAlgorithmBaseInfoById(TableAlgorithm tableAlgorithm);
 
     /**
      * 删除算子

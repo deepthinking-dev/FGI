@@ -75,7 +75,7 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
             //添加模型
             insert(module);
             //获取模型ID
-            int id=getModuleId(module);
+            int id=module.getId();
             //获取关联字段
             List<TableModulefield> list=module.getModulefields();
             if(list!=null&&list.size()>0){
@@ -89,13 +89,6 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
             return false;
         }
         return true;
-    }
-    int getModuleId(TableModule module){
-        TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
-        tableModuleCriteria.createCriteria().andModulegroupEqualTo(module.getModulegroup()).andModulenameEqualTo(module.getModulename())
-                .andSqlurlEqualTo(module.getSqlurl()).andTabEqualTo(module.getTab()).andDesEqualTo(module.getDes()).andRemarkEqualTo(module.getRemark());
-        int id=tableModuleMapper.selectByExample(tableModuleCriteria).get(0).getId();
-        return id;
     }
 
     @Override

@@ -38,14 +38,17 @@
 		targetProject="src/main/java">
 		<property name="enableSubPackages" value="true" />
 	</javaClientGenerator>
-		<table tableName="table_algorithmcoordinate"></table>
  	<!--<table tableName="Table_Algorithm" ></table>
     <table tableName="Table_AlgorithmCondition" ></table>
-    <table tableName="Table_AlgorithmRole" ></table>
     <table tableName="Table_Func" ></table>
     <table tableName="Table_Module" ></table>
     <table tableName="Table_ModuleField" ></table>
-    <table tableName="Table_ModuleUserRelation" ></table>
-    <table tableName="Table_Role" ></table>-->
+    <table tableName="Table_ModuleUserRelation" ></table>-->
+    <!--<table tableName="Table_Role" >
+		<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+	</table>-->
+		<!--<table tableName="Table_AlgorithmRole" >
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>-->
 	</context>
 </generatorConfiguration>  

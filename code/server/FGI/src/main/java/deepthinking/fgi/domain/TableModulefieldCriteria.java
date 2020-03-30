@@ -454,6 +454,76 @@ public class TableModulefieldCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andTablenameIsNull() {
+            addCriterion("TableName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameIsNotNull() {
+            addCriterion("TableName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameEqualTo(String value) {
+            addCriterion("TableName =", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameNotEqualTo(String value) {
+            addCriterion("TableName <>", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameGreaterThan(String value) {
+            addCriterion("TableName >", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameGreaterThanOrEqualTo(String value) {
+            addCriterion("TableName >=", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameLessThan(String value) {
+            addCriterion("TableName <", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameLessThanOrEqualTo(String value) {
+            addCriterion("TableName <=", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameLike(String value) {
+            addCriterion("TableName like", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameNotLike(String value) {
+            addCriterion("TableName not like", value, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameIn(List<String> values) {
+            addCriterion("TableName in", values, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameNotIn(List<String> values) {
+            addCriterion("TableName not in", values, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameBetween(String value1, String value2) {
+            addCriterion("TableName between", value1, value2, "tablename");
+            return (Criteria) this;
+        }
+
+        public Criteria andTablenameNotBetween(String value1, String value2) {
+            addCriterion("TableName not between", value1, value2, "tablename");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("Remark is null");
             return (Criteria) this;

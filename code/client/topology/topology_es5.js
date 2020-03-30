@@ -997,10 +997,7 @@ var Topology = {
                         </div>
                     </div>`
                 _html = `<div  class="lkr-pic_list"><ul class="lkr-tabs">
-                <li role="presentation" class="active-taps" data-name='模板管理' >模板管理</li>
-                <li role="presentation" class="active-taps" data-name='模板管理' >算子管理</li>
-                <li role="presentation" class="active-taps" data-name='模板管理' >规则管理</li>
-                <li role="presentation" class="active-taps" data-name='模板管理' >字典</li>
+             
             </ul></div>` + _html +algorithm
                 // $("#flex_tools").html(_html);
                 $('#returnLeft').click(() => {

@@ -314,133 +314,263 @@ public class TableAlgorithmconditionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationIsNull() {
-            addCriterion("LogicRelation is null");
+        public Criteria andFuncidIsNull() {
+            addCriterion("FuncID is null");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationIsNotNull() {
-            addCriterion("LogicRelation is not null");
+        public Criteria andFuncidIsNotNull() {
+            addCriterion("FuncID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationEqualTo(String value) {
-            addCriterion("LogicRelation =", value, "logicrelation");
+        public Criteria andFuncidEqualTo(Integer value) {
+            addCriterion("FuncID =", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationNotEqualTo(String value) {
-            addCriterion("LogicRelation <>", value, "logicrelation");
+        public Criteria andFuncidNotEqualTo(Integer value) {
+            addCriterion("FuncID <>", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationGreaterThan(String value) {
-            addCriterion("LogicRelation >", value, "logicrelation");
+        public Criteria andFuncidGreaterThan(Integer value) {
+            addCriterion("FuncID >", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationGreaterThanOrEqualTo(String value) {
-            addCriterion("LogicRelation >=", value, "logicrelation");
+        public Criteria andFuncidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("FuncID >=", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationLessThan(String value) {
-            addCriterion("LogicRelation <", value, "logicrelation");
+        public Criteria andFuncidLessThan(Integer value) {
+            addCriterion("FuncID <", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationLessThanOrEqualTo(String value) {
-            addCriterion("LogicRelation <=", value, "logicrelation");
+        public Criteria andFuncidLessThanOrEqualTo(Integer value) {
+            addCriterion("FuncID <=", value, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationLike(String value) {
-            addCriterion("LogicRelation like", value, "logicrelation");
+        public Criteria andFuncidIn(List<Integer> values) {
+            addCriterion("FuncID in", values, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationNotLike(String value) {
-            addCriterion("LogicRelation not like", value, "logicrelation");
+        public Criteria andFuncidNotIn(List<Integer> values) {
+            addCriterion("FuncID not in", values, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationIn(List<String> values) {
-            addCriterion("LogicRelation in", values, "logicrelation");
+        public Criteria andFuncidBetween(Integer value1, Integer value2) {
+            addCriterion("FuncID between", value1, value2, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationNotIn(List<String> values) {
-            addCriterion("LogicRelation not in", values, "logicrelation");
+        public Criteria andFuncidNotBetween(Integer value1, Integer value2) {
+            addCriterion("FuncID not between", value1, value2, "funcid");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationBetween(String value1, String value2) {
-            addCriterion("LogicRelation between", value1, value2, "logicrelation");
+        public Criteria andBehaviorIsNull() {
+            addCriterion("Behavior is null");
             return (Criteria) this;
         }
 
-        public Criteria andLogicrelationNotBetween(String value1, String value2) {
-            addCriterion("LogicRelation not between", value1, value2, "logicrelation");
+        public Criteria andBehaviorIsNotNull() {
+            addCriterion("Behavior is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueIsNull() {
-            addCriterion("LogicValue is null");
+        public Criteria andBehaviorEqualTo(String value) {
+            addCriterion("Behavior =", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueIsNotNull() {
-            addCriterion("LogicValue is not null");
+        public Criteria andBehaviorNotEqualTo(String value) {
+            addCriterion("Behavior <>", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueEqualTo(Long value) {
-            addCriterion("LogicValue =", value, "logicvalue");
+        public Criteria andBehaviorGreaterThan(String value) {
+            addCriterion("Behavior >", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueNotEqualTo(Long value) {
-            addCriterion("LogicValue <>", value, "logicvalue");
+        public Criteria andBehaviorGreaterThanOrEqualTo(String value) {
+            addCriterion("Behavior >=", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueGreaterThan(Long value) {
-            addCriterion("LogicValue >", value, "logicvalue");
+        public Criteria andBehaviorLessThan(String value) {
+            addCriterion("Behavior <", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueGreaterThanOrEqualTo(Long value) {
-            addCriterion("LogicValue >=", value, "logicvalue");
+        public Criteria andBehaviorLessThanOrEqualTo(String value) {
+            addCriterion("Behavior <=", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueLessThan(Long value) {
-            addCriterion("LogicValue <", value, "logicvalue");
+        public Criteria andBehaviorLike(String value) {
+            addCriterion("Behavior like", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueLessThanOrEqualTo(Long value) {
-            addCriterion("LogicValue <=", value, "logicvalue");
+        public Criteria andBehaviorNotLike(String value) {
+            addCriterion("Behavior not like", value, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueIn(List<Long> values) {
-            addCriterion("LogicValue in", values, "logicvalue");
+        public Criteria andBehaviorIn(List<String> values) {
+            addCriterion("Behavior in", values, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueNotIn(List<Long> values) {
-            addCriterion("LogicValue not in", values, "logicvalue");
+        public Criteria andBehaviorNotIn(List<String> values) {
+            addCriterion("Behavior not in", values, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueBetween(Long value1, Long value2) {
-            addCriterion("LogicValue between", value1, value2, "logicvalue");
+        public Criteria andBehaviorBetween(String value1, String value2) {
+            addCriterion("Behavior between", value1, value2, "behavior");
             return (Criteria) this;
         }
 
-        public Criteria andLogicvalueNotBetween(Long value1, Long value2) {
-            addCriterion("LogicValue not between", value1, value2, "logicvalue");
+        public Criteria andBehaviorNotBetween(String value1, String value2) {
+            addCriterion("Behavior not between", value1, value2, "behavior");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesIsNull() {
+            addCriterion("ValueSources is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesIsNotNull() {
+            addCriterion("ValueSources is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesEqualTo(Long value) {
+            addCriterion("ValueSources =", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesNotEqualTo(Long value) {
+            addCriterion("ValueSources <>", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesGreaterThan(Long value) {
+            addCriterion("ValueSources >", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesGreaterThanOrEqualTo(Long value) {
+            addCriterion("ValueSources >=", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesLessThan(Long value) {
+            addCriterion("ValueSources <", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesLessThanOrEqualTo(Long value) {
+            addCriterion("ValueSources <=", value, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesIn(List<Long> values) {
+            addCriterion("ValueSources in", values, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesNotIn(List<Long> values) {
+            addCriterion("ValueSources not in", values, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesBetween(Long value1, Long value2) {
+            addCriterion("ValueSources between", value1, value2, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuesourcesNotBetween(Long value1, Long value2) {
+            addCriterion("ValueSources not between", value1, value2, "valuesources");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionIsNull() {
+            addCriterion("expression is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionIsNotNull() {
+            addCriterion("expression is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionEqualTo(String value) {
+            addCriterion("expression =", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionNotEqualTo(String value) {
+            addCriterion("expression <>", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionGreaterThan(String value) {
+            addCriterion("expression >", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionGreaterThanOrEqualTo(String value) {
+            addCriterion("expression >=", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionLessThan(String value) {
+            addCriterion("expression <", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionLessThanOrEqualTo(String value) {
+            addCriterion("expression <=", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionLike(String value) {
+            addCriterion("expression like", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionNotLike(String value) {
+            addCriterion("expression not like", value, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionIn(List<String> values) {
+            addCriterion("expression in", values, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionNotIn(List<String> values) {
+            addCriterion("expression not in", values, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionBetween(String value1, String value2) {
+            addCriterion("expression between", value1, value2, "expression");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpressionNotBetween(String value1, String value2) {
+            addCriterion("expression not between", value1, value2, "expression");
             return (Criteria) this;
         }
 

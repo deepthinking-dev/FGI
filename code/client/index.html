@@ -220,7 +220,7 @@
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">算子类型：</label>
-                    <select id='algorithmName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                    <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>算法公式</option>
                         <option>逻辑运算</option>
                     </select>                    
@@ -1692,19 +1692,36 @@
     </div>
       <!-- 字典信息弹窗 -->
       <div id="dicDiv">
-        <p style="background: #0a3668;line-height: 30px"><span style="color:#fff;margin-left: 30px">字典信息</span></p>
+        <p style="background: #0a3668;line-height: 30px">
+            <span style="color:#fff;margin-left: 30px">字典信息</span>
+            <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 20px">X</span>
+        </p>
+
         <input type="button" id="addDic" value="新增">
         <table id="dicTable"></table>
         <input type="button" id="dicYes" value="确定">
     </div>
     <!-- 字典新增修改弹窗 -->
     <div id="editDic">
-        <p id="editDicTitle" style="background: #0a3668;line-height: 30px"><span style="color:#fff;margin-left: 30px">新增字典</span></p>
+        <p style="background: #0a3668;line-height: 30px">
+            <span id="editDicTitle" style="color:#fff;margin-left: 30px">新增字典</span>
+            <span class="editDicClose" style="color:#fff;float: right;cursor: pointer;margin-right: 20px">X</span>
+        </p>
+        <p>
+            <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
+        </p>
         <div  style="margin: 20px 0">
             <span style="color: #fff;margin-left:30px;margin-right: 20px">算法名称</span><input type="text" id="editDicName">
         </div>
         <div>
             <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">算法描述</span><input type="text" id="editDicDes">
+        </div>
+        <p>
+            <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
+            <input type="button" style="background: #409eff;margin-left: 25px;color: #fff" id="addZdcs" value="新增参数">
+        </p>
+        <div id="zdcsList">
+
         </div>
         <input type="button" id="editDicYes" value="确定">
     </div>
@@ -2050,8 +2067,30 @@
     function AlgorithmClose(){
         $('#AddAlgorithm').fadeToggle(500)
     }
+    function AlgorithmConfirm(){
+        let s = $('#fgiName').val();
+        $("#AddAlgorithm").hide();
+        $(".Frame").hide();
+        $(".Logic").hide();
+        if(s == "算法公式"){
+            $(".Frame").show()
+        } else if(s == "逻辑运算"){
+            $(".Logic").show()
+        }
+    }
     function dictionary(){
-        $('#dicDiv').fadeToggle(500)
+        $("#dicDiv").show();
+        $("#dicTable").text("");
+        $("#dicTable").append(`<thead>
+<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
+</thead>`)
+        $("#dicTable").append(`<tr>
+<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+</tr>
+<tr>
+<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+</tr>
+`)
     }
 </script>
 </body>

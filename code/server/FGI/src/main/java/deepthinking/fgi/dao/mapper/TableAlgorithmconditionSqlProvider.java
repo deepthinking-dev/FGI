@@ -54,12 +54,20 @@ public class TableAlgorithmconditionSqlProvider {
             sql.VALUES("AlgorithmRoleID", "#{algorithmroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicrelation() != null) {
-            sql.VALUES("LogicRelation", "#{logicrelation,jdbcType=VARCHAR}");
+        if (record.getFuncid() != null) {
+            sql.VALUES("FuncID", "#{funcid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicvalue() != null) {
-            sql.VALUES("LogicValue", "#{logicvalue,jdbcType=DECIMAL}");
+        if (record.getBehavior() != null) {
+            sql.VALUES("Behavior", "#{behavior,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getValuesources() != null) {
+            sql.VALUES("ValueSources", "#{valuesources,jdbcType=DECIMAL}");
+        }
+        
+        if (record.getExpression() != null) {
+            sql.VALUES("expression", "#{expression,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {
@@ -83,8 +91,10 @@ public class TableAlgorithmconditionSqlProvider {
             sql.SELECT("ID");
         }
         sql.SELECT("AlgorithmRoleID");
-        sql.SELECT("LogicRelation");
-        sql.SELECT("LogicValue");
+        sql.SELECT("FuncID");
+        sql.SELECT("Behavior");
+        sql.SELECT("ValueSources");
+        sql.SELECT("expression");
         sql.SELECT("Remark");
         sql.FROM("table_algorithmcondition");
         applyWhere(sql, example, false);
@@ -117,12 +127,20 @@ public class TableAlgorithmconditionSqlProvider {
             sql.SET("AlgorithmRoleID = #{record.algorithmroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicrelation() != null) {
-            sql.SET("LogicRelation = #{record.logicrelation,jdbcType=VARCHAR}");
+        if (record.getFuncid() != null) {
+            sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicvalue() != null) {
-            sql.SET("LogicValue = #{record.logicvalue,jdbcType=DECIMAL}");
+        if (record.getBehavior() != null) {
+            sql.SET("Behavior = #{record.behavior,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getValuesources() != null) {
+            sql.SET("ValueSources = #{record.valuesources,jdbcType=DECIMAL}");
+        }
+        
+        if (record.getExpression() != null) {
+            sql.SET("expression = #{record.expression,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {
@@ -145,8 +163,10 @@ public class TableAlgorithmconditionSqlProvider {
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("AlgorithmRoleID = #{record.algorithmroleid,jdbcType=INTEGER}");
-        sql.SET("LogicRelation = #{record.logicrelation,jdbcType=VARCHAR}");
-        sql.SET("LogicValue = #{record.logicvalue,jdbcType=DECIMAL}");
+        sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
+        sql.SET("Behavior = #{record.behavior,jdbcType=VARCHAR}");
+        sql.SET("ValueSources = #{record.valuesources,jdbcType=DECIMAL}");
+        sql.SET("expression = #{record.expression,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableAlgorithmconditionCriteria example = (TableAlgorithmconditionCriteria) parameter.get("example");
@@ -168,12 +188,20 @@ public class TableAlgorithmconditionSqlProvider {
             sql.SET("AlgorithmRoleID = #{algorithmroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicrelation() != null) {
-            sql.SET("LogicRelation = #{logicrelation,jdbcType=VARCHAR}");
+        if (record.getFuncid() != null) {
+            sql.SET("FuncID = #{funcid,jdbcType=INTEGER}");
         }
         
-        if (record.getLogicvalue() != null) {
-            sql.SET("LogicValue = #{logicvalue,jdbcType=DECIMAL}");
+        if (record.getBehavior() != null) {
+            sql.SET("Behavior = #{behavior,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getValuesources() != null) {
+            sql.SET("ValueSources = #{valuesources,jdbcType=DECIMAL}");
+        }
+        
+        if (record.getExpression() != null) {
+            sql.SET("expression = #{expression,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {

@@ -17,16 +17,13 @@ public class AlgorithmRuleSaveDataModel {
     private TableRole tableRole;
     @ApiModelProperty(value = "算法算子关系集合")
     private List<AlgorithmRuleDataModel> algorithmRuleDataModelList;
-    @ApiModelProperty(value = "算子坐标信息字符串")
-    private String coordinateinfo;
 
     public AlgorithmRuleSaveDataModel() {
     }
 
-    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<AlgorithmRuleDataModel> algorithmRuleDataModelList, String coordinateinfo) {
+    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<AlgorithmRuleDataModel> algorithmRuleDataModelList) {
         this.tableRole = tableRole;
         this.algorithmRuleDataModelList = algorithmRuleDataModelList;
-        this.coordinateinfo = coordinateinfo;
     }
 
     public TableRole getTableRole() {
@@ -45,11 +42,4 @@ public class AlgorithmRuleSaveDataModel {
         this.algorithmRuleDataModelList = algorithmRuleDataModelList;
     }
 
-    public String getCoordinateinfo() {
-        return coordinateinfo;
-    }
-
-    public void setCoordinateinfo(String coordinateinfo) {
-        this.coordinateinfo = coordinateinfo;
-    }
 }

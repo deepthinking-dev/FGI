@@ -5,17 +5,7 @@ import deepthinking.fgi.domain.TableModuleCriteria;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TableModuleMapper {
@@ -57,12 +47,13 @@ public interface TableModuleMapper {
      */
     @Insert({
         "insert into table_module (ID, ModuleName, ",
-        "SqlUrl, Tab, ModuleGroup, ",
+        "SqlUrl, ModuleGroup, ",
         "Des, Remark)",
         "values (#{id,jdbcType=INTEGER}, #{modulename,jdbcType=VARCHAR}, ",
-        "#{sqlurl,jdbcType=VARCHAR}, #{tab,jdbcType=VARCHAR}, #{modulegroup,jdbcType=VARCHAR}, ",
+        "#{sqlurl,jdbcType=VARCHAR}, #{modulegroup,jdbcType=VARCHAR}, ",
         "#{des,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableModule record);
 
     /**
@@ -72,6 +63,7 @@ public interface TableModuleMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableModuleSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(TableModule record);
 
     /**
@@ -85,7 +77,6 @@ public interface TableModuleMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ModuleName", property="modulename", jdbcType=JdbcType.VARCHAR),
         @Result(column="SqlUrl", property="sqlurl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Tab", property="tab", jdbcType=JdbcType.VARCHAR),
         @Result(column="ModuleGroup", property="modulegroup", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
@@ -100,7 +91,7 @@ public interface TableModuleMapper {
      */
     @Select({
         "select",
-        "ID, ModuleName, SqlUrl, Tab, ModuleGroup, Des, Remark",
+        "ID, ModuleName, SqlUrl, ModuleGroup, Des, Remark",
         "from table_module",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -108,7 +99,6 @@ public interface TableModuleMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ModuleName", property="modulename", jdbcType=JdbcType.VARCHAR),
         @Result(column="SqlUrl", property="sqlurl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Tab", property="tab", jdbcType=JdbcType.VARCHAR),
         @Result(column="ModuleGroup", property="modulegroup", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
@@ -152,7 +142,6 @@ public interface TableModuleMapper {
         "update table_module",
         "set ModuleName = #{modulename,jdbcType=VARCHAR},",
           "SqlUrl = #{sqlurl,jdbcType=VARCHAR},",
-          "Tab = #{tab,jdbcType=VARCHAR},",
           "ModuleGroup = #{modulegroup,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
           "Remark = #{remark,jdbcType=VARCHAR}",
@@ -161,7 +150,7 @@ public interface TableModuleMapper {
     int updateByPrimaryKey(TableModule record);
 
     @Select({
-            "select DISTINCT ModuleGroup from table_module"
+            "SELECT DISTINCT ModuleGroup FROM table_module"
     })
     List<String> GetModuleGroup();
 
@@ -172,12 +161,12 @@ public interface TableModuleMapper {
 
     @Select({
             "SELECT t.COLUMN_NAME as COLUMN_NAME," ,
-                    " (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) IS_NULLABLE," ,
-                    " t.CHARACTER_MAXIMUM_LENGTH LENGTH," ,
-                    " t.COLUMN_COMMENT COLUMN_COMMENT," ,
-                    " t.COLUMN_TYPE COLUMN_TYPE" ,
-                    " FROM information_schema.`COLUMNS` t" ,
-                    " WHERE t.TABLE_SCHEMA = 'fgi' AND t.TABLE_NAME = #{tableName,jdbcType=VARCHAR} AND COLUMN_NAME !='ID'"
+            " (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) IS_NULLABLE," ,
+            " t.CHARACTER_MAXIMUM_LENGTH LENGTH," ,
+            " t.COLUMN_COMMENT COLUMN_COMMENT," ,
+            " t.COLUMN_TYPE COLUMN_TYPE" ,
+            " FROM information_schema.`COLUMNS` t" ,
+            " WHERE t.TABLE_SCHEMA = 'fgi' AND t.TABLE_NAME = #{tableName,jdbcType=VARCHAR} AND COLUMN_NAME !='ID'"
     })
     List<Map<String,Object>> findAllFiledByTableName(String tableName);
 }

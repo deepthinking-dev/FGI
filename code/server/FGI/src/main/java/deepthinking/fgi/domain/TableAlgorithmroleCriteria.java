@@ -374,6 +374,66 @@ public class TableAlgorithmroleCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andFuncidIsNull() {
+            addCriterion("FuncID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidIsNotNull() {
+            addCriterion("FuncID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidEqualTo(Integer value) {
+            addCriterion("FuncID =", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidNotEqualTo(Integer value) {
+            addCriterion("FuncID <>", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidGreaterThan(Integer value) {
+            addCriterion("FuncID >", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("FuncID >=", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidLessThan(Integer value) {
+            addCriterion("FuncID <", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidLessThanOrEqualTo(Integer value) {
+            addCriterion("FuncID <=", value, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidIn(List<Integer> values) {
+            addCriterion("FuncID in", values, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidNotIn(List<Integer> values) {
+            addCriterion("FuncID not in", values, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidBetween(Integer value1, Integer value2) {
+            addCriterion("FuncID between", value1, value2, "funcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFuncidNotBetween(Integer value1, Integer value2) {
+            addCriterion("FuncID not between", value1, value2, "funcid");
+            return (Criteria) this;
+        }
+
         public Criteria andPrealgorithmidIsNull() {
             addCriterion("PreAlgorithmID is null");
             return (Criteria) this;
@@ -431,6 +491,66 @@ public class TableAlgorithmroleCriteria {
 
         public Criteria andPrealgorithmidNotBetween(Integer value1, Integer value2) {
             addCriterion("PreAlgorithmID not between", value1, value2, "prealgorithmid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidIsNull() {
+            addCriterion("PreFuncID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidIsNotNull() {
+            addCriterion("PreFuncID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidEqualTo(Integer value) {
+            addCriterion("PreFuncID =", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidNotEqualTo(Integer value) {
+            addCriterion("PreFuncID <>", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidGreaterThan(Integer value) {
+            addCriterion("PreFuncID >", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("PreFuncID >=", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidLessThan(Integer value) {
+            addCriterion("PreFuncID <", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidLessThanOrEqualTo(Integer value) {
+            addCriterion("PreFuncID <=", value, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidIn(List<Integer> values) {
+            addCriterion("PreFuncID in", values, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidNotIn(List<Integer> values) {
+            addCriterion("PreFuncID not in", values, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidBetween(Integer value1, Integer value2) {
+            addCriterion("PreFuncID between", value1, value2, "prefuncid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefuncidNotBetween(Integer value1, Integer value2) {
+            addCriterion("PreFuncID not between", value1, value2, "prefuncid");
             return (Criteria) this;
         }
 

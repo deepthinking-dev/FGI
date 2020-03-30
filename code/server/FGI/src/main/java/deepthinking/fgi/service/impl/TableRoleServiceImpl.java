@@ -47,8 +47,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     private TableFuncMapper funcMapper;
     @Resource
     private TableAlgorithmService tableAlgorithmService;
-    @Resource
-    private TableAlgorithmcoordinateMapper tableAlgorithmcoordinateMapper;
 
 
     @Override
@@ -69,56 +67,56 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         List<TableAlgorithmrole> algorithmroleList = null;
         List<TableAlgorithm> algorithmList = null;
         try{
-            String str = FileUtils.readTxtFile(filePath);
-            Map map = (Map) JSON.parse(str);
-            roleList = ((JSONArray) map.get("Role")).toJavaList(TableRole.class);
-            algorithmroleList = ((JSONArray) map.get("AlgorithmRole")).toJavaList(TableAlgorithmrole.class);
-            algorithmList = ((JSONArray) map.get("Algorithm")).toJavaList(TableAlgorithm.class);
-            //算法规则
-            roleList.forEach(role ->{
-                roleMapper.insert(role);
-            });
-            //算子模块
-            algorithmList.forEach(algorithm ->{
-                tableAlgorithmMapper.insert(algorithm);
-            });
-            //算法算子关系
-            List<TableRole> finalRoleList = roleList;
-            List<TableAlgorithm> finalAlgorithmList = algorithmList;
-            List<TableAlgorithmrole> finalAlgorithmroleList = algorithmroleList;
-            algorithmroleList.forEach(algorithmrole ->{
-                finalRoleList.forEach(role ->{
-                    if(algorithmrole.getRoleid().intValue() == role.getTno().intValue()){
-                        algorithmrole.setRoleid(role.getId());
-                    }
-                });
-                finalAlgorithmList.forEach(algorithm ->{
-                    if(algorithmrole.getAlgorithmid().intValue() == algorithm.getTno().intValue()){
-                        algorithmrole.setAlgorithmid(algorithm.getId());
-                    }
-                });
-                Integer id = algorithmroleMapper.selectMaxId();
-                if(null == id){
-                    id = 0;
-                }
-                algorithmrole.setId(++id);
-                algorithmroleMapper.insert(algorithmrole);
-            });
-
-            finalRoleList.forEach(role ->{
-                List<TableAlgorithmrole> childrenList = new ArrayList<TableAlgorithmrole>();
-                finalAlgorithmroleList.forEach(algorithmrole ->{
-                    if(algorithmrole.getRoleid().intValue() == role.getId().intValue()){
-                        childrenList.add(algorithmrole);
-                    }
-                    finalAlgorithmList.forEach(algorithm ->{
-                        if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
-                            algorithmrole.setTableAlgorithm(algorithm);
-                        }
-                    });
-                });
-                role.setTableAlgorithmroleList(childrenList);
-            });
+//            String str = FileUtils.readTxtFile(filePath);
+//            Map map = (Map) JSON.parse(str);
+//            roleList = ((JSONArray) map.get("Role")).toJavaList(TableRole.class);
+//            algorithmroleList = ((JSONArray) map.get("AlgorithmRole")).toJavaList(TableAlgorithmrole.class);
+//            algorithmList = ((JSONArray) map.get("Algorithm")).toJavaList(TableAlgorithm.class);
+//            //算法规则
+//            roleList.forEach(role ->{
+//                roleMapper.insert(role);
+//            });
+//            //算子模块
+//            algorithmList.forEach(algorithm ->{
+//                tableAlgorithmMapper.insert(algorithm);
+//            });
+//            //算法算子关系
+//            List<TableRole> finalRoleList = roleList;
+//            List<TableAlgorithm> finalAlgorithmList = algorithmList;
+//            List<TableAlgorithmrole> finalAlgorithmroleList = algorithmroleList;
+//            algorithmroleList.forEach(algorithmrole ->{
+//                finalRoleList.forEach(role ->{
+//                    if(algorithmrole.getRoleid().intValue() == role.getTno().intValue()){
+//                        algorithmrole.setRoleid(role.getId());
+//                    }
+//                });
+//                finalAlgorithmList.forEach(algorithm ->{
+//                    if(algorithmrole.getAlgorithmid().intValue() == algorithm.getTno().intValue()){
+//                        algorithmrole.setAlgorithmid(algorithm.getId());
+//                    }
+//                });
+//                Integer id = algorithmroleMapper.selectMaxId();
+//                if(null == id){
+//                    id = 0;
+//                }
+//                algorithmrole.setId(++id);
+//                algorithmroleMapper.insert(algorithmrole);
+//            });
+//
+//            finalRoleList.forEach(role ->{
+//                List<TableAlgorithmrole> childrenList = new ArrayList<TableAlgorithmrole>();
+//                finalAlgorithmroleList.forEach(algorithmrole ->{
+//                    if(algorithmrole.getRoleid().intValue() == role.getId().intValue()){
+//                        childrenList.add(algorithmrole);
+//                    }
+//                    finalAlgorithmList.forEach(algorithm ->{
+//                        if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
+//                            algorithmrole.setTableAlgorithm(algorithm);
+//                        }
+//                    });
+//                });
+//                role.setTableAlgorithmroleList(childrenList);
+//            });
             return roleList;
         }catch (Exception e){
             //手动回滚
@@ -147,63 +145,63 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     public TableRole GetTableExportData(Integer id) {
         TableRole tableRole = roleMapper.selectByPrimaryKey(id);
         if(null != tableRole){
-            TableAlgorithmroleCriteria algorithmroleCriteria = new TableAlgorithmroleCriteria();
-            algorithmroleCriteria.createCriteria().andRoleidEqualTo(tableRole.getId());
-            //算法算子关系
-            List<TableAlgorithmrole> algorithmroleList = algorithmroleMapper.selectByExample(algorithmroleCriteria);
-            tableRole.setTableAlgorithmroleList(algorithmroleList);
-
-            if(algorithmroleList.size() > 0){
-                //算法算子ID集合
-                List<Integer> arIdList = new ArrayList<Integer>();
-                //算子ID集合
-                List<Integer> aIdList = new ArrayList<Integer>();
-                algorithmroleList.forEach(algorithmrole ->{
-                    arIdList.add(algorithmrole.getId());
-                    aIdList.add(algorithmrole.getAlgorithmid());
-                });
-                TableAlgorithmconditionCriteria algorithmconditionCriteria = new TableAlgorithmconditionCriteria();
-                algorithmconditionCriteria.createCriteria().andAlgorithmroleidIn(arIdList);
-                //根据【算法算子关系】的ID查询算子运行条件,并关联起来
-                List<TableAlgorithmcondition> algorithmconditionList = algorithmconditionMapper.selectByExample(algorithmconditionCriteria);
-                if(algorithmconditionList.size() > 0){
-                    algorithmroleList.forEach(algorithmrole ->{
-                        List<TableAlgorithmcondition> childrenList = new ArrayList<TableAlgorithmcondition>();
-                        algorithmconditionList.forEach(algorithmcondition ->{
-                            if(algorithmrole.getId().intValue() == algorithmcondition.getAlgorithmroleid().intValue()){
-                                childrenList.add(algorithmcondition);
-                            }
-                        });
-                        algorithmrole.setTableAlgorithmconditionList(childrenList);
-                    });
-                }
-                //根据算子ID获取结果集,并关联起来
-                TableAlgorithmCriteria algorithmCriteria = new TableAlgorithmCriteria();
-                algorithmCriteria.createCriteria().andIdIn(aIdList);
-                List<TableAlgorithm> algorithmList = tableAlgorithmMapper.selectByExample(algorithmCriteria);
-                //同时获取公式变量列表
-                TableFuncCriteria funcCriteria = new TableFuncCriteria();
-                funcCriteria.createCriteria().andModuleidIn(aIdList);
-                List<TableFunc> funcList = funcMapper.selectByExample(funcCriteria);
-                if(algorithmList.size() > 0){
-                    algorithmroleList.forEach(algorithmrole ->{
-                        algorithmList.forEach(algorithm ->{
-                            if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
-                                algorithmrole.setTableAlgorithm(algorithm);
-                            }
-                        });
-                    });
-                    algorithmList.forEach(algorithm ->{
-                        List<TableFunc> childrenList = new ArrayList<TableFunc>();
-                        funcList.forEach(func -> {
-                            if(algorithm.getId().intValue() == func.getModuleid().intValue()){
-                                childrenList.add(func);
-                            }
-                        });
-                        algorithm.setTableFuncList(childrenList);
-                    });
-                }
-            }
+//            TableAlgorithmroleCriteria algorithmroleCriteria = new TableAlgorithmroleCriteria();
+//            algorithmroleCriteria.createCriteria().andRoleidEqualTo(tableRole.getId());
+//            //算法算子关系
+//            List<TableAlgorithmrole> algorithmroleList = algorithmroleMapper.selectByExample(algorithmroleCriteria);
+//            tableRole.setTableAlgorithmroleList(algorithmroleList);
+//
+//            if(algorithmroleList.size() > 0){
+//                //算法算子ID集合
+//                List<Integer> arIdList = new ArrayList<Integer>();
+//                //算子ID集合
+//                List<Integer> aIdList = new ArrayList<Integer>();
+//                algorithmroleList.forEach(algorithmrole ->{
+//                    arIdList.add(algorithmrole.getId());
+//                    aIdList.add(algorithmrole.getAlgorithmid());
+//                });
+//                TableAlgorithmconditionCriteria algorithmconditionCriteria = new TableAlgorithmconditionCriteria();
+//                algorithmconditionCriteria.createCriteria().andAlgorithmroleidIn(arIdList);
+//                //根据【算法算子关系】的ID查询算子运行条件,并关联起来
+//                List<TableAlgorithmcondition> algorithmconditionList = algorithmconditionMapper.selectByExample(algorithmconditionCriteria);
+//                if(algorithmconditionList.size() > 0){
+//                    algorithmroleList.forEach(algorithmrole ->{
+//                        List<TableAlgorithmcondition> childrenList = new ArrayList<TableAlgorithmcondition>();
+//                        algorithmconditionList.forEach(algorithmcondition ->{
+//                            if(algorithmrole.getId().intValue() == algorithmcondition.getAlgorithmroleid().intValue()){
+//                                childrenList.add(algorithmcondition);
+//                            }
+//                        });
+//                        algorithmrole.setTableAlgorithmconditionList(childrenList);
+//                    });
+//                }
+//                //根据算子ID获取结果集,并关联起来
+//                TableAlgorithmCriteria algorithmCriteria = new TableAlgorithmCriteria();
+//                algorithmCriteria.createCriteria().andIdIn(aIdList);
+//                List<TableAlgorithm> algorithmList = tableAlgorithmMapper.selectByExample(algorithmCriteria);
+//                //同时获取公式变量列表
+//                TableFuncCriteria funcCriteria = new TableFuncCriteria();
+//                funcCriteria.createCriteria().andModuleidIn(aIdList);
+//                List<TableFunc> funcList = funcMapper.selectByExample(funcCriteria);
+//                if(algorithmList.size() > 0){
+//                    algorithmroleList.forEach(algorithmrole ->{
+//                        algorithmList.forEach(algorithm ->{
+//                            if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
+//                                algorithmrole.setTableAlgorithm(algorithm);
+//                            }
+//                        });
+//                    });
+//                    algorithmList.forEach(algorithm ->{
+//                        List<TableFunc> childrenList = new ArrayList<TableFunc>();
+//                        funcList.forEach(func -> {
+//                            if(algorithm.getId().intValue() == func.getModuleid().intValue()){
+//                                childrenList.add(func);
+//                            }
+//                        });
+//                        algorithm.setTableFuncList(childrenList);
+//                    });
+//                }
+//            }
 
             return tableRole;
         }else{
@@ -231,49 +229,32 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         List<AlgorithmRuleDataModel> data=new ArrayList<>();
         TableAlgorithmroleCriteria tableAlgorithmroleCriteria=new TableAlgorithmroleCriteria();
         tableAlgorithmroleCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(id));
-        List<TableAlgorithmrole> tableAlgorithmroles=algorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);
+        List<TableAlgorithmrole> tableAlgorithmroles=algorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);//所有的线
         if(tableAlgorithmroles.size()>0){
             tableAlgorithmroles.stream().forEach(algorithmrole->{
                 AlgorithmRuleDataModel algorithmRuleDataModel=new AlgorithmRuleDataModel();
                 algorithmRuleDataModel.setId(algorithmrole.getId());
                 algorithmRuleDataModel.setRoleId(algorithmrole.getRoleid());
                 algorithmRuleDataModel.setAlgorithmid(algorithmrole.getAlgorithmid());
+                algorithmRuleDataModel.setFuncID(algorithmrole.getFuncid());
                 algorithmRuleDataModel.setPrealgorithmid(algorithmrole.getPrealgorithmid());
+                algorithmRuleDataModel.setPreFuncID(algorithmrole.getFuncid());
                 algorithmRuleDataModel.setDes(algorithmrole.getDes());
                 algorithmRuleDataModel.setRemark(algorithmrole.getRemark());
-                //查询对应运行条件
+                //查询对应的动作
                 TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
                 tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(algorithmrole.getId());
                 List<TableAlgorithmcondition> tableAlgorithmconditions=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
-                if(tableAlgorithmconditions.size()>0){
-                    TableAlgorithmcondition tableAlgorithmcondition=tableAlgorithmconditions.get(0);
-                    algorithmRuleDataModel.setTableAlgorithmcondition(tableAlgorithmcondition);
-                }
+                algorithmRuleDataModel.setAlgorithmconditions(tableAlgorithmconditions);
                 //查询算子信息
-                AlgorithmModel algorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getAlgorithmid().toString());
-                AlgorithmModel preAlgorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getPrealgorithmid().toString());
-                algorithmRuleDataModel.setAlgorithmModel(algorithmModel);
-                algorithmRuleDataModel.setPreaAlgorithmModel(preAlgorithmModel);
+//                AlgorithmModel algorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getAlgorithmid().toString());
+//                AlgorithmModel preAlgorithmModel=tableAlgorithmService.getAlgorithmById(algorithmrole.getPrealgorithmid().toString());
+//                algorithmRuleDataModel.setAlgorithmModel(algorithmModel);
+//                algorithmRuleDataModel.setPreaAlgorithmModel(preAlgorithmModel);
                 data.add(algorithmRuleDataModel);
             });
         }
         algorithmRuleSaveDataModel.setAlgorithmRuleDataModelList(data);
-        //查询坐标
-        TableAlgorithmcoordinateCriteria tableAlgorithmcoordinateCriteria=new TableAlgorithmcoordinateCriteria();
-        tableAlgorithmcoordinateCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(id));
-        List<TableAlgorithmcoordinate> info=tableAlgorithmcoordinateMapper.selectByExampleWithBLOBs(tableAlgorithmcoordinateCriteria);
-        if(info.size()>0){
-            TableAlgorithmcoordinate algorithmcoordinate=info.get(0);
-            if(algorithmcoordinate.getCoordinateinfo()!=null){
-                try {
-                    String coordinate=new String(algorithmcoordinate.getCoordinateinfo(),"utf8");
-                    algorithmRuleSaveDataModel.setCoordinateinfo(coordinate);
-                } catch (UnsupportedEncodingException e) {
-                    logger.error(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }
         return algorithmRuleSaveDataModel;
     }
 
@@ -284,7 +265,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             if(tableRole!=null){
                 insert(tableRole);
                 //获取主键
-                int id=getTableRolePrimaryKey(tableRole);
+                int id=tableRole.getId();
                 List<AlgorithmRuleDataModel> algorithmRuleDataModels=algorithmRuleSaveDataModel.getAlgorithmRuleDataModelList();
                 if(algorithmRuleDataModels.size()>0){
                     algorithmRuleDataModels.stream().forEach(data->{
@@ -292,9 +273,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                         this.saveAlgorithmRuleOne(data);
                     });
                 }
-                //储存坐标
-                String coordinateinfo=algorithmRuleSaveDataModel.getCoordinateinfo();
-                saveNewCoordinate(coordinateinfo,id);
             }
             return true;
         }catch (Exception e){
@@ -302,33 +280,19 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
     }
-    /*
-    获取主键
-     */
-    private int getTableRolePrimaryKey(TableRole tableRole){
-        TableRoleCriteria tableRoleCriteria=new TableRoleCriteria();
-        tableRoleCriteria.createCriteria().andRolenameEqualTo(tableRole.getRolename()).andDesEqualTo(tableRole.getDes()).andRemarkEqualTo(tableRole.getRemark());
-        tableRole=roleMapper.selectByExample(tableRoleCriteria).get(0);
-        return tableRole.getId();
-    }
-    private int getTableAlgorithmrole(TableAlgorithmrole tableAlgorithmrole){
-        TableAlgorithmroleCriteria tableAlgorithmroleCriteria=new TableAlgorithmroleCriteria();
-        tableAlgorithmroleCriteria.createCriteria().andRoleidEqualTo(tableAlgorithmrole.getRoleid()).andAlgorithmidEqualTo(tableAlgorithmrole.getAlgorithmid())
-                .andPrealgorithmidEqualTo(tableAlgorithmrole.getPrealgorithmid()).andDesEqualTo(tableAlgorithmrole.getDes()).andRemarkEqualTo(tableAlgorithmrole.getRemark());
-        tableAlgorithmrole=algorithmroleMapper.selectByExample(tableAlgorithmroleCriteria).get(0);
-        return tableAlgorithmrole.getId();
-    }
 
     @Override
     public boolean saveAlgorithmRuleOne(AlgorithmRuleDataModel algorithmRuleDataModel) {
         try {
             TableAlgorithmrole tableAlgorithmrole=fill(algorithmRuleDataModel);
             algorithmroleMapper.insert(tableAlgorithmrole);
-            int id=getTableAlgorithmrole(tableAlgorithmrole);
-            TableAlgorithmcondition tableAlgorithmcondition=algorithmRuleDataModel.getTableAlgorithmcondition();
-            if(tableAlgorithmcondition!=null){
-                tableAlgorithmcondition.setAlgorithmroleid(id);
-                algorithmconditionMapper.insert(tableAlgorithmcondition);
+            int id=tableAlgorithmrole.getId();
+            List<TableAlgorithmcondition> tableAlgorithmconditions=algorithmRuleDataModel.getAlgorithmconditions();
+            if(tableAlgorithmconditions.size()>0){
+                tableAlgorithmconditions.forEach(tableAlgorithmcondition->{
+                    tableAlgorithmcondition.setAlgorithmroleid(id);
+                    algorithmconditionMapper.insert(tableAlgorithmcondition);
+                });
             }
             return true;
         }catch (Exception e){
@@ -347,7 +311,9 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableAlgorithmrole.setId(algorithmRuleDataModel.getId());
         tableAlgorithmrole.setRoleid(algorithmRuleDataModel.getRoleId());
         tableAlgorithmrole.setAlgorithmid(algorithmRuleDataModel.getAlgorithmid());
+        tableAlgorithmrole.setFuncid(algorithmRuleDataModel.getFuncID());
         tableAlgorithmrole.setPrealgorithmid(algorithmRuleDataModel.getPrealgorithmid());
+        tableAlgorithmrole.setPrefuncid(algorithmRuleDataModel.getPreFuncID());
         tableAlgorithmrole.setDes(algorithmRuleDataModel.getDes());
         tableAlgorithmrole.setRemark("");
         return tableAlgorithmrole;
@@ -358,9 +324,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         try {
             TableAlgorithmrole tableAlgorithmrole=fill(algorithmRuleDataModel);
             algorithmroleMapper.updateByPrimaryKeySelective(tableAlgorithmrole);
-            TableAlgorithmcondition tableAlgorithmcondition=algorithmRuleDataModel.getTableAlgorithmcondition();
-            if(tableAlgorithmcondition!=null){
-                algorithmconditionMapper.updateByPrimaryKeySelective(tableAlgorithmcondition);
+            //删除以前的动作，再新增当前的动作
+            TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
+            tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(tableAlgorithmrole.getId());
+            algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
+            List<TableAlgorithmcondition> tableAlgorithmconditions=algorithmRuleDataModel.getAlgorithmconditions();
+            if(tableAlgorithmconditions.size()>0){
+                tableAlgorithmconditions.forEach(tableAlgorithmcondition->algorithmconditionMapper.insert(tableAlgorithmcondition));
             }
             return true;
         }catch (Exception e){
@@ -384,10 +354,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             //删除所有算子关系
             TableAlgorithmroleCriteria tableAlgorithmroleCriteria=new TableAlgorithmroleCriteria();
             tableAlgorithmroleCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(Id));
-            List<TableAlgorithmrole> tableAlgorithmroles=algorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);
+            List<TableAlgorithmrole> tableAlgorithmroles=algorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);//所有的线
             if(tableAlgorithmroles.size()>0){
-                tableAlgorithmroles.stream().forEach(algorithmrole->{
-                    //删除运行条件
+                tableAlgorithmroles.forEach(algorithmrole->{
+                    //删除动作
                     TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
                     tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(algorithmrole.getId());
                     algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
@@ -396,10 +366,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             algorithmroleMapper.deleteByExample(tableAlgorithmroleCriteria);
             //删除规则本身信息
             deleteByPrimaryKey(Integer.parseInt(Id));
-            //删除坐标
-            TableAlgorithmcoordinateCriteria tableAlgorithmcoordinateCriteria=new TableAlgorithmcoordinateCriteria();
-            tableAlgorithmcoordinateCriteria.createCriteria().andRoleidEqualTo(Integer.parseInt(Id));
-            tableAlgorithmcoordinateMapper.deleteByExample(tableAlgorithmcoordinateCriteria);
             return true;
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -414,11 +380,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
         try {
-            algorithmroleMapper.deleteByPrimaryKey(Integer.parseInt(algorithmroleId));
-            //删除运行条件
+            //删除动作
             TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
             tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(Integer.parseInt(algorithmroleId));
             algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
+            algorithmroleMapper.deleteByPrimaryKey(Integer.parseInt(algorithmroleId));
             return true;
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -430,13 +396,34 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     public boolean saveNewCoordinate(String coordinateinfo, int roleId) {
         try {
             if(coordinateinfo!=null&&!"".equals(coordinateinfo)){
-                byte[] infos=coordinateinfo.getBytes("utf8");
-                TableAlgorithmcoordinate tableAlgorithmcoordinate=new TableAlgorithmcoordinate(roleId,infos);
-                tableAlgorithmcoordinateMapper.insert(tableAlgorithmcoordinate);
+                TableRole tableRole=new TableRole();
+                tableRole.setId(roleId);
+                tableRole.setCoordinate(coordinateinfo);
+                updateByPrimaryKeySelective(tableRole);
             }
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions) {
+        try {
+            if(algorithmconditions!=null&&algorithmconditions.size()>0){
+                //删除以前的
+                int algorithmRoleId=algorithmconditions.get(0).getAlgorithmroleid();
+                int funcId=algorithmconditions.get(0).getFuncid();
+                TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
+                tableAlgorithmconditionCriteria.createCriteria().andAlgorithmroleidEqualTo(algorithmRoleId).andFuncidEqualTo(funcId);
+                algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
+                //新增
+                algorithmconditions.forEach(data->algorithmconditionMapper.insert(data));
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage());
             return false;
         }
         return true;

@@ -29,7 +29,7 @@ public class TableModulefieldServiceImpl extends BaseServiceImpl<TableModulefiel
 
     @Override
     public boolean addModuleColumn(TableModulefield column) {
-        return insert(column)==1?true:false;
+        return insert(column)>=1?true:false;
     }
 
     @Override

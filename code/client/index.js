@@ -14,31 +14,75 @@ $(function(){
             getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
             $("#mouldPage").hide()
         }else if($(e.target).html() == '字典'){
-            $("#dicDiv").show();
-            $("#dicTable").text("");
-            $("#dicTable").append(`<thead>
-<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
-</thead>`)
-            $("#dicTable").append(`<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-`)
+
         }
+    })
+    $('body').on('click','.dicDivClose',(e) => {
+        $("#dicDiv").hide();
+    })
+    $('body').on('click','.editDicClose',(e) => {
+        $("#editDic").hide();
     })
     $('body').on('click','#dicYes',(e) => {
         $("#dicDiv").hide();
     })
     $('body').on('click','#addDic',(e) => {
         $("#editDic").show();
+        $("#editDicTitle").text("新增字典");
+        $("#zdcsList").html(``)
+    })
+    $('body').on('click','.dicEdit',(e) => {
+        $("#editDic").show();
+        $("#editDicTitle").text("修改字典")
     })
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
         let des =  $("#editDicDes").val();
         console.log(name, des);
-        $("#editDic").hide();
+
+    })
+    $('body').on('click','#addZdcs',(e) => {
+        $("#zdcsList").append(`
+             <div class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                <p style="margin-top: 5px">
+                    <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" type="text" value="">
+                </p>
+                <p>
+                    <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
+                    <select class="zdcsSelect">
+                        <option>常量</option>
+                        <option>model</option>
+                        <option>基本类型</option>
+                    </select>
+                    <input type="text" value="" class="zdcsText">
+                </p>
+                <p>
+                    <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
+                    <select class="zdcsExport">
+                        <option>输入</option>
+                        <option>输出</option>
+                    </select>
+                    <input class="deleteZdcs" style="float: right;margin-right: 20px;height: 24px;line-height: 24px;background: #f56c6c;border: none;color: #fff;" type="button" value="删除">
+                </p>
+            </div>
+        `)
+    })
+    $('body').on('change','.zdcsSelect',(e) => {
+        if(e.target.value == "常量" || e.target.value == "model"){
+            $(e.target).next().remove();
+            $(e.target).parent().append(`<input type="text" value=""  class="zdcsText">`)
+        } else {
+            $(e.target).next().remove();
+            $(e.target).parent().append(`
+                    <select class="zdcsTypeSelect">
+                        <option>基本类型1</option>
+                        <option>基本类型2</option>
+                        <option>基本类型3</option>
+                    </select>`)
+        }
+    })
+    $('body').on('click','.deleteZdcs',(e) => {
+        $(e.target).parent().parent().remove()
     })
 
     $('body').on('click','#getAllMb',(e) => {
@@ -232,7 +276,6 @@ $(function(){
         window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
-    
  
 })
 

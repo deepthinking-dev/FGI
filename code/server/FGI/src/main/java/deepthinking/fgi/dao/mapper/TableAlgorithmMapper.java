@@ -3,6 +3,7 @@ package deepthinking.fgi.dao.mapper;
 import deepthinking.fgi.domain.TableAlgorithm;
 import deepthinking.fgi.domain.TableAlgorithmCriteria;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -56,11 +57,7 @@ public interface TableAlgorithmMapper {
         "#{algorithmfun,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
         "#{remark,jdbcType=VARCHAR})"
     })
-    @SelectKey(statement = "select LAST_INSERT_ID()",
-            keyProperty = "id",
-            resultType = Integer.class,
-            before = false
-    )
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableAlgorithm record);
 
     /**
@@ -70,6 +67,7 @@ public interface TableAlgorithmMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableAlgorithmSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(TableAlgorithm record);
 
     /**
@@ -164,4 +162,18 @@ public interface TableAlgorithmMapper {
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableAlgorithm record);
+
+    @Select({
+            "select",
+            "ID, ModuleID, AlgorithmName, AlgorithmAuthor,Des",
+            "from table_algorithm"
+    })
+    @Results({
+            @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
+            @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
+            @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
+            @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
+    })
+    List<Map<String,Object>> selectBaseInfo();
 }

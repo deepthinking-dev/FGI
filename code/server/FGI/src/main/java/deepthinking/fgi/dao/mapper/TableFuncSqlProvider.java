@@ -50,8 +50,8 @@ public class TableFuncSqlProvider {
             sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
         }
         
-        if (record.getModuleid() != null) {
-            sql.VALUES("ModuleID", "#{moduleid,jdbcType=INTEGER}");
+        if (record.getAlgorithmid() != null) {
+            sql.VALUES("AlgorithmID", "#{algorithmid,jdbcType=INTEGER}");
         }
         
         if (record.getVarname() != null) {
@@ -64,6 +64,10 @@ public class TableFuncSqlProvider {
         
         if (record.getValvalue() != null) {
             sql.VALUES("ValValue", "#{valvalue,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.VALUES("InOrOut", "#{inorout,jdbcType=DECIMAL}");
         }
         
         if (record.getRemark() != null) {
@@ -86,10 +90,11 @@ public class TableFuncSqlProvider {
         } else {
             sql.SELECT("ID");
         }
-        sql.SELECT("ModuleID");
+        sql.SELECT("AlgorithmID");
         sql.SELECT("VarName");
         sql.SELECT("VarType");
         sql.SELECT("ValValue");
+        sql.SELECT("InOrOut");
         sql.SELECT("Remark");
         sql.FROM("table_func");
         applyWhere(sql, example, false);
@@ -118,8 +123,8 @@ public class TableFuncSqlProvider {
             sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         }
         
-        if (record.getModuleid() != null) {
-            sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
+        if (record.getAlgorithmid() != null) {
+            sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
         }
         
         if (record.getVarname() != null) {
@@ -132,6 +137,10 @@ public class TableFuncSqlProvider {
         
         if (record.getValvalue() != null) {
             sql.SET("ValValue = #{record.valvalue,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.SET("InOrOut = #{record.inorout,jdbcType=DECIMAL}");
         }
         
         if (record.getRemark() != null) {
@@ -153,10 +162,11 @@ public class TableFuncSqlProvider {
         sql.UPDATE("table_func");
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
-        sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
+        sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
         sql.SET("VarName = #{record.varname,jdbcType=VARCHAR}");
         sql.SET("VarType = #{record.vartype,jdbcType=VARCHAR}");
         sql.SET("ValValue = #{record.valvalue,jdbcType=VARCHAR}");
+        sql.SET("InOrOut = #{record.inorout,jdbcType=DECIMAL}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableFuncCriteria example = (TableFuncCriteria) parameter.get("example");
@@ -174,8 +184,8 @@ public class TableFuncSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("table_func");
         
-        if (record.getModuleid() != null) {
-            sql.SET("ModuleID = #{moduleid,jdbcType=INTEGER}");
+        if (record.getAlgorithmid() != null) {
+            sql.SET("AlgorithmID = #{algorithmid,jdbcType=INTEGER}");
         }
         
         if (record.getVarname() != null) {
@@ -188,6 +198,10 @@ public class TableFuncSqlProvider {
         
         if (record.getValvalue() != null) {
             sql.SET("ValValue = #{valvalue,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.SET("InOrOut = #{inorout,jdbcType=DECIMAL}");
         }
         
         if (record.getRemark() != null) {
