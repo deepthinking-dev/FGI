@@ -46,7 +46,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             tableAlgorithms.stream().forEach(data->{
                 AlgorithmBaseInfo algorithmBaseInfo=new AlgorithmBaseInfo();
                 algorithmBaseInfo.setTableAlgorithm(data);
-                int alfgorithmId=Integer.parseInt(data.get("ID").toString());
+                int alfgorithmId=Integer.parseInt(data.get("id").toString());
                 List<Map<String,Object>> funcs=tableFuncMapper.selectBaseInfo(alfgorithmId);
                 algorithmBaseInfo.setTableFuncs(funcs);
                 //查询每个算法的输入输出参数个数
