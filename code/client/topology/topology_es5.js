@@ -843,6 +843,7 @@ var Topology = {
         });
         // 画布右键属性
         $("#flex_canvas").bind("contextmenu", function () {
+            
             //设置右键菜单
             if (selNodes != null) {
                 //置顶
