@@ -39,7 +39,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
 
     @Override
     public List<AlgorithmBaseInfo> getAllAlgorithm(String username) {
-        //username 暂不使用
+        //username 暂不使用 
         List<AlgorithmBaseInfo> result=new ArrayList<>();
         List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo();
         if(tableAlgorithms.size()>0){
