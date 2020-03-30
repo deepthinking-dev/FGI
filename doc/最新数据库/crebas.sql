@@ -160,8 +160,8 @@ create table Table_Role
 
 alter table Table_Role comment 'À„∑®πÊ‘Ú';
 
-alter table Table_Algorithm add constraint FK_Reference_6 foreign key (ModuleID)
-      references Table_Module (ID) on delete restrict on update restrict;
+/*alter table Table_Algorithm add constraint FK_Reference_6 foreign key (ModuleID)
+      references Table_Module (ID) on delete restrict on update restrict;*/
 
 alter table Table_AlgorithmCondition add constraint FK_Reference_1 foreign key (AlgorithmRoleID)
       references Table_AlgorithmRole (ID) on delete restrict on update restrict;
