@@ -28,7 +28,6 @@ var Topology = {
         lineUp: 8,
         lineDown: 9
     },
-    nodeData:[],
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
     tools: [
         {
@@ -927,33 +926,16 @@ var Topology = {
             $("#algorithmMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte">${option.data.text}</div>
                 <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}' data-type='${option.algorithmtype}'>编辑算子</div>
-                    <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除算子</div>
+                    <div class='lkr-list-editAlgorithm lkr-edit' data-id='${option.id}' >编辑算子</div>
+                    <div class='lkr-list-delAlgorithm lkr-del' data-id='${option.id}' >删除算子</div>
                 </div>
             </div>`);
-        }
-        if(option.type== "规则"){
-            if(option.ruleType == "规则"){
-                $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
-                    <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
-                    <div class="left-list-tilte">${option.data.text}</div>
-                    <div class="left-list-event">
-                    <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>
-                    <div class='lkr-list-delRule lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除规则</div>
-                </div>
-                </div>`);
-            }else{
-                $("#formulaMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
-                    <div class="left-list-tilte">${option.data.text}</div>
-                </div>`);
-            }
-            
         }
        
     },
     addModel(option){
         
-        $("#mouldPage").append(`<div class="left-list">
+        $("#mouldPage").append(`<div class="left-list"  >
                                 <div class="left-list-tilte">${option.data.text}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模板</div>
@@ -986,7 +968,7 @@ var Topology = {
                 console.log(str)
                 self.tools.forEach(function (val, index) {
                     _html += '<div id="mouldPage" class="lkr-page">\n' +
-                        '       <div class="title" style="margin-top:0px">' + 
+                        '            <div class="title" style="margin-top:0px">' + 
                         
                         `<span id='returnLeft' class='lkr-arrow'>◀</span><div id='pic_list' class="lkr-pic_list"><ul class="lkr-tabs">
                         <li role="presentation" class="active-taps" data-name='基础模块' >基础模块</li>${str}
@@ -1004,39 +986,20 @@ var Topology = {
                         '        </div>';
                 });
                 let algorithm = `<div id="algorithmPage"  style='display:none;'>
-                                    <div class='algorithmTilte'>
-                                        <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
-                                    </div>
-                                
-                                    <div id="algorithmMde" class='lkr-page'></div>
-                                    <div class="algorithmFoot">
-                                        <div id='getAllMb'>可用模板</div>
-                                        <div id='getAllSz'>已有算子</div>
-                                    </div>
-                                </div>`
-                let rule = `<div id="regulationPage"  style='display:none;'>
-                                <div class='regulationTilte' >
-                                    <input type='text' checked="false" class="lkr-input" style="flex:1;margin: auto;"/>
-                                    <div class='ruleTitle'>
-                                       <span id="Import">导入</span>
-                                       <span id="export">导出</span>
-                                    </div>
-                                </div>
-                               
-                                <div id="ruleMde" class='lkr-page'> </div>
-                                <div id="formulaMde" class='lkr-page'> </div>
-                                <div class="regulationFoot">
-                                    <div id='getAllSzgz'>已有算子</div>
-                                    <div id='getAllGzgz'>已有规则</div>
-                                </div>
-                            </div>`    
+                        <div class='algorithmTilte' >
+                            <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                        </div>
+                    
+                        <div id="algorithmMde" class='lkr-page'></div>
+                        <div class="algorithmFoot">
+                            <div id='getAllMb'>可用模板</div>
+                            <div id='getAllSz'>已有算子</div>
+                        </div>
+                    </div>`
                 _html = `<div  class="lkr-pic_list"><ul class="lkr-tabs">
-                <li role="presentation" class="active-taps" data-name='模板管理' >模板管理</li>
-                <li role="presentation" class="active-taps" data-name='模板管理' >算子管理</li>
-                <li role="presentation" class="active-taps" data-name='模板管理' >规则管理</li>
-            
-            </ul></div>` + _html + algorithm + rule
-                $("#flex_tools").html(_html);
+             
+            </ul></div>` + _html +algorithm
+                // $("#flex_tools").html(_html);
                 $('#returnLeft').click(() => {
                     
                     if((document.getElementById('pic_list').scrollLeft - 50) < 0){
@@ -1081,7 +1044,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event,data,1111)
+                    console.log(event, data);
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1097,7 +1060,6 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                             locked = data.locked;
                             self.initLine();
                             break;
@@ -1133,34 +1095,9 @@ var Topology = {
                                 selNodes = null;
                             });
                             break;
-                        case 'moveNodes':
-                            canvas.data.lines.map(item => {
-                                if(item.from.id == data[0].id||item.to.id == data[0].id){
-                                    $(`#${item.from.id}_${item.id}_${item.to.id}`).css({
-                                        top:(item.to.y + item.from.y)/2 +"px",
-                                        left:(item.to.x + item.from.x)/2+"px"
-                                    })
-                                }
-                            })
-                            break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
-                         
-                            //去掉重复id的node（一个算子在一套规则中只能出现一次）
-                            function unique(arr){            
-                                for(var i=0; i<arr.length; i++){
-                                    for(var j=i+1; j<arr.length; j++){
-                                        if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
-                                            arr.splice(j,1);
-                                            
-                                            j--;
-                                        }
-                                    }
-                                }
-                                return arr;
-                            }
-                            unique(canvas.data.nodes)
                             break;
                         case 'addNode':
                             selNodes = [data];
@@ -1168,68 +1105,28 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            self.nodeData.push(data)
-                            console.log(data,selected)
-                            //存储编辑区数据
-                           
                             let nodeId = data.id
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
                                 window.bigData.formulaType = 'add'
-                                let ModuleId =nodeId.substring(0,nodeId.length-2)
-                                window.bigData.formulaModuleId = ModuleId
                             }
                             
                             locked = data.locked;
                             self.initNode();
                             break;
                         case 'addLine':
+                            
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
-                            // data.name = '"polyline"'      
-                            // console.log($("#ligature").show())
-                            // data.text = '4545'
-                            // console.log(data,canvas)
-                            // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                            // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                            //判断连线是否连接成功
-                            if(!data.to.id){
-                            canvas.data.lines.map((item,i) => {
-                                if(item.id == data.id){
-                                    canvas.data.lines.splice(i,1)
-                                    alert('操作失败！')
-                                    
-                                    canvas.render();
-                                    setTimeout(function () {
-                                        selected = null;
-                                        selNodes = null;
-                                    });
-                                }
-                            })
-                            }else{
-                                window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                                $('#'+window.currentId).css({
-                                    color: '#ffffff',
-                                    position: 'absolute',
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
-                                // 选择关系弹框
-                                $(`#selectRela`).css({
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
-                                selected = {
-                                    "type": event,
-                                    "data": data
-                                };
-                                console.log(121212,data)
-                                data.name = 'polyline'
-                                locked = data.locked;
-                                self.initLine();
-                            }
+                            // data.name = '"polyline"'
+                            // console.log('11111111111',data)
+                            selected = {
+                                "type": event,
+                                "data": data
+                            };
+                            locked = data.locked;
+                            self.initLine();
                             break;
                         case 'delete':
                             $("#flex_props_home").removeClass("hidden");
@@ -1379,7 +1276,7 @@ var Topology = {
         }
         self.onClickToArrow(toArrow, self.startLineStyle[toArrow1]);
         //连线类型
-        var lineType = "polyline";
+        var lineType = selected.data.name;
         self.onClickName(lineType, self.lineTypeStyle[lineType], 1);
         //线条颜色
         $("input[name=strokeStyle]").val(selected.data.strokeStyle);
@@ -1535,8 +1432,6 @@ var Topology = {
         console.log(selNodes)
         console.log(arrow, index)
         // console.log($(e).attr("class"))
-        //显示选择关系
-        $("#selectRela").show()
         var sum = 0;
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
