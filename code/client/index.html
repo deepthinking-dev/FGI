@@ -2081,16 +2081,105 @@
     function dictionary(){
         $("#dicDiv").show();
         $("#dicTable").text("");
-        $("#dicTable").append(`<thead>
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
+            data:"",
+            type:"get",
+            success(data) {
+                console.log(data);
+                $("#dicTable").append(`<thead>
 <th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
 </thead>`)
-        $("#dicTable").append(`<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-`)
+                data.map(s=>{
+                    $("#dicTable").append(
+                        `<tr>
+                        <td style="width: 100px">${s.tableAlgorithm.algorithmname}</td><td style="width: 200px">${s.tableAlgorithm.des}</td><td style="width: 150px"><input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+                        </tr>
+                       `)
+                })
+            }
+        })
+    }
+    //删除字典信息
+    function deleteZd(s) {
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/delAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                if(data.status == 1){
+                    dictionary()
+                }
+            }
+        })
+    }
+    //修改字典信息
+    function editZd(s) {
+        $("#editDicYes").attr("editId",s)
+        $.ajax({
+            url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                console.log(data);
+                $("#editDicName").val(data.tableAlgorithm.algorithmname);
+                $("#editDicDes").val(data.tableAlgorithm.des);
+                $("#zdcsList").empty()
+                data.tableFuncs.map(t=>{
+                    $("#zdcsList").append(`
+                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                            <p style="margin-top: 5px">
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" type="text" value="${t.varname}">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
+                                <select class="zdcsSelect">
+                                    <option value="2">常量</option>
+                                    <option value="3">对象</option>
+                                    <option value="1">基本类型</option>
+                                </select>
+                                <input type="text" value="" class="zdcsText">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
+                                <select class="zdcsExport">
+                                    <option value="0">输入</option>
+                                    <option value="1">输出</option>
+                                </select>
+                                <input class="deleteZdcs" style="float: right;margin-right: 20px;height: 24px;line-height: 24px;background: #f56c6c;border: none;color: #fff;" type="button" value="删除">
+                            </p>
+                        </div>
+                    `)
+                })
+                for(var i=0;i<data.tableFuncs.length;i++){
+                    $(".zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
+                    $(".zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
+                    if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                        $(".zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                    } else {
+                        $(".zdcsText").eq(i).remove();
+                        let select= $(`
+                            <select class="zdcsTypeSelect">
+                                <option>byte</option>
+                                <option>short</option>
+                                <option>int</option>
+                                <option>long</option>
+                                <option>float</option>
+                                <option>double</option>
+                                <option>boolean</option>
+                                <option>char</option>
+                                <option>date</option>
+                                <option>string</option>
+                                <option>BLOB</option>
+                                <option>boolean</option>
+                                <option>array</option>
+                            </select>`)
+                        select.val(data.tableFuncs[i].valvalue)
+                        $(".zdcsSelect").eq(i).parent().append(select)
+                    }
+                }
+            }
+        })
     }
 </script>
 </body>
