@@ -2,6 +2,7 @@ package deepthinking.fgi.controller;
 
 import deepthinking.fgi.common.ResultDto;
 import deepthinking.fgi.domain.TableAlgorithm;
+import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
 import deepthinking.fgi.service.TableAlgorithmService;
 import io.swagger.annotations.Api;
@@ -31,7 +32,7 @@ public class AlgorithmController {
     @GetMapping("/getAllAlgorithm")
     @ApiOperation(value = "03-01 获取公共的和个人的所有算子,仅返回算子基本信息", notes = "返回算子基本信息", httpMethod = "GET")
     @ApiImplicitParam(name = "username", value = "用户名（暂时传入null）", dataType = "string", paramType = "query", required = false)
-    public List<TableAlgorithm> getAllAlgorithm(String username){
+    public List<AlgorithmBaseInfo> getAllAlgorithm(String username){
         return tableAlgorithmService.getAllAlgorithm(username);
     }
 

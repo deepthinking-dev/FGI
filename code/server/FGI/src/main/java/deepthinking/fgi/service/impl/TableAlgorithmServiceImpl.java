@@ -3,6 +3,7 @@ package deepthinking.fgi.service.impl;
 import com.github.pagehelper.PageInfo;
 import deepthinking.fgi.Enum.InOrOutType;
 import deepthinking.fgi.dao.mapper.TableAlgorithmMapper;
+import deepthinking.fgi.dao.mapper.TableAlgorithmroleMapper;
 import deepthinking.fgi.dao.mapper.TableFuncMapper;
 import deepthinking.fgi.domain.*;
 import deepthinking.fgi.model.AlgorithmBaseInfo;

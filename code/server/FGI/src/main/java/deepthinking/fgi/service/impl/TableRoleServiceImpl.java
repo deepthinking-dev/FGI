@@ -67,56 +67,56 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         List<TableAlgorithmrole> algorithmroleList = null;
         List<TableAlgorithm> algorithmList = null;
         try{
-            String str = FileUtils.readTxtFile(filePath);
-            Map map = (Map) JSON.parse(str);
-            roleList = ((JSONArray) map.get("Role")).toJavaList(TableRole.class);
-            algorithmroleList = ((JSONArray) map.get("AlgorithmRole")).toJavaList(TableAlgorithmrole.class);
-            algorithmList = ((JSONArray) map.get("Algorithm")).toJavaList(TableAlgorithm.class);
-            //算法规则
-            roleList.forEach(role ->{
-                roleMapper.insert(role);
-            });
-            //算子模块
-            algorithmList.forEach(algorithm ->{
-                tableAlgorithmMapper.insert(algorithm);
-            });
-            //算法算子关系
-            List<TableRole> finalRoleList = roleList;
-            List<TableAlgorithm> finalAlgorithmList = algorithmList;
-            List<TableAlgorithmrole> finalAlgorithmroleList = algorithmroleList;
-            algorithmroleList.forEach(algorithmrole ->{
-                finalRoleList.forEach(role ->{
-                    if(algorithmrole.getRoleid().intValue() == role.getTno().intValue()){
-                        algorithmrole.setRoleid(role.getId());
-                    }
-                });
-                finalAlgorithmList.forEach(algorithm ->{
-                    if(algorithmrole.getAlgorithmid().intValue() == algorithm.getTno().intValue()){
-                        algorithmrole.setAlgorithmid(algorithm.getId());
-                    }
-                });
-                Integer id = algorithmroleMapper.selectMaxId();
-                if(null == id){
-                    id = 0;
-                }
-                algorithmrole.setId(++id);
-                algorithmroleMapper.insert(algorithmrole);
-            });
-
-            finalRoleList.forEach(role ->{
-                List<TableAlgorithmrole> childrenList = new ArrayList<TableAlgorithmrole>();
-                finalAlgorithmroleList.forEach(algorithmrole ->{
-                    if(algorithmrole.getRoleid().intValue() == role.getId().intValue()){
-                        childrenList.add(algorithmrole);
-                    }
-                    finalAlgorithmList.forEach(algorithm ->{
-                        if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
-                            algorithmrole.setTableAlgorithm(algorithm);
-                        }
-                    });
-                });
-                role.setTableAlgorithmroleList(childrenList);
-            });
+//            String str = FileUtils.readTxtFile(filePath);
+//            Map map = (Map) JSON.parse(str);
+//            roleList = ((JSONArray) map.get("Role")).toJavaList(TableRole.class);
+//            algorithmroleList = ((JSONArray) map.get("AlgorithmRole")).toJavaList(TableAlgorithmrole.class);
+//            algorithmList = ((JSONArray) map.get("Algorithm")).toJavaList(TableAlgorithm.class);
+//            //算法规则
+//            roleList.forEach(role ->{
+//                roleMapper.insert(role);
+//            });
+//            //算子模块
+//            algorithmList.forEach(algorithm ->{
+//                tableAlgorithmMapper.insert(algorithm);
+//            });
+//            //算法算子关系
+//            List<TableRole> finalRoleList = roleList;
+//            List<TableAlgorithm> finalAlgorithmList = algorithmList;
+//            List<TableAlgorithmrole> finalAlgorithmroleList = algorithmroleList;
+//            algorithmroleList.forEach(algorithmrole ->{
+//                finalRoleList.forEach(role ->{
+//                    if(algorithmrole.getRoleid().intValue() == role.getTno().intValue()){
+//                        algorithmrole.setRoleid(role.getId());
+//                    }
+//                });
+//                finalAlgorithmList.forEach(algorithm ->{
+//                    if(algorithmrole.getAlgorithmid().intValue() == algorithm.getTno().intValue()){
+//                        algorithmrole.setAlgorithmid(algorithm.getId());
+//                    }
+//                });
+//                Integer id = algorithmroleMapper.selectMaxId();
+//                if(null == id){
+//                    id = 0;
+//                }
+//                algorithmrole.setId(++id);
+//                algorithmroleMapper.insert(algorithmrole);
+//            });
+//
+//            finalRoleList.forEach(role ->{
+//                List<TableAlgorithmrole> childrenList = new ArrayList<TableAlgorithmrole>();
+//                finalAlgorithmroleList.forEach(algorithmrole ->{
+//                    if(algorithmrole.getRoleid().intValue() == role.getId().intValue()){
+//                        childrenList.add(algorithmrole);
+//                    }
+//                    finalAlgorithmList.forEach(algorithm ->{
+//                        if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
+//                            algorithmrole.setTableAlgorithm(algorithm);
+//                        }
+//                    });
+//                });
+//                role.setTableAlgorithmroleList(childrenList);
+//            });
             return roleList;
         }catch (Exception e){
             //手动回滚
@@ -145,63 +145,63 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     public TableRole GetTableExportData(Integer id) {
         TableRole tableRole = roleMapper.selectByPrimaryKey(id);
         if(null != tableRole){
-            TableAlgorithmroleCriteria algorithmroleCriteria = new TableAlgorithmroleCriteria();
-            algorithmroleCriteria.createCriteria().andRoleidEqualTo(tableRole.getId());
-            //算法算子关系
-            List<TableAlgorithmrole> algorithmroleList = algorithmroleMapper.selectByExample(algorithmroleCriteria);
-            tableRole.setTableAlgorithmroleList(algorithmroleList);
-
-            if(algorithmroleList.size() > 0){
-                //算法算子ID集合
-                List<Integer> arIdList = new ArrayList<Integer>();
-                //算子ID集合
-                List<Integer> aIdList = new ArrayList<Integer>();
-                algorithmroleList.forEach(algorithmrole ->{
-                    arIdList.add(algorithmrole.getId());
-                    aIdList.add(algorithmrole.getAlgorithmid());
-                });
-                TableAlgorithmconditionCriteria algorithmconditionCriteria = new TableAlgorithmconditionCriteria();
-                algorithmconditionCriteria.createCriteria().andAlgorithmroleidIn(arIdList);
-                //根据【算法算子关系】的ID查询算子运行条件,并关联起来
-                List<TableAlgorithmcondition> algorithmconditionList = algorithmconditionMapper.selectByExample(algorithmconditionCriteria);
-                if(algorithmconditionList.size() > 0){
-                    algorithmroleList.forEach(algorithmrole ->{
-                        List<TableAlgorithmcondition> childrenList = new ArrayList<TableAlgorithmcondition>();
-                        algorithmconditionList.forEach(algorithmcondition ->{
-                            if(algorithmrole.getId().intValue() == algorithmcondition.getAlgorithmroleid().intValue()){
-                                childrenList.add(algorithmcondition);
-                            }
-                        });
-                        algorithmrole.setTableAlgorithmconditionList(childrenList);
-                    });
-                }
-                //根据算子ID获取结果集,并关联起来
-                TableAlgorithmCriteria algorithmCriteria = new TableAlgorithmCriteria();
-                algorithmCriteria.createCriteria().andIdIn(aIdList);
-                List<TableAlgorithm> algorithmList = tableAlgorithmMapper.selectByExample(algorithmCriteria);
-                //同时获取公式变量列表
-                TableFuncCriteria funcCriteria = new TableFuncCriteria();
-                funcCriteria.createCriteria().andModuleidIn(aIdList);
-                List<TableFunc> funcList = funcMapper.selectByExample(funcCriteria);
-                if(algorithmList.size() > 0){
-                    algorithmroleList.forEach(algorithmrole ->{
-                        algorithmList.forEach(algorithm ->{
-                            if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
-                                algorithmrole.setTableAlgorithm(algorithm);
-                            }
-                        });
-                    });
-                    algorithmList.forEach(algorithm ->{
-                        List<TableFunc> childrenList = new ArrayList<TableFunc>();
-                        funcList.forEach(func -> {
-                            if(algorithm.getId().intValue() == func.getModuleid().intValue()){
-                                childrenList.add(func);
-                            }
-                        });
-                        algorithm.setTableFuncList(childrenList);
-                    });
-                }
-            }
+//            TableAlgorithmroleCriteria algorithmroleCriteria = new TableAlgorithmroleCriteria();
+//            algorithmroleCriteria.createCriteria().andRoleidEqualTo(tableRole.getId());
+//            //算法算子关系
+//            List<TableAlgorithmrole> algorithmroleList = algorithmroleMapper.selectByExample(algorithmroleCriteria);
+//            tableRole.setTableAlgorithmroleList(algorithmroleList);
+//
+//            if(algorithmroleList.size() > 0){
+//                //算法算子ID集合
+//                List<Integer> arIdList = new ArrayList<Integer>();
+//                //算子ID集合
+//                List<Integer> aIdList = new ArrayList<Integer>();
+//                algorithmroleList.forEach(algorithmrole ->{
+//                    arIdList.add(algorithmrole.getId());
+//                    aIdList.add(algorithmrole.getAlgorithmid());
+//                });
+//                TableAlgorithmconditionCriteria algorithmconditionCriteria = new TableAlgorithmconditionCriteria();
+//                algorithmconditionCriteria.createCriteria().andAlgorithmroleidIn(arIdList);
+//                //根据【算法算子关系】的ID查询算子运行条件,并关联起来
+//                List<TableAlgorithmcondition> algorithmconditionList = algorithmconditionMapper.selectByExample(algorithmconditionCriteria);
+//                if(algorithmconditionList.size() > 0){
+//                    algorithmroleList.forEach(algorithmrole ->{
+//                        List<TableAlgorithmcondition> childrenList = new ArrayList<TableAlgorithmcondition>();
+//                        algorithmconditionList.forEach(algorithmcondition ->{
+//                            if(algorithmrole.getId().intValue() == algorithmcondition.getAlgorithmroleid().intValue()){
+//                                childrenList.add(algorithmcondition);
+//                            }
+//                        });
+//                        algorithmrole.setTableAlgorithmconditionList(childrenList);
+//                    });
+//                }
+//                //根据算子ID获取结果集,并关联起来
+//                TableAlgorithmCriteria algorithmCriteria = new TableAlgorithmCriteria();
+//                algorithmCriteria.createCriteria().andIdIn(aIdList);
+//                List<TableAlgorithm> algorithmList = tableAlgorithmMapper.selectByExample(algorithmCriteria);
+//                //同时获取公式变量列表
+//                TableFuncCriteria funcCriteria = new TableFuncCriteria();
+//                funcCriteria.createCriteria().andModuleidIn(aIdList);
+//                List<TableFunc> funcList = funcMapper.selectByExample(funcCriteria);
+//                if(algorithmList.size() > 0){
+//                    algorithmroleList.forEach(algorithmrole ->{
+//                        algorithmList.forEach(algorithm ->{
+//                            if(algorithmrole.getAlgorithmid().intValue() == algorithm.getId().intValue()){
+//                                algorithmrole.setTableAlgorithm(algorithm);
+//                            }
+//                        });
+//                    });
+//                    algorithmList.forEach(algorithm ->{
+//                        List<TableFunc> childrenList = new ArrayList<TableFunc>();
+//                        funcList.forEach(func -> {
+//                            if(algorithm.getId().intValue() == func.getModuleid().intValue()){
+//                                childrenList.add(func);
+//                            }
+//                        });
+//                        algorithm.setTableFuncList(childrenList);
+//                    });
+//                }
+//            }
 
             return tableRole;
         }else{

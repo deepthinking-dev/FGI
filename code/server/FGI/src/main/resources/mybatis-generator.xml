@@ -47,8 +47,8 @@
     <!--<table tableName="Table_Role" >
 		<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 	</table>-->
-		<table tableName="Table_AlgorithmRole" >
+		<!--<table tableName="Table_AlgorithmRole" >
 			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-		</table>
+		</table>-->
 	</context>
 </generatorConfiguration>  

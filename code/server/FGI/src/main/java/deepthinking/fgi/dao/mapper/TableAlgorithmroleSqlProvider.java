@@ -2,6 +2,9 @@ package deepthinking.fgi.dao.mapper;
 
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableAlgorithmrole;
+import deepthinking.fgi.domain.TableAlgorithmroleCriteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableAlgorithmroleSqlProvider {
@@ -253,10 +256,10 @@ public class TableAlgorithmroleSqlProvider {
         }
         
         StringBuilder sb = new StringBuilder();
-        List<Criteria> oredCriteria = example.getOredCriteria();
+        List<TableAlgorithmroleCriteria.Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
         for (int i = 0; i < oredCriteria.size(); i++) {
-            Criteria criteria = oredCriteria.get(i);
+            TableAlgorithmroleCriteria.Criteria criteria = oredCriteria.get(i);
             if (criteria.isValid()) {
                 if (firstCriteria) {
                     firstCriteria = false;
@@ -265,10 +268,10 @@ public class TableAlgorithmroleSqlProvider {
                 }
                 
                 sb.append('(');
-                List<Criterion> criterions = criteria.getAllCriteria();
+                List<TableAlgorithmroleCriteria.Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
                 for (int j = 0; j < criterions.size(); j++) {
-                    Criterion criterion = criterions.get(j);
+                    TableAlgorithmroleCriteria.Criterion criterion = criterions.get(j);
                     if (firstCriterion) {
                         firstCriterion = false;
                     } else {
