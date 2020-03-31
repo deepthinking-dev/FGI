@@ -82,6 +82,8 @@ public class AlgorithmController {
             result.setMsg("修改成功");
         }else if(i==2){
             result.setMsg("该算法已经用于某些规则中，无法修改参数信息");
+        }else if(i==3){
+            result.setMsg("算法名称不能重复");
         }else {
             result.setMsg("修改失败");
         }

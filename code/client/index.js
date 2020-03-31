@@ -341,7 +341,7 @@ $(function(){
                                         </div>
                                         <div class="width-50 isShow2">
                                             <span>基本类型</span>
-                                            <select class="MathJaxSelect">
+                                            <select class="MathJaxSelect  MathJaxInput1 inputButton">
                                                 <option>byte</option>
                                                 <option>short</option>
                                                 <option>int</option>
@@ -611,10 +611,7 @@ $(function(){
                         }
                     })
 
-
-
                 }
-
             }
         })
 

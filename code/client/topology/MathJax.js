@@ -56,21 +56,22 @@
     //提交算子信息及公式编辑
     function ConfirmFrame(){
         let tableAl ={
-            algorithmauthor:$('#szAuthor').val(),
+            algorithmauthor:$('#gsName').val(),
             algorithmfun:$('#MathInput').val(),
             algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:2,
-            des:$('#szDes').val(),
+            des:$('#gsDes').val(),
             ispublic:0,
-            moduleid:window.bigData.editmoduleId,
-            remark:$('#szBz').val(),
+            moduleid:0,
+            remark:"",
+            id:$("#AlgorithmnameY").attr("tablealgorithmid")
         }
         let tableF=[]
         let tableModule={
-            moduleid:window.bigData.editmoduleId,
+            moduleid:0,
             remark:"",
             username:"",
-            id:0
+            id:$("#AlgorithmnameY").attr("tablealgorithmid")
         }
         let MathJaxParamLength = $('.MathJaxParam')
         if(MathJaxParamLength.length > 0){
@@ -80,7 +81,7 @@
                     obj.id = MathJaxParamLength.eq(i).attr('formulaid');
                     obj.algorithmid = MathJaxParamLength.eq(i).attr('formulaModuleId');
                 }
-                obj.moduleid = window.bigData.editmoduleId
+                obj.moduleid =0;
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()
                 obj.varname = MathJaxParamLength.eq(i).find('.MathJaxInput1').val()
                 obj.vartype = MathJaxParamLength.eq(i).find('.MathJaxInput2').val()
@@ -94,8 +95,8 @@
             }
         }
         if(window.bigData.formulaType == 'edit'){
-            tableAl.id = 0;
-            tableModule.id=0;
+            tableAl.algorithmauthor = $('#gsName').val();
+            tableAl.des = $('#gsDes').val();
         }
         let param = {
             tableAlgorithm:tableAl,
@@ -113,6 +114,7 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
+                        toastr.success('保存成功！');
                     }
                 }
             })
@@ -121,12 +123,23 @@
             $.ajax({
                 type:"post",
                 dataType: "json",
-                url:urlConfig.host+'/operatorMaintenance/modAlgorithmById',
+                url:urlConfig.host+'/operatorMaintenance/modAlgorithmBaseInfoById',
+                contentType: "application/json;charset=UTF-8",
+                data:JSON.stringify(tableAl),
+                success: function(data) {
+                    console.log(data);
+                }
+            })
+            $.ajax({
+                type:"post",
+                dataType: "json",
+                url:urlConfig.host+'/operatorMaintenance/modAlgorithmFuncsById',
                 contentType: "application/json;charset=UTF-8",
                 data:JSON.stringify(param),
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
+                        toastr.success('保存成功！');
                     }
                 }
             })
@@ -184,15 +197,14 @@ function removeLogic(event){
 //提交算子信息及逻辑运算
 function ConfirmLogic(){
     let tableAl ={
-        algorithmauthor:"",
+        algorithmauthor:$("#ljName").val(),
         algorithmfun:'',
         algorithmname:$('#LogicName').val(),
         algorithmtype:3,
-        des:"",
+        des:$("#ljDes").val(),
         ispublic:0,
-        moduleid:window.bigData.formulaModuleId,
+        moduleid:0,
         remark:"",
-        tno:""
     }
     let formula=""
     let logicLi = $('.logicLi')
@@ -217,7 +229,7 @@ function ConfirmLogic(){
     }
 
     let tableModule={
-        moduleid:window.bigData.formulaModuleId,
+        moduleid:0,
         remark:"",
         username:""
     }
@@ -229,7 +241,7 @@ function ConfirmLogic(){
         tableFuncs:[],
         tableModuleuserrelation:tableModule
     }
-    console.log(param)
+
     if(window.bigData.formulaType == 'add'){
         $.ajax({
             type:"post",
@@ -238,7 +250,8 @@ function ConfirmLogic(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(param),
             success: function(data) {
-                if(data == true){
+                if(data.status == 1){
+                    toastr.success('保存成功！');
                     $(".Logic").attr("style","display:none;");
                 }
             }
@@ -248,17 +261,17 @@ function ConfirmLogic(){
         $.ajax({
             type:"post",
             dataType: "json",
-            url:urlConfig.host+'/operatorMaintenance/modAlgorithmById',
+            url:urlConfig.host+'/operatorMaintenance/modAlgorithmBaseInfoById',
             contentType: "application/json;charset=UTF-8",
-            data:JSON.stringify(param),
+            data:JSON.stringify(tableAl),
             success: function(data) {
-                if(data == true){
+                if(data.status == 1){
+                    toastr.success('保存成功！');
                     $(".Logic").attr("style","display:none;");
                 }
             }
         })
     }
-
 }
 //关闭上传弹框
 function uploadClose(){
