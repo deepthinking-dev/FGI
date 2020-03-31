@@ -13,6 +13,7 @@
     <link href="./plugins/topology/layout.css" rel="stylesheet">
     <link href="./lkr.css" rel="stylesheet">
     <link href="./LogicMath.css" rel="stylesheet">
+    <link href="./toastr.css" rel="stylesheet">
     <!-- <link href="css/lanrenzhijia.css" type="text/css" rel="stylesheet" /> -->
     <!-- 矢量图标库 -->
     <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
@@ -51,6 +52,7 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
     <script src="./topology/formula.js"></script>
+    <script src="./toastr.js"></script>
     <script>
         $(function() {
             var content = "";
@@ -2109,6 +2111,7 @@
             success(data) {
                 if(data.status == 1){
                     dictionary()
+                    toastr.success('删除成功！');
                 }
             }
         })

@@ -30,6 +30,7 @@ $(function(){
         $("#editDic").show();
         $("#editDicTitle").text("新增字典");
         $("#zdcsList").html(``)
+        $("#editDicYes").attr("editId","")
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDic").show();
@@ -92,6 +93,8 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
+                    toastr.success('保存成功！');
+                    $("#editDic").hide()
                     dictionary()
                 }
             })
@@ -116,6 +119,8 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
+                    toastr.success('保存成功！');
+                    $("#editDic").hide()
                     dictionary()
                 }
             })
