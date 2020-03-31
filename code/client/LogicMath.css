@@ -23,7 +23,7 @@ body .inputButton{
 /* 公式编辑弹框 */
 .Frame{
     position: absolute;
-    height: 593px;
+    height: 693px;
     width: 589px;
     /* display: flex; */
     display: none;

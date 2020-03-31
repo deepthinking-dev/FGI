@@ -211,24 +211,20 @@
     </div>
     <!-- 新建/编辑算子 -->
     <div class="lkr-frame" id='AddAlgorithm'>
-        <div class="lkr-frame-div" style="height: 400px;">
+        <div class="lkr-frame-div" style="height: 200px;">
             <div class="lkr-frame-tilte">
                 新建/编辑算子
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">作者：</label>
-                    <input id="szAuthor" type='text' class="lkr-input" style="flex:1;margin-left: 10px;"/>
-                </div>              
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">描述：</label>
-                    <textarea id="szDes"  type='text' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
-                </div>
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">备注：</label>
-                    <input id="szBz" type='text' class="lkr-input" style="flex:1;margin-left: 10px;"/>
-                </div>
+<!--                <div style="margin: 15px 0;display: flex;align-items: center;">-->
+<!--                    <label style="line-height: 10px;width: 100px;">作者：</label>-->
+<!--                    <input id="szAuthor" type='text' class="lkr-input" style="flex:1;margin-left: 10px;"/>-->
+<!--                </div>              -->
+<!--                <div style="margin: 15px 0;display: flex;align-items: center;">-->
+<!--                    <label style="line-height: 10px;width: 100px;">描述：</label>-->
+<!--                    <textarea id="szDes"  type='text' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>-->
+<!--                </div>-->
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">算子类型：</label>
                     <select id="sfType" class="lkr-select" style="flex: 1;margin-left: 10px;">
@@ -425,6 +421,16 @@
             <span onclick="FrameClose()" style="cursor: pointer;">X</span>
         </div>
         <div class="form-group">
+            <div id="authorShow">
+                <div>
+                    <span class="form-span">作者</span>
+                    <input id="gsName" class="form-input" type="text" >
+                </div>
+                <div>
+                    <span class="form-span">描述</span>
+                    <input id="gsDes" class="form-input" type="text" >
+                </div>
+            </div>
             <div>
                 <span class="form-span">算子名称</span>
                 <input id="AlgorithmnameY" class="form-input" type="text" >
@@ -455,8 +461,16 @@
         <div class="LogicContent">
             <button class="addButton" onclick="addLogic()">新增</button>
             <div>
+                <span class="form-span">作者</span>
+                <input id="ljName" class="form-input" type="text" style="color: white;border: 1px solid white">
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="form-span">描述</span>
+                <input id="ljDes" class="form-input" type="text" style="color: white;border: 1px solid white">
+            </div>
+            <div style="margin-top: 10px;">
                 <span class="form-span">逻辑运算名称</span>
-                <input id="LogicName" class="form-input" type="text" >
+                <input id="LogicName" class="form-input" type="text" style="color: white;border: 1px solid white">
             </div>
             <div>
                 <form class="logicForm">
@@ -1181,7 +1195,8 @@
         $('#dataModulePage').fadeToggle(500)
     }
     function editAlgorithm(){
-        $('#AddAlgorithm').fadeToggle(500)
+        $('#AddAlgorithm').fadeToggle(500);
+        window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
         $('#AddAlgorithm').fadeToggle(500)
@@ -1342,6 +1357,8 @@
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $("#gsName").val(data.tableAlgorithm.algorithmauthor);
+                    $("#gsDes").val(data.tableAlgorithm.des);
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
                     window.changeBds(data.tableAlgorithm.algorithmfun);
@@ -1411,6 +1428,226 @@
                         }
                     }
                     $('.Frame').fadeToggle(500)
+                } else if(data.tableAlgorithm.algorithmtype == 3){
+                    window.bigData.formulaType = 'edit';
+                    $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
+                    $("#ljName").val(data.tableAlgorithm.algorithmauthor);
+                    $('#ljDes').val(data.tableAlgorithm.des);
+                    let algorithmfun = data.tableAlgorithm.algorithmfun;
+                    $.ajax({
+                        url:urlConfig.host+'/module/getModuleColumns',
+                        data:{moduleId:window.bigData.formulaModuleId},
+                        success: function(data) {
+                            let str1 =``
+                            if(data.length>0){
+                                data.map(item => {
+                                    str1 += `<option value="${item.fieldname}">${item.fieldname}</option>`
+                                })
+                                $('.Logic-form-field').html(str1)
+                            }
+
+                            algorithmfun = algorithmfun.split(" and ")
+                            let str =``
+                            for(let i=0;i<algorithmfun.length;i++){
+                                if(algorithmfun[i].indexOf('与') !=-1){
+                                    let obj = algorithmfun[i].split("与")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="" selected>与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('或') !=-1){
+                                    let obj = algorithmfun[i].split("或")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="" selected>或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('非') !=-1){
+                                    let obj = algorithmfun[i].split("非")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="" selected>非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<') !=-1) && (algorithmfun[i].indexOf('<=') == -1)){
+                                    let obj = algorithmfun[i].split("<")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="" selected>&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<=') !=-1) && (algorithmfun[i].indexOf('<') !=-1)  && (algorithmfun[i].indexOf('=') !=-1)){
+                                    let obj = algorithmfun[i].split("<=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="" selected>&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') == -1)){
+                                    let obj = algorithmfun[i].split(">")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="" selected>&gt;</option>
+                                                <option value="">  &gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') !=-1)){
+                                    let obj = algorithmfun[i].split(">=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="" selected>&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') ==-1) && (algorithmfun[i].indexOf('<') == -1)){
+                                    let obj = algorithmfun[i].split("=")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="" selected>=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+
+
+                            }
+                            $('.logicUl').html(str)
+                            $('.Logic').fadeToggle(500)
+                        }
+                    })
                 }
             }
         })
@@ -1419,85 +1656,7 @@
     function addLogic(){
         $(".logicUl").append($(".logicLi:first").clone());
     }
-    //提交算子信息及逻辑运算
-    function ConfirmLogic(){
-        let tableAl ={
-            algorithmauthor:"",
-            algorithmfun:'',
-            algorithmname:$('#LogicName').val(),
-            algorithmtype:3,
-            des:"",
-            ispublic:0,
-            moduleid:window.bigData.formulaModuleId,
-            remark:"",
-            tno:""
-        }
-        let formula=""
-        let logicLi = $('.logicLi')
-        if(($('#LogicName').val()).trim() == ''){
-            alert("请填写逻辑运算名称")
-            return false;
-        }
-        if(logicLi.length > 0){
-            for(let i=0;i<logicLi.length;i++){
 
-                let obj = logicLi.eq(i).find('.Logic-form-field option:selected').text()+logicLi.eq(i).find('.Logic-form-label option:selected').text()+ logicLi.eq(i).find('.Logic-form-value').val();
-                formula += obj+ " and ";
-            }
-        }else{
-            alert("请至少填写一个")
-            return false;
-        }
-
-        if (formula.length > 0) {
-            formula = formula.substr(0, formula.length - 5);
-            tableAl.algorithmfun = formula
-        }
-
-        let tableModule={
-            moduleid:window.bigData.formulaModuleId,
-            remark:"",
-            username:""
-        }
-        if(window.bigData.formulaType == 'edit'){
-            tableAl.id = $('#LogicName').attr("tableAlgorithmid");
-        }
-        let param = {
-            tableAlgorithm:tableAl,
-            tableFuncs:[],
-            tableModuleuserrelation:tableModule
-        }
-        console.log(param)
-        if(window.bigData.formulaType == 'add'){
-            $.ajax({
-                type:"post",
-                dataType: "json",
-                url:urlConfig.host+'/operatorMaintenance/addAlgorithm',
-                contentType: "application/json;charset=UTF-8",
-                data:JSON.stringify(param),
-                success: function(data) {
-                    if(data == true){
-                        $(".Logic").attr("style","display:none;");
-                    }
-                }
-            })
-        }
-        if(window.bigData.formulaType == 'edit'){
-            $.ajax({
-                type:"post",
-                dataType: "json",
-                url:urlConfig.host+'/operatorMaintenance/modAlgorithmById',
-                contentType: "application/json;charset=UTF-8",
-                data:JSON.stringify(param),
-                success: function(data) {
-                    if(data == true){
-                        $(".Logic").attr("style","display:none;");
-                    }
-                }
-            })
-        }
-
-    }
 </script>
 </body>
 </html>
