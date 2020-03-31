@@ -638,12 +638,10 @@ body .inputButton{
 .moduleContent{
     position: relative;
     display: flex;
-    margin: 50px 20px 50px 70px;
+    margin: 50px 20px 50px 100px;
     width: 1100px;
     height: auto;
     flex-flow: row wrap;
-    justify-content: center;
-    align-items: center
 }
 .moduleContent .left-list{
     margin: 10px 50px 20px 0px;

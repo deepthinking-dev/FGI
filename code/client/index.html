@@ -163,9 +163,16 @@
 </head>
 <body> 
     <!-- fgi模型表 -->
-    <div id="fgiMoName" class="lkr-frame" style="z-index: 9999; display: none;">
-        <div class="lkr-frame-div">
-            <div id="addMb">
+    <div id="sourceName" class="lkr-frame" style="z-index: 9999; display: none;">
+        <div class="lkr-frame-div" style="height: 460px;">
+            <div class="lkr-frame-tilte">
+                连接数据源
+                <span style="cursor: pointer;" onclick='sourceNameClose()'>x</span>
+            </div>
+            <div id="addSource" class="addSource">
+                <select id='fgiName' class="lkr-select">
+                    <option>卫星信号规格参数A表</option>
+                </select>
                 <table class="lkr-table" border="1">
                     <thead>
                       <tr>
@@ -189,10 +196,13 @@
                         </td>
                       </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                     
                     </tbody>
                 </table>
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='sourceNameConfirm()'>确定</div>
             </div>
         </div>
         
@@ -208,19 +218,19 @@
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">作者：</label>
-                    <input type='text' id='modulegroup' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                    <input type='text' id='AlgorithmT' class="lkr-input" style="flex:1;margin-left: 10px;"/>
                 </div>              
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">描述：</label>
-                    <textarea  type='text' id='mouldRemark' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
+                    <textarea  type='text' id='AlgorithmDes' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">备注：</label>
-                    <input type='text' id='mouldName' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                    <input type='text' id='AlgorithmBz' class="lkr-input" style="flex:1;margin-left: 10px;"/>
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">算子类型：</label>
-                    <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                    <select id='AlgorithmType' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>算法公式</option>
                         <option>逻辑运算</option>
                     </select>                    
@@ -241,48 +251,6 @@
         <button class="addButton" onclick="addModule()">新增</button>
         <div class="moduleContent">
             
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">长波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">短波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">雷达波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">长波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">短波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">雷达波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
         </div>
         <div class="frame-foot">
             <div class="button" onclick='ConfirmLogic()'>确定</div>
@@ -541,19 +509,16 @@
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 80px;">链接数据源：</label>
-                    <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                    <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
-                    </select>
-                    <!-- <div class="lkr-button">链接数据源</div> -->
+                    </select> -->
+                    <div id='fgiSource' class="lkr-button">链接数据源</div>
                     
                 </div>
-                <!-- <div id='addMb'>
+                <div id='addMb' >
                     <table class="lkr-table" border="1">
                         <thead>
                           <tr>
-                            <td>
-                                <input type="checkbox" name="item" id="selectAll"/>
-                            </td>
                             <td>
                                 字段英文
                             </td>
@@ -569,6 +534,12 @@
                             <td>
                                 是否主键
                             </td>
+                            <td>
+                                字段表名
+                            </td>
+                            <td>
+                                操作
+                            </td>
                           </tr>
                         </thead>
                         <tbody >
@@ -576,7 +547,7 @@
                         </tbody>
                     </table>
                     
-                </div> -->
+                </div>
             </div>
             <div class="lkr-frame-foot">
                 <div class="lkr-button" onclick='Confirm()'>确定</div>
@@ -1769,40 +1740,26 @@
                 $("#modulegroup").val(data.modulegroup)
                 $("#mouldRemark").val(data.des)
                 window.bigData.editmoduleId = data.id
-                $.ajax({
-                    url:urlConfig.host+'/module/findAllTableFromDB',
-                    data:'',
-                    success: function(datas) {
-                        let str = '<option>请选择</option>'
-                        datas.map(item => {
-                            if(data.tab == item){
-                                str += `<option selected>${item}</option>`
-                            }else{
-                                str += `<option>${item}</option>`
-                            }
-                            
-                        })
-                        fgiNameChangeedit(data.tab,data.modulefields)
-                        $("#fgiName").html(str)
-                        
-
-                    }
+                let thStr=``
+                data.modulefields.map(item => {
+                    thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
+                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
+                    <td>${item.LENGTH?item.LENGTH:''}</td>
+                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
+                    <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td><button class="delTab">删除</button></td></tr>`
                 })
-                $("#modulegroup").prop('disabled',true)
+                $('#addMb tbody').html(thStr)
+                
             }
         })
     })
   
     function addModule(){
         window.bigData.frameType = 'add'
-        // copnsole
         $('#lkrFrame').fadeToggle(500)
-        // if(window.bigData.actionTab != '基础模块'){
-        //     $("#modulegroup").val(window.bigData.actionTab)
-        //     $("#modulegroup").prop('disabled',true)
-        // }else{
-        //     $("#modulegroup").prop('disabled',false)
-        // }
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
             data:'',
@@ -1812,16 +1769,14 @@
                     str += `<option>${item}</option>`
                 })
                 $("#fgiName").html(str)
-                fgiNameChange()
-
             }
         })
     }
-    function fgiNameChangeedit(name,datas){
+    $("#fgiName").change((e)=>{
         $.ajax({
             url:urlConfig.host+'/module/findAllFiledByTableName',
             data:{
-                tableName:name
+                tableName:$(e.target).val()
             },
             success: function(data) {
                 window.bigData.mouldParam = data
@@ -1834,39 +1789,45 @@
                     <td>${item.LENGTH?item.LENGTH:''}</td>
                     <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td></tr>`
                 })
-                $('#addMb tbody').html(thStr)
-                window.bigData.editmoduledata = datas
-                datas.map(item => {
-                    $('#chk'+item.fieldname).prop('checked',true)
+                $('#addSource tbody').html(thStr)
+               
+                window.bigData.editmoduledata.map(item => {
+                    if($(e.target).val() ==item.tableName){
+                        $('#chk'+item.fieldname).prop('checked',true)
+                    }                   
                 })
             }
         })
-    }
-    function fgiNameChange(){
-        $("#fgiMoName").fadeToggle(500)
-        $("#fgiName").change((e) => {
-            
-            $.ajax({
-                url:urlConfig.host+'/module/findAllFiledByTableName',
-                data:{
-                    tableName:$(e.target).val()
-                },
-                success: function(data) {
-                    window.bigData.mouldParam = data
-                    let thStr = ''
-                    data.map(item => {
-                        thStr += `<tr><td><input type="checkbox" name="item" data-id='${item.COLUMN_NAME}'/></td>
-                        <td>${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
-                        <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-                        <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-                        <td>${item.LENGTH?item.LENGTH:''}</td>
-                        <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td></tr>`
-                    })
-                    $('#addMb tbody').html(thStr)
-                }
-            })
+    })
+    $("#fgiSource").click((e) => {
+        let addMbTr = $('#addMb tbody tr')
+        window.bigData.editmoduledata =[]
+        if(addMbTr.length > 0){
+           $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                window.bigData.editmoduledata.push({
+                    fieldname:items.children('.columnName').text(),
+                    tableName:items.children('.tableName').text()
+                })
+            })          
+        }
+        $("#sourceName").fadeToggle(500)
+        $.ajax({
+            url:urlConfig.host+'/module/findAllTableFromDB',
+            data:'',
+            success: function(data) {
+                let str = '<option>请选择</option>'
+                data.map(item => {
+                    str += `<option>${item}</option>`
+                })
+                $("#fgiName").html(str)
+                // fgiNameChange()
+
+            }
         })
-    }
+
+    })
+   
     function selectAll(selectStatus){//传入参数（全选框的选中状态）
         //根据name属性获取到单选框的input，使用each方法循环设置所有单选框的选中状态
         if(selectStatus){
@@ -1892,30 +1853,21 @@
         reseAddMb()
         $('#lkrFrame').fadeToggle(500)
     }
-    function Confirm(){
-        // console.log($("#modulegroup").val())
-        // return
-        
+    function Confirm(){   
         let mouldParam = []
-        $("input:checkbox[name='item']").each((i,v) => {
-            let items = $(v)
-            if(items.prop('checked')){
-                
-                window.bigData.mouldParam.map(item => {
-                    if(items.data('id') == item.COLUMN_NAME){
-                        mouldParam.push({
-                            fieldname:item.COLUMN_NAME,
-                            fieldtype:item.COLUMN_TYPE,
-                            tablename:$('#fgiName').val() == '请选择'?'':$('#fgiName').val()
-                            // id:null,
-                            // moduleid:null,
-                            // remark:null
-                        })
-                    }
-                })
-            }
-        })
+       
         if(window.bigData.frameType == 'add'){
+            $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                mouldParam.push({
+                    fieldname:items.children('.columnName').text(),
+                    fieldtype:items.children('.columnType').text(),
+                    tablename:items.children('.tableName').text()
+                    // id:null,
+                    // moduleid:null,
+                    // remark:null
+                })
+            })
             let param = {
                 modulegroup:$("#modulegroup").val(),
                 modulename:$("#mouldName").val(),
@@ -1933,22 +1885,45 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    reseTabsList()
-                    reseTabs()
-                    reseAddMb()
+                    $(".moduleContent").html('')
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrame').fadeToggle(500)
                 }
                     
             })
         }else{
-            mouldParam.map(obj => {
-                window.bigData.editmoduledata.map(item => {
-                    if(obj.fieldname == item.fieldname){
-                        obj.id = item.id
-                        obj.moduleid = item.moduleid
-                        obj.remark = item.remark
-                    }
-                })
+            $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                let id=0
+                if(items.attr("id")){
+                    id = items.attr("id")
+                }
+                let obj = {
+                    fieldname:items.children('.columnName').text(),
+                    fieldtype:items.children('.columnType').text(),
+                    tablename:items.children('.tableName').text(),
+                    id:id,
+                    moduleid:window.bigData.editmoduleId,
+                    // remark:null
+                }
+                mouldParam.push(obj)
             })
             
             let param = {
@@ -1970,9 +1945,25 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    reseTabsList()
-                    reseTabs()
-                    reseAddMb()
+                    $(".moduleContent").html('')
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrame').fadeToggle(500)
                 }
                     
@@ -2056,6 +2047,25 @@
     }
 
     function dataModlue(){
+        $.ajax({
+            url:urlConfig.host+'/module/GetAllModule',
+            data:'',
+            success: function(data) {
+                if(data){
+                    $(".moduleContent").html('')
+                    let str=``
+                    data.map(item=>{
+                        $(".moduleContent").append(`<div class="left-list">
+                                <div class="left-list-tilte">${item.modulename}</div>
+                                <div class="left-list-event">
+                                    <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                    <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                </div>
+                            </div>`)
+                    })
+                }
+            }
+        })
         $('#dataModulePage').fadeToggle(500)
     }
     function ModuleClose(){
@@ -2066,6 +2076,47 @@
     }
     function AlgorithmClose(){
         $('#AddAlgorithm').fadeToggle(500)
+    }
+    function sourceNameClose(){
+        $('#addSource tbody').html('')
+        $("#sourceName").fadeToggle(500)
+    }
+    function sourceNameConfirm(){
+        debugger
+        let modlueList =[]
+        $("input:checkbox[name='item']").each((i,v) => {
+            let items = $(v)
+          
+            if(items.prop('checked')){
+               let list = $(items).parent().nextAll()
+            //    list.map(item =>{
+            //     debugger
+            //    })
+                let obj ={
+                    IS_NULLABLE:list.eq(4).text(),
+                    COLUMN_NAME:list.eq(0).text(),
+                    COLUMN_TYPE:list.eq(2).text(),
+                    LENGTH:list.eq(3).text(),
+                    COLUMN_COMMENT:list.eq(1).text(),
+                    TABLE_NAME:$("#fgiName").val()
+                }
+                modlueList.push(obj)
+            }
+        })
+        let thStr = ''
+        modlueList.map(item => {
+            thStr += `<tr>
+            <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
+            <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+            <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
+            <td>${item.LENGTH?item.LENGTH:''}</td>
+            <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
+            <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
+            <td><button class="delTab">删除</button></td></tr>`
+        })
+        $('#addMb tbody').html(thStr)
+        $('#addSource tbody').html('')
+        $("#sourceName").fadeToggle(500)
     }
     function AlgorithmConfirm(){
         let s = $('#fgiName').val();
@@ -2082,15 +2133,15 @@
         $("#dicDiv").show();
         $("#dicTable").text("");
         $("#dicTable").append(`<thead>
-<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
-</thead>`)
-        $("#dicTable").append(`<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-`)
+        <th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
+        </thead>`)
+                $("#dicTable").append(`<tr>
+        <td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+        </tr>
+        <tr>
+        <td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+        </tr>
+        `)
     }
 </script>
 </body>

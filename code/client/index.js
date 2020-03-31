@@ -276,6 +276,11 @@ $(function(){
         window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
+
+    $('body').on('click','button.delTab',(e) => {
+        debugger
+        $(e.target).parents('tr').remove();
+    })
  
 })
 
