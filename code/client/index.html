@@ -13,6 +13,7 @@
     <link href="./plugins/topology/layout.css" rel="stylesheet">
     <link href="./lkr.css" rel="stylesheet">
     <link href="./LogicMath.css" rel="stylesheet">
+    <link href="./toastr.css" rel="stylesheet">
     <!-- <link href="css/lanrenzhijia.css" type="text/css" rel="stylesheet" /> -->
     <!-- 矢量图标库 -->
     <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
@@ -51,6 +52,7 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
     <script src="./topology/formula.js"></script>
+    <script src="./toastr.js"></script>
     <script>
         $(function() {
             var content = "";
@@ -131,9 +133,8 @@
                                 <div class="width-50 width-select">
                                     <span>类型</span>
                                     <select id="" class="MathJaxInput2 inputButton" >
-                                        <option value="常量">常量</option>
-                                        <option value="数据项">数据项</option>
-                                        <option value="其他模块计算结果">其他模块计算结果</option>
+                                        <option value="2">常量</option>
+                                        <option value="1">基本类型</option>
                                     </select>
                                 </div>
                                 <div class="width-50 isShow1"> 
@@ -142,11 +143,21 @@
                                 </div>
                                 <div class="width-50 isShow2"> 
                                         <span>数据项</span>
-                                        <input type="text" class="MathJaxInput3 inputFields inputButton"  readonly="readonly">
-                                </div>
-                                <div class="width-50 isShow3"> 
-                                        <span>其他公式</span>
-                                        <input type="text" class="MathJaxInput3 otherFormula inputButton"  readonly="readonly">
+                                        <select class="MathJaxSelect">
+                                            <option>byte</option>
+                                            <option>short</option>
+                                            <option>int</option>
+                                            <option>long</option>
+                                            <option>float</option>
+                                            <option>double</option>
+                                            <option>boolean</option>
+                                            <option>char</option>
+                                            <option>date</option>
+                                            <option>string</option>
+                                            <option>BLOB</option>
+                                            <option>boolean</option>
+                                            <option>array</option>
+                                        </select>
                                 </div>
                                 <div class="width-50"> 
                                         <span>描述</span>
@@ -1687,6 +1698,9 @@
         <div>
             <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">算法描述</span><input type="text" id="editDicDes">
         </div>
+        <div class="gsDiv" style="margin-top: 15px;display: none">
+            <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">公式信息</span><input type="text" id="gsXx">
+        </div>
         <p>
             <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
             <input type="button" style="background: #409eff;margin-left: 25px;color: #fff" id="addZdcs" value="新增参数">
@@ -2132,16 +2146,111 @@
     function dictionary(){
         $("#dicDiv").show();
         $("#dicTable").text("");
-        $("#dicTable").append(`<thead>
-        <th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
-        </thead>`)
-                $("#dicTable").append(`<tr>
-        <td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-        </tr>
-        <tr>
-        <td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-        </tr>
-        `)
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
+            data:"",
+            type:"get",
+            success(data) {
+                console.log(data);
+                $("#dicTable").append(`<thead>
+<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
+</thead>`)
+                data.map(s=>{
+                    $("#dicTable").append(
+                        `<tr>
+                        <td style="width: 100px">${s.tableAlgorithm.algorithmname}</td><td style="width: 200px">${s.tableAlgorithm.des}</td><td style="width: 150px"><input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+                        </tr>
+                       `)
+                })
+            }
+        })
+    }
+    //删除字典信息
+    function deleteZd(s) {
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/delAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                if(data.status == 1){
+                    dictionary()
+                    toastr.success('删除成功！');
+                }
+            }
+        })
+    }
+    //修改字典信息
+    function editZd(s) {
+        $("#editDicYes").attr("editId",s)
+        $.ajax({
+            url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                console.log(data);
+                if(data.tableAlgorithm.algorithmtype == 2){
+                    $(".gsDiv").show();
+                    $("#gsXx").val(data.tableAlgorithm.algorithmfun)
+                }
+                $("#editDicName").val(data.tableAlgorithm.algorithmname);
+                $("#editDicDes").val(data.tableAlgorithm.des);
+                $("#zdcsList").empty()
+                data.tableFuncs.map(t=>{
+                    $("#zdcsList").append(`
+                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                            <p style="margin-top: 5px">
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" type="text" value="${t.varname}">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
+                                <select class="zdcsSelect">
+                                    <option value="2">常量</option>
+                                    <option value="3">对象</option>
+                                    <option value="1">基本类型</option>
+                                </select>
+                                <input type="text" value="" class="zdcsText">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
+                                <select class="zdcsExport">
+                                    <option value="0">输入</option>
+                                    <option value="1">输出</option>
+                                </select>
+                                <input class="deleteZdcs" style="float: right;margin-right: 20px;height: 24px;line-height: 24px;background: #f56c6c;border: none;color: #fff;" type="button" value="删除">
+                            </p>
+                        </div>
+                    `)
+                })
+                debugger
+                for(var i=0;i<data.tableFuncs.length;i++){
+                    $(".zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
+                    $(".zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
+                    if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                        $(".zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                    } else {
+                        $(".zdcsText").eq(i).hide();
+                        let select= $(`
+                            <select class="zdcsTypeSelect">
+                                <option>byte</option>
+                                <option>short</option>
+                                <option>int</option>
+                                <option>long</option>
+                                <option>float</option>
+                                <option>double</option>
+                                <option>boolean</option>
+                                <option>char</option>
+                                <option>date</option>
+                                <option>string</option>
+                                <option>BLOB</option>
+                                <option>boolean</option>
+                                <option>array</option>
+                            </select>`)
+                        select.val(data.tableFuncs[i].valvalue)
+                        $(".zdcsSelect").eq(i).parent().append(select)
+                    }
+                }
+            }
+        })
     }
 </script>
 </body>

@@ -30,6 +30,9 @@ $(function(){
         $("#editDic").show();
         $("#editDicTitle").text("新增字典");
         $("#zdcsList").html(``)
+        $("#editDicYes").attr("editId","")
+        $("#editDicName").val("");
+        $("#editDicDes").val("");
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDic").show();
@@ -38,8 +41,102 @@ $(function(){
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
         let des =  $("#editDicDes").val();
-        console.log(name, des);
+        let dataAll = {
+            "tableAlgorithm": {
+                "algorithmauthor": "",
+                "algorithmfun": "",
+                "algorithmname": name,
+                "algorithmtype": 1,
+                "des": des,
+                "id": 0,
+                "ispublic": 0,
+                "moduleid":0,
+                "remark": ""
+            },
+            "tableFuncs": [
 
+            ],
+            "tableModuleuserrelation": {
+                "id": 0,
+                "moduleid": 0,
+                "remark": "string",
+                "username": "string"
+            }
+        }
+        var tables = [];
+        $(".zdcsDiv").each((i,s)=>{
+            let obj =   {
+                "algorithmid": 0,
+                "id": 0,
+                "remark": ""
+            };
+            obj.varname = $(s).find('.zdcsCsmc').val() //参数名称
+            obj.inorout = $(s).find('.zdcsExport').val()//输入输出
+            obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
+            if(obj.vartype == "2" || obj.vartype == "3"){
+                obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
+            } else {
+                obj.valvalue = $(s).find('.zdcsTypeSelect').val()//下拉框类型值
+            }
+            if($(s).attr("divid")){
+                obj.id = Number($(s).attr("divid"))
+                obj.algorithmid = Number($("#editDicYes").attr("editId"))
+
+            }
+            tables.push(obj)
+        })
+        dataAll.tableFuncs = tables;
+        if( $("#editDicTitle").text() == "新增字典"){
+            $.ajax({
+                url:urlConfig.host + "/operatorMaintenance/addAlgorithm",
+                data:JSON.stringify(dataAll),
+                type:"POST",
+                dataType: "json",
+                contentType:"application/json",
+                success(data) {
+                    console.log(data);
+                    toastr.success('保存成功！');
+                    $("#editDic").hide()
+                    dictionary()
+                }
+            })
+        } else {
+            let jbxx = {
+                "algorithmauthor": "",
+                "algorithmfun": "",
+                "algorithmname": name,
+                "algorithmtype": 1,
+                "des": des,
+                "id": $("#editDicYes").attr("editId"),
+                "ispublic": 0,
+                "moduleid": 0,
+                "remark": ""
+            }
+            dataAll.tableAlgorithm.id = $("#editDicYes").attr("editId");
+            $.ajax({
+                url:urlConfig.host + "/operatorMaintenance/modAlgorithmBaseInfoById",
+                data:JSON.stringify(jbxx),
+                type:"POST",
+                dataType: "json",
+                contentType:"application/json",
+                success(data) {
+                    console.log(data);
+                    toastr.success('保存成功！');
+                    $("#editDic").hide()
+                    dictionary()
+                }
+            })
+            $.ajax({
+                url:urlConfig.host + "/operatorMaintenance/modAlgorithmFuncsById",
+                data:JSON.stringify(dataAll),
+                type:"POST",
+                dataType: "json",
+                contentType:"application/json",
+                success(data) {
+                    console.log(data);
+                }
+            })
+        }
     })
     $('body').on('click','#addZdcs',(e) => {
         $("#zdcsList").append(`
@@ -50,17 +147,17 @@ $(function(){
                 <p>
                     <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
                     <select class="zdcsSelect">
-                        <option>常量</option>
-                        <option>model</option>
-                        <option>基本类型</option>
+                        <option value="2">常量</option>
+                        <option value="3">对象</option>
+                        <option value="1">基本类型</option>
                     </select>
                     <input type="text" value="" class="zdcsText">
                 </p>
                 <p>
                     <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
                     <select class="zdcsExport">
-                        <option>输入</option>
-                        <option>输出</option>
+                        <option value="0">输入</option>
+                        <option value="1">输出</option>
                     </select>
                     <input class="deleteZdcs" style="float: right;margin-right: 20px;height: 24px;line-height: 24px;background: #f56c6c;border: none;color: #fff;" type="button" value="删除">
                 </p>
@@ -68,16 +165,26 @@ $(function(){
         `)
     })
     $('body').on('change','.zdcsSelect',(e) => {
-        if(e.target.value == "常量" || e.target.value == "model"){
+        if(e.target.value == "2" || e.target.value == "3"){
             $(e.target).next().remove();
             $(e.target).parent().append(`<input type="text" value=""  class="zdcsText">`)
         } else {
             $(e.target).next().remove();
             $(e.target).parent().append(`
                     <select class="zdcsTypeSelect">
-                        <option>基本类型1</option>
-                        <option>基本类型2</option>
-                        <option>基本类型3</option>
+                        <option>byte</option>
+                        <option>short</option>
+                        <option>int</option>
+                        <option>long</option>
+                        <option>float</option>
+                        <option>double</option>
+                        <option>boolean</option>
+                        <option>char</option>
+                        <option>date</option>
+                        <option>string</option>
+                        <option>BLOB</option>
+                        <option>boolean</option>
+                        <option>array</option>
                     </select>`)
         }
     })
