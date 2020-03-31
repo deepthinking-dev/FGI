@@ -1359,6 +1359,7 @@
                 } else if(data.tableAlgorithm.algorithmtype == 2){
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor);
                     $("#gsDes").val(data.tableAlgorithm.des);
+                    $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
                     window.changeBds(data.tableAlgorithm.algorithmfun);
