@@ -133,9 +133,8 @@
                                 <div class="width-50 width-select">
                                     <span>类型</span>
                                     <select id="" class="MathJaxInput2 inputButton" >
-                                        <option value="常量">常量</option>
-                                        <option value="数据项">数据项</option>
-                                        <option value="其他模块计算结果">其他模块计算结果</option>
+                                        <option value="2">常量</option>
+                                        <option value="1">基本类型</option>
                                     </select>
                                 </div>
                                 <div class="width-50 isShow1"> 
@@ -144,11 +143,21 @@
                                 </div>
                                 <div class="width-50 isShow2"> 
                                         <span>数据项</span>
-                                        <input type="text" class="MathJaxInput3 inputFields inputButton"  readonly="readonly">
-                                </div>
-                                <div class="width-50 isShow3"> 
-                                        <span>其他公式</span>
-                                        <input type="text" class="MathJaxInput3 otherFormula inputButton"  readonly="readonly">
+                                        <select class="MathJaxSelect">
+                                            <option>byte</option>
+                                            <option>short</option>
+                                            <option>int</option>
+                                            <option>long</option>
+                                            <option>float</option>
+                                            <option>double</option>
+                                            <option>boolean</option>
+                                            <option>char</option>
+                                            <option>date</option>
+                                            <option>string</option>
+                                            <option>BLOB</option>
+                                            <option>boolean</option>
+                                            <option>array</option>
+                                        </select>
                                 </div>
                                 <div class="width-50"> 
                                         <span>描述</span>
@@ -1718,6 +1727,9 @@
         <div>
             <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">算法描述</span><input type="text" id="editDicDes">
         </div>
+        <div class="gsDiv" style="margin-top: 15px;display: none">
+            <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">公式信息</span><input type="text" id="gsXx">
+        </div>
         <p>
             <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
             <input type="button" style="background: #409eff;margin-left: 25px;color: #fff" id="addZdcs" value="新增参数">
@@ -2125,6 +2137,10 @@
             type:"get",
             success(data) {
                 console.log(data);
+                if(data.tableAlgorithm.algorithmtype == 2){
+                    $(".gsDiv").show();
+                    $("#gsXx").val(data.tableAlgorithm.algorithmfun)
+                }
                 $("#editDicName").val(data.tableAlgorithm.algorithmname);
                 $("#editDicDes").val(data.tableAlgorithm.des);
                 $("#zdcsList").empty()

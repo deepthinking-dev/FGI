@@ -26,12 +26,12 @@
     $('body').on('change','.MathJaxInput2',(e) => {
 
         var objS = $(e.target).val()
-        if(objS == "常量"){           
+        if(objS == "2"){
             $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:none;");
             $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:none;");
             $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:block;");
         }
-        if(objS == "数据项"){
+        if(objS == "1"){
             $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:none;");
             $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:none;");
             $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:block;");
@@ -49,31 +49,22 @@
                                     remark
                                 </tr>`
                     })
-                    
                     $(".fieldsList").html(str) 
                 }
             })
         }
-        if(objS == "其他模块计算结果"){
-
-            $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:none;");
-            $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:none;");
-            $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:block;");
-        }
     })
     //提交算子信息及公式编辑
     function ConfirmFrame(){
-        
         let tableAl ={
-            algorithmauthor:"111",
+            algorithmauthor:$('#modulegroup').val(),
             algorithmfun:$('#MathInput').val(),
-            algorithmname:$('#algorithmname').val(),
-            algorithmtype:0,
-            des:"",
+            algorithmname:$('#AlgorithmnameY').val(),
+            algorithmtype:2,
+            des:$('#mouldRemark').val(),
             ispublic:0,
             moduleid:window.bigData.editmoduleId,
-            remark:"",
-            tno:0
+            remark:$('#mouldName').val(),
         }
         let tableF=[]
         let tableModule={
@@ -90,16 +81,20 @@
                 }
                 obj.moduleid = window.bigData.editmoduleId
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()
-                obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()
                 obj.varname = MathJaxParamLength.eq(i).find('.MathJaxInput1').val()
-                obj.vartype = MathJaxParamLength.eq(i).find('#selectId option:selected').text()
+                obj.vartype = MathJaxParamLength.eq(i).find('.MathJaxInput2').val()
+                obj.inorout = 0;
+                if(MathJaxParamLength.eq(i).find('.isShow1').css('display') == "block"){
+                    obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()
+                } else {
+                    obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxSelect').val()
+                }
                 tableF.push(obj)
             }
-            
         }
         if(window.bigData.formulaType = 'edit'){
-            tableAl.id =  $('#algorithmname').attr("id")
-            tableModule.id=$('#algorithmname').attr("id")
+            tableAl.id = 0;
+            tableModule.id=0;
         }
         let param = {
             tableAlgorithm:tableAl,
@@ -114,8 +109,9 @@
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(param),
             success: function(data) {
-               if(data == true){
-                    $(".Frame").attr("style","display:none;");
+               if(data.status == 1){
+                   $(".Frame").attr("style","display:none;");
+                   toastr.success('保存成功！');
                }
             }
         }) 

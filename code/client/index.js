@@ -31,6 +31,8 @@ $(function(){
         $("#editDicTitle").text("新增字典");
         $("#zdcsList").html(``)
         $("#editDicYes").attr("editId","")
+        $("#editDicName").val("");
+        $("#editDicDes").val("");
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDic").show();
