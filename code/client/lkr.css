@@ -460,7 +460,7 @@ body{
 #dicTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -468,6 +468,18 @@ body{
     border: none;
     outline: none;
     color: #fff;
+}
+#ljName,#ljDes,#LogicName,#gsName,#gsDes,#AlgorithmnameY,#MathInput{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 320px;
+    height: 39px;
+    padding-left: 10px;
 }
 .zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option{
     background-color: rgb(22, 65, 144);
