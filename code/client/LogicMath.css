@@ -647,3 +647,18 @@ body .inputButton{
     margin: 10px 50px 20px 0px;
     width: 292px;
 }
+.backAlgorithmPage{
+    position: relative;
+    background-image: url(./static/botton.png) !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: none;
+    outline: none;
+    border: none;
+    width: 112px;
+    height: 35px;
+    padding-left: 10px;
+    top: 20px;
+    right: 10px;
+    float: right;
+}

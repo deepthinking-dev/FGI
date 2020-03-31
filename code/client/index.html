@@ -632,14 +632,17 @@
                             <div class='Search'>
                                 <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
                             </div>
-                           <div id="rulePage" class='lkr-page'>
-                                
+                           <div id="ruleMde" class='lkr-page' style="display: none;">
+                                <button id="getAllSz" class="backAlgorithmPage">返回</button>
+                                <div id="rulePage">
+
+                                </div>
                              
                            </div>
-                           <div id="algorithmPage" class='lkr-page' style="display: none;"></div>
+                           <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
                                 <div onclick='editAlgorithm()'>编辑算子</div>
-                                <div id='getAllSz'>已有规则</div>
+                                <div id='getAllGzgz'>已有规则</div>
                             </div>
 
                         </div>
@@ -2096,7 +2099,6 @@
         $("#sourceName").fadeToggle(500)
     }
     function sourceNameConfirm(){
-        debugger
         let modlueList =[]
         $("input:checkbox[name='item']").each((i,v) => {
             let items = $(v)
@@ -2153,8 +2155,8 @@
             success(data) {
                 console.log(data);
                 $("#dicTable").append(`<thead>
-<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
-</thead>`)
+                <th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
+                </thead>`)
                 data.map(s=>{
                     $("#dicTable").append(
                         `<tr>
