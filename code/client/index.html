@@ -2154,13 +2154,14 @@
                         </div>
                     `)
                 })
+                debugger
                 for(var i=0;i<data.tableFuncs.length;i++){
                     $(".zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
                     $(".zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
                     if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
                         $(".zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
                     } else {
-                        $(".zdcsText").eq(i).remove();
+                        $(".zdcsText").eq(i).hide();
                         let select= $(`
                             <select class="zdcsTypeSelect">
                                 <option>byte</option>
