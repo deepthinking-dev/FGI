@@ -476,3 +476,26 @@ body{
     background-repeat: no-repeat;
     color: #fff;
 }
+/* 链接数据源 */
+.addSource{
+    position: relative;
+
+}
+.addSource select{
+    flex: 2;
+    width: 90%;
+    margin: 10px auto;
+    position: relative;
+    display: flex;
+    color: #fff;
+}
+.addSource .lkr-table {
+    text-align: center;
+    font-size: 12px;
+    width: 90%;
+    border: 1px solid #4295ec;
+    margin: 0 auto;
+    table-layout: fixed;
+    text-align: center;
+}
+ 

@@ -198,7 +198,14 @@ $(function(){
         getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
     })
     $('body').on('click','#getAllSz',(e) => {
-        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
+        $("#ruleMde").hide();
+        $("#algorithmPage").show();
+        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+    })
+    $('body').on('click','#getAllGzgz',(e) => {
+        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'rolename',ruleType:'规则'},'规则',{username:null})
+        $("#algorithmPage").hide();
+        $("#ruleMde").show();
     })
     function getAllData(url,datas,type,param){
         $.ajax({
@@ -210,11 +217,11 @@ $(function(){
                     window.addAlgorithm({
                         name: 'rectangle',
                         icon: 'icon-rectangle',
-                        id:item[datas.id],
+                        id:item[datas.Tname][datas.id],
                         type:type,
                         data: {
-                            id:item[datas.id]+type,
-                            text: item[datas.name],
+                            id:item[datas.Tname][datas.id]+type,
+                            text: item[datas.Tname][datas.name],
                             rect: {
                                 width: 200,
                                 height: 50
@@ -240,6 +247,11 @@ $(function(){
             }
         })
     }
+    //点击删除模型
+    $('body').on('click','.lkr-list-del',(e) => {
+        window.bigData.delmoduleId = $(e.target).data('id')
+        $('#lkrFrameDel').fadeToggle(500)
+    })
     $('body').on('click','#mouldPage .active-taps',(e) => {
         $('.active-taps').each((i,v) => {
             $(v).css('color','#ffffff')
@@ -284,10 +296,6 @@ $(function(){
                 })
             }
         })
-    })
-    $('body').on('click','.lkr-list-del',(e) => {
-        window.bigData.delmoduleId = $(e.target).data('id')
-        $('#lkrFrameDel').fadeToggle(500)
     })
     // 点击删除算子
     $('body').on('click','.lkr-list-delAlgorithm',(e) => {
@@ -622,7 +630,106 @@ $(function(){
         window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
- 
+
+    //点击其他模块
+    $('body').on('click','.otherFormula',(e) => {
+        window.filed.inputFieldsTarget = $(e.target);
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
+            data:{
+                username:null
+            },
+            success: function(data) {
+               console.log(data)
+               let str =``
+               if(data.length>0){
+                    data.map(item=>{
+                        str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
+                                    <td class="algorithmname">${item.algorithmname}</td>
+                                    <td>${item.algorithmtype}</td>
+                                    <td>${item.algorithmfun}</td>
+                                    <td>${item.algorithmauthor}</td>
+                                    
+                                    remark
+                                </tr>`
+                    })
+               }else{
+                   str+= `<div style="text-align: center;">暂无数据</div>`
+               }
+
+
+                $(".otherFormulaList").html(str)
+            }
+        })
+        $('#otherFormula').fadeToggle(500)
+
+    })
+      // 点击选择算子信息
+    $('body').on('click','.otherFormulaList tr',(e) => {
+        window.filed.fieldname = $(e.target).parent('tr').children('.algorithmname').text();
+        $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor");
+    })
+   //点击导入
+   $('body').on('click','#Import',(e) => {
+        $("#fileupload").show();
+    })
+    // 上传选择文件
+    $('input.inputfile').on('change',function(){
+        // console.log(e)
+        console.log($(this).val());
+        var file = this.files[0];
+        if (window.FileReader) {
+           debugger
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            //监听文件读取结束后事件
+            reader.onloadend = function (e) {
+                console.log(e.target.result)
+            };
+         }
+
+    })
+    $('body').on('click','.ruleCheckbox',(e) => {
+        if($(e.target).parent('.left-list').parent('#ruleMde').children('.left-list').children("input[class='ruleCheckbox']:checked").length  > 1){
+            let str = $(e.target).parent('.left-list').parent('#ruleMde').children('.left-list')
+            for(let i=0;i<str.length;i++){
+                $(str[i]).children("input[class='ruleCheckbox']").prop("checked",false);
+            }
+            $(e.target).prop('checked', true);
+        }
+    })
+    //点击导出
+    $('body').on('click','#export',(e) => {
+        if($("input[class='ruleCheckbox']:checked").length == 0){
+            alert("至少勾选一个规则！");
+            return false;
+       }
+       let id = $('input:checkbox:checked').attr("data-id");
+       location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id
+
+        // $.ajax({
+        //     type:"get",
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id,
+        //     contentType: "application/json;charset=UTF-8",
+        //     success: function(data) {
+        //         if(data == true){
+
+        //         }
+        //     }
+        // })
+    })
+       // 点击删除规则
+    $('body').on('click','.lkr-list-delRule',(e) => {
+        window.bigData.delRuleId = $(e.target).data('id')
+        $('#lkrRule').fadeToggle(500)
+    })
+
+    $('body').on('click','button.delTab',(e) => {
+        debugger
+        $(e.target).parents('tr').remove();
+    })
+
 })
 
 
