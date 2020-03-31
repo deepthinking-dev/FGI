@@ -115,6 +115,7 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         toastr.success('保存成功！');
+                        Topology.init();
                     }
                 }
             })
@@ -253,6 +254,7 @@ function ConfirmLogic(){
                 if(data.status == 1){
                     toastr.success('保存成功！');
                     $(".Logic").attr("style","display:none;");
+                    Topology.init();
                 }
             }
         })

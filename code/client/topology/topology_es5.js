@@ -956,7 +956,6 @@ var Topology = {
             url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
             data:'',
             success: function(data) {
-
                 $(".left-list").remove()
                 data.map(item => {
                     window.addAlgorithm({

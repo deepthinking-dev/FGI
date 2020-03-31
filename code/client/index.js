@@ -42,7 +42,7 @@ $(function(){
         let des =  $("#editDicDes").val();
         let dataAll = {
             "tableAlgorithm": {
-                "algorithmauthor": "",
+                "algorithmauthor": $("#editAuthor").val(),
                 "algorithmfun": "",
                 "algorithmname": name,
                 "algorithmtype": 1,
@@ -99,7 +99,8 @@ $(function(){
                     console.log(data);
                     toastr.success('保存成功！');
                     $("#editDic").hide()
-                    dictionary()
+                    dictionary();
+                    Topology.init();
                 }
             })
         } else {
