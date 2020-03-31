@@ -13,6 +13,7 @@
     <link href="./plugins/topology/layout.css" rel="stylesheet">
     <link href="./lkr.css" rel="stylesheet">
     <link href="./LogicMath.css" rel="stylesheet">
+    <link href="./toastr.css" rel="stylesheet">
     <!-- <link href="css/lanrenzhijia.css" type="text/css" rel="stylesheet" /> -->
     <!-- 矢量图标库 -->
     <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
@@ -51,6 +52,7 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
     <script src="./topology/formula.js"></script>
+    <script src="./toastr.js"></script>
     <script>
         $(function() {
             var content = "";
@@ -131,9 +133,8 @@
                                 <div class="width-50 width-select">
                                     <span>类型</span>
                                     <select id="" class="MathJaxInput2 inputButton" >
-                                        <option value="常量">常量</option>
-                                        <option value="数据项">数据项</option>
-                                        <option value="其他模块计算结果">其他模块计算结果</option>
+                                        <option value="2">常量</option>
+                                        <option value="1">基本类型</option>
                                     </select>
                                 </div>
                                 <div class="width-50 isShow1"> 
@@ -142,11 +143,21 @@
                                 </div>
                                 <div class="width-50 isShow2"> 
                                         <span>数据项</span>
-                                        <input type="text" class="MathJaxInput3 inputFields inputButton"  readonly="readonly">
-                                </div>
-                                <div class="width-50 isShow3"> 
-                                        <span>其他公式</span>
-                                        <input type="text" class="MathJaxInput3 otherFormula inputButton"  readonly="readonly">
+                                        <select class="MathJaxSelect MathJaxInput1 inputButton">
+                                            <option>byte</option>
+                                            <option>short</option>
+                                            <option>int</option>
+                                            <option>long</option>
+                                            <option>float</option>
+                                            <option>double</option>
+                                            <option>boolean</option>
+                                            <option>char</option>
+                                            <option>date</option>
+                                            <option>string</option>
+                                            <option>BLOB</option>
+                                            <option>boolean</option>
+                                            <option>array</option>
+                                        </select>
                                 </div>
                                 <div class="width-50"> 
                                         <span>描述</span>
@@ -200,27 +211,23 @@
     </div>
     <!-- 新建/编辑算子 -->
     <div class="lkr-frame" id='AddAlgorithm'>
-        <div class="lkr-frame-div" style="height: 400px;">
+        <div class="lkr-frame-div" style="height: 200px;">
             <div class="lkr-frame-tilte">
                 新建/编辑算子
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">作者：</label>
-                    <input type='text' id='modulegroup' class="lkr-input" style="flex:1;margin-left: 10px;"/>
-                </div>              
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">描述：</label>
-                    <textarea  type='text' id='mouldRemark' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
-                </div>
-                <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">备注：</label>
-                    <input type='text' id='mouldName' class="lkr-input" style="flex:1;margin-left: 10px;"/>
-                </div>
+<!--                <div style="margin: 15px 0;display: flex;align-items: center;">-->
+<!--                    <label style="line-height: 10px;width: 100px;">作者：</label>-->
+<!--                    <input id="szAuthor" type='text' class="lkr-input" style="flex:1;margin-left: 10px;"/>-->
+<!--                </div>              -->
+<!--                <div style="margin: 15px 0;display: flex;align-items: center;">-->
+<!--                    <label style="line-height: 10px;width: 100px;">描述：</label>-->
+<!--                    <textarea id="szDes"  type='text' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>-->
+<!--                </div>-->
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 100px;">算子类型：</label>
-                    <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                    <select id="sfType" class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>算法公式</option>
                         <option>逻辑运算</option>
                     </select>                    
@@ -414,6 +421,16 @@
             <span onclick="FrameClose()" style="cursor: pointer;">X</span>
         </div>
         <div class="form-group">
+            <div id="authorShow">
+                <div>
+                    <span class="form-span">作者</span>
+                    <input id="gsName" class="form-input" type="text" >
+                </div>
+                <div>
+                    <span class="form-span">描述</span>
+                    <input id="gsDes" class="form-input" type="text" >
+                </div>
+            </div>
             <div>
                 <span class="form-span">算子名称</span>
                 <input id="AlgorithmnameY" class="form-input" type="text" >
@@ -444,8 +461,16 @@
         <div class="LogicContent">
             <button class="addButton" onclick="addLogic()">新增</button>
             <div>
+                <span class="form-span">作者</span>
+                <input id="ljName" class="form-input" type="text" style="color: white;border: 1px solid white">
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="form-span">描述</span>
+                <input id="ljDes" class="form-input" type="text" style="color: white;border: 1px solid white">
+            </div>
+            <div style="margin-top: 10px;">
                 <span class="form-span">逻辑运算名称</span>
-                <input id="LogicName" class="form-input" type="text" >
+                <input id="LogicName" class="form-input" type="text" style="color: white;border: 1px solid white">
             </div>
             <div>
                 <form class="logicForm">
@@ -541,19 +566,16 @@
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 80px;">链接数据源：</label>
-                    <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
+                    <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
-                    </select>
-                    <!-- <div class="lkr-button">链接数据源</div> -->
+                    </select> -->
+                    <div id='fgiSource' class="lkr-button">链接数据源</div>
                     
                 </div>
-                <!-- <div id='addMb'>
+                <div id='addMb' >
                     <table class="lkr-table" border="1">
                         <thead>
                           <tr>
-                            <td>
-                                <input type="checkbox" name="item" id="selectAll"/>
-                            </td>
                             <td>
                                 字段英文
                             </td>
@@ -569,6 +591,12 @@
                             <td>
                                 是否主键
                             </td>
+                            <td>
+                                字段表名
+                            </td>
+                            <td>
+                                操作
+                            </td>
                           </tr>
                         </thead>
                         <tbody >
@@ -576,7 +604,7 @@
                         </tbody>
                     </table>
                     
-                </div> -->
+                </div>
             </div>
             <div class="lkr-frame-foot">
                 <div class="lkr-button" onclick='Confirm()'>确定</div>
@@ -613,24 +641,8 @@
                                 <li><span id="saveRule" onclick="ruleSure()">保存规则</span></li>
                                 <li><span id="Import">导入</span></li>
                                 <li><span id="export">导出</span></li>
-                                <!-- <li><span id="down_add">新建算法工程</span></li>
-                                <li><span id="canvas_open">打开算法工程</span></li>
-                                <li><span id="canvas_save">保存算法工程</span></li> -->
-                                <!-- <li><span id="ruleSure" onclick="ruleSure()">保存</span></li>
-                                <li><input id="ruleName" type="text" placeholder="请输入规则名称"></li> -->
-                                <!-- <li><span id="LogicOpen">逻辑运算</span></li> -->
-                                <!-- <li><a href="#" id="down_png">下载PNG</a></li>
-                                <li><a href="#" id="canvas_title">标题</a></li> -->
                             </ul>
                         </nav>
-                        <!-- <div class="rule-flex">
-                            <ul>
-                                <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
-                                <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
-                                <li><button type="button" id="ruleSure" onclick="ruleSure()">保存</button></li>
-                            </ul>
-                                
-                        </div> -->
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
                             
@@ -650,964 +662,24 @@
                             <div class='Search'>
                                 <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
                             </div>
-                           <div id="rulePage" class='lkr-page'>
-                                
+                           <div id="ruleMde" class='lkr-page' style="display: none;">
+                                <button id="getAllSz" class="backAlgorithmPage">返回</button>
+                                <div id="rulePage">
+
+                                </div>
                              
                            </div>
-                           <div id="algorithmPage" class='lkr-page' style="display: none;"></div>
+                           <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
                                 <div onclick='editAlgorithm()'>编辑算子</div>
-                                <div id='getAllSz'>已有规则</div>
+                                <div id='getAllGzgz'>已有规则</div>
                             </div>
 
                         </div>
-                        <!-- <div class="props" id="flex_props">
-                            <div class="pv5">
-                                <div id="flex_props_home">
-                                    <div style="bottom:.2rem">
-                                        <div class="sub-title"
-                                             style="margin-left: 20px;font-weight: bold;margin-top: 10px">
-                                            小提示
-                                        </div>
-                                        <ul>
-                                            <li>输出结果1</li>
-                                            <li>输出结果2</li>
-                                            <li>输出结果3</li>
-                                            <li>输出结果4</li>
-                                            <li>输出结果5</li>
-                                        </ul>
-                                    </div>
-                                    <div class="lkr-msg-div">
-                                        <div class="lkr-msg-div-tilte" style="margin-bottom: 10px;">
-                                            单元编辑区
-                                        </div>
-                                        <table class="lkr-table" border="1">
-                                            <thead>
-                                            <tr>
-                                                <td>
-                                                    复合结果In
-                                                </td>
-                                                <td>
-                                                    属性参数1
-                                                </td>
-                                                <td>
-                                                    属性参数2
-                                                </td>
-                                                <td>
-                                                    属性参数3
-                                                </td>
-                                                
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="lkr-select" style="flex: 1;">
-                                                        <option>等于</option>
-                                                        <option>≠</option>
-                                                        <option>介于</option>
-                                                        <option>≤</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="lkr-select" style="flex: 1;">
-                                                        <option>≠</option>
-                                                        <option>等于</option>
-                                                        
-                                                        <option>介于</option>
-                                                        <option>≤</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="lkr-select" style="flex: 1;">
-                                                        <option>介于</option>
-                                                        <option>等于</option>
-                                                        <option>≠</option>
-                                                        
-                                                        <option>≤</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="lkr-select" style="flex: 1;">
-                                                        <option>≤</option>
-                                                        <option>等于</option>
-                                                        <option>≠</option>
-                                                        <option>介于</option>
-                                                        
-                                                    </select>
-                                                </td>
-                                                
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="tools" id="flex_tools">
-                            </div>
-                            <!-- <div class="props" id="flex_props">
-                                <div class="pv5">
-                                    <div id="flex_props_home">
-                                        <div style="bottom:.2rem">
-                                            <div class="sub-title"
-                                                style="margin-left: 20px;font-weight: bold;margin-top: 10px">
-                                                小提示
-                                            </div>
-                                            <ul>
-                                                <li>方向键：控制节点移动5个像素</li>
-                                                <li>Ctrl + 方向键：控制节点移动1个像素</li>
-                                                <li>Ctrl + 鼠标移动：移动整个画布</li>
-                                                <li>Ctrl + 鼠标滚轮：缩放</li>
-                                                <li>Delete：删除选中节点</li>
-                                                <li>添加或选中节点，右侧属性支持上传各种图片哦</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div id="flex_props_node" class="hidden">
-                                        <form role="form" action="javascript:void(0);" method="post" id="query_form">
-                                            <div id="right_show">
-
-                                                <div class="node-show">
-                                                    <div class="group col-xs-12">
-                                                        <div class="title">位置和大小</div>
-                                                        <div class="flex">
-                                                            <div class="col-xs-6 sub-title">X（px）</div>
-                                                            <div class="col-xs-6 sub-title">Y（px）</div>
-                                                        </div>
-                                                        <div class="flex grid mt5">
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="node_x"
-                                                                    class="form-control input-sm" min="0" max="5000"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="node_y"
-                                                                    class="form-control input-sm" min="0" max="5000"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid mt5">
-                                                            <div class="col-xs-6 sub-title">宽（px）</div>
-                                                            <div class="col-xs-6 sub-title">高（px）</div>
-                                                        </div>
-                                                        <div class="flex grid">
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="node_width"
-                                                                    class="form-control input-sm" min="0" max="5000"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="node_height"
-                                                                    class="form-control input-sm" min="0" max="5000"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid mt5">
-                                                            <div title="百分比%对应的小数值" class="col-xs-6 sub-title">圆角（0 - 1）
-                                                            </div>
-                                                            <div class="col-xs-6 sub-title">旋转（°）</div>
-                                                        </div>
-                                                        <div class="flex grid">
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="borderRadius"
-                                                                    class="form-control input-sm" min="0" max="1"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <input type="number" name="rotate"
-                                                                    class="form-control input-sm" min="0" max="360"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid mt5">
-                                                            <div title="padding-left" class="sub-title col-xs-6">内边距-左</div>
-                                                            <div title="padding-right" class="sub-title col-xs-6">内边距-右
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid">
-                                                            <div class="mr5 col-xs-6">
-                                                                <input name="paddingLeft" class="input form-control"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <input name="paddingRight" class="input form-control"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid mt5">
-                                                            <div title="padding-top" class="sub-title col-xs-6">内边距-上</div>
-                                                            <div title="padding-bottom" class="sub-title col-xs-6">内边距-下
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex grid">
-                                                            <div class="mr5 col-xs-6">
-                                                                <input name="paddingTop" class="input form-control" required
-                                                                    onchange="onChangeProp()"/>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <input name="paddingBottom" class="input form-control"
-                                                                    required onchange="onChangeProp()"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mt5 gray col-xs-12 hint">
-                                                            内边距：输入数字表示像素；输入%表示百分比
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="group col-xs-12 line-show">
-                                                <div class="line-show">
-                                                    <div class="title">位置</div>
-                                                    <div class="col-xs-12 sub-title">
-                                                        起点
-                                                    </div>
-                                                    <div>
-                                                        <div class="col-xs-6">
-                                                            <input type="number" name="from_x" class="form-control input-sm"
-                                                                placeholder="X（px）" min="0" max="5000" required
-                                                                onchange="onChangeProp()"/>
-                                                        </div>
-                                                        <div class="col-xs-6">
-                                                            <input type="number" name="from_y" class="form-control input-sm"
-                                                                placeholder="Y（px）" min="0" max="5000" required
-                                                                onchange="onChangeProp()"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 sub-title">
-                                                        终点
-                                                    </div>
-                                                    <div class="flex grid">
-                                                        <div class="col-xs-6">
-                                                            <input type="number" name="to_x" class="form-control input-sm"
-                                                                placeholder="X（px）" min="0" max="5000" required
-                                                                onchange="onChangeProp()"/>
-                                                        </div>
-                                                        <div class="col-xs-6">
-                                                            <input type="number" name="to_y" class="form-control input-sm"
-                                                                placeholder="Y（px）" min="0" max="5000" required
-                                                                onchange="onChangeProp()"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-6 sub-title">起点箭头</div>
-                                                    <div class="col-xs-6 sub-title">终点箭头</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    
-                                                    <div class="mr5 select-box col-xs-6">
-                                                        <div class="rel">
-                                                            <div class="input" id="start_line_head">
-                                                                <div class="icon-item">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,15 4,15 14"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,15 4,15 14"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,10 6,20 9,10 12"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,10 6,20 9,10 12"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l85 0"/>
-                                                                            <circle cx="6" cy="9" r="5" fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l85 0"/>
-                                                                            <circle cx="6" cy="9" r="5" fill="#ffffff"
-                                                                                    stroke="#000000" stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 6"/>
-                                                                            <path d="M0 9 l12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            <div class="dropdown hidden" id="start_line_dropdown">
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('',0)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l100 0"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('triangleSolid',1)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,15 4,15 14"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('triangle',2)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,15 4,15 14"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('diamondSolid',3)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,10 6,20 9,10 12"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('diamond',4)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="0 9,10 6,20 9,10 12"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('circleSolid',5)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l85 0"/>
-                                                                            <circle cx="6" cy="9" r="5" fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('circle',6)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l85 0"/>
-                                                                            <circle cx="6" cy="9" r="5" fill="#ffffff"
-                                                                                    stroke="#000000" stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('line',7)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 6"/>
-                                                                            <path d="M0 9 l12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('lineUp',8)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickFromArrow('lineDown',9)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <path d="M0 9 l12 6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="select-box col-xs-6">
-                                                        <div class="rel">
-                                                            <div class="input" id="end_line_head">
-                                                                <div class="icon-item">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l80 0"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l79 0"/>
-                                                                            <polygon points="79 9,65 4,65 14"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l79 0"/>
-                                                                            <polygon points="79 9,65 4,65 14"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l79 0"/>
-                                                                            <polygon points="79 9,70 6,60 9,70 12"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="79 9,70 6,60 9,70 12"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l78 0"/>
-                                                                            <circle cx="74" cy="9" r="5"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l78 0"/>
-                                                                            <circle cx="74" cy="9" r="5" fill="#ffffff"
-                                                                                    stroke="#000000" stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 6"/>
-                                                                            <path d="M78 9 l-12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item hidden">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            <div class="dropdown hidden" id="end_line_dropdown">
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('',0)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l100 0"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('triangleSolid',1)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="79 9,65 4,65 14"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('triangle',2)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="79 9,65 4,65 14"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('diamondSolid',3)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="79 9,70 6,60 9,70 12"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('diamond',4)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l85 0"/>
-                                                                            <polygon points="79 9,70 6,60 9,70 12"
-                                                                                    fill="#ffffff" stroke="#000000"
-                                                                                    stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('circleSolid',5)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l78 0"/>
-                                                                            <circle cx="74" cy="9" r="5"
-                                                                                    fill="#000000"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('circle',6)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M1 9 l78 0"/>
-                                                                            <circle cx="74" cy="9" r="5" fill="#ffffff"
-                                                                                    stroke="#000000" stroke-width="1"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('line',7)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 6"/>
-                                                                            <path d="M78 9 l-12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('lineUp',8)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 -6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="icon-item ph10 pv5"
-                                                                    onclick="onClickToArrow('lineDown',9)">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        version="1.1">
-                                                                        <g fill="none" stroke="black" stroke-width="1">
-                                                                            <path d="M0 9 l78 0"/>
-                                                                            <path d="M78 9 l-12 6"/>
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="group col-xs-12">
-                                                <div class="title">外观</div>
-                                                <div class="flex grid node-show">
-                                                    <div class="col-xs-12 sub-title">边框样式</div>
-                                                </div>
-                                                <div class="flex grid line-show">
-                                                    <div class="col-xs-6 sub-title">连线类型</div>
-                                                    <div class="col-xs-6 sub-title">连线样式</div>
-                                                </div>
-                                                <div class="select-box">
-                                                    <div class="col-xs-6 line-show">
-                                                        <div class="input" id="line_style_head">
-                                                            <div class="icon-item">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 a100,50 0 0,1 85,0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 4 l40 0 l0 12 l40 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        <div class="dropdown hidden" id="line_style_dropdown">
-                                                            <div class="icon-item ph10 pv5"
-                                                                onclick="onClickName('curve',0)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 a100,50 0 0,1 85,0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item ph10 pv5"
-                                                                onclick="onClickName('polyline',1)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 4 l40 0 l0 12 l40 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item ph10 pv5"
-                                                                onclick="onClickName('line',2)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 l100 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        <div class="input" id="line_type_head">
-                                                            <div class="icon-item" [class.hidden]="props.data.dash">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="5,5" d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="10,10" d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item hidden">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="10,10,2,10"
-                                                                            d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        <div class="dropdown hidden" id="line_type_dropdown">
-                                                            <div class="icon-item ph10 pv5" onclick="onClickDash(0,0)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item ph10 pv5" onclick="onClickDash(1,1)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="5,5" d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item ph10 pv5" onclick="onClickDash(2,2)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="10,10" d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icon-item ph10 pv5" onclick="onClickDash(3,3)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                                                    <g fill="none" stroke="black" stroke-width="1">
-                                                                        <path stroke-dasharray="10,10,2,10"
-                                                                            d="M0 9 l85 0"/>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12 node-show"></div>
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-6 sub-title" id="node_line_color">边框颜色</div>
-                                                    <div class="col-xs-6 sub-title">线宽（px）</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    <div class="mr5 col-xs-6">
-                                                        <div class="input-group colorpicker colorpicker-element">
-                                                            <input type="text" name="strokeStyle"
-                                                                class="form-control input-sm" onchange="onChangeProp()">
-                                                            <div class="input-group-addon">
-                                                                <i></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        <input type="number" name="lineWidth" class="form-control input-sm"
-                                                            min="0" max="100" onchange="onChangeProp()"/>
-                                                    </div>
-                                                </div>
-                                                <div class="node-show">
-                                                    <div id="node_color">
-                                                        <div class="mt5 col-xs-12 sub-title">
-                                                            背景颜色
-                                                        </div>
-                                                        <div class="col-xs-12">
-                                                            <div class="input-group colorpicker colorpicker-element">
-                                                                <input type="text" name="fillStyle"
-                                                                    class="form-control input-sm"
-                                                                    onchange="onChangeProp()">
-                                                                <div class="input-group-addon">
-                                                                    <i style="background-color: rgb(173,173,173);"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="group col-xs-12 node-show">
-                                                <div class="title">文字</div>
-                                                <div class="mt5 col-xs-12 sub-title">
-                                                    字体
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <input name="fontFamily" class="form-control input-sm"
-                                                        onchange="onChangeProp()"/>
-                                                </div>
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-12 sub-title">颜色</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group colorpicker colorpicker-element">
-                                                            <input type="text" name="fontColor"
-                                                                class="form-control input-sm" onchange="onChangeProp()">
-                                                            <div class="input-group-addon">
-                                                                <i style="background-color: rgb(173,173,173);"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-12 sub-title">大小</div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <input type="number" name="fontSize" class="form-control input-sm"
-                                                        min="0"
-                                                        max="500"
-                                                        onchange="onChangeProp()"/>
-                                                </div>
-                                                <div class="flex grid mt5 ">
-                                                    <div class="col-xs-6 sub-title">倾斜</div>
-                                                    <div class="col-xs-6 sub-title">加粗</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    <div class="mr5 col-xs-6">
-                                                        <select name="fontStyle" class="form-control input-sm"
-                                                                onchange="onChangeProp()">
-                                                            <option value="normal">正常</option>
-                                                            <option value="italic">倾斜</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        <select name="fontWeight" class="form-control input-sm"
-                                                                onchange="onChangeProp()">
-                                                            <option value="normal">正常</option>
-                                                            <option value="bold">加粗</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-6 sub-title">水平对齐</div>
-                                                    <div class="col-xs-6 sub-title">垂直对齐</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    <div class="mr5 col-xs-6">
-                                                        <select name="textAlign" class="form-control input-sm"
-                                                                onchange="onChangeProp()">
-                                                            <option value="left">左对齐</option>
-                                                            <option value="center" selected>居中</option>
-                                                            <option value="right">右对齐</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        <select name="textBaseline" class="form-control input-sm"
-                                                                onchange="onChangeProp()">
-                                                            <option value="top">顶部对齐</option>
-                                                            <option value="middle" selected>居中</option>
-                                                            <option value="bottom">底部对齐</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="flex grid mt5">
-                                                    <div class="col-xs-6 sub-title">行高</div>
-                                                    <div class="col-xs-6 sub-title">最大行数</div>
-                                                </div>
-                                                <div class="flex grid">
-                                                    <div class="mr5 col-xs-6">
-                                                        <input type="number" name="lineHeight" class="form-control input-sm"
-                                                            min="1"
-                                                            max="5"
-                                                            onchange="onChangeProp()"/>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        <input type="number" name="textMaxLine"
-                                                            class="form-control input-sm" min="0"
-                                                            max="500"
-                                                            placeholder="0：自动匹配高度" onchange="onChangeProp()"/>
-                                                    </div>
-                                                </div>
-                                                <div class="mt5 col-xs-12 sub-title">
-                                                    内容
-                                                </div>
-                                                <div class="col-xs-12">
-                                                        <textarea name="text" class="form-control input-sm" rows="2"
-                                                                onchange="onChangeProp()"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="group col-xs-12 node-show">
-                                                <div class="title">备注</div>
-                                                <div class="col-xs-12">
-                                                    <textarea name="data" class="form-control input-sm" rows="3"
-                                                            onchange="onChangeProp()"></textarea>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <!--右键菜单定义-->
                     <div class="context-menus" id="canvas_menus" style="display: none">
                         <div disabled>
-                            <a onclick="onTops()" class="menu-a-disabled" id="menu_top" disabled>
+                            <a onclick="onTops()" class="menu-a-disabled" disabled>
                                 新增自定义属性
                             </a>
                         </div>
@@ -1684,6 +756,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </section>
             <!-- /.content -->
         </div>
@@ -1715,6 +788,9 @@
         </div>
         <div>
             <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">算法描述</span><input type="text" id="editDicDes">
+        </div>
+        <div class="gsDiv" style="margin-top: 15px;display: none">
+            <span style="color: #fff;margin-left:30px;margin-right: 20px;margin-top: 15px">公式信息</span><input type="text" id="gsXx">
         </div>
         <p>
             <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
@@ -1769,40 +845,26 @@
                 $("#modulegroup").val(data.modulegroup)
                 $("#mouldRemark").val(data.des)
                 window.bigData.editmoduleId = data.id
-                $.ajax({
-                    url:urlConfig.host+'/module/findAllTableFromDB',
-                    data:'',
-                    success: function(datas) {
-                        let str = '<option>请选择</option>'
-                        datas.map(item => {
-                            if(data.tab == item){
-                                str += `<option selected>${item}</option>`
-                            }else{
-                                str += `<option>${item}</option>`
-                            }
-                            
-                        })
-                        fgiNameChangeedit(data.tab,data.modulefields)
-                        $("#fgiName").html(str)
-                        
-
-                    }
+                let thStr=``
+                data.modulefields.map(item => {
+                    thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
+                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
+                    <td>${item.LENGTH?item.LENGTH:''}</td>
+                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
+                    <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td><button class="delTab">删除</button></td></tr>`
                 })
-                $("#modulegroup").prop('disabled',true)
+                $('#addMb tbody').html(thStr)
+
             }
         })
     })
   
     function addModule(){
         window.bigData.frameType = 'add'
-        // copnsole
         $('#lkrFrame').fadeToggle(500)
-        // if(window.bigData.actionTab != '基础模块'){
-        //     $("#modulegroup").val(window.bigData.actionTab)
-        //     $("#modulegroup").prop('disabled',true)
-        // }else{
-        //     $("#modulegroup").prop('disabled',false)
-        // }
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
             data:'',
@@ -1812,16 +874,14 @@
                     str += `<option>${item}</option>`
                 })
                 $("#fgiName").html(str)
-                fgiNameChange()
-
             }
         })
     }
-    function fgiNameChangeedit(name,datas){
+    $("#fgiName").change((e)=>{
         $.ajax({
             url:urlConfig.host+'/module/findAllFiledByTableName',
             data:{
-                tableName:name
+                tableName:$(e.target).val()
             },
             success: function(data) {
                 window.bigData.mouldParam = data
@@ -1834,39 +894,45 @@
                     <td>${item.LENGTH?item.LENGTH:''}</td>
                     <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td></tr>`
                 })
-                $('#addMb tbody').html(thStr)
-                window.bigData.editmoduledata = datas
-                datas.map(item => {
-                    $('#chk'+item.fieldname).prop('checked',true)
+                $('#addSource tbody').html(thStr)
+
+                window.bigData.editmoduledata.map(item => {
+                    if($(e.target).val() ==item.tableName){
+                        $('#chk'+item.fieldname).prop('checked',true)
+                    }
                 })
             }
         })
-    }
-    function fgiNameChange(){
-        $("#fgiMoName").fadeToggle(500)
-        $("#fgiName").change((e) => {
-            
-            $.ajax({
-                url:urlConfig.host+'/module/findAllFiledByTableName',
-                data:{
-                    tableName:$(e.target).val()
-                },
-                success: function(data) {
-                    window.bigData.mouldParam = data
-                    let thStr = ''
-                    data.map(item => {
-                        thStr += `<tr><td><input type="checkbox" name="item" data-id='${item.COLUMN_NAME}'/></td>
-                        <td>${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
-                        <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-                        <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-                        <td>${item.LENGTH?item.LENGTH:''}</td>
-                        <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td></tr>`
-                    })
-                    $('#addMb tbody').html(thStr)
-                }
+    })
+    $("#fgiSource").click((e) => {
+        let addMbTr = $('#addMb tbody tr')
+        window.bigData.editmoduledata =[]
+        if(addMbTr.length > 0){
+           $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                window.bigData.editmoduledata.push({
+                    fieldname:items.children('.columnName').text(),
+                    tableName:items.children('.tableName').text()
+                })
             })
+        }
+        $("#sourceName").fadeToggle(500)
+        $.ajax({
+            url:urlConfig.host+'/module/findAllTableFromDB',
+            data:'',
+            success: function(data) {
+                let str = '<option>请选择</option>'
+                data.map(item => {
+                    str += `<option>${item}</option>`
+                })
+                $("#fgiName").html(str)
+                // fgiNameChange()
+
+            }
         })
-    }
+
+    })
+
     function selectAll(selectStatus){//传入参数（全选框的选中状态）
         //根据name属性获取到单选框的input，使用each方法循环设置所有单选框的选中状态
         if(selectStatus){
@@ -1893,29 +959,20 @@
         $('#lkrFrame').fadeToggle(500)
     }
     function Confirm(){
-        // console.log($("#modulegroup").val())
-        // return
-        
         let mouldParam = []
-        $("input:checkbox[name='item']").each((i,v) => {
-            let items = $(v)
-            if(items.prop('checked')){
-                
-                window.bigData.mouldParam.map(item => {
-                    if(items.data('id') == item.COLUMN_NAME){
-                        mouldParam.push({
-                            fieldname:item.COLUMN_NAME,
-                            fieldtype:item.COLUMN_TYPE,
-                            tablename:$('#fgiName').val() == '请选择'?'':$('#fgiName').val()
-                            // id:null,
-                            // moduleid:null,
-                            // remark:null
-                        })
-                    }
-                })
-            }
-        })
+
         if(window.bigData.frameType == 'add'){
+            $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                mouldParam.push({
+                    fieldname:items.children('.columnName').text(),
+                    fieldtype:items.children('.columnType').text(),
+                    tablename:items.children('.tableName').text()
+                    // id:null,
+                    // moduleid:null,
+                    // remark:null
+                })
+            })
             let param = {
                 modulegroup:$("#modulegroup").val(),
                 modulename:$("#mouldName").val(),
@@ -1933,22 +990,45 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    reseTabsList()
-                    reseTabs()
-                    reseAddMb()
+                    $(".moduleContent").html('')
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrame').fadeToggle(500)
                 }
                     
             })
         }else{
-            mouldParam.map(obj => {
-                window.bigData.editmoduledata.map(item => {
-                    if(obj.fieldname == item.fieldname){
-                        obj.id = item.id
-                        obj.moduleid = item.moduleid
-                        obj.remark = item.remark
-                    }
-                })
+            $("#addMb tbody tr").each((i,v) => {
+                let items = $(v)
+                let id=0
+                if(items.attr("id")){
+                    id = items.attr("id")
+                }
+                let obj = {
+                    fieldname:items.children('.columnName').text(),
+                    fieldtype:items.children('.columnType').text(),
+                    tablename:items.children('.tableName').text(),
+                    id:id,
+                    moduleid:window.bigData.editmoduleId,
+                    // remark:null
+                }
+                mouldParam.push(obj)
             })
             
             let param = {
@@ -1970,9 +1050,25 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    reseTabsList()
-                    reseTabs()
-                    reseAddMb()
+                    $(".moduleContent").html('')
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrame').fadeToggle(500)
                 }
                     
@@ -2048,7 +1144,25 @@
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    reseTabsList()
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                $(".moduleContent").html('')
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrameDel').fadeToggle(500)
                 }
             }
@@ -2056,24 +1170,85 @@
     }
 
     function dataModlue(){
+        $.ajax({
+            url:urlConfig.host+'/module/GetAllModule',
+            data:'',
+            success: function(data) {
+                if(data){
+                    $(".moduleContent").html('')
+                    let str=``
+                    data.map(item=>{
+                        $(".moduleContent").append(`<div class="left-list">
+                                <div class="left-list-tilte">${item.modulename}</div>
+                                <div class="left-list-event">
+                                    <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                    <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                </div>
+                            </div>`)
+                    })
+                }
+            }
+        })
         $('#dataModulePage').fadeToggle(500)
     }
     function ModuleClose(){
         $('#dataModulePage').fadeToggle(500)
     }
     function editAlgorithm(){
-        $('#AddAlgorithm').fadeToggle(500)
+        $('#AddAlgorithm').fadeToggle(500);
+        window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
         $('#AddAlgorithm').fadeToggle(500)
     }
+    function sourceNameClose(){
+        $('#addSource tbody').html('')
+        $("#sourceName").fadeToggle(500)
+    }
+    function sourceNameConfirm(){
+        let modlueList =[]
+        $("input:checkbox[name='item']").each((i,v) => {
+            let items = $(v)
+
+            if(items.prop('checked')){
+               let list = $(items).parent().nextAll()
+            //    list.map(item =>{
+            //     debugger
+            //    })
+                let obj ={
+                    IS_NULLABLE:list.eq(4).text(),
+                    COLUMN_NAME:list.eq(0).text(),
+                    COLUMN_TYPE:list.eq(2).text(),
+                    LENGTH:list.eq(3).text(),
+                    COLUMN_COMMENT:list.eq(1).text(),
+                    TABLE_NAME:$("#fgiName").val()
+                }
+                modlueList.push(obj)
+            }
+        })
+        let thStr = ''
+        modlueList.map(item => {
+            thStr += `<tr>
+            <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
+            <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+            <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
+            <td>${item.LENGTH?item.LENGTH:''}</td>
+            <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
+            <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
+            <td><button class="delTab">删除</button></td></tr>`
+        })
+        $('#addMb tbody').html(thStr)
+        $('#addSource tbody').html('')
+        $("#sourceName").fadeToggle(500)
+    }
     function AlgorithmConfirm(){
-        let s = $('#fgiName').val();
+        let s = $('#sfType').val();
         $("#AddAlgorithm").hide();
         $(".Frame").hide();
         $(".Logic").hide();
         if(s == "算法公式"){
-            $(".Frame").show()
+            $(".Frame").show();
+            window.bigData.formulaType = 'add'
         } else if(s == "逻辑运算"){
             $(".Logic").show()
         }
@@ -2081,17 +1256,407 @@
     function dictionary(){
         $("#dicDiv").show();
         $("#dicTable").text("");
-        $("#dicTable").append(`<thead>
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
+            data:"",
+            type:"get",
+            success(data) {
+                console.log(data);
+                $("#dicTable").append(`<thead>
 <th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
 </thead>`)
-        $("#dicTable").append(`<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-<tr>
-<td style="width: 100px">算法1</td><td style="width: 200px">描述XABCDDW</td><td style="width: 150px"><input type="button" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
-</tr>
-`)
+                data.map(s=>{
+                    $("#dicTable").append(
+                        `<tr>
+                        <td style="width: 100px">${s.tableAlgorithm.algorithmname}</td><td style="width: 200px">${s.tableAlgorithm.des}</td><td style="width: 150px"><input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+                        </tr>
+                       `)
+                })
+            }
+        })
     }
+    //删除字典信息
+    function deleteZd(s) {
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/delAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                if(data.status == 1){
+                    dictionary()
+                    toastr.success('删除成功！');
+                }
+            }
+        })
+    }
+    //修改字典信息
+    function editZd(s) {
+        $("#editDicYes").attr("editId",s)
+        $.ajax({
+            url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
+            data:{algthId:s} ,
+            type:"get",
+            success(data) {
+                console.log(data);
+                if(data.tableAlgorithm.algorithmtype == 1){
+                    $("#editDicName").val(data.tableAlgorithm.algorithmname);
+                    $("#editDicDes").val(data.tableAlgorithm.des);
+                    $("#zdcsList").empty()
+                    $("#editDic").show();
+                    data.tableFuncs.map(t=>{
+                        $("#zdcsList").append(`
+                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                            <p style="margin-top: 5px">
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" type="text" value="${t.varname}">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
+                                <select class="zdcsSelect">
+                                    <option value="2">常量</option>
+                                    <option value="3">对象</option>
+                                    <option value="1">基本类型</option>
+                                </select>
+                                <input type="text" value="" class="zdcsText">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
+                                <select class="zdcsExport">
+                                    <option value="0">输入</option>
+                                    <option value="1">输出</option>
+                                </select>
+                                <input class="deleteZdcs" style="float: right;margin-right: 20px;height: 24px;line-height: 24px;background: #f56c6c;border: none;color: #fff;" type="button" value="删除">
+                            </p>
+                        </div>
+                    `)
+                    })
+                    for(var i=0;i<data.tableFuncs.length;i++){
+                        $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
+                        $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
+                        if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else {
+                            $("#editDic .zdcsText").eq(i).hide();
+                            let select= $(`
+                            <select class="zdcsTypeSelect">
+                                <option>byte</option>
+                                <option>short</option>
+                                <option>int</option>
+                                <option>long</option>
+                                <option>float</option>
+                                <option>double</option>
+                                <option>boolean</option>
+                                <option>char</option>
+                                <option>date</option>
+                                <option>string</option>
+                                <option>BLOB</option>
+                                <option>boolean</option>
+                                <option>array</option>
+                            </select>`)
+                            select.val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsSelect").eq(i).parent().append(select)
+                        }
+                    }
+                } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $("#gsName").val(data.tableAlgorithm.algorithmauthor);
+                    $("#gsDes").val(data.tableAlgorithm.des);
+                    $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.changeBds(data.tableAlgorithm.algorithmfun);
+                    window.bigData.formulaType = 'edit';
+                    if(data.tableFuncs.length>0){
+                        let str =``
+                        data.tableFuncs.map((item)=>{
+                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
+                                        <div class="width-50">
+                                            <span>变量</span>
+                                            <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
+                                        </div>
+                                        <div class="width-50 width-select">
+                                            <span>类型</span>
+                                            <select  class="MathJaxInput2 inputButton">
+                                                <option value="2">常量</option>
+                                                <option value="1">基本类型</option>
+                                            </select>
+                                        </div>
+                                        <div class="width-50 isShow1">
+                                                <span>取值</span >
+                                                <input type="text" class="MathJaxInput3 inputButton">
+                                        </div>
+                                        <div class="width-50 isShow2">
+                                            <span>基本类型</span>
+                                            <select class="MathJaxSelect  MathJaxInput1 inputButton">
+                                                <option>byte</option>
+                                                <option>short</option>
+                                                <option>int</option>
+                                                <option>long</option>
+                                                <option>float</option>
+                                                <option>double</option>
+                                                <option>boolean</option>
+                                                <option>char</option>
+                                                <option>date</option>
+                                                <option>string</option>
+                                                <option>BLOB</option>
+                                                <option>boolean</option>
+                                                <option>array</option>
+                                            </select>
+                                        </div>
+                                        <div class="width-50">
+                                                <span>描述</span>
+                                                <input type="text" class="MathJaxInput4 inputButton" value="${item.remark}">
+                                        </div>
+                                    </div>`
+                        })
+                        $(".MathJaxEdit").html(str)
+                        for(let j=0;j<data.tableFuncs.length;j++){
+                            for(k=0;k<$('.MathJaxParam').length;k++){
+                                let vType = data.tableFuncs[j].vartype
+                                if(j == k){
+                                    $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
+                                    if(vType == "2"){
+                                        $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                    }
+                                    if(vType == "1"){
+                                        $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                        $('.MathJaxParam').eq(k).find(".MathJaxSelect").val(data.tableFuncs[j].valvalue)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $('.Frame').fadeToggle(500)
+                } else if(data.tableAlgorithm.algorithmtype == 3){
+                    window.bigData.formulaType = 'edit';
+                    $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
+                    $("#ljName").val(data.tableAlgorithm.algorithmauthor);
+                    $('#ljDes').val(data.tableAlgorithm.des);
+                    let algorithmfun = data.tableAlgorithm.algorithmfun;
+                    $.ajax({
+                        url:urlConfig.host+'/module/getModuleColumns',
+                        data:{moduleId:window.bigData.formulaModuleId},
+                        success: function(data) {
+                            let str1 =``
+                            if(data.length>0){
+                                data.map(item => {
+                                    str1 += `<option value="${item.fieldname}">${item.fieldname}</option>`
+                                })
+                                $('.Logic-form-field').html(str1)
+                            }
+
+                            algorithmfun = algorithmfun.split(" and ")
+                            let str =``
+                            for(let i=0;i<algorithmfun.length;i++){
+                                if(algorithmfun[i].indexOf('与') !=-1){
+                                    let obj = algorithmfun[i].split("与")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="" selected>与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('或') !=-1){
+                                    let obj = algorithmfun[i].split("或")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="" selected>或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('非') !=-1){
+                                    let obj = algorithmfun[i].split("非")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="" selected>非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<') !=-1) && (algorithmfun[i].indexOf('<=') == -1)){
+                                    let obj = algorithmfun[i].split("<")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="" selected>&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<=') !=-1) && (algorithmfun[i].indexOf('<') !=-1)  && (algorithmfun[i].indexOf('=') !=-1)){
+                                    let obj = algorithmfun[i].split("<=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="" selected>&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') == -1)){
+                                    let obj = algorithmfun[i].split(">")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="" selected>&gt;</option>
+                                                <option value="">  &gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') !=-1)){
+                                    let obj = algorithmfun[i].split(">=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select>
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="" selected>&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') ==-1) && (algorithmfun[i].indexOf('<') == -1)){
+                                    let obj = algorithmfun[i].split("=")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select>
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="" selected>=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+
+
+                            }
+                            $('.logicUl').html(str)
+                            $('.Logic').fadeToggle(500)
+                        }
+                    })
+                }
+            }
+        })
+    }
+    //逻辑运算新增按钮
+    function addLogic(){
+        $(".logicUl").append($(".logicLi:first").clone());
+    }
+
 </script>
 </body>
 </html>
