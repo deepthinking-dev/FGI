@@ -35,7 +35,6 @@ $(function(){
         $("#editDicDes").val("");
     })
     $('body').on('click','.dicEdit',(e) => {
-        $("#editDic").show();
         $("#editDicTitle").text("修改字典")
     })
     $('body').on('click','#editDicYes',(e) => {
@@ -62,6 +61,9 @@ $(function(){
                 "remark": "string",
                 "username": "string"
             }
+        }
+        if($(".gsDiv").css("display") == "block"){
+            dataAll.tableAlgorithm.algorithmtype = 2
         }
         var tables = [];
         $(".zdcsDiv").each((i,s)=>{
@@ -295,7 +297,9 @@ $(function(){
       // 点击编辑算子
     $('body').on('click','.lkr-list-editAlgorithm',(e) => {
         window.bigData.editAlgorithmId = $(e.target).data('id');
+        let algorithmtype = $(e.target).attr('data-type');
         window.bigData.formulaType = 'edit'
+        window.bigData.formulaModuleId = $(e.target).attr('data-moduleid');
         $.ajax({
             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
             data:{
@@ -303,74 +307,309 @@ $(function(){
             },
             success: function(data) {
                 console.log(data)
-                $('#algorithmname').attr({"value":data.tableAlgorithm.algorithmname,"id":data.tableAlgorithm.id});
-                if(data.tableFuncs.length>0){
+                if(algorithmtype==2){
+                    $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
                     window.changeBds(data.tableAlgorithm.algorithmfun);
-                    let str =``
-                    data.tableFuncs.map((item)=>{
-                        str +=`<div class="MathJaxParam">
-                                    <div class="width-30">
-                                        <span>变量</span>
-                                        <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1">
-                                    </div>
-                                    <div class="width-30 width-select">
-                                        <span>类型</span>
-                                        <select id="${item.id}" class="MathJaxInput2">
-                                            <option value="">请选择</option>
-                                            <option value="常量">常量</option>
-                                            <option value="数据项">数据项</option>   
-                                            <option value="其他模块计算结果">其他模块计算结果</option>
-                                        </select>
-                                    </div>
-                                    <div class="width-30 isShow1"> 
-                                            <span>取值</span >
-                                            <input type="text" class="MathJaxInput3" value="${item.valvalue}">
-                                    </div>
-                                    <div class="width-30 isShow2"> 
-                                        <span>数据项</span>
-                                        <input type="text" class="MathJaxInput3 inputFields"  onclick="getFilds"  readonly="readonly">
-                                    </div>
-                                    <div class="width-30 isShow3"> 
-                                            <span>其他公式</span>
-                                            <input type="text" class="MathJaxInput3"  readonly="readonly">
-                                    </div>
-                                    <div class="width-100"> 
-                                            <span>描述</span>
-                                            <input type="text" class="MathJaxInput4" value="${item.remark}">
-                                    </div>
-                                </div>`  
+                    if(data.tableFuncs.length>0){
+                        let str =``
+                        data.tableFuncs.map((item)=>{
+                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.moduleid}">
+                                        <div class="width-50">
+                                            <span>变量</span>
+                                            <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
+                                        </div>
+                                        <div class="width-50 width-select">
+                                            <span>类型</span>
+                                            <select class="MathJaxInput2 inputButton">
+                                                <option value="">请选择</option>
+                                                <option value="2">常量</option>
+                                                <option value="1">基本类型</option> 
+                                            </select>
+                                        </div>
+                                        <div class="width-50 isShow1"> 
+                                                <span>取值</span >
+                                                <input type="text" class="MathJaxInput3 inputButton">
+                                        </div>
+                                        <div class="width-50 isShow2">
+                                            <span>基本类型</span>
+                                            <select class="MathJaxSelect">
+                                                <option>byte</option>
+                                                <option>short</option>
+                                                <option>int</option>
+                                                <option>long</option>
+                                                <option>float</option>
+                                                <option>double</option>
+                                                <option>boolean</option>
+                                                <option>char</option>
+                                                <option>date</option>
+                                                <option>string</option>
+                                                <option>BLOB</option>
+                                                <option>boolean</option>
+                                                <option>array</option>
+                                            </select>
+                                        </div>
+                                        <div class="width-50 isShow3"> 
+                                                <span>其他公式</span>
+                                                <input type="text" class="MathJaxInput3 otherFormula inputButton"  readonly="readonly">
+                                        </div>
+                                        <div class="width-50"> 
+                                                <span>描述</span>
+                                                <input type="text" class="MathJaxInput4 inputButton" value="${item.remark}">
+                                        </div>
+                                    </div>`
                         })
-                    $(".MathJaxEdit").html(str)   
-                   for(let j=0;j<data.tableFuncs.length;j++){
-                       for(k=0;k<$('.MathJaxParam').length;k++){
-                           let vType = data.tableFuncs[j].vartype
-                           if(j == k){
-                            $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
-                            if(vType == "常量"){
-                                $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                        $(".MathJaxEdit").html(str)
+                        for(let j=0;j<data.tableFuncs.length;j++){
+                            for(k=0;k<$('.MathJaxParam').length;k++){
+                                let vType = data.tableFuncs[j].vartype
+                                if(j == k){
+                                    $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
+                                    if(vType == "常量"){
+                                        $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                    }
+                                    if(vType == "数据项"){
+                                        $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                    }
+
+                                }
                             }
-                            if(vType == "数据项"){
-                                $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find('.isShow3').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                        }
+                    }
+
+                    $('.Frame').fadeToggle(500)
+                }else if(algorithmtype==3){
+                    $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
+                    let algorithmfun = data.tableAlgorithm.algorithmfun
+                    $.ajax({
+                        url:urlConfig.host+'/module/getModuleColumns',
+                        data:{moduleId:window.bigData.formulaModuleId},
+                        success: function(data) {
+
+                            let str1 =``
+                            if(data.length>0){
+                                data.map(item => {
+                                    str1 += `<option value="${item.fieldname}">${item.fieldname}</option>`
+                                })
+                                $('.Logic-form-field').html(str1)
                             }
-                            if(vType == "其他模块计算结果"){
-                                $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
-                                $('.MathJaxParam').eq(k).find(".isShow3").attr("style","display:block;");
+
+                            algorithmfun = algorithmfun.split(" and ")
+                            let str =``
+                            for(let i=0;i<algorithmfun.length;i++){
+                                if(algorithmfun[i].indexOf('与') !=-1){
+                                    let obj = algorithmfun[i].split("与")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select> 
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="" selected>与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('或') !=-1){
+                                    let obj = algorithmfun[i].split("或")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select> 
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="" selected>或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if(algorithmfun[i].indexOf('非') !=-1){
+                                    let obj = algorithmfun[i].split("非")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select> 
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="" selected>非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<') !=-1) && (algorithmfun[i].indexOf('<=') == -1)){
+                                    let obj = algorithmfun[i].split("<")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select> 
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="" selected>&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('<=') !=-1) && (algorithmfun[i].indexOf('<') !=-1)  && (algorithmfun[i].indexOf('=') !=-1)){
+                                    let obj = algorithmfun[i].split("<=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select> 
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="" selected>&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="">&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') == -1)){
+                                    let obj = algorithmfun[i].split(">")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select> 
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="" selected>&gt;</option>
+                                                <option value="">  &gt;=</option>
+                                                <option value="">=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') !=-1)){
+                                    let obj = algorithmfun[i].split(">=")
+                                    str+=` <li class="logicLi">
+                                                <select name="" class="Logic-form-field inputButton">
+                                                    <option value="">${obj[0]}</option>
+                                                </select> 
+                                                <select name="" class="Logic-form-label inputButton">
+                                                    <option value="">与</option>
+                                                    <option value="">或</option>
+                                                    <option value="">非</option>
+                                                    <option value="">&lt;</option>
+                                                    <option value="">&lt;=</option>
+                                                    <option value="">&gt;</option>
+                                                    <option value="" selected>&gt;=</option>
+                                                    <option value="">=</option>
+                                                </select>
+                                                <!-- <select name="" class="Logic-form-value inputButton">
+                                                    <option value="">请选择取值</option>
+                                                </select>  -->
+                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+                                if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') ==-1) && (algorithmfun[i].indexOf('<') == -1)){
+                                    let obj = algorithmfun[i].split("=")
+                                    str+=` <li class="logicLi">
+                                            <select name="" class="Logic-form-field inputButton">
+                                                <option value="">${obj[0]}</option>
+                                            </select> 
+                                            <select name="" class="Logic-form-label inputButton">
+                                                <option value="">与</option>
+                                                <option value="">或</option>
+                                                <option value="">非</option>
+                                                <option value="">&lt;</option>
+                                                <option value="">&lt;=</option>
+                                                <option value="">&gt;</option>
+                                                <option value="">&gt;=</option>
+                                                <option value="" selected>=</option>
+                                            </select>
+                                            <!-- <select name="" class="Logic-form-value inputButton">
+                                                <option value="">请选择取值</option>
+                                            </select>  -->
+                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
+                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                        </li>`
+                                    $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
+                                }
+
+
                             }
-                           }                     
-                       }                      
-                   }
+                            $('.logicUl').html(str)
+                            $('.Logic').fadeToggle(500)
+                        }
+                    })
+
+
+
                 }
-                
-                $('.Frame').fadeToggle(500)
+
             }
         })
-       
+
     })
     //点击数据项
 
