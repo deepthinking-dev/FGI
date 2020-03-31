@@ -245,6 +245,11 @@ $(function(){
             }
         })
     }
+    //点击删除模型
+    $('body').on('click','.lkr-list-del',(e) => {
+        window.bigData.delmoduleId = $(e.target).data('id')
+        $('#lkrFrameDel').fadeToggle(500)
+    })
     $('body').on('click','#mouldPage .active-taps',(e) => {
         $('.active-taps').each((i,v) => {
             $(v).css('color','#ffffff')

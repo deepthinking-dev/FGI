@@ -1031,7 +1031,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event, data);
+                    console.log(event,data,1111)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1047,6 +1047,7 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                             locked = data.locked;
                             self.initLine();
                             break;
@@ -1082,9 +1083,34 @@ var Topology = {
                                 selNodes = null;
                             });
                             break;
+                        case 'moveNodes':
+                            canvas.data.lines.map(item => {
+                                if(item.from.id == data[0].id||item.to.id == data[0].id){
+                                    $(`#${item.id}`).css({
+                                        top:(item.to.y + item.from.y)/2 +"px",
+                                        left:(item.to.x + item.from.x)/2+"px"
+                                    })
+                                }
+                            })
+                            break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
+                         
+                            //去掉重复id的node（一个算子在一套规则中只能出现一次）
+                            function unique(arr){            
+                                for(var i=0; i<arr.length; i++){
+                                    for(var j=i+1; j<arr.length; j++){
+                                        if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
+                                            arr.splice(j,1);
+                                            
+                                            j--;
+                                        }
+                                    }
+                                }
+                                return arr;
+                            }
+                            unique(canvas.data.nodes)
                             break;
                         case 'addNode':
                             selNodes = [data];
@@ -1092,28 +1118,66 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            self.nodeData.push(data)
+                            console.log(data,selected)
+                            //存储编辑区数据
+                           
                             let nodeId = data.id
                             if(nodeId.indexOf('模板') != -1){
                                 alert('新建算子')
                                 $("#suanfaType").css('display', "block");
                                 window.bigData.formulaType = 'add'
+                                let ModuleId =nodeId.substring(0,nodeId.length-2)
+                                window.bigData.formulaModuleId = ModuleId
                             }
                             
                             locked = data.locked;
                             self.initNode();
                             break;
                         case 'addLine':
-                            
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
-                            // data.name = '"polyline"'
-                            // console.log('11111111111',data)
-                            selected = {
-                                "type": event,
-                                "data": data
-                            };
-                            locked = data.locked;
-                            self.initLine();
+                            // data.name = '"polyline"'      
+                            // console.log($("#ligature").show())
+                            // data.text = '4545'
+                            // console.log(data,canvas)
+                            // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                            // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
+                            //判断连线是否连接成功
+                            if(!data.to.id){
+                            canvas.data.lines.map((item,i) => {
+                                if(item.id == data.id){
+                                    canvas.data.lines.splice(i,1)
+                                    alert('操作失败！')
+                                    
+                                    canvas.render();
+                                    setTimeout(function () {
+                                        selected = null;
+                                        selNodes = null;
+                                    });
+                                }
+                            })
+                            }else{
+                                window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
+                                $('#'+window.currentId).css({
+                                    color: '#ffffff',
+                                    position: 'absolute',
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
+                                // 选择关系弹框
+                                $(`#selectRela`).css({
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
+                                selected = {
+                                    "type": event,
+                                    "data": data
+                                };
+                                locked = data.locked;
+                                self.initLine();
+                            }
                             break;
                         case 'delete':
                             $("#flex_props_home").removeClass("hidden");
@@ -1138,7 +1202,6 @@ var Topology = {
                     }
 
                 }
-
                 canvasOptions.on = onMessage;
                 canvas.open(data);
                 // canvas.updateProps();

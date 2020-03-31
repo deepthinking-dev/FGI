@@ -320,11 +320,11 @@ function ruleSure(){
         }
        
     }
-    let node =window.Topology.nodeData
-    node.map(item=>{
-        let obj = (item.id).substring(0,(item.id).length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
-        coordinate += obj +","
-    })
+    // let node =window.Topology.nodeData
+    // node.map(item=>{
+    //     let obj = (item.id).substring(0,(item.id).length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
+    //     coordinate += obj +","
+    // })
     console.log(coordinate)
      console.log(algorithmRuleDataList)
      if($("#ruleName").val() == ''){

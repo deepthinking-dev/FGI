@@ -2056,7 +2056,25 @@
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    reseTabsList()
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetAllModule',
+                        data:'',
+                        success: function(data) {
+                            if(data){
+                                $(".moduleContent").html('')
+                                let str=``
+                                data.map(item=>{
+                                    $(".moduleContent").append(`<div class="left-list">
+                                            <div class="left-list-tilte">${item.modulename}</div>
+                                            <div class="left-list-event">
+                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                            </div>
+                                        </div>`)
+                                })
+                            }
+                        }
+                    })
                     $('#lkrFrameDel').fadeToggle(500)
                 }
             }
