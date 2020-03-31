@@ -70,8 +70,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         try {
             //算子名称不能重复
             TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
-            tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname())
-                    .andIdNotEqualTo(algorithmModel.getTableAlgorithm().getId());
+            tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname());
             List<TableAlgorithm> tableAlgorithms=tableAlgorithmMapper.selectByExample(tableAlgorithmCriteria);
             if(tableAlgorithms.size()>0){//重名
                 return 2;
@@ -112,6 +111,14 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     @Override
     public int modAlgorithmFuncsById(AlgorithmModel algorithmModel) {
         try {
+            //算子名称不能重复
+            TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
+            tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname())
+                    .andIdNotEqualTo(algorithmModel.getTableAlgorithm().getId());
+            List<TableAlgorithm> tableAlgorithms=tableAlgorithmMapper.selectByExample(tableAlgorithmCriteria);
+            if(tableAlgorithms.size()>0){//重名
+                return 3;
+            }
             boolean flag=cheakAlgorithmrole(algorithmModel.getTableAlgorithm().getId().toString());
             if(flag){
                 return 2;

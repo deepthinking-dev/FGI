@@ -111,24 +111,22 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
                     Iterator<TableModulefield> iterator=list.iterator();
                     while (iterator.hasNext()){
                         TableModulefield field=iterator.next();
-                        if(field.getId()==null){//没有ID，新增
+                        if(field.getId()==null||field.getId()==0){//没有ID，新增
                             add_data.add(field);
                             iterator.remove();
                         }
                     }
-                    if(iterator.hasNext()){
-                        for(TableModulefield old_field:old_data){
-                            boolean falg=true;
-                            while (iterator.hasNext()){
-                                TableModulefield field=iterator.next();
-                                if(old_field.getId()==field.getId()){
-                                    falg=false;
-                                    continue;
-                                }
+                    for(TableModulefield old_field:old_data){
+                        boolean falg=true;
+                        while (iterator.hasNext()){
+                            TableModulefield field=iterator.next();
+                            if(old_field.getId()==field.getId()){
+                                falg=false;
+                                continue;
                             }
-                            if(falg){
-                                del_data.add(old_field);
-                            }
+                        }
+                        if(falg){
+                            del_data.add(old_field);
                         }
                     }
                 }else{
@@ -156,10 +154,10 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
         }
         try {
             int id=Integer.parseInt(moduleId);
-            deleteByPrimaryKey(id);
             TableModulefieldCriteria tableModulefieldCriteria=new TableModulefieldCriteria();
             tableModulefieldCriteria.createCriteria().andModuleidEqualTo(id);
             tableModulefieldMapper.deleteByExample(tableModulefieldCriteria);
+            deleteByPrimaryKey(id);
         }catch (Exception e){
             logger.error(e.getMessage());
             return false;

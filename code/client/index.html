@@ -173,13 +173,20 @@
 </script>
 </head>
 <body> 
-    <!-- fgi模型表 -->
-    <div id="fgiMoName" class="lkr-frame" style="z-index: 9999; display: none;">
-        <div class="lkr-frame-div">
-            <div id="addMb">
+     <!-- fgi模型表 -->
+    <div id="sourceName" class="lkr-frame" style="z-index: 9999; display: none;">
+        <div class="lkr-frame-div" style="height: 460px;">
+            <div class="lkr-frame-tilte">
+                连接数据源
+                <span style="cursor: pointer;" onclick='sourceNameClose()'>x</span>
+            </div>
+            <div id="addSource" class="addSource">
+                <select id='fgiName' class="lkr-select">
+                    <option>卫星信号规格参数A表</option>
+                </select>
                 <table class="lkr-table" border="1">
                     <thead>
-                      <tr>
+                        <tr>
                         <td>
                             <input type="checkbox" name="item" id="selectAll"/>
                         </td>
@@ -198,16 +205,19 @@
                         <td>
                             是否主键
                         </td>
-                      </tr>
+                        </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                     
                     </tbody>
                 </table>
             </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='sourceNameConfirm()'>确定</div>
+            </div>
         </div>
         
-      
+        
     </div>
     <!-- 新建/编辑算子 -->
     <div class="lkr-frame" id='AddAlgorithm'>
@@ -435,7 +445,7 @@
                 <span class="form-span">算子名称</span>
                 <input id="AlgorithmnameY" class="form-input" type="text" >
             </div>
-            <div>
+            <div class="AlgorithInput">
                 <span class="form-span">公式编辑</span>
                 <input id="MathInput" class="form-input" onblur="Preview.Update()" type="text" >
             </div>
@@ -1289,6 +1299,7 @@
             }
         })
     }
+
     //修改字典信息
     function editZd(s) {
         $("#editDicYes").attr("editId",s)

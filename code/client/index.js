@@ -599,7 +599,7 @@ $(function(){
                                                 <option value="">请选择取值</option>
                                             </select>  -->
                                             <input type="text" class="Logic-form-value inputButton" value="${obj[1]}"> 
-                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            <button class="removeLogic" type="button" onclick="remov eLogic(event)">删除</button>
                                         </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
@@ -725,6 +725,151 @@ $(function(){
     $('body').on('click','button.delTab',(e) => {
         debugger
         $(e.target).parents('tr').remove();
+    })
+    $('body').on('dblclick','.dbclickAlgorithm',(e) => {
+        debugger
+        let AlgorithmId= $(e.target).attr('algorithmid')
+        $.ajax({
+            url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
+            data:{algthId:AlgorithmId} ,
+            type:"get",
+            success(data) {
+                console.log(data);
+                if(data.tableAlgorithm.algorithmtype == 1){
+                    $("#editDicName").val(data.tableAlgorithm.algorithmname).attr({"readonly":"readonly"});
+                    $("#editDicDes").val(data.tableAlgorithm.des).attr({"readonly":"readonly"});
+                    $("#zdcsList").empty()
+                    $("#addZdcs").hide();
+                    $("#editDic").show();
+                    data.tableFuncs.map(t=>{
+                        $("#zdcsList").append(`
+                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                            <p style="margin-top: 5px">
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" readonly="readonly"  type="text" value="${t.varname}">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
+                                <select class="zdcsSelect" disabled="disabled">
+                                    <option value="2">常量</option>
+                                    <option value="3">对象</option>
+                                    <option value="1">基本类型</option>
+                                </select>
+                                <input type="text" value="" class="zdcsText">
+                            </p>
+                            <p>
+                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
+                                <select class="zdcsExport" disabled="disabled">
+                                    <option value="0">输入</option>
+                                    <option value="1">输出</option>
+                                </select>
+                            </p>
+                        </div>
+                    `)
+                    })
+                    for(var i=0;i<data.tableFuncs.length;i++){
+                        $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
+                        $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
+                        if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else {
+                            $("#editDic .zdcsText").eq(i).hide();
+                            let select= $(`
+                            <select class="zdcsTypeSelect">
+                                <option>byte</option>
+                                <option>short</option>
+                                <option>int</option>
+                                <option>long</option>
+                                <option>float</option>
+                                <option>double</option>
+                                <option>boolean</option>
+                                <option>char</option>
+                                <option>date</option>
+                                <option>string</option>
+                                <option>BLOB</option>
+                                <option>boolean</option>
+                                <option>array</option>
+                            </select>`)
+                            select.val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsSelect").eq(i).parent().append(select)
+                        }
+                    }
+                } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"readonly":"readonly"});
+                    $('.AlgorithInput').hide();
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.changeBds(data.tableAlgorithm.algorithmfun);
+                    window.bigData.formulaType = 'edit';
+                    if(data.tableFuncs.length>0){
+                        let str =``
+                        data.tableFuncs.map((item)=>{
+                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
+                                        <div class="width-50">
+                                            <span>变量</span>
+                                            <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
+                                        </div>
+                                        <div class="width-50 width-select">
+                                            <span>类型</span>
+                                            <select  class="MathJaxInput2 inputButton" disabled="disabled">
+                                                <option value="2">常量</option>
+                                                <option value="1">基本类型</option>
+                                            </select>
+                                        </div>
+                                        <div class="width-50 isShow1">
+                                                <span>取值</span >
+                                                <input type="text" readonly="readonly" class="MathJaxInput3 inputButton">
+                                        </div>
+                                        <div class="width-50 isShow2">
+                                            <span>基本类型</span>
+                                            <select class="MathJaxSelect" disabled="disabled">
+                                                <option>byte</option>
+                                                <option>short</option>
+                                                <option>int</option>
+                                                <option>long</option>
+                                                <option>float</option>
+                                                <option>double</option>
+                                                <option>boolean</option>
+                                                <option>char</option>
+                                                <option>date</option>
+                                                <option>string</option>
+                                                <option>BLOB</option>
+                                                <option>boolean</option>
+                                                <option>array</option>
+                                            </select>
+                                        </div>
+                                        <div class="width-50">
+                                                <span>描述</span>
+                                                <input type="text" readonly="readonly" class="MathJaxInput4 inputButton" value="${item.remark}">
+                                        </div>
+                                    </div>`
+                        })
+                        $(".MathJaxEdit").html(str)
+                        for(let j=0;j<data.tableFuncs.length;j++){
+                            for(k=0;k<$('.MathJaxParam').length;k++){
+                                let vType = data.tableFuncs[j].vartype
+                                if(j == k){
+                                    $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
+                                    if(vType == "2"){
+                                        $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                    }
+                                    if(vType == "1"){
+                                        $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                        $('.MathJaxParam').eq(k).find(".MathJaxSelect").val(data.tableFuncs[j].valvalue)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $('.Frame').fadeToggle(500)
+                }else if(data.tableAlgorithm.algorithmtype == 3){
+                    $('.addButton').hide();
+                    $(".Logic").fadeToggle(500)
+                }
+            }
+        })
     })
 
 })
