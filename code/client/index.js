@@ -23,6 +23,7 @@ $(function(){
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
         $("#dicDiv").show();
+        dictionary()
     })
     $('body').on('click','#dicYes',(e) => {
         $("#dicDiv").hide();
@@ -35,6 +36,10 @@ $(function(){
         $("#editDicName").val("");
         $("#editDicDes").val("");
         $("#dicDiv").hide();
+        $("#addZdcs").show();
+        $("#editAuthor").attr("disabled",false);
+        $("#editDicName").attr("disabled",false);
+        $("#editDicDes").attr("disabled",false);
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDicTitle").text("修改字典")
@@ -739,7 +744,6 @@ $(function(){
         $(e.target).parents('tr').remove();
     })
     $('body').on('dblclick','.dbclickAlgorithm',(e) => {
-        debugger
         let AlgorithmId= $(e.target).attr('algorithmid')
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
@@ -747,30 +751,37 @@ $(function(){
             type:"get",
             success(data) {
                 console.log(data);
+                $("#editDicTitle").text("字典详情")
+                $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
-                    $("#editDicName").val(data.tableAlgorithm.algorithmname).attr({"readonly":"readonly"});
-                    $("#editDicDes").val(data.tableAlgorithm.des).attr({"readonly":"readonly"});
-                    $("#zdcsList").empty()
+                    $("#editAuthor").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
+                    $("#editDicName").val(data.tableAlgorithm.algorithmname).attr({"disabled":"disabled"});
+                    $("#editDicDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    $("#zdcsList").empty();
                     $("#addZdcs").hide();
                     $("#editDic").show();
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
-                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                         <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                             <p style="margin-top: 5px">
-                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" readonly="readonly"  type="text" value="${t.varname}">
+                                <span style="color:#fff;margin-right: 20px;">参数名称</span>
+                                <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
                             </p>
                             <p>
-                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">类型</span>
-                                <select class="zdcsSelect" disabled="disabled">
+                                <span style="color:#fff;;margin-right: 20px">类型</span>
+                                <select class="zdcsSelect" disabled>
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                                <input type="text" value="" class="zdcsText">
+                            </p>
+                             <p>
+                                <span style="color:#fff;;margin-right: 20px">取值</span>
+                                <input type="text" value="" class="zdcsText" disabled>
                             </p>
                             <p>
-                                <span style="color:#fff;margin-left: 30px;;margin-right: 20px">输入输出</span>
-                                <select class="zdcsExport" disabled="disabled">
+                                <span style="color:#fff;margin-right: 20px">输入输出</span>
+                                <select class="zdcsExport" disabled>
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
@@ -786,7 +797,7 @@ $(function(){
                         } else {
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
-                            <select class="zdcsTypeSelect">
+                            <select class="zdcsTypeSelect" disabled>
                                 <option>byte</option>
                                 <option>short</option>
                                 <option>int</option>
@@ -802,7 +813,8 @@ $(function(){
                                 <option>array</option>
                             </select>`)
                             select.val(data.tableFuncs[i].valvalue)
-                            $("#editDic .zdcsSelect").eq(i).parent().append(select)
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("数据项")
+                            $("#editDic .zdcsSelect").eq(i).parent().next().append(select)
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){

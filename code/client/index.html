@@ -1330,6 +1330,9 @@
                     $("#editDicName").val("");
                     $("#editDicDes").val("");
                     $("#editAuthor").val("")
+                    $("#editAuthor").attr("disabled",false);
+                    $("#editDicName").attr("disabled",false);
+                    $("#editDicDes").attr("disabled",false);
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor)

@@ -36,17 +36,7 @@ body .form-input{
     left: 30%;
     z-index: 2;
 }
-.Frame span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    vertical-align: top;
-    line-height: 40px;
-    margin-right: 20px;
-}
+
 .form-group{
     position: relative;
     top: 70px;
@@ -147,6 +137,10 @@ body .form-input{
     color: #fff;
     top: 10px;
     left: 20px;
+    text-align: right;
+    display: inline-block;
+    line-height: 40px;
+    width: 120px;
 }
 
 .MathJaxEdit{
@@ -193,7 +187,7 @@ body .form-input{
     display: inline-block;
 }
 .width-50 input{
-    color: #000;
+    color: #fff;
     width: 112px;
     font-size: 14px;
     text-align: center;
@@ -205,9 +199,10 @@ body .form-input{
     text-align: center;
 }
 .width-50 select{
-    color: #000;
+    color: #fff;
     width: 112px;
     font-size: 14px;
+    height: 22px;
 }
 /* 逻辑运算弹框 */
 .Logic{
@@ -281,7 +276,7 @@ body .form-input{
 }
 .logicForm{
     position: relative;
-    width: 100%;
+    width: 93%;
     height: 340px;
     overflow: auto;
 }
@@ -372,7 +367,7 @@ body .form-input{
 }
 .frame-foot{
     position: absolute;
-    bottom: 80px;
+    bottom: 70px;
     right: 80px;
 }
 .frame-foot .button{

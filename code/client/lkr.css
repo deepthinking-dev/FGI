@@ -471,7 +471,7 @@ body{
 #dicTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect  {
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -492,7 +492,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect  option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
