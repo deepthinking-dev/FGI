@@ -399,20 +399,20 @@
             <div id="authorShow">
                 <div>
                     <span class="form-span">作者</span>
-                    <input id="gsName" class="form-input" type="text" >
+                    <input id="gsName" type="text" >
                 </div>
                 <div>
                     <span class="form-span">描述</span>
-                    <input id="gsDes" class="form-input" type="text" >
+                    <input id="gsDes" type="text" >
                 </div>
             </div>
             <div>
                 <span class="form-span">算子名称</span>
-                <input id="AlgorithmnameY" class="form-input" type="text" >
+                <input id="AlgorithmnameY" type="text" >
             </div>
             <div class="AlgorithInput">
                 <span class="form-span">公式编辑</span>
-                <input id="MathInput" class="form-input" onblur="Preview.Update()" type="text" >
+                <input id="MathInput" onblur="Preview.Update()" type="text" >
             </div>
                 <div>
                     <span  class="form-span">公式预览</span>
@@ -437,15 +437,15 @@
             <button class="addButton" onclick="addLogic()">新增</button>
             <div>
                 <span class="form-span">作者</span>
-                <input id="ljName" class="form-input" type="text" style="color: white;border: 1px solid white">
+                <input id="ljName" type="text">
             </div>
             <div style="margin-top: 10px;">
                 <span class="form-span">描述</span>
-                <input id="ljDes" class="form-input" type="text" style="color: white;border: 1px solid white">
+                <input id="ljDes" type="text">
             </div>
             <div style="margin-top: 10px;">
                 <span class="form-span">逻辑运算名称</span>
-                <input id="LogicName" class="form-input" type="text" style="color: white;border: 1px solid white">
+                <input id="LogicName" type="text">
             </div>
             <div>
                 <form class="logicForm">
@@ -635,7 +635,7 @@
                                 <li><span onclick="dictionary()">字典</span></li>
                             </div>
                             <div class='Search'>
-                                <input type='text'  class="lkr-input" style="flex:1;margin: auto;"/>
+                                <input id="searchName" type='text'  class="lkr-input" style="flex:1;margin: auto;color: white"/>
                             </div>
                            <div id="ruleMde" class='lkr-page' style="display: none;">
                                 <button id="getAllSz" class="backAlgorithmPage">返回</button>
@@ -747,7 +747,6 @@
 
         <input type="button" id="addDic" value="新增">
         <table id="dicTable"></table>
-        <input type="button" id="dicYes" value="确定">
     </div>
     <!-- 字典新增修改弹窗 -->
     <div id="editDic">
@@ -758,6 +757,9 @@
         <p>
             <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
         </p>
+        <div  style="margin: 20px 0">
+            <span style="color: #fff;margin-left:30px;margin-right: 20px"> 作 者 </span><input type="text" id="editAuthor">
+        </div>
         <div  style="margin: 20px 0">
             <span style="color: #fff;margin-left:30px;margin-right: 20px">算法名称</span><input type="text" id="editDicName">
         </div>
@@ -1303,6 +1305,7 @@
                 if(data.status == 1){
                     dictionary()
                     toastr.success('删除成功！');
+                    Topology.init();
                 }
             }
         })
@@ -1318,8 +1321,12 @@
             success(data) {
                 console.log(data);
                 if(data.tableAlgorithm.algorithmtype == 1){
+                    $("#editDicName").val("");
+                    $("#editDicDes").val("");
+                    $("#editAuthor").val("")
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
+                    $("#editAuthor").val(data.tableAlgorithm.algorithmauthor)
                     $("#zdcsList").empty()
                     $("#addZdcs").show();
                     $("#editDic").show();
@@ -1379,6 +1386,7 @@
                 } else if(data.tableAlgorithm.algorithmtype == 2){
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor);
                     $("#gsDes").val(data.tableAlgorithm.des);
+                    $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
                     window.changeBds(data.tableAlgorithm.algorithmfun);
@@ -1676,7 +1684,16 @@
     function addLogic(){
         $(".logicUl").append($(".logicLi:first").clone());
     }
-
+    $("#searchName").bind('input propertychange',function(s){
+        let val = $("#searchName").val()
+        $('.left-list').each((i,s)=>{
+            if($(s).children().text().includes(val)){
+                $(s).show()
+            } else {
+                $(s).hide()
+            }
+        })
+    });
 </script>
 </body>
 </html>
