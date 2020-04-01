@@ -1133,7 +1133,6 @@ var Topology = {
                             
                             locked = data.locked;
                             self.initNode();
-                            self.setChild(data);
                             break;
                         case 'addLine':
                             data.strokeStyle = '#4295ec'
