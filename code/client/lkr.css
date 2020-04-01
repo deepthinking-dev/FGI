@@ -566,13 +566,13 @@ body{
     position: relative;
     font-size: 16px;
     color: #fff;
-    top: 10px;
+    top: -6px;
     left: 20px;
 }
 #dicDiv .title{
     position: absolute;
     width: 100%;
-    top: 20px;
+    top: 0px;
     height: 40px;
 }
 #dicDiv .title span{

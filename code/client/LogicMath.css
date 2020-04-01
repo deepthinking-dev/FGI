@@ -128,7 +128,7 @@ body .form-input{
 .Frame .title{
     position: absolute;
     width: 100%;
-    top: 20px;
+    top: 0px;
     height: 40px
 }
 .Frame .title span{
@@ -236,7 +236,7 @@ body .form-input{
 .Logic .title{
     position: absolute;
     width: 100%;
-    top: 20px;
+    top: 0px;
     height: 40px
 }
 .Logic .title span{
@@ -652,7 +652,7 @@ body .form-input{
     height:600px;
     width: 1200px;
     display: none;
-    /* background-image: url(./static/mum1.png); */
+    background-image: url(./static/moduleBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin:0 auto;

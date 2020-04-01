@@ -884,6 +884,9 @@
         let str =`新建模型
             <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
         $(".lkr-frame-tilte").html(str)
+        $('.sjyDiv').show();
+        $('.operate').show();
+        $('#fgiSource').show();
         $('#lkrFrame').fadeToggle(500)
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
