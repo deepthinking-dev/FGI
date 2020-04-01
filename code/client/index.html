@@ -221,7 +221,7 @@
     </div>
     <!-- 新建/编辑算子 -->
     <div class="lkr-frame" id='AddAlgorithm'>
-        <div class="lkr-frame-div" style="height: 200px;">
+        <div class="lkr-frame-div" style="height: 250px;">
             <div class="lkr-frame-tilte">
                 新建/编辑算子
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
@@ -433,7 +433,7 @@
             <span>逻辑运算</span>
             <span onclick="LogicClose()" style="cursor: pointer;">X</span>
         </div>
-        <div class="LogicContent">
+        <div class="LogicContent ">
             <button class="addButton" onclick="addLogic()">新增</button>
             <div>
                 <span class="form-span">作者</span>
@@ -453,7 +453,7 @@
                         <li class="logicLi">
                             <select name="" class="Logic-form-field inputButton">
                                 <option value="">请选择字段</option>
-                            </select> 
+                            </select>
                             <select name="" class="Logic-form-label inputButton">
                                 <option value="">与</option>
                                 <option value="">或</option>
@@ -467,7 +467,7 @@
                             <!-- <select name="" class="Logic-form-value inputButton">
                                 <option value="">请选择取值</option>
                             </select>  -->
-                            <input type="text" class="Logic-form-value inputButton"> 
+                            <input type="text" class="Logic-form-value inputButton">
                             <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                         </li>
                     </ul>
@@ -746,7 +746,9 @@
         </p>
 
         <input type="button" id="addDic" value="新增">
-        <table id="dicTable"></table>
+        <table id="dicTable">
+
+        </table>
     </div>
     <!-- 字典新增修改弹窗 -->
     <div id="editDic">
@@ -1278,12 +1280,16 @@
             success(data) {
                 console.log(data);
                 $("#dicTable").append(`<thead>
-<th style="width: 100px">算法名称</th><th style="width: 200px">算法描述</th><th style="width: 150px">操作</th>
-</thead>`)
+                    <th style="width: 150px">作者</th>
+                    <th style="width: 150px">算法名称</th>
+                    <th style="width: 200px">算法描述</th>
+                    <th style="width: 150px">操作</th>
+                    </thead>`)
                 data.map(s=>{
                     $("#dicTable").append(
                         `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
-                            <td style="width: 100px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td style="width: 200px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
                                 <input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none">

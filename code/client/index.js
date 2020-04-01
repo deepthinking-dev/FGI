@@ -105,7 +105,7 @@ $(function(){
             })
         } else {
             let jbxx = {
-                "algorithmauthor": "",
+                "algorithmauthor": $("#editAuthor").val(),
                 "algorithmfun": "",
                 "algorithmname": name,
                 "algorithmtype": 1,
