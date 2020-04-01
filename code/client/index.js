@@ -220,7 +220,7 @@ $(function(){
         getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
     })
     $('body').on('click','#getAllGzgz',(e) => {
-        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'rolename',ruleType:'规则'},'规则',{username:null})
+        getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
         $("#algorithmPage").hide();
         $("#ruleMde").show();
     })
@@ -230,40 +230,77 @@ $(function(){
             data:param,
             success: function(data) {
                 $(".left-list").remove()
-                data.map(item => {
-                    window.addAlgorithm({
-                        name: 'rectangle',
-                        icon: 'icon-rectangle',
-                        id:item[datas.Tname][datas.id],
-                        type:type,
-                        data: {
-                            id:item[datas.Tname][datas.id]+type,
-                            text: item[datas.Tname][datas.name],
-                            rect: {
-                                width: 200,
-                                height: 50
-                            },
-                            font: {
-                                fontFamily: 'Arial',
-                                color: 'aqua',
-                            
-                                textBaseline: 'top'
-                            },
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingTop: 10,
-                            paddingBottom: 10,
-                            borderRadius: 0.1,
+                if(type=="算子"){
+                    data.map(item => {
+                        window.addAlgorithm({
                             name: 'rectangle',
-                            fillStyle:'rgba(4,44,98,0.58)',
-                            strokeStyle: '#4295ec',
-                            // image:'./static/mum1.png'
-                        }
+                            icon: 'icon-rectangle',
+                            id:item[datas.Tname][datas.id],
+                            type:type,
+                            data: {
+                                id:item[datas.Tname][datas.id]+type,
+                                text: item[datas.Tname][datas.name],
+                                rect: {
+                                    width: 200,
+                                    height: 50
+                                },
+                                font: {
+                                    fontFamily: 'Arial',
+                                    color: 'aqua',
+                                
+                                    textBaseline: 'top'
+                                },
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                paddingTop: 10,
+                                paddingBottom: 10,
+                                borderRadius: 0.1,
+                                name: 'rectangle',
+                                fillStyle:'rgba(4,44,98,0.58)',
+                                strokeStyle: '#4295ec',
+                                // image:'./static/mum1.png'
+                            }
+                        })
                     })
-                })
+                }else{
+                    data.map(item => {
+                        window.addAlgorithm({
+                            name: 'rectangle',
+                            icon: 'icon-rectangle',
+                            id:item[datas.id],
+                            moduleid:item.moduleid,
+                            type:type,
+                            data: {
+                                id:item[datas.id]+type,
+                                text: item[datas.name],
+                                rect: {
+                                    width: 200,
+                                    height: 50
+                                },
+                                font: {
+                                    fontFamily: 'Arial',
+                                    color: 'aqua',
+                                
+                                    textBaseline: 'top'
+                                },
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                paddingTop: 10,
+                                paddingBottom: 10,
+                                borderRadius: 0.1,
+                                name: 'rectangle',
+                                fillStyle:'rgba(4,44,98,0.58)',
+                                strokeStyle: '#4295ec',
+                                // image:'./static/mum1.png'
+                            }
+                        })
+                    })
+                }
+                
             }
         })
     }
+    window.getAllData = getAllData
     //点击删除模型
     $('body').on('click','.lkr-list-del',(e) => {
         window.bigData.delmoduleId = $(e.target).data('id')

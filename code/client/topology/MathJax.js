@@ -388,7 +388,7 @@ function ConfirmDelAlgorithm(){
             if(data){
                 window.bigData.delAlgorithmId = ''
                 $('#lkrAlgorithm').fadeToggle(500)
-                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',name:'algorithmname'},'算子',{username:null})
+                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
             }
         }
     })
@@ -410,7 +410,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
-                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',name:'rolename',ruleType:'规则'},'规则',{username:null})
+                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
             }
         }
     })

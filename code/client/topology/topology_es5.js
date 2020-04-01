@@ -924,7 +924,7 @@ var Topology = {
             </div>`);
         }
         if(option.type== "规则"){
-            $("#ruleMde").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+            $("#rulePage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                     <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
                     <div class="left-list-tilte">${option.data.text}</div>
                     <div class="left-list-event">
