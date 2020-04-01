@@ -263,6 +263,7 @@ $(function(){
                         })
                     })
                 }else{
+                    debugger
                     data.map(item => {
                         window.addAlgorithm({
                             name: 'rectangle',
@@ -272,7 +273,7 @@ $(function(){
                             type:type,
                             data: {
                                 id:item[datas.id]+type,
-                                text: item[datas.name],
+                                text: item[datas.Tname],
                                 rect: {
                                     width: 200,
                                     height: 50
