@@ -264,7 +264,7 @@
             </select>
         </div>
 
-        <div class="moduleContent">
+        <div class="moduleContentList">
         </div>
         <div class="frame-foot">
             <div class="button" onclick='ConfirmLogic()'>确定</div>
@@ -539,7 +539,7 @@
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
-                <div style="margin: 15px 0;display: flex;align-items: center;">
+                <div style="margin: 15px 0;display: flex;align-items: center;" class="sjyDiv">
                     <label style="line-height: 10px;width: 80px;">链接数据源：</label>
                     <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
@@ -569,7 +569,7 @@
                             <td>
                                 字段表名
                             </td>
-                            <td>
+                            <td class="operate">
                                 操作
                             </td>
                           </tr>
@@ -639,9 +639,7 @@
                             </div>
                            <div id="ruleMde" class='lkr-page' style="display: none;">
                                 <button id="getAllSz" class="backAlgorithmPage">返回</button>
-                                <div id="rulePage">
-
-                                </div>
+                                <div id="rulePage"></div>
                              
                            </div>
                            <div id="algorithmPage" class='lkr-page' ></div>
@@ -786,7 +784,6 @@
 <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
 <script src="./plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="./plugins/topology/topology.bundle.js"></script>
-<script type="text/javascript" src="./plugins/jquery/fileUpload.js"></script>
 <script src='index.js'></script>
 <script src="topology/topology_es5.js"></script>
 <script src="topology/MathJax.js"></script>
@@ -818,9 +815,15 @@
             data:{moduleId:window.bigData.editmoduleId},
             success: function(data) {
                 // $('#addMb tbody').html('')
-                $("#mouldName").val(data.modulename)
-                $("#modulegroup").val(data.modulegroup)
-                $("#mouldRemark").val(data.des)
+                let str =`修改模型
+                    <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
+                $(".lkr-frame-tilte").html(str)
+                $('.sjyDiv').show();
+                $('.operate').show();
+                $('#fgiSource').show();
+                $("#mouldName").val(data.modulename).removeAttr("readonly")
+                $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
+                $("#mouldRemark").val(data.des).removeAttr("readonly")
                 window.bigData.editmoduleId = data.id
                 let thStr=``
                 data.modulefields.map(item => {
@@ -838,9 +841,46 @@
             }
         })
     })
-  
+    $('body').on('dblclick','.dbclickModule',(e) =>{
+        debugger
+        let modlueId= $(e.target).attr('data-id')
+        $('#lkrFrame').fadeToggle(500)
+        $.ajax({
+            url:urlConfig.host+'/module/getModuleById',
+            data:{moduleId:modlueId},
+            success: function(data) {
+                // $('#addMb tbody').html('')
+                let str =`模型详情
+                    <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
+                $(".lkr-frame-tilte").html(str)
+                $('.sjyDiv').hide();
+                $('.operate').hide();
+                $("#mouldName").val(data.modulename).attr({"readonly":"readonly"});
+                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"});
+                $("#mouldRemark").val(data.des).attr({"readonly":"readonly"});
+                $('#lkrFrame .lkr-button').hide();
+                window.bigData.editmoduleId = data.id
+                let thStr=``
+                data.modulefields.map(item => {
+                    thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
+                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
+                    <td>${item.LENGTH?item.LENGTH:''}</td>
+                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
+                    <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    </tr>`
+                })
+                $('#addMb tbody').html(thStr)
+
+            }
+        })
+    })
     function addModule(){
         window.bigData.frameType = 'add'
+        let str =`新建模型
+            <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
+        $(".lkr-frame-tilte").html(str)
         $('#lkrFrame').fadeToggle(500)
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
@@ -967,7 +1007,7 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    $(".moduleContent").html('')
+                    $(".moduleContentList").html('')
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -975,8 +1015,8 @@
                             if(data){
                                 let str=``
                                 data.map(item=>{
-                                    $(".moduleContent").append(`<div class="left-list">
-                                            <div class="left-list-tilte">${item.modulename}</div>
+                                    $(".moduleContentList").append(`<div class="left-list">
+                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
                                             <div class="left-list-event">
                                                 <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
@@ -1027,7 +1067,7 @@
                 data:JSON.stringify(param),
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
-                    $(".moduleContent").html('')
+                    $(".moduleContentList").html('')
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1035,8 +1075,8 @@
                             if(data){
                                 let str=``
                                 data.map(item=>{
-                                    $(".moduleContent").append(`<div class="left-list">
-                                            <div class="left-list-tilte">${item.modulename}</div>
+                                    $(".moduleContentList").append(`<div class="left-list">
+                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
                                             <div class="left-list-event">
                                                 <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
@@ -1076,17 +1116,20 @@
         })
     }
     function reseTabsList(val){
-        if(val =="全部"){
+       
+        if(val == "全部"){
+           
             $.ajax({
                 url:urlConfig.host+'/module/GetAllModule',
                 data:'',
                 success: function(data) {
                     if(data){
-                        $(".moduleContent").html('')
+                        debugger
+                        $(".moduleContentList").html('')
                         let str=``
                         data.map(item=>{
-                            $(".moduleContent").append(`<div class="left-list">
-                                    <div class="left-list-tilte">${item.modulename}</div>
+                            $(".moduleContentList").append(`<div class="left-list">
+                                    <div class="left-list-tilte dbclickModule"  data-id='${item.id}'>${item.modulename}</div>
                                     <div class="left-list-event">
                                         <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
                                         <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
@@ -1096,44 +1139,26 @@
                     }
                 }
             })
-        }
-        $.ajax({
+        }else{
+            $.ajax({
             url:urlConfig.host+'/module/GetModuleByGroupName',
             data:{moduleGroupName:val},
             success: function(data) {
-                $(".left-list").remove()
+                // $(".left-list").remove()
+                $(".moduleContentList").html('')
                 data.map(item => {
-                    window.addModel({
-                        name: 'rectangle',
-                        icon: 'icon-rectangle',
-                        id:item.id,
-                        data: {
-                            id:item.id,
-                            text: item.modulename,
-                            rect: {
-                                width: 200,
-                                height: 50
-                            },
-                            font: {
-                                fontFamily: 'Arial',
-                                color: 'aqua',
-                            
-                                textBaseline: 'top'
-                            },
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingTop: 10,
-                            paddingBottom: 10,
-                            borderRadius: 0.1,
-                            name: 'rectangle',
-                            fillStyle:'rgba(4,44,98,0.58)',
-                            strokeStyle: '#4295ec',
-                            // image:'./static/mum1.png'
-                        }
-                    })
+                    $(".moduleContentList").append(`<div class="left-list">
+                        <div class="left-list-tilte dbclickModule"  data-id='${item.id}'>${item.modulename}</div>
+                        <div class="left-list-event">
+                            <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                            <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                        </div>
+                    </div>`)
                 })
             }
         })
+        }
+
     }
     function ConfirmDel(){
         $.ajax({
@@ -1147,11 +1172,11 @@
                         data:'',
                         success: function(data) {
                             if(data){
-                                $(".moduleContent").html('')
+                                $(".moduleContentList").html('')
                                 let str=``
                                 data.map(item=>{
-                                    $(".moduleContent").append(`<div class="left-list">
-                                            <div class="left-list-tilte">${item.modulename}</div>
+                                    $(".moduleContentList").append(`<div class="left-list">
+                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
                                             <div class="left-list-event">
                                                 <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
@@ -1173,11 +1198,11 @@
             data:'',
             success: function(data) {
                 if(data){
-                    $(".moduleContent").html('')
+                    $(".moduleContentList").html('')
                     let str=``
                     data.map(item=>{
-                        $(".moduleContent").append(`<div class="left-list">
-                                <div class="left-list-tilte">${item.modulename}</div>
+                        $(".moduleContentList").append(`<div class="left-list">
+                                <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
                                     <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
@@ -1204,6 +1229,7 @@
         $('#dataModulePage').fadeToggle(500)
     }
     $("#selectedModlue").change((e)=>{
+      
         reseTabsList( $("#selectedModlue").val());
     })
     function ModuleClose(){

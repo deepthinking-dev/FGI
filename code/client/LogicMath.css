@@ -635,7 +635,7 @@ body .inputButton{
     top: 50px;
     left: 107px;
 }
-.moduleContent{
+.moduleContentList{
     position: relative;
     display: flex;
     margin: 50px 20px 50px 100px;
@@ -643,7 +643,7 @@ body .inputButton{
     height: auto;
     flex-flow: row wrap;
 }
-.moduleContent .left-list{
+.moduleContentList .left-list{
     margin: 10px 50px 20px 0px;
     width: 292px;
 }

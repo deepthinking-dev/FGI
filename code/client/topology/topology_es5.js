@@ -970,11 +970,13 @@ var Topology = {
                                 width: 200,
                                 height: 50
                             },
+                            parentId:item.tableAlgorithm.id,
                             font: {
                                 fontFamily: 'Arial',
                                 color: 'aqua',                           
                                 textBaseline: 'top'
                             },
+                            children:[],
                             paddingLeft: 10,
                             paddingRight: 10,
                             paddingTop: 10,
@@ -1117,7 +1119,6 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            self.nodeData.push(data)
                             console.log(data,selected)
                             //存储编辑区数据
                            
@@ -1132,6 +1133,7 @@ var Topology = {
                             
                             locked = data.locked;
                             self.initNode();
+                            self.setChild(data);
                             break;
                         case 'addLine':
                             data.strokeStyle = '#4295ec'
@@ -1215,6 +1217,7 @@ var Topology = {
     },
     // 初始化node
     initNode: function () {
+        debugger
         var self = this;
         $("#node_line_color").html("边框颜色");
         $("#flex_props_home").addClass("hidden");
@@ -1252,7 +1255,8 @@ var Topology = {
         // }
         // $('#bkType option:contains("' + bkType + '")').attr("selected",true);
         // self.bkTypeChange();
-
+         // 例子：锚点节点只允许in（作为终点）；上面锚点只允许out
+    
         $("input[name=fontFamily]").val(selected.data.font.fontFamily);
         //字体颜色
         $("input[name=fontColor]").val(selected.data.font.color);
@@ -1298,6 +1302,7 @@ var Topology = {
         $("input[name=paddingBottom]").val(selected.data.paddingBottom);
         canvas.overflow()
     },
+
     // 初始化line
     initLine: function () {
         var self = this;
