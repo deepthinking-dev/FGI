@@ -22,6 +22,7 @@ $(function(){
     })
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
+        $("#dicDiv").show();
     })
     $('body').on('click','#dicYes',(e) => {
         $("#dicDiv").hide();
@@ -33,6 +34,7 @@ $(function(){
         $("#editDicYes").attr("editId","")
         $("#editDicName").val("");
         $("#editDicDes").val("");
+        $("#dicDiv").hide();
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDicTitle").text("修改字典")

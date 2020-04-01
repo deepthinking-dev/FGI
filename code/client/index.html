@@ -221,7 +221,7 @@
     </div>
     <!-- 新建/编辑算子 -->
     <div class="lkr-frame" id='AddAlgorithm'>
-        <div class="lkr-frame-div" style="height: 250px;">
+        <div class="lkr-frame-div" style="height: 350px;">
             <div class="lkr-frame-tilte">
                 新建/编辑算子
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
@@ -393,7 +393,7 @@
     <div class="Frame">
         <div class="title">
             <span>公式编辑</span>
-            <span onclick="FrameClose()" style="cursor: pointer;">X</span>
+            <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;margin-right: 12%">X</span>
         </div>
         <div class="form-group">
             <div id="authorShow">
@@ -431,7 +431,7 @@
     <div class="Logic">
         <div class="title">
             <span>逻辑运算</span>
-            <span onclick="LogicClose()" style="cursor: pointer;">X</span>
+            <span onclick="LogicClose()" style="cursor: pointer;color:#fff;float: right;margin-right: 12%">X</span>
         </div>
         <div class="LogicContent ">
             <button class="addButton" onclick="addLogic()">新增</button>
@@ -512,35 +512,35 @@
         </div>
     </div>
     <div class="lkr-frame" id='lkrFrame'>
-        <div class="lkr-frame-div" style="height: 400px;">
+        <div class="lkr-frame-div">
             <div class="lkr-frame-tilte">
                 新建模型
                 <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 80px;">模板所属组：</label>
-                    <input type='text' id='modulegroup' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                    <label style="line-height: 10px;width: 120px;text-align: right">模板所属组：</label>
+                    <input type='text' id='modulegroup' class="lkr-input"/>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 80px;">模板名称：</label>
-                    <input type='text' id='mouldName' class="lkr-input" style="flex:1;margin-left: 10px;"/>
+                    <label style="line-height: 10px;width: 120px;text-align: right;">模板名称：</label>
+                    <input type='text' id='mouldName' class="lkr-input"/>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 80px;">描述：</label>
-                    <textarea  type='text' id='mouldRemark' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>
+                    <label style="line-height: 10px;width: 120px;text-align: right;">描述：</label>
+                    <textarea style="resize: none" type='text' id='mouldRemark' class="lkr-input"></textarea>
                     <!-- <select class="lkr-select" style="flex: 1;">
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 80px;">链接数据源：</label>
+                    <label style="line-height: 10px;width:120px;text-align: right">链接数据源：</label>
                     <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
                     </select> -->
@@ -613,9 +613,9 @@
                     <div class="panel-body">
                         <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;">
                             <ul class="nav nav-pills">
-                                <li><span id="saveRule" onclick="ruleSure()">保存规则</span></li>
-                                <li><span id="Import">导入</span></li>
-                                <li><span id="export">导出</span></li>
+                                <li><button id="saveRule" onclick="ruleSure()">保存规则</button></li>
+                                <li><button id="Import">导入</button></li>
+                                <li><button id="export">导出</button></li>
                             </ul>
                         </nav>
                         <div class="flex lkr-flex" id="main_canvas" >
@@ -742,7 +742,7 @@
       <div id="dicDiv">
       <div class="title">
           <span>字典信息</span>
-          <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 18%">X</span>
+          <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 12%">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
               <input type="button" id="addDic" value="新增">

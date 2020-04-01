@@ -36,7 +36,17 @@ body .form-input{
     left: 30%;
     z-index: 2;
 }
-
+.Frame span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
 .form-group{
     position: relative;
     top: 70px;
@@ -136,14 +146,7 @@ body .form-input{
     font-size: 16px;
     color: #fff;
     top: 10px;
-    left: 50px;
-}
-.Frame .title span:last-child{
-    text-align: right;
-    position: absolute;
-    top: 10px;
-    float: right;
-    right: 50px;
+    left: 20px;
 }
 
 .MathJaxEdit{
@@ -224,6 +227,17 @@ body .form-input{
     color: #000;
     z-index: 2;
 }
+.Logic span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
 .Logic .title{
     position: absolute;
     width: 100%;
@@ -235,14 +249,7 @@ body .form-input{
     font-size: 16px;
     color: #fff;
     top: 10px;
-    left: 50px;
-}
-.Logic .title span:last-child{
-    text-align: right;
-    position: absolute;
-    top: 10px;
-    float: right;
-    right: 50px;
+    left: 20px;
 }
 
 .LogicContent{
