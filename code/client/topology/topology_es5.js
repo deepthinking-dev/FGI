@@ -939,7 +939,7 @@ var Topology = {
 
     addModel(option){
         
-        $("#mouldPage").append(`<div class="left-list"  >
+        $(".moduleContent").append(`<div class="left-list"  >
                                 <div class="left-list-tilte">${option.data.text}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模板</div>

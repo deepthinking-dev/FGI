@@ -254,52 +254,17 @@
         <div class="title">
             <span>数据模型</span>
             <span onclick="ModuleClose()" style="cursor: pointer;">X</span>
+
         </div>
-        <button class="addButton" onclick="addModule()">新增</button>
+        <div class="addButtonModlue">
+            <button class="addModlue" onclick="addModule()">新增</button>
+            <span>模型组</span>
+            <select id="selectedModlue">
+                <option value=""></option>
+            </select>
+        </div>
+
         <div class="moduleContent">
-            
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">长波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">短波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">雷达波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">长波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">短波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
-            <div class="left-list" ondragstart="onDragStart" draggable="true">
-                <div class="left-list-tilte">雷达波模型</div>
-                <div class="left-list-event">
-                    <div class='lkr-list-editAlgorithm lkr-edit'>修改模型</div>
-                    <div class='lkr-list-delAlgorithm lkr-del'>删除模型</div>
-                </div>
-            </div>
         </div>
         <div class="frame-foot">
             <div class="button" onclick='ConfirmLogic()'>确定</div>
@@ -1108,10 +1073,31 @@
             $(v).prop('checked',false)
         })
     }
-    function reseTabsList(){
+    function reseTabsList(val){
+        if(val =="全部"){
+            $.ajax({
+                url:urlConfig.host+'/module/GetAllModule',
+                data:'',
+                success: function(data) {
+                    if(data){
+                        $(".moduleContent").html('')
+                        let str=``
+                        data.map(item=>{
+                            $(".moduleContent").append(`<div class="left-list">
+                                    <div class="left-list-tilte">${item.modulename}</div>
+                                    <div class="left-list-event">
+                                        <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模板</div>
+                                        <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模板</div>
+                                    </div>
+                                </div>`)
+                        })
+                    }
+                }
+            })
+        }
         $.ajax({
             url:urlConfig.host+'/module/GetModuleByGroupName',
-            data:{moduleGroupName:window.bigData.actionTab},
+            data:{moduleGroupName:val},
             success: function(data) {
                 $(".left-list").remove()
                 data.map(item => {
@@ -1199,8 +1185,25 @@
                 }
             }
         })
+        $.ajax({
+            url:urlConfig.host+'/module/GetModuleGroup',
+            data:'',
+            success: function(datas) {
+                let str = '<option>全部</option>'
+                datas.map(item => {
+                    str += `<option>${item}</option>`
+ 
+                })              
+                $("#selectedModlue").html(str)
+                
+
+            }
+        })
         $('#dataModulePage').fadeToggle(500)
     }
+    $("#selectedModlue").change((e)=>{
+        reseTabsList( $("#selectedModlue").val());
+    })
     function ModuleClose(){
         $('#dataModulePage').fadeToggle(500)
     }
@@ -1277,8 +1280,13 @@
 </thead>`)
                 data.map(s=>{
                     $("#dicTable").append(
-                        `<tr>
-                        <td style="width: 100px">${s.tableAlgorithm.algorithmname}</td><td style="width: 200px">${s.tableAlgorithm.des}</td><td style="width: 150px"><input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none"><input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none"></td>
+                        `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                            <td style="width: 100px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td style="width: 200px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
+                                <input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none">
+                                <input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none">
+                            </td>
                         </tr>
                        `)
                 })
@@ -1313,10 +1321,11 @@
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
                     $("#zdcsList").empty()
+                    $("#addZdcs").show();
                     $("#editDic").show();
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
-                         <div divId="${t.id}" class="zdcsDiv" style="margin: 5px 0;border: 1px solid #fff">
+                         <div divId="${t.id}" class="zdcsDiv " style="margin: 5px 0;border: 1px solid #fff">
                             <p style="margin-top: 5px">
                                 <span style="color:#fff;margin-left: 30px;;margin-right: 20px;">参数名称</span><input class="zdcsCsmc" type="text" value="${t.varname}">
                             </p>
