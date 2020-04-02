@@ -632,11 +632,14 @@
                         
                         <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
                             <div class="title-page">
-                                <li><span onclick="dataModlue()">数据模型</span></li>
-                                <li><span onclick="dictionary()">字典</span></li>
+                                <li><span onclick="dataModlue()"><i class="dataMod"></i> 数据模型</span></li>
+                                <li><span onclick="dictionary()"><i class="DicI"></i> 字典</span></li>
                             </div>
                             <div class='Search'>
+                                <i class="icon-search"></i>
                                 <input id="searchName" type='text'  class="lkr-input" style="flex:1;margin: auto;color: white"/>
+                                
+                            </input>
                             </div>
                            <div id="ruleMde" class='lkr-page' style="display: none;">
                                 <button id="getAllSz" class="backAlgorithmPage">返回</button>
@@ -754,7 +757,7 @@
     <div id="editDic">
         <div class="title">
             <span id="editDicTitle">新增字典</span>
-            <span class="editDicClose" style="color:#fff;float: right;cursor: pointer;margin-right: 12%">X</span>
+            <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;margin-right: 12%">X</span>
         </div>
         <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 30px">
             <p>
