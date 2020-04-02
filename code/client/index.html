@@ -1202,6 +1202,8 @@
     }
 
     function dataModlue(){
+        $("#dicDiv").hide();
+        $("#AddAlgorithm").hide();
         $.ajax({
             url:urlConfig.host+'/module/GetAllModule',
             data:'',
@@ -1346,6 +1348,8 @@
     function dictionary(){
         $("#dicDiv").show();
         $("#dicTable").text("");
+        $("#dataModulePage").hide();
+        $("#AddAlgorithm").hide();
         $.ajax({
             url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
             data:"",
