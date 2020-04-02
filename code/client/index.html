@@ -404,11 +404,11 @@
                 </div>
             </div>
             <div>
-                <span class="form-span">算子名称</span>
+                <span class="form-span">算子名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="AlgorithmnameY" type="text" >
             </div>
             <div class="AlgorithInput">
-                <span class="form-span">公式编辑</span>
+                <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="MathInput" onblur="Preview.Update()" type="text" >
             </div>
                 <div>
@@ -441,7 +441,7 @@
                 <input id="ljDes" type="text">
             </div>
             <div style="margin-top: 10px;">
-                <span class="form-span">逻辑运算名称</span>
+                <span class="form-span">逻辑运算名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span>
                 <input id="LogicName" type="text">
             </div>
             <div>
@@ -633,7 +633,7 @@
                         <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
                             <div class="title-page">
                                 <li><span onclick="dataModlue()"><i class="dataMod"></i> 数据模型</span></li>
-                                <li><span onclick="dictionary()"><i class="DicI"></i> 字典</span></li>
+                                <li><span onclick="dictionaryShow()"><i class="DicI"></i> 字典</span></li>
                             </div>
                             <div class='Search'>
                                 <i class="icon-search"></i>
@@ -767,7 +767,7 @@
                 <span> 作 者 </span><input type="text" id="editAuthor">
             </div>
             <div  style="margin: 10px 0">
-                <span>算法名称</span><input type="text" id="editDicName">
+                <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName">
             </div>
             <div>
                 <span>算法描述</span><input type="text" id="editDicDes">
@@ -1320,6 +1320,9 @@
             $(".Logic").show();
             $('.closeLjButton').show();
             $('.LogicContent .addButton').show();
+            $("#ljName").val("");
+            $("#ljDes").val("");;
+            $('#LogicName').val("");;
             $("#ljName").attr("disabled",false);
             $("#ljDes").attr("disabled",false);
             $('#LogicName').attr("disabled",false);
@@ -1349,7 +1352,6 @@
         }
     }
     function dictionary(){
-        $("#dicDiv").show();
         $("#dicTable").text("");
         $("#dataModulePage").hide();
         $("#AddAlgorithm").hide();
@@ -1382,6 +1384,10 @@
             }
         })
     }
+    function dictionaryShow(){
+        $("#dicDiv").show()
+        dictionary()
+    }
     //删除字典信息
     function deleteZd(s) {
         $.ajax({
@@ -1393,6 +1399,9 @@
                     dictionary()
                     toastr.success('删除成功！');
                     Topology.init();
+                }
+                if(data.status == 2){
+                    toastr.info(data.msg);
                 }
             }
         })

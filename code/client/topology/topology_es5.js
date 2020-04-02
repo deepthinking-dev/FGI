@@ -771,7 +771,7 @@ var Topology = {
     saveKnowledgeMap: function (id) {
         var self = this;
         ww = JSON.stringify(canvas.data)
-        alert("需要保存的json：\n" + JSON.stringify(canvas.data));
+        toastr.info("需要保存的json：\n" + JSON.stringify(canvas.data));
     },
     // 绑定事件
     bindEvent: function () {
@@ -1124,7 +1124,7 @@ var Topology = {
                            
                             // let nodeId = data.id
                             // if(nodeId.indexOf('模板') != -1){
-                            //     alert('新建算子')
+                            //     toastr.info('新建算子')
                             //     $("#suanfaType").css('display', "block");
                             //     window.bigData.formulaType = 'add'
                             //     let ModuleId =nodeId.substring(0,nodeId.length-2)
@@ -1148,7 +1148,7 @@ var Topology = {
                             canvas.data.lines.map((item,i) => {
                                 if(item.id == data.id){
                                     canvas.data.lines.splice(i,1)
-                                    alert('操作失败！')
+                                    toastr.info('操作失败！')
                                     
                                     canvas.render();
                                     setTimeout(function () {

@@ -41,6 +41,7 @@ $(function(){
         $("#editDicYes").attr("editId","")
         $("#editDicName").val("");
         $("#editDicDes").val("");
+        $("#editAuthor").val("");
         $("#dicDiv").hide();
         $("#addZdcs").show();
         $(".editDicClose").attr("class","addDicClose");
@@ -53,6 +54,11 @@ $(function(){
     })
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
+        var flag = true;
+        if(name == ""){
+            toastr.info('请填写算法名称！')
+            return false;
+        }
         let des =  $("#editDicDes").val();
         let dataAll = {
             "tableAlgorithm": {
@@ -87,21 +93,33 @@ $(function(){
                 "remark": ""
             };
             obj.varname = $(s).find('.zdcsCsmc').val() //参数名称
+            if(obj.varname == ""){
+                flag = false;
+                toastr.info('请填写参数名称！')
+            }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
+            if(obj.inorout == ""){
+                flag = false;
+                toastr.info('请填写输入输出！')
+            }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
             if(obj.vartype == "2" || obj.vartype == "3"){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
+                if(obj.valvalue == ""){
+                    flag = false;
+                    toastr.info('请填写取值！')
+                }
             } else {
                 obj.valvalue = $(s).find('.zdcsTypeSelect').val()//下拉框类型值
             }
             if($(s).attr("divid")){
                 obj.id = Number($(s).attr("divid"))
                 obj.algorithmid = Number($("#editDicYes").attr("editId"))
-
             }
             tables.push(obj)
         })
         dataAll.tableFuncs = tables;
+        if(!flag) return false;
         console.log(dataAll);
         if( $("#editDicTitle").text() == "新增字典"){
             $.ajax({
@@ -116,6 +134,7 @@ $(function(){
                     $("#editDic").hide()
                     dictionary();
                     Topology.init();
+                    $("#dicDiv").show()
                 }
             })
         } else {
@@ -153,6 +172,7 @@ $(function(){
                     console.log(data);
                     dictionary()
                     Topology.init();
+                    $("#dicDiv").show()
                 }
             })
         }
@@ -717,7 +737,7 @@ $(function(){
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
-            alert("至少勾选一个规则！");
+            toastr.info("至少勾选一个规则！");
             return false;
        }
        let id = $('input:checkbox:checked').attr("data-id");
