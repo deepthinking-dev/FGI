@@ -421,7 +421,7 @@ body{
     width: 80px;
     color: #fff;
     margin:15px 0;
-    margin-left: 30px;
+    margin-left: 20px;
     border: none;
 }
 #dicDiv{
@@ -458,7 +458,7 @@ body{
 }
 #editDicYes{
     position: absolute;
-    bottom: 75px;
+    bottom: 20px;
     right: 60px;
     width: 100px;
     background: #409eff;
@@ -471,7 +471,7 @@ body{
 #dicTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect  {
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark {
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -559,15 +559,16 @@ body{
 #editDic .title{
     position: absolute;
     width: 100%;
-    top: 20px;
+    top: 0;
     height: 40px;
 }
 #editDic .title span{
     position: relative;
     font-size: 16px;
     color: #fff;
-    top: -6px;
+    top: 10px;
     left: 20px;
+    text-align: center;
 }
 #dicDiv .title{
     position: absolute;
@@ -581,6 +582,7 @@ body{
     color: #fff;
     top: 10px;
     left: 20px;
+    text-align: center;
 }
 .addModlue{
     height: 30px;
