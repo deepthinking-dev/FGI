@@ -227,9 +227,6 @@ $(function(){
         $(e.target).parent().parent().remove()
     })
 
-    // $('body').on('click','#getAllMb',(e) => {
-    //     getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
-    // })
     $('body').on('click','#getAllSz',(e) => {
         $("#ruleMde").hide();
         $("#algorithmPage").show();
