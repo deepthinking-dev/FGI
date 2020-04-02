@@ -173,6 +173,19 @@
 </script>
 </head>
 <body> 
+    <!-- 保存规则 -->
+    <div id="sureRule">
+        <div class="title">
+            <span>保存规则</span>
+            <span onclick="RuleClose()" style="cursor: pointer;">X</span>
+        </div>
+        <div class="ruleContent"> 
+            <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
+            <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
+            <li><span>备注：</span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
+            <button id="saveRule" onclick="ruleSure()">确定</button>
+        </div>
+    </div>
      <!-- fgi模型表 -->
     <div id="sourceName" class="lkr-frame" style="z-index: 9999; display: none;">
         <div class="lkr-frame-div" style="height: 460px;">
@@ -611,9 +624,9 @@
                     <div class="panel-body">
                         <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;">
                             <ul class="nav nav-pills">
-                                <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
-                                <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
-                                <li><button id="saveRule" onclick="ruleSure()">保存规则</button></li>
+                                <!-- <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
+                                <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li> -->
+                                <li><button id="saveRule" onclick="ruleOpen()">保存规则</button></li>
                                 <li><button id="Import">导入</button></li>
                                 <li><button id="export">导出</button></li>
                                 
@@ -1017,6 +1030,7 @@
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
+                    toastr.success('保存成功！');
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1077,6 +1091,7 @@
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
+                    toastr.success('修改成功！');
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1176,6 +1191,7 @@
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
+                    toastr.success('删除成功！');
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',

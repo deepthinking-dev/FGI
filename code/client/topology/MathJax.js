@@ -318,13 +318,22 @@ function selectSure(){
 function RelateClose(){
     $("#selectRela").hide();
 }
-
+//规则弹框
+function ruleOpen(){
+    $("#sureRule").fadeToggle(500);
+}
+//关闭规则弹框
+function RuleClose(){
+    $("#sureRule").fadeToggle(500);
+}
 //保存规则（一起新增）
 function ruleSure(){
     let algorithmRuleDataList = []
     let spanId = $('#topo_canvas div span')
-    let coordinate = ''
-    if(spanId.length> 0){
+    let coordinate = []
+    console.log(window.Topology)
+    if(spanId.length > 0){
+        debugger
         for(let i=0;i<spanId.length-1;i++){
             let  id=spanId.eq(i).attr('id')
             let str = id.split("_")
@@ -349,11 +358,25 @@ function ruleSure(){
         }
 
     }
-    // let node =window.Topology.nodeData
-    // node.map(item=>{
-    //     let obj = (item.id).substring(0,(item.id).length-2)+"\\"+item.fullIconRect.x+"\\"+item.fullIconRect.y
-    //     coordinate += obj +","
-    // })
+    let node =window.Topology.saveNode
+    if(node.length ==0){
+        alert('请建立规则')
+        return false;
+    }else{     
+        node.map(item=>{
+            let obj ={
+                id:(item.id).substring(0,(item.id).length-2),
+                x:item.rect.x,
+                y:item.rect.y,
+                width:item.rect.width,
+                height:item.rect.height,
+                ex:item.rect.ex,
+                ey:item.rect.ey,
+            }
+            coordinate.push(obj)
+        })
+    }
+    
     console.log(coordinate)
      console.log(algorithmRuleDataList)
      if($("#ruleName").val() == ''){
@@ -362,9 +385,9 @@ function ruleSure(){
      }
     let algorithmRuleSaveDataModel ={
         algorithmRuleDataModelList:algorithmRuleDataList,
-        coordinateinfo:coordinate,
+        coordinateinfo:JSON.stringify(coordinate),
         tableRole:{
-            des:'',
+            des:$("#ruleDes").val(),
             id:'',
             remark:$("#ruleRemark").val(),
             rolename:$("#ruleName").val(),
@@ -380,7 +403,8 @@ function ruleSure(){
         data:JSON.stringify(algorithmRuleSaveDataModel),
         success: function(data) {
             if(data == true){
-
+                $("#sureRule").fadeToggle(500)
+                toastr.success('保存成功！');
             }
         }
     })
@@ -416,6 +440,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
+                toastr.success('删除成功！');
                 window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
             }
         }

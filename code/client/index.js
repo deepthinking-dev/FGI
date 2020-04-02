@@ -271,7 +271,6 @@ $(function(){
                         })
                     })
                 }else{
-                    debugger
                     data.map(item => {
                         window.addAlgorithm({
                             name: 'rectangle',
@@ -695,7 +694,6 @@ $(function(){
         console.log($(this).val());
         var file = this.files[0];
         if (window.FileReader) {
-           debugger
             var reader = new FileReader();
             reader.readAsDataURL(file);
             //监听文件读取结束后事件

@@ -721,3 +721,86 @@ body .form-input{
     border: none;
     color: #fff;
 }
+/* 规则弹框 */
+
+#sureRule{
+    position: absolute;
+    height: 477px;
+    width: 719px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    top: 20%;
+    left: 30%;
+    z-index: 2;
+    background-color: #084b69;
+}
+#sureRule .title{
+    position: absolute;
+    width: 100%;
+    top: 2px;
+    height: 40px
+}
+#sureRule .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 50px;
+}
+#sureRule .title span:last-child{
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    float: right;
+    right: 30px;
+}
+#sureRule  .ruleContent{
+    position: relative;
+    margin: 70px auto;
+    height: 300px;
+}
+#sureRule  .ruleContent li{
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    list-style: none;
+    font-size: 14px;
+    color: #fff;
+   
+}
+#sureRule  .ruleContent li span{
+    display: inline-block;
+    width: 120px;
+   text-align: right;
+}
+#sureRule  .ruleContent li input{
+    background-image: url(./static/select.png) !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: none;
+    outline: none;
+    border: none;
+    width: 320px;
+    height: 39px;
+    padding-left: 10px;
+}
+#sureRule  .ruleContent button{
+    position: absolute;
+    background-image: url(./static/botton.png) !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: none;
+    outline: none;
+    border: none;
+    width: 112px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    right: 10px;
+    bottom: 0px;
+    float: right;
+    color:#fff;
+}
