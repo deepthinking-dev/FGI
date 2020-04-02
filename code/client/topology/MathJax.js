@@ -55,6 +55,14 @@
     })
     //提交算子信息及公式编辑
     function ConfirmFrame(){
+        if($('#AlgorithmnameY').val() == ""){
+            toastr.info('请填写算子名称！')
+            return false;
+        }
+        if($('#MathInput').val() == ""){
+            toastr.info('请填写公式！')
+            return false;
+        }
         let tableAl ={
             algorithmauthor:$('#gsName').val(),
             algorithmfun:$('#MathInput').val(),
@@ -117,6 +125,9 @@
                         toastr.success('保存成功！');
                         Topology.init();
                         dictionary()
+                    }
+                    if(data.status == 2){
+                        toastr.info(data.msg)
                     }
                 }
             })
@@ -213,7 +224,7 @@ function ConfirmLogic(){
     let formula=""
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
-        alert("请填写逻辑运算名称")
+        toastr.info("请填写逻辑运算名称")
         return false;
     }
     if(logicLi.length > 0){
@@ -223,7 +234,7 @@ function ConfirmLogic(){
             formula += obj+ " and ";
         }
     }else{
-        alert("请至少填写一个")
+        toastr.info("请至少填写一个")
         return false;
     }
 
@@ -380,7 +391,7 @@ function ruleSure(){
     console.log(coordinate)
      console.log(algorithmRuleDataList)
      if($("#ruleName").val() == ''){
-         alert('请输入规则名称')
+         toastr.info('请输入规则名称')
          return false;
      }
     let algorithmRuleSaveDataModel ={

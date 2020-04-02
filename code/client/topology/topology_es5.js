@@ -49,7 +49,7 @@ var Topology = {
     saveKnowledgeMap: function (id) {
         var self = this;
         ww = JSON.stringify(canvas.data)
-        alert("需要保存的json：\n" + JSON.stringify(canvas.data));
+        toastr.info("需要保存的json：\n" + JSON.stringify(canvas.data));
     },
     // 绑定事件
     bindEvent: function () {
@@ -403,7 +403,7 @@ var Topology = {
                             self.saveNode = unique(canvas.data.nodes)
                             // let nodeId = data.id
                             // if(nodeId.indexOf('模板') != -1){
-                            //     alert('新建算子')
+                            //     toastr.info('新建算子')
                             //     $("#suanfaType").css('display', "block");
                             //     window.bigData.formulaType = 'add'
                             //     let ModuleId =nodeId.substring(0,nodeId.length-2)
@@ -424,18 +424,18 @@ var Topology = {
                             // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
                             //判断连线是否连接成功
                             if(!data.to.id){
-                                canvas.data.lines.map((item,i) => {
-                                    if(item.id == data.id){
-                                        canvas.data.lines.splice(i,1)
-                                        alert('操作失败！')
-                                        
-                                        canvas.render();
-                                        setTimeout(function () {
-                                            selected = null;
-                                            selNodes = null;
-                                        });
-                                    }
-                                })
+                            canvas.data.lines.map((item,i) => {
+                                if(item.id == data.id){
+                                    canvas.data.lines.splice(i,1)
+                                    toastr.info('操作失败！')
+                                    
+                                    canvas.render();
+                                    setTimeout(function () {
+                                        selected = null;
+                                        selNodes = null;
+                                    });
+                                }
+                            })
                             }else{
                                 window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                                 $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
