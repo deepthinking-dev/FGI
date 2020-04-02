@@ -1122,14 +1122,14 @@ var Topology = {
                             console.log(data,selected)
                             //存储编辑区数据
                            
-                            let nodeId = data.id
-                            if(nodeId.indexOf('模板') != -1){
-                                alert('新建算子')
-                                $("#suanfaType").css('display', "block");
-                                window.bigData.formulaType = 'add'
-                                let ModuleId =nodeId.substring(0,nodeId.length-2)
-                                window.bigData.formulaModuleId = ModuleId
-                            }
+                            // let nodeId = data.id
+                            // if(nodeId.indexOf('模板') != -1){
+                            //     alert('新建算子')
+                            //     $("#suanfaType").css('display', "block");
+                            //     window.bigData.formulaType = 'add'
+                            //     let ModuleId =nodeId.substring(0,nodeId.length-2)
+                            //     window.bigData.formulaModuleId = ModuleId
+                            // }
                             
                             locked = data.locked;
                             self.initNode();
@@ -1216,7 +1216,6 @@ var Topology = {
     },
     // 初始化node
     initNode: function () {
-        debugger
         var self = this;
         $("#node_line_color").html("边框颜色");
         $("#flex_props_home").addClass("hidden");
@@ -1486,6 +1485,8 @@ var Topology = {
         console.log(arrow, index)
         // console.log($(e).attr("class"))
         var sum = 0;
+        //显示选择关系
+        $("#selectRela").show()
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
             if (index == sum) {

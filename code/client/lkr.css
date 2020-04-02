@@ -52,12 +52,42 @@ body{
     text-align: right;
     cursor: pointer;
 }
+.title-page li span .dataMod{
+    background-image: url(./static/dataMo.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    top: 2px;
+    position: relative;
+}
+.title-page li span .DicI{
+    background-image: url(./static/dictory.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    top: 2px;
+    position: relative;
+}
 .Search{
     position: relative;
     text-align: center;
     padding-top: 15px;
 }
-
+.Search .icon-search{
+    background-image: url(./static/search.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    top: 23px;
+    right: 30px;
+    position: absolute;
+}
 .mouldFoot{
     width: 100%;
     display: flex;
@@ -105,7 +135,7 @@ body{
     height: 10%;
     /* background: rgba(0, 100, 167, 0.877); */
     color: #ffffff;
-    line-height: 30px;
+    line-height: 47px;
     padding: 0 10px;
     display: flex;
     justify-content: space-between;
@@ -121,13 +151,14 @@ body{
 .lkr-input{
     background-color: rgba(0,0,0,0);
     padding: 7px 15px;
-    width: 350px;
+    width: 310px;
     border: none;
     outline: none;
     background-image: url(./static/select.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
+
 .lkr-select option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
@@ -169,7 +200,7 @@ body{
 }
 .tools{
     width: 18%;
-    min-width: 340px;
+    min-width: 346px;
     box-shadow: 0 0 10px 10px rgba(0,0,0,0.2);
 }
 .lkr-msg{
@@ -286,12 +317,13 @@ body{
 .lkr-pic_list li a{
     color:#ffffff;
 }
-.tools .title{
+.tools .title-page{
     padding: 0px;
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
+
 /* ::-webkit-scrollbar {display:none} */
 .lkr-arrow{
     user-select: none;
@@ -365,13 +397,13 @@ body{
     vertical-align: middle;
 }
 #ruleMde .left-list-event{
-    width: 86%;
+    width: 190px;
     margin-left: 30px;
 }
 #ruleMde .left-list-tilte{
     height: 38px;
     line-height: 38px;
-    width: 198px;
+    width: 190px;
     display: inline-block;
     text-align: center;
     margin-left: 8px;

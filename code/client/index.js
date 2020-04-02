@@ -22,6 +22,11 @@ $(function(){
     })
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
+        // $("#dicDiv").show();
+        // dictionary()
+    })
+    $('body').on('click','.addDicClose',(e) => {
+        $("#editDic").hide();
         $("#dicDiv").show();
         dictionary()
     })
@@ -38,6 +43,7 @@ $(function(){
         $("#editDicDes").val("");
         $("#dicDiv").hide();
         $("#addZdcs").show();
+        $(".editDicClose").attr("class","addDicClose");
         $("#editAuthor").attr("disabled",false);
         $("#editDicName").attr("disabled",false);
         $("#editDicDes").attr("disabled",false);
@@ -739,6 +745,12 @@ $(function(){
         $(e.target).parents('tr').remove();
     })
     $('body').on('dblclick','.dbclickAlgorithm',(e) => {
+        $("#dicDiv").hide();
+        if($('#dictordySpan').hasClass('addDicClose')) {
+            $(".addDicClose").attr("class","editDicClose");
+        }
+        $("#dataModulePage").hide();
+        $("#lkrFrame").hide();
         let AlgorithmId= $(e.target).attr('algorithmid')
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
