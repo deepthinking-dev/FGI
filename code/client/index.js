@@ -746,11 +746,11 @@ $(function(){
     })
     $('body').on('dblclick','.dbclickAlgorithm',(e) => {
         $("#dicDiv").hide();
-        debugger
-       if($('#dictordySpan').hasClass('addDicClose')) {
-        $(".addDicClose").attr("class","editDicClose");
-       }
-      
+        if($('#dictordySpan').hasClass('addDicClose')) {
+            $(".addDicClose").attr("class","editDicClose");
+        }
+        $("#dataModulePage").hide();
+        $("#lkrFrame").hide();
         let AlgorithmId= $(e.target).attr('algorithmid')
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
