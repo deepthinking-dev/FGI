@@ -822,7 +822,6 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        myShape(Node)
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶

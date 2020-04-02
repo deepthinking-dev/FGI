@@ -298,16 +298,15 @@ function uploadClose(){
 }
 //确定导入文件按钮
 function uploadSure(){
-    let filename = 'F:\MyDownloads\FGI\算法规则导出.txt'
-    debugger
+    // let filename = 'F:\MyDownloads\FGI\算法规则导出.txt'
     $.ajax({
         type:"get",
         dataType: "json",
         url:urlConfig.host+'/algorithmRule/readAlgorithmRuleFromFile',
         contentType: "application/json;charset=UTF-8",
         data:{
-            // filename: $(".inputfile")[0].files[0].name
-            filename:filename
+           filename: $(".inputfile")[0].files[0].name
+            // filename:filename
         },
         success: function(data) {
             if(data == true){
@@ -344,7 +343,6 @@ function ruleSure(){
     let coordinate = []
     console.log(window.Topology)
     if(spanId.length > 0){
-        debugger
         for(let i=0;i<spanId.length-1;i++){
             let  id=spanId.eq(i).attr('id')
             let str = id.split("_")
