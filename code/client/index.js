@@ -5,18 +5,6 @@ $(function(){
             $(v).prop('checked',$("#selectAll").prop('checked'))
         })
     })
-    // $('body').on('click','#flex_tools>.lkr-pic_list .active-taps',(e) => {
-    //     if($(e.target).html() == '模板管理'){
-    //         $("#mouldPage").show()
-    //         $("#algorithmPage").hide()
-    //     }else if($(e.target).html() == '算子管理'){
-    //         $("#algorithmPage").show()
-    //         getAllData('/module/GetAllModule',{id:'id',name:'modulename'},'模板','')
-    //         $("#mouldPage").hide()
-    //     }else if($(e.target).html() == '字典'){
-
-    //     }
-    // })
     $('body').on('click','.dicDivClose',(e) => {
         $("#dicDiv").hide();
     })
@@ -763,7 +751,6 @@ $(function(){
         $(e.target).parents('tr').remove();
     })
     $('body').on('dblclick','.dbclickAlgorithm',(e) => {
-        $("#dicDiv").hide();
         if($('#dictordySpan').hasClass('addDicClose')) {
             $(".addDicClose").attr("class","editDicClose");
         }

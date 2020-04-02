@@ -549,14 +549,14 @@
                         <option>信号产生模板类型</option>
                     </select> -->
                 </div>
-                
+
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width:120px;text-align: right" class="sjyDiv">链接数据源：</label>
                     <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
                     </select> -->
                     <div id='fgiSource' class="lkr-button">链接数据源</div>
-                    
+
                 </div>
                 <div id='addMb' >
                     <table class="lkr-table" border="1">
@@ -586,17 +586,17 @@
                           </tr>
                         </thead>
                         <tbody >
-                        
+
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
             <div class="lkr-frame-foot">
                 <div class="lkr-button" onclick='Confirm()'>确定</div>
             </div>
         </div>
-        
+
     </div>
     <!-- 连线（lkr） -->
     <div class="lkr-frame" id='ligature'>
@@ -607,7 +607,7 @@
             </div> -->
             <div class="lkr-frame-content">
                 <input type='text'  class="lkr-input" style="flex:1;margin-left: 10px;"/>
-                
+
             </div>
             <div class="lkr-frame-foot">
                 <div class="lkr-button" onclick='ligatureConfirm()'>确定</div>
@@ -616,7 +616,7 @@
     </div>
 
     <!-- 连线（lkr） -->
-    <div class="wrapper" style="height: 100%;">    
+    <div class="wrapper" style="height: 100%;">
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <section class="content" id="content">
@@ -629,20 +629,20 @@
                                 <li><button id="saveRule" onclick="ruleOpen()">保存规则</button></li>
                                 <li><button id="Import">导入</button></li>
                                 <li><button id="export">导出</button></li>
-                                
+
                             </ul>
                         </nav>
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
-                            
+
                             <div class="lkr-bg-canvas">
                                 <div id="flex_canvas">
                                     <div class="canvas" id="topo_canvas"></div>
-                                    
+
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
                             <div class="title-page">
                                 <li><span onclick="dataModlue()"><i class="dataMod"></i> 数据模型</span></li>
@@ -651,13 +651,13 @@
                             <div class='Search'>
                                 <i class="icon-search"></i>
                                 <input id="searchName" type='text'  class="lkr-input" style="flex:1;margin: auto;color: white"/>
-                                
+
                             </input>
                             </div>
                            <div id="ruleMde" class='lkr-page' style="display: none;">
                                 <button id="getAllSz" class="backAlgorithmPage">返回</button>
                                 <div id="rulePage" style="margin-top: 70px;"></div>
-                             
+
                            </div>
                            <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
@@ -751,7 +751,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-       
+
     </div>
       <!-- 字典信息弹窗 -->
       <div id="dicDiv">
@@ -1051,7 +1051,7 @@
                     })
                     $('#lkrFrame').fadeToggle(500)
                 }
-                    
+
             })
         }else{
             $("#addMb tbody tr").each((i,v) => {
@@ -1070,7 +1070,7 @@
                 }
                 mouldParam.push(obj)
             })
-            
+
             let param = {
                 id:window.bigData.editmoduleId,
                 modulegroup:$("#modulegroup").val(),
@@ -1112,11 +1112,11 @@
                     })
                     $('#lkrFrame').fadeToggle(500)
                 }
-                    
+
             })
         }
-        
-        
+
+
     }
     function reseTabs(){
         $.ajax({
@@ -1140,9 +1140,9 @@
         })
     }
     function reseTabsList(val){
-       
+
         if(val == "全部"){
-           
+
             $.ajax({
                 url:urlConfig.host+'/module/GetAllModule',
                 data:'',
