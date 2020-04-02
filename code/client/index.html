@@ -1305,6 +1305,7 @@
             $("#gsDes").attr("disabled",false);
             $('#AlgorithmnameY').attr("disabled",false);
             $('#MathInput').attr("disabled",false);
+            $('#MathInput').attr("disabled",false);
             $('.closeGsButton').show();
             $('#MathPreview').empty()
             $('#MathBuffer').empty()
@@ -1471,6 +1472,10 @@
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
                     $('.closeGsButton').show();
+                    $("#gsName").val("");
+                    $("#gsDes").val("");
+                    $("#MathInput").val("");
+                    $('#AlgorithmnameY').val("");
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor);
                     $("#gsDes").val(data.tableAlgorithm.des);
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
