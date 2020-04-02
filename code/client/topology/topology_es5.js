@@ -31,7 +31,7 @@ var Topology = {
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
     tools: [
         {
-            group: '基本模板',
+            group: '基本模型',
             children: []
         },
     ],
@@ -220,8 +220,8 @@ var Topology = {
         $(".moduleContent").append(`<div class="left-list"  >
                                 <div class="left-list-tilte">${option.data.text}</div>
                                 <div class="left-list-event">
-                                    <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模板</div>
-                                    <div class='lkr-list-del lkr-del' data-id='${option.data.id}' >删除模板</div>
+                                    <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模型</div>
+                                    <div class='lkr-list-del lkr-del' data-id='${option.data.id}' >删除模型</div>
                                 </div>
                             </div>`);
     },
@@ -402,7 +402,7 @@ var Topology = {
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
                             // let nodeId = data.id
-                            // if(nodeId.indexOf('模板') != -1){
+                            // if(nodeId.indexOf('模型') != -1){
                             //     toastr.info('新建算子')
                             //     $("#suanfaType").css('display', "block");
                             //     window.bigData.formulaType = 'add'
