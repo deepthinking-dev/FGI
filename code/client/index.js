@@ -35,6 +35,7 @@ $(function(){
     })
     $('body').on('click','#addDic',(e) => {
         $("#editDic").show();
+        $("#editDicYes").show();
         $("#editDicTitle").text("新增字典");
         $("#zdcsList").html(``)
         $("#editDicYes").attr("editId","")
@@ -140,7 +141,6 @@ $(function(){
                     console.log(data);
                     toastr.success('保存成功！');
                     $("#editDic").hide()
-                    dictionary()
                 }
             })
             $.ajax({
@@ -151,6 +151,8 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
+                    dictionary()
+                    Topology.init();
                 }
             })
         }
@@ -823,10 +825,11 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
-                    $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"readonly":"readonly"});
-                    $("#gsDes").val(data.tableAlgorithm.des).attr({"readonly":"readonly"});
-                    $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"readonly":"readonly"});
-                    $('.AlgorithInput').hide();
+                    $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
+                    $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
+                    $('#MathInput').attr("disabled","disabled");
+                    $('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
                     window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
@@ -897,10 +900,11 @@ $(function(){
                     $('.Frame').fadeToggle(500)
                 }else if(data.tableAlgorithm.algorithmtype == 3){
                     $('.addButton').hide();
+                    $(".closeLjButton").hide();
                     window.bigData.formulaType = 'edit';
-                    $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
-                    $("#ljName").val(data.tableAlgorithm.algorithmauthor);
-                    $('#ljDes').val(data.tableAlgorithm.des);
+                    $('#LogicName').val(data.tableAlgorithm.algorithmname).attr({"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"});
+                    $("#ljName").val(data.tableAlgorithm.algorithmauthor).attr("disabled","disabled");
+                    $('#ljDes').val(data.tableAlgorithm.des).attr("disabled","disabled");
                     let algorithmfun = data.tableAlgorithm.algorithmfun;
                     $.ajax({
                         url:urlConfig.host+'/module/getModuleColumns',
@@ -920,10 +924,10 @@ $(function(){
                                 if(algorithmfun[i].indexOf('与') !=-1){
                                     let obj = algorithmfun[i].split("与")
                                     str+=` <li class="logicLi">
-                                                <select name="" class="Logic-form-field inputButton">
+                                                <select disabled name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
                                                 </select>
-                                                <select name="" class="Logic-form-label inputButton">
+                                                <select disabled name="" class="Logic-form-label inputButton">
                                                     <option value="" selected>与</option>
                                                     <option value="">或</option>
                                                     <option value="">非</option>
@@ -936,18 +940,18 @@ $(function(){
                                                 <!-- <select name="" class="Logic-form-value inputButton">
                                                     <option value="">请选择取值</option>
                                                 </select>  -->
-                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                                <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                             </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if(algorithmfun[i].indexOf('或') !=-1){
                                     let obj = algorithmfun[i].split("或")
                                     str+=` <li class="logicLi">
-                                                <select name="" class="Logic-form-field inputButton">
+                                                <select disabled name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
                                                 </select>
-                                                <select name="" class="Logic-form-label inputButton">
+                                                <select disabled name="" class="Logic-form-label inputButton">
                                                     <option value="">与</option>
                                                     <option value="" selected>或</option>
                                                     <option value="">非</option>
@@ -960,18 +964,18 @@ $(function(){
                                                 <!-- <select name="" class="Logic-form-value inputButton">
                                                     <option value="">请选择取值</option>
                                                 </select>  -->
-                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                                <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                             </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if(algorithmfun[i].indexOf('非') !=-1){
                                     let obj = algorithmfun[i].split("非")
                                     str+=` <li class="logicLi">
-                                            <select name="" class="Logic-form-field inputButton">
+                                            <select disabled name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
                                             </select>
-                                            <select name="" class="Logic-form-label inputButton">
+                                            <select disabled name="" class="Logic-form-label inputButton">
                                                 <option value="">与</option>
                                                 <option value="">或</option>
                                                 <option value="" selected>非</option>
@@ -984,18 +988,18 @@ $(function(){
                                             <!-- <select name="" class="Logic-form-value inputButton">
                                                 <option value="">请选择取值</option>
                                             </select>  -->
-                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                         </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('<') !=-1) && (algorithmfun[i].indexOf('<=') == -1)){
                                     let obj = algorithmfun[i].split("<")
                                     str+=` <li class="logicLi">
-                                                <select name="" class="Logic-form-field inputButton">
+                                                <select disabled name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
                                                 </select>
-                                                <select name="" class="Logic-form-label inputButton">
+                                                <select disabled name="" class="Logic-form-label inputButton">
                                                     <option value="">与</option>
                                                     <option value="">或</option>
                                                     <option value="">非</option>
@@ -1008,18 +1012,18 @@ $(function(){
                                                 <!-- <select name="" class="Logic-form-value inputButton">
                                                     <option value="">请选择取值</option>
                                                 </select>  -->
-                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                                <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                             </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('<=') !=-1) && (algorithmfun[i].indexOf('<') !=-1)  && (algorithmfun[i].indexOf('=') !=-1)){
                                     let obj = algorithmfun[i].split("<=")
                                     str+=` <li class="logicLi">
-                                                <select name="" class="Logic-form-field inputButton">
+                                                <select disabled name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
                                                 </select>
-                                                <select name="" class="Logic-form-label inputButton">
+                                                <select disabled name="" class="Logic-form-label inputButton">
                                                     <option value="">与</option>
                                                     <option value="">或</option>
                                                     <option value="">非</option>
@@ -1032,18 +1036,18 @@ $(function(){
                                                 <!-- <select name="" class="Logic-form-value inputButton">
                                                     <option value="">请选择取值</option>
                                                 </select>  -->
-                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                                <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                             </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') == -1)){
                                     let obj = algorithmfun[i].split(">")
                                     str+=` <li class="logicLi">
-                                            <select name="" class="Logic-form-field inputButton">
+                                            <select disabled name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
                                             </select>
-                                            <select name="" class="Logic-form-label inputButton">
+                                            <select disabled name="" class="Logic-form-label inputButton">
                                                 <option value="">与</option>
                                                 <option value="">或</option>
                                                 <option value="">非</option>
@@ -1056,18 +1060,18 @@ $(function(){
                                             <!-- <select name="" class="Logic-form-value inputButton">
                                                 <option value="">请选择取值</option>
                                             </select>  -->
-                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                         </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') !=-1)){
                                     let obj = algorithmfun[i].split(">=")
                                     str+=` <li class="logicLi">
-                                                <select name="" class="Logic-form-field inputButton">
+                                                <select disabled name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
                                                 </select>
-                                                <select name="" class="Logic-form-label inputButton">
+                                                <select disabled name="" class="Logic-form-label inputButton">
                                                     <option value="">与</option>
                                                     <option value="">或</option>
                                                     <option value="">非</option>
@@ -1080,18 +1084,18 @@ $(function(){
                                                 <!-- <select name="" class="Logic-form-value inputButton">
                                                     <option value="">请选择取值</option>
                                                 </select>  -->
-                                                <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                                <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                                <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                                <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                             </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') ==-1) && (algorithmfun[i].indexOf('<') == -1)){
                                     let obj = algorithmfun[i].split("=")
                                     str+=` <li class="logicLi">
-                                            <select name="" class="Logic-form-field inputButton">
+                                            <select disabled name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
                                             </select>
-                                            <select name="" class="Logic-form-label inputButton">
+                                            <select disabled name="" class="Logic-form-label inputButton">
                                                 <option value="">与</option>
                                                 <option value="">或</option>
                                                 <option value="">非</option>
@@ -1104,8 +1108,8 @@ $(function(){
                                             <!-- <select name="" class="Logic-form-value inputButton">
                                                 <option value="">请选择取值</option>
                                             </select>  -->
-                                            <input type="text" class="Logic-form-value inputButton" value="${obj[1]}">
-                                            <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                                            <input disabled type="text" class="Logic-form-value inputButton" value="${obj[1]}">
+                                            <button disabled class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
                                         </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
@@ -1113,7 +1117,7 @@ $(function(){
 
                             }
                             $('.logicUl').html(str)
-                         
+
                         }
                     })
                 

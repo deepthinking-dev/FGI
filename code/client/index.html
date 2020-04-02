@@ -390,7 +390,7 @@
     <div class="Frame">
         <div class="title">
             <span>公式编辑</span>
-            <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;margin-right: 12%">X</span>
+            <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="form-group">
             <div id="authorShow">
@@ -421,14 +421,14 @@
         <div class="form-group MathJaxEdit">
         </div>     
         <div class="frame-foot">
-            <div class="button" onclick='ConfirmFrame()'>确定</div>
+            <div class="button closeGsButton" onclick='ConfirmFrame()'>确定</div>
         </div>
     </div>
     <!-- 逻辑运算 -->
     <div class="Logic">
         <div class="title">
             <span>逻辑运算</span>
-            <span onclick="LogicClose()" style="cursor: pointer;color:#fff;float: right;margin-right: 12%">X</span>
+            <span onclick="LogicClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="LogicContent ">
             <button class="addButton" onclick="addLogic()">新增</button>
@@ -472,7 +472,7 @@
             </div>
         </div>
         <div class="frame-foot">
-            <div class="button" onclick='ConfirmLogic()'>确定</div>
+            <div class="button closeLjButton" onclick='ConfirmLogic()'>确定</div>
         </div>
     </div>
     <!-- 算子确认删除框 -->
@@ -744,7 +744,7 @@
       <div id="dicDiv">
       <div class="title">
           <span>字典信息</span>
-          <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 12%">X</span>
+          <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
               <input type="button" id="addDic" value="新增">
@@ -757,7 +757,7 @@
     <div id="editDic">
         <div class="title">
             <span id="editDicTitle">新增字典</span>
-            <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;margin-right: 12%">X</span>
+            <span d="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
         <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 30px">
             <p>
@@ -1298,9 +1298,49 @@
         $(".Logic").hide();
         if(s == "算法公式"){
             $(".Frame").show();
-            window.bigData.formulaType = 'add'
+            window.bigData.formulaType = 'add';
+            $("#gsName").val("");
+            $("#gsDes").val("");
+            $("#AlgorithmnameY").val("");
+            $("#MathInput").val("");
+            $(".MathJaxEdit").empty();
+            $("#gsName").attr("disabled",false);
+            $("#gsDes").attr("disabled",false);
+            $('#AlgorithmnameY').attr("disabled",false);
+            $('#MathInput').attr("disabled",false);
+            $('.closeGsButton').show();
+            $('#MathPreview').empty()
+            $('#MathBuffer').empty()
         } else if(s == "逻辑运算"){
-            $(".Logic").show()
+            $(".Logic").show();
+            $('.closeLjButton').show();
+            $('.LogicContent .addButton').show();
+            $("#ljName").attr("disabled",false);
+            $("#ljDes").attr("disabled",false);
+            $('#LogicName').attr("disabled",false);
+            $('.logicUl').empty();
+            $(".logicUl").append(`
+               <li class="logicLi">
+                    <select name="" class="Logic-form-field inputButton">
+                        <option value="">请选择字段</option>
+                    </select>
+                    <select name="" class="Logic-form-label inputButton">
+                        <option value="">与</option>
+                        <option value="">或</option>
+                        <option value="">非</option>
+                        <option value="">&lt; </option>
+                        <option value="">&lt;=</option>
+                        <option value="">&gt; </option>
+                        <option value="">&gt;=</option>
+                        <option value="">=</option>
+                    </select>
+                    <!-- <select name="" class="Logic-form-value inputButton">
+                        <option value="">请选择取值</option>
+                    </select>  -->
+                    <input type="text" class="Logic-form-value inputButton">
+                    <button class="removeLogic" type="button" onclick="removeLogic(event)">删除</button>
+                </li>
+            `)
         }
     }
     function dictionary(){
@@ -1311,6 +1351,7 @@
             data:"",
             type:"get",
             success(data) {
+                if(!data.length) return;
                 console.log(data);
                 $("#dicTable").append(`<thead>
                     <th style="width: 150px">作者</th>
@@ -1360,6 +1401,7 @@
             success(data) {
                 console.log(data);
                 if(data.tableAlgorithm.algorithmtype == 1){
+                    $("#editDicYes").show();
                     $("#editDicName").val("");
                     $("#editDicDes").val("");
                     $("#editAuthor").val("")
@@ -1431,6 +1473,7 @@
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $('.closeGsButton').show();
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor);
                     $("#gsDes").val(data.tableAlgorithm.des);
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
@@ -1505,6 +1548,7 @@
                     $('.Frame').fadeToggle(500)
                 } else if(data.tableAlgorithm.algorithmtype == 3){
                     window.bigData.formulaType = 'edit';
+                    $('.closeLjButton').show();
                     $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     $("#ljName").val(data.tableAlgorithm.algorithmauthor);
                     $('#ljDes').val(data.tableAlgorithm.des);

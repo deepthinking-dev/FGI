@@ -116,6 +116,7 @@
                         $(".Frame").hide();
                         toastr.success('保存成功！');
                         Topology.init();
+                        dictionary()
                     }
                 }
             })
@@ -140,6 +141,8 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
+                        dictionary()
+                        Topology.init();
                         toastr.success('保存成功！');
                     }
                 }
@@ -255,6 +258,7 @@ function ConfirmLogic(){
                     toastr.success('保存成功！');
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
+                    dictionary()
                 }
             }
         })
@@ -270,6 +274,8 @@ function ConfirmLogic(){
                 if(data.status == 1){
                     toastr.success('保存成功！');
                     $(".Logic").attr("style","display:none;");
+                    Topology.init();
+                    dictionary()
                 }
             }
         })

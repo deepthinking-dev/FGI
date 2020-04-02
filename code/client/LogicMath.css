@@ -137,10 +137,10 @@ body .form-input{
     color: #fff;
     top: 10px;
     left: 20px;
-    text-align: right;
     display: inline-block;
     line-height: 40px;
     width: 120px;
+    text-align: center;
 }
 
 .MathJaxEdit{
@@ -148,7 +148,7 @@ body .form-input{
     top: 80px;
     margin: 0 auto;
     width: 88%;
-    height: 200px;
+    height: 250px;
     overflow: auto;
 }
 .MathJaxEdit div{
@@ -231,7 +231,6 @@ body .form-input{
     height: 40px;
     vertical-align: top;
     line-height: 40px;
-    margin-right: 20px;
 }
 .Logic .title{
     position: absolute;
@@ -245,6 +244,7 @@ body .form-input{
     color: #fff;
     top: 10px;
     left: 20px;
+    text-align: center;
 }
 
 .LogicContent{
@@ -367,8 +367,8 @@ body .form-input{
 }
 .frame-foot{
     position: absolute;
-    bottom: 70px;
-    right: 80px;
+    bottom: 30px;
+    right: 50px;
 }
 .frame-foot .button{
     font-size: 12px;
