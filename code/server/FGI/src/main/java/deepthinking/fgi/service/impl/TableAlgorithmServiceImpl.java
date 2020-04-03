@@ -1,6 +1,7 @@
 package deepthinking.fgi.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import deepthinking.fgi.Enum.AlgorithmtypeEnum;
 import deepthinking.fgi.Enum.InOrOutType;
 import deepthinking.fgi.dao.mapper.TableAlgorithmMapper;
 import deepthinking.fgi.dao.mapper.TableAlgorithmroleMapper;
@@ -51,14 +52,13 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                 algorithmBaseInfo.setTableFuncs(funcs);
                 //查询每个算法的输入输出参数个数
                 TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
-                tableFuncCriteria.createCriteria().andAlgorithmidEqualTo(alfgorithmId);
                 tableFuncCriteria.createCriteria().andAlgorithmidEqualTo(alfgorithmId).andInoroutEqualTo(InOrOutType.in.getType());
                 int count_in= (int) tableFuncMapper.countByExample(tableFuncCriteria);
                 algorithmBaseInfo.setInNum(count_in);
                 tableFuncCriteria.clear();
                 tableFuncCriteria.createCriteria().andAlgorithmidEqualTo(alfgorithmId).andInoroutEqualTo(InOrOutType.out.getType());
                 int count_out= (int) tableFuncMapper.countByExample(tableFuncCriteria);
-                algorithmBaseInfo.setInNum(count_out);
+                algorithmBaseInfo.setOutNum(count_out);
                 result.add(algorithmBaseInfo);
             });
         }
@@ -78,13 +78,23 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             insertSelective(algorithmModel.getTableAlgorithm());
             //获取算子ID
             int id=algorithmModel.getTableAlgorithm().getId();
-            List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-            if(tableFuncs.size()>0){
+            if(algorithmModel.getTableAlgorithm().getAlgorithmtype()!= AlgorithmtypeEnum.logical.getAlgorithmtype()){
+                List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
+                if(algorithmModel.getTableAlgorithm().getAlgorithmtype()== AlgorithmtypeEnum.formula.getAlgorithmtype()){
+                    TableFunc tableFunc=new TableFunc();
+                    tableFunc.setInorout(InOrOutType.out.getType());
+                    tableFunc.setVarname("公式计算结果");
+                    tableFunc.setVartype("");
+                    tableFunc.setValvalue("");
+                    tableFunc.setRemark("");
+                    tableFuncs.add(tableFunc);
+                }
                 tableFuncs.stream().forEach(funcs->{
                     funcs.setAlgorithmid(id);//设置算子ID
                     tableFuncMapper.insert(funcs);
                 });
             }
+
         }catch (Exception e){
             logger.error(e.getMessage());
             return 0;
