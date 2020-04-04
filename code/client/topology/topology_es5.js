@@ -363,15 +363,62 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            canvas.data.lines.map(item => {
-                                if(item.from.id == data[0].id||item.to.id == data[0].id){
-                                    $(`#${item.id}`).css({
-                                        top:(item.to.y + item.from.y)/2 +"px",
-                                        left:(item.to.x + item.from.x)/2+"px"
+                            console.log(data,canvas.data)
+                            let num = 50
+                            // data[0].anchors.map((obj,i) => {
+                            //     obj.x += 5
+                            //     obj.y += 5
+                            // })
+                            
+                            canvas.data.nodes.map(item => {
+                                if(item.id != data[0].id){
+                                    // selNodes.push(item)
+                                    item.rect.x = data[0].rect.x + num
+                                    item.rect.y = data[0].rect.y + num
+
+                                    item.rect.ex = data[0].rect.ex + num
+                                    item.rect.ey = data[0].rect.ey + num
+                                    item.rect.center.x = data[0].rect.center.x + num
+                                    item.rect.center.y = data[0].rect.center.y + num
+                                    item.textRect.x = data[0].textRect.x + num
+                                    item.textRect.y = data[0].textRect.y + num
+                                    item.fullTextRect.x = data[0].fullTextRect.x + num
+                                    item.fullTextRect.y = data[0].fullTextRect.y + num
+                                    item.iconRect.x = data[0].iconRect.x + num
+                                    item.iconRect.y = data[0].iconRect.y + num
+                                    item.fullIconRect.x = data[0].fullIconRect.x + num
+                                    item.fullIconRect.y = data[0].fullIconRect.y + num
+                                    
+                                    item.anchors.map((obj,i) => {
+                                        obj.x = data[0].anchors[i].x + num
+                                        obj.y = data[0].anchors[i].y + num
                                     })
+                                    item.rotatedAnchors.map((obj,i) => {
+                                        obj.x = data[0].anchors[i].x + num
+                                        obj.y = data[0].anchors[i].y + num
+                                    })
+   
+                                   
+                                    // 原生自动刷新方法有巨大bug，需待研究
+                                    // canvas.updateProps(item);
+                                    // canvas.render();
                                 }
                             })
+                            //连线中间加字
+                            // canvas.data.lines.map(item => {
+                            //     if(item.from.id == data[0].id||item.to.id == data[0].id){
+                            //         $(`#${item.id}`).css({
+                            //             top:(item.to.y + item.from.y)/2 +"px",
+                            //             left:(item.to.x + item.from.x)/2+"px"
+                            //         })
+                            //     }
+                            // })
                             break    
+                        case 'moveOutNode':
+                            
+                            
+                            // self.initNode();
+                            break
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
@@ -389,7 +436,11 @@ var Topology = {
                                 }
                                 return arr;
                             }
+                            
+                            
+                            // canvas.combine(canvas.data.nodes);
                             unique(canvas.data.nodes)
+                            // canvas.render(true);
                             break;
                         case 'addNode':
                             selNodes = [data];
@@ -397,7 +448,48 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            console.log(data,selected)
+                            
+                                // iconV.id = data.id+'1'
+                            // let flags = canvas.data.nodes.filter(item => {
+                            //     return item == data.id+'xsxs'
+                            // })
+                            // console.log(canvas.data.nodes)
+                            // if(data.id.indexOf('xsxs') == -1){
+                            //     let nums = 50
+                            //     let iconV = Object.assign({},data)
+                            //     iconV.id = data.id+'xsxs'
+                            //     iconV.rect.x = data.rect.x + nums
+                            //     iconV.rect.y = data.rect.y + nums
+
+                            //     iconV.rect.ex = data.rect.ex + nums
+                            //     iconV.rect.ey = data.rect.ey + nums
+                            //     iconV.rect.center.x = data.rect.center.x + nums
+                            //     iconV.rect.center.y = data.rect.center.y + nums
+                            //     iconV.textRect.x = data.textRect.x + nums
+                            //     iconV.textRect.y = data.textRect.y + nums
+                            //     iconV.fullTextRect.x = data.fullTextRect.x + nums
+                            //     iconV.fullTextRect.y = data.fullTextRect.y + nums
+                            //     iconV.iconRect.x = data.iconRect.x + nums
+                            //     iconV.iconRect.y = data.iconRect.y + nums
+                            //     iconV.fullIconRect.x = data.fullIconRect.x + nums
+                            //     iconV.fullIconRect.y = data.fullIconRect.y + nums
+                                
+                            //     iconV.anchors.map((obj,i) => {
+                            //         obj.x = data.anchors[i].x + nums
+                            //         obj.y = data.anchors[i].y + nums
+                            //     })
+                            //     iconV.rotatedAnchors.map((obj,i) => {
+                            //         obj.x = data.anchors[i].x + nums
+                            //         obj.y = data.anchors[i].y + nums
+                            //     })
+                            //     console.log(iconV,canvas)
+                            //     canvas.addNode(iconV)
+                            //     canvas.render(true)
+                            // }
+                            
+                            // canvas.data.nodes.push(iconV)
+                            
+                            console.log(data,selected,canvas.data)
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
@@ -866,6 +958,7 @@ var Topology = {
     parsew:function(){
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
+            console.log(ss)
             canvas.addNode(data)
         })
         
