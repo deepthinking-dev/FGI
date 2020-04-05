@@ -310,6 +310,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
+                    // debugger
                     console.log(event,data,1111)
                     switch (event) {
                         case 'node':
@@ -363,6 +364,43 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
+                            console.log(data,canvas.data)
+                            let num = 50
+                            canvas.data.nodes.map(item => {
+                                if(item.id != data[0].id){
+                                    // selNodes.push(item)
+                                    item.rect.x = data[0].rect.x + num
+                                    item.rect.y = data[0].rect.y + num
+
+                                    item.rect.ex = data[0].rect.ex + num
+                                    item.rect.ey = data[0].rect.ey + num
+                                    item.rect.center.x = data[0].rect.center.x + num
+                                    item.rect.center.y = data[0].rect.center.y + num
+                                    item.textRect.x = data[0].textRect.x + num
+                                    item.textRect.y = data[0].textRect.y + num
+                                    item.fullTextRect.x = data[0].fullTextRect.x + num
+                                    item.fullTextRect.y = data[0].fullTextRect.y + num
+                                    item.iconRect.x = data[0].iconRect.x + num
+                                    item.iconRect.y = data[0].iconRect.y + num
+                                    item.fullIconRect.x = data[0].fullIconRect.x + num
+                                    item.fullIconRect.y = data[0].fullIconRect.y + num
+
+                                    item.anchors.map((obj,i) => {
+                                        obj.x = data[0].anchors[i].x + num
+                                        obj.y = data[0].anchors[i].y + num
+                                    })
+                                    item.rotatedAnchors.map((obj,i) => {
+                                        obj.x = data[0].anchors[i].x + num
+                                        obj.y = data[0].anchors[i].y + num
+                                    })
+
+
+                                    // 原生自动刷新方法有巨大bug，需待研究
+                                    // canvas.updateProps(item);
+                                    // canvas.render();
+                                }
+                            })
+                            连线中间加字
                             canvas.data.lines.map(item => {
                                 if(item.from.id == data[0].id||item.to.id == data[0].id){
                                     $(`#${item.id}`).css({
@@ -478,6 +516,51 @@ var Topology = {
                         // case 'locked':
                         //     Store.set('locked', data);
                         //     break;
+                        case 'dblclick':
+                            // debugger
+                            // let num = 50
+                            // console.log(data)
+                            $('#ruleAct').show();
+                            $(`#ruleAct`).css({
+                                top:(data.node.rect.y + data.node.rect.y)+"px",
+                                left:(data.node.rect.x + data.node.rect.x)+"px"
+                            })
+                            // canvas.data.nodes.map(item => {
+                            //     self.initNode();
+                            //     if(item.id != data[0].id){
+                            //         // selNodes.push(item)
+                            //         item.rect.x = data[0].rect.x + num
+                            //         item.rect.y = data[0].rect.y + num
+
+                            //         item.rect.ex = data[0].rect.ex + num
+                            //         item.rect.ey = data[0].rect.ey + num
+                            //         item.rect.center.x = data[0].rect.center.x + num
+                            //         item.rect.center.y = data[0].rect.center.y + num
+                            //         item.textRect.x = data[0].textRect.x + num
+                            //         item.textRect.y = data[0].textRect.y + num
+                            //         item.fullTextRect.x = data[0].fullTextRect.x + num
+                            //         item.fullTextRect.y = data[0].fullTextRect.y + num
+                            //         item.iconRect.x = data[0].iconRect.x + num
+                            //         item.iconRect.y = data[0].iconRect.y + num
+                            //         item.fullIconRect.x = data[0].fullIconRect.x + num
+                            //         item.fullIconRect.y = data[0].fullIconRect.y + num
+
+                            //         item.anchors.map((obj,i) => {
+                            //             obj.x = data[0].anchors[i].x + num
+                            //             obj.y = data[0].anchors[i].y + num
+                            //         })
+                            //         item.rotatedAnchors.map((obj,i) => {
+                            //             obj.x = data[0].anchors[i].x + num
+                            //             obj.y = data[0].anchors[i].y + num
+                            //         })
+
+
+                            //     //     // 原生自动刷新方法有巨大bug，需待研究
+                            //     //     // canvas.updateProps(item);
+                            //     //     // canvas.render();
+                            //     // }
+                            // })
+                        break;
                     }
 
                 }
@@ -948,6 +1031,7 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
+// window.canvas =canvas 
 
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;

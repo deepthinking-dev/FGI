@@ -173,9 +173,27 @@
 </script>
 </head>
 <body> 
-    <!-- 保存规则 -->
+        <!-- 关系选择 -->
+        <div id="ruleAct">
+            <div>
+                <span>动作</span>
+                <select class="actionSelected">
+                    <option value="">输入</option>
+                    <option value="">输出</option>                     
+                </select>
+                <span>值</span>
+                <select class="actionSelected">
+                    <option value="">值来源</option>
+                    <option value="">行为</option>     
+                    <option value="">表达式</option>                     
+                </select>
+                <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;">取消</button>
+                <button class="btn pointer" type="button" onclick="ActionSure()" style="margin-right: 10px;">确定</button>
+            </div>
+        </div>
+    <!-- 保存规则 -->Action
     <div id="sureRule">
-        <div class="title">
+        <div class="title">Action
             <span>保存规则</span>
             <span onclick="RuleClose()" style="cursor: pointer;">X</span>
         </div>
