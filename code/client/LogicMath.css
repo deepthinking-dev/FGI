@@ -177,6 +177,7 @@ body .form-input{
 }
 .width-select{
     /*width: 40% !important;*/
+    position: relative;
 }
 .width-50 span{
     font-size: 14px;
@@ -818,8 +819,8 @@ body .form-input{
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin:0 auto;
-    top: 20%; 
-    left: 40%;
+    /* top: 20%; 
+    left: 40%; */
     z-index: 2;
 }
 #ruleAct div{

@@ -177,18 +177,18 @@
         <div id="ruleAct">
             <div>
                 <span>动作</span>
-                <select class="actionSelected">
-                    <option value="">输入</option>
-                    <option value="">输出</option>                     
+                <select class="actionSelected1">
+                    <option value="0">输入</option>
+                    <option value="1">输出</option>                     
                 </select>
                 <span>值</span>
-                <select class="actionSelected">
-                    <option value="">值来源</option>
-                    <option value="">行为</option>     
-                    <option value="">表达式</option>                     
+                <select class="actionSelected2">
+                    <option value="1">值来源</option>
+                    <option value="2">行为</option>     
+                    <option value="3">表达式</option>                     
                 </select>
                 <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;">取消</button>
-                <button class="btn pointer" type="button" onclick="ActionSure()" style="margin-right: 10px;">确定</button>
+                <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;">确定</button>
             </div>
         </div>
     <!-- 保存规则 -->Action

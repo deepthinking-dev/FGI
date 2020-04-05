@@ -459,3 +459,74 @@ function ConfirmDelRule(){
 function ruleDelClose(){
     $('#lkrRule').fadeToggle(500)
 }
+
+//动作确定
+function ActionSure(event){
+    let obj ={
+        action:$('.actionSelected1').val(),
+        actionValue:$('.actionSelected2').val()
+    }
+    $('#ruleAct').fadeToggle(500)
+    let num = 80
+    let node = window.Topology.dblclickNode.node
+
+    let countIn = 0;
+    let countOut = 0;
+    let data =  JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)) 
+    let inOut =""
+    let textValue = ''
+    if($('.actionSelected1').val() == 0){
+        inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
+        textValue = "in" + $('.actionSelected2').eq(0).val();
+        canvas.data.nodes.map((s,i)=>{
+            if(s.id.includes(window.Topology.dblclickNode.node.id)){
+                countIn++; 
+            }
+        })
+        data.rect.x = data.rect.x - 40;
+        data.rect.y = data.rect.y + 30*countIn -20;
+    }
+    if($('.actionSelected1').val() == 1){
+        inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
+        textValue = "out" + $('.actionSelected2').eq(0).val();
+        canvas.data.nodes.map((s,i)=>{
+            if(s.id.includes(window.Topology.dblclickNode.node.id)){
+                countOut++; 
+            }
+        })
+        data.rect.x = data.rect.x +200;
+        data.rect.y = data.rect.y + 30*countOut -20;
+       
+    }
+    
+    
+
+    data.rect.width = 40
+    data.rect.height = 20
+    data.text =textValue
+    data.rect.ex = data.rect.ex + num
+    data.rect.ey = data.rect.ey + num
+    data.rect.center.x = data.rect.center.x + num
+    data.rect.center.y = data.rect.center.y
+    data.textRect.x =data.textRect.x + num
+    data.textRect.y = data.textRect.y
+    data.fullTextRect.x = data.fullTextRect.x + num
+    data.fullTextRect.y = data.fullTextRect.y
+    data.iconRect.x = data.iconRect.x + num
+    data.iconRect.y = data.iconRect.y
+    data.fullIconRect.x = data.fullIconRect.x + num
+    data.fullIconRect.y = data.fullIconRect.y
+    data.FGIID = data.id
+    data.id = inOut
+    
+    console.log(data.anchors)
+    // canvas.parse();
+    // window.Topology.dblclickNode.node.setChild([data])
+  
+    canvas.render();
+    canvas.addNode(data)
+}
+//动作取消
+function ActionClose(){
+    $('#ruleAct').fadeToggle(500)
+}

@@ -36,6 +36,7 @@ var Topology = {
         },
     ],
     saveNode:[],
+    dblclickNode:{},
     // 对象的最初入口
     init: function () {
         var self = this;
@@ -246,9 +247,8 @@ var Topology = {
                             text: item.tableAlgorithm.algorithmname,
                             rect: {
                                 width: 200,
-                                height: 50
+                                height: 100
                             },
-                            parentId:item.tableAlgorithm.id,
                             font: {
                                 fontFamily: 'Arial',
                                 color: 'aqua',                           
@@ -365,42 +365,67 @@ var Topology = {
                             break;
                         case 'moveNodes':
                             console.log(data,canvas.data)
-                            let num = 50
+                            if(data[0].id.includes("in") && data[0].id.includes("out")){
+                                return false
+                            }
+                            var child = [];       
                             canvas.data.nodes.map(item => {
-                                if(item.id != data[0].id){
+                                if(item.id.indexOf(data[0].id) == 0){
                                     // selNodes.push(item)
-                                    item.rect.x = data[0].rect.x + num
-                                    item.rect.y = data[0].rect.y + num
+                                    child.push(item)
+                                    // item.rect.x = data[0].rect.x + num
+                                    // item.rect.y = data[0].rect.y + num
 
-                                    item.rect.ex = data[0].rect.ex + num
-                                    item.rect.ey = data[0].rect.ey + num
-                                    item.rect.center.x = data[0].rect.center.x + num
-                                    item.rect.center.y = data[0].rect.center.y + num
-                                    item.textRect.x = data[0].textRect.x + num
-                                    item.textRect.y = data[0].textRect.y + num
-                                    item.fullTextRect.x = data[0].fullTextRect.x + num
-                                    item.fullTextRect.y = data[0].fullTextRect.y + num
-                                    item.iconRect.x = data[0].iconRect.x + num
-                                    item.iconRect.y = data[0].iconRect.y + num
-                                    item.fullIconRect.x = data[0].fullIconRect.x + num
-                                    item.fullIconRect.y = data[0].fullIconRect.y + num
+                                    // item.rect.ex = data[0].rect.ex + num
+                                    // item.rect.ey = data[0].rect.ey + num
+                                    // item.rect.center.x = data[0].rect.center.x + num
+                                    // item.rect.center.y = data[0].rect.center.y + num
+                                    // item.textRect.x = data[0].textRect.x + num
+                                    // item.textRect.y = data[0].textRect.y + num
+                                    // item.fullTextRect.x = data[0].fullTextRect.x + num
+                                    // item.fullTextRect.y = data[0].fullTextRect.y + num
+                                    // item.iconRect.x = data[0].iconRect.x + num
+                                    // item.iconRect.y = data[0].iconRect.y + num
+                                    // item.fullIconRect.x = data[0].fullIconRect.x + num
+                                    // item.fullIconRect.y = data[0].fullIconRect.y + num
 
-                                    item.anchors.map((obj,i) => {
-                                        obj.x = data[0].anchors[i].x + num
-                                        obj.y = data[0].anchors[i].y + num
-                                    })
-                                    item.rotatedAnchors.map((obj,i) => {
-                                        obj.x = data[0].anchors[i].x + num
-                                        obj.y = data[0].anchors[i].y + num
-                                    })
-
-
-                                    // 原生自动刷新方法有巨大bug，需待研究
-                                    // canvas.updateProps(item);
-                                    // canvas.render();
+                                    // item.anchors.map((obj,i) => {
+                                    //     obj.x = data[0].anchors[i].x + num
+                                    //     obj.y = data[0].anchors[i].y + num
+                                    // })
+                                    // item.rotatedAnchors.map((obj,i) => {
+                                    //     obj.x = data[0].anchors[i].x + num
+                                    //     obj.y = data[0].anchors[i].y + num
+                                    // })
                                 }
                             })
-                            连线中间加字
+                            child.splice(0,1)
+                            for(var i=0;i<child.length;i++){
+                                child[i].rect.x = data[0].rect.x - 40
+                                child[i].rect.y = data[0].rect.y + 30*(i+1) -20
+
+                                child[i].rect.ex = data[0].rect.ex - 40
+                                child[i].rect.ey = data[0].rect.ey +  30*(i+1) -20
+                                child[i].rect.center.x = data[0].rect.center.x - 40
+                                child[i].rect.center.y = data[0].rect.center.y +  30*(i+1) -20
+                                child[i].textRect.x = data[0].textRect.x - 40
+                                child[i].textRect.y = data[0].textRect.y +  30*(i+1) -20
+                                child[i].fullTextRect.x = data[0].fullTextRect.x - 40
+                                child[i].fullTextRect.y = data[0].fullTextRect.y +  30*(i+1) -20
+                                child[i].iconRect.x = data[0].iconRect.x - 40
+                                child[i].iconRect.y = data[0].iconRect.y +  30*(i+1) -20
+                                child[i].fullIconRect.x = data[0].fullIconRect.x - 40
+                                child[i].fullIconRect.y = data[0].fullIconRect.y +  30*(i+1) -20
+
+                                child[i].anchors.map((obj,i) => {
+                            
+                                        obj.x = data[0].anchors[i].x
+                                        obj.y = data[0].anchors[i].y
+                                    })
+                                console.log(child[i].anchors,"111111111111111111111")
+                            }
+                            
+                            //连线中间加字
                             canvas.data.lines.map(item => {
                                 if(item.from.id == data[0].id||item.to.id == data[0].id){
                                     $(`#${item.id}`).css({
@@ -517,14 +542,17 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-                            // debugger
+                        
                             // let num = 50
                             // console.log(data)
                             $('#ruleAct').show();
                             $(`#ruleAct`).css({
-                                top:(data.node.rect.y + data.node.rect.y)+"px",
-                                left:(data.node.rect.x + data.node.rect.x)+"px"
+                                top:(data.node.rect.y + 80)+"px",
+                                left:(data.node.rect.x + 240)+"px"
                             })
+                           self.dblclickNode = data
+                           
+                             
                             // canvas.data.nodes.map(item => {
                             //     self.initNode();
                             //     if(item.id != data[0].id){
@@ -660,6 +688,12 @@ var Topology = {
         $("input[name=paddingTop]").val(selected.data.paddingTop);
         //下边距
         $("input[name=paddingBottom]").val(selected.data.paddingBottom);
+        // let  Point = Le5leTopology.Point
+ 
+        // selected.data.anchors.push(new Point(selected.data.rect.x, selected.data.rect.y + selected.data.rect.height / 2, "Left"));
+        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width / 2, selected.data.rect.y, "None"));
+        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width, selected.data.rect.y + selected.data.rect.height / 2,"Right"));
+        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width / 2, selected.data.rect.y + selected.data.rect.height, "None"));
         canvas.overflow()
     },
 
@@ -947,6 +981,7 @@ var Topology = {
         canvas.render();
     },
     parsew:function(){
+        debugger
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
             canvas.addNode(data)
@@ -1002,8 +1037,9 @@ var Topology = {
     },
     // 粘贴
     parse: function () {
+        debugger
         canvas.parse();
-    },
+    }
 };
 // window全局，这样别的地方方便调用
 window.addAlgorithm = Topology.addAlgorithm;
@@ -1031,7 +1067,7 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
-// window.canvas =canvas 
+window.initNode = Topology.initNode
 
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;
