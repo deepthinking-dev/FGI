@@ -133,6 +133,7 @@ var Topology = {
                 $("#menu_bottom").addClass("menu-a");
                 //组合
                 if (selNodes.length > 1 || selNodes[0].name !== "combine") {
+                   // debugger
                     if (selNodes.length < 2) {
                         $("#menu_combine").addClass("menu-a-disabled");
                         $("#menu_combine").removeClass("menu-a");
@@ -311,7 +312,7 @@ var Topology = {
                 // 监听画布
                 function onMessage(event, data) {
                     // debugger
-                    console.log(event,data,1111)
+                    console.log(event,data,11111)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -364,12 +365,15 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
+                           
                             console.log(data,canvas.data)
-                            if(data[0].id.includes("in") && data[0].id.includes("out")){
-                                return false
+                            if(data[0].id.includes("in") || data[0].id.includes("out")){
+                                canvas.lockNodes([data[0]],true)
+                               return false;
                             }
-                            var child = [];       
+                            var child = []     
                             canvas.data.nodes.map(item => {
+                                // if(item.id != data[0].id){
                                 if(item.id.indexOf(data[0].id) == 0){
                                     // selNodes.push(item)
                                     child.push(item)
@@ -390,52 +394,104 @@ var Topology = {
                                     // item.fullIconRect.y = data[0].fullIconRect.y + num
 
                                     // item.anchors.map((obj,i) => {
-                                    //     obj.x = data[0].anchors[i].x + num
-                                    //     obj.y = data[0].anchors[i].y + num
+                                    //     obj.x = data[0].anchors[i].x - 100
+                                    //     obj.y = data[0].anchors[i].y - 40
                                     // })
                                     // item.rotatedAnchors.map((obj,i) => {
-                                    //     obj.x = data[0].anchors[i].x + num
-                                    //     obj.y = data[0].anchors[i].y + num
+                                    //     obj.x = data[0].anchors[i].x -100
+                                    //     obj.y = data[0].anchors[i].y - 40
                                     // })
                                 }
                             })
-                            child.splice(0,1)
-                            for(var i=0;i<child.length;i++){
-                                child[i].rect.x = data[0].rect.x - 40
-                                child[i].rect.y = data[0].rect.y + 30*(i+1) -20
-
-                                child[i].rect.ex = data[0].rect.ex - 40
-                                child[i].rect.ey = data[0].rect.ey +  30*(i+1) -20
-                                child[i].rect.center.x = data[0].rect.center.x - 40
-                                child[i].rect.center.y = data[0].rect.center.y +  30*(i+1) -20
-                                child[i].textRect.x = data[0].textRect.x - 40
-                                child[i].textRect.y = data[0].textRect.y +  30*(i+1) -20
-                                child[i].fullTextRect.x = data[0].fullTextRect.x - 40
-                                child[i].fullTextRect.y = data[0].fullTextRect.y +  30*(i+1) -20
-                                child[i].iconRect.x = data[0].iconRect.x - 40
-                                child[i].iconRect.y = data[0].iconRect.y +  30*(i+1) -20
-                                child[i].fullIconRect.x = data[0].fullIconRect.x - 40
-                                child[i].fullIconRect.y = data[0].fullIconRect.y +  30*(i+1) -20
-
-                                child[i].anchors.map((obj,i) => {
-                            
-                                        obj.x = data[0].anchors[i].x
-                                        obj.y = data[0].anchors[i].y
-                                    })
-                                console.log(child[i].anchors,"111111111111111111111")
+                            if(child.length > 1 ){
+                                if (data.length === 1 && data[0].name == "combine") {
+                                
+                                }else{                             
+                                    canvas.combine(child)
+                                }
                             }
                             
+                            
+                        //    let p =  child.splice(0,1)
+                        //    console.log(p,"44444")
+                        //    p.anchors.map((obj,i) => {
+                        //         obj.x = 0
+                        //         obj.y = 0
+                        //     })
+                        //     p.rotatedAnchors.map((obj,i) => {
+                        //         obj.x = 0
+                        //         obj.y = 0
+                        //     })
+                            // debugger
+                            
+                           // canvas.combine(child);
+                            // for(var i=0;i<child.length;i++){
+                            //     child[i].rect.x = data[0].rect.x - 40
+                            //     child[i].rect.y = data[0].rect.y + 30*(i+1) -20
+
+                            //     child[i].rect.ex = data[0].rect.ex - 40
+                            //     child[i].rect.ey = data[0].rect.ey +  30*(i+1) -20
+                            //     child[i].rect.center.x = data[0].rect.center.x - 40
+                            //     child[i].rect.center.y = data[0].rect.center.y +  30*(i+1) -20
+                            //     child[i].textRect.x = data[0].textRect.x - 40
+                            //     child[i].textRect.y = data[0].textRect.y +  30*(i+1) -20
+                            //     child[i].fullTextRect.x = data[0].fullTextRect.x - 40
+                            //     child[i].fullTextRect.y = data[0].fullTextRect.y +  30*(i+1) -20
+                            //     child[i].iconRect.x = data[0].iconRect.x - 40
+                            //     child[i].iconRect.y = data[0].iconRect.y +  30*(i+1) -20
+                            //     child[i].fullIconRect.x = data[0].fullIconRect.x - 40
+                            //     child[i].fullIconRect.y = data[0].fullIconRect.y +  30*(i+1) -20
+
+                            //     child[i].anchors.map((obj,i) => {
+                            
+                            //             obj.x = data[0].anchors[i].x
+                            //             obj.y = data[0].anchors[i].y
+                            //         })
+                            //     console.log(child[i].anchors,"111111111111111111111")
+                            // }
+                            
                             //连线中间加字
-                            canvas.data.lines.map(item => {
-                                if(item.from.id == data[0].id||item.to.id == data[0].id){
-                                    $(`#${item.id}`).css({
-                                        top:(item.to.y + item.from.y)/2 +"px",
-                                        left:(item.to.x + item.from.x)/2+"px"
-                                    })
-                                }
-                            })
+                            // canvas.data.lines.map(item => {
+                            //     if(item.from.id == data[0].id||item.to.id == data[0].id){
+                            //         $(`#${item.id}`).css({
+                            //             top:(item.to.y + item.from.y)/2 +"px",
+                            //             left:(item.to.x + item.from.x)/2+"px"
+                            //         })
+                            //     }
+                            // })
+                            break  
+                        case 'moveOutNode':
+                            console.log(event,data,333)
+                            canvas.lockNodes([data],false)
+                            console.log(data)
+                            if (data.name == "combine") {
+                                $("#menu_unCombine").removeClass("menu-a-disabled");
+                                $("#menu_unCombine").addClass("menu-a");
+                                $("#menu_combine").css("display", "none");
+                                $("#menu_unCombine").css("display", "block");
+                                canvas.uncombine(data);
+                                canvas.render();
+                            }
+                            
+                            break   
+                        case 'moveInNode':
+                            if(data.id.includes("in") || data.id.includes("out")){
+
+                            }else{
+                                data.rotate = 0
+                                data.anchors.map((obj,i) => {
+                                    obj.x = 0
+                                    obj.y = 0
+                                })
+                                data.rotatedAnchors.map((obj,i) => {
+                                    obj.x = 0
+                                    obj.y = 0
+                                })
+                            }
+                           
                             break    
                         case 'moveOut':
+                            
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
                          
@@ -454,13 +510,31 @@ var Topology = {
                             }
                             unique(canvas.data.nodes)
                             break;
+                        case 'rotateNodes':
+                            // console.log(event,data,22)
+                            data[0].rotate = 0
+                            break    
                         case 'addNode':
+                         
                             selNodes = [data];
                             selected = {
                                 "type": event,
                                 "data": data
                             };
                             console.log(data,selected)
+                            if(data.id.includes("in") || data.id.includes("out")){
+                                break;
+                            }else{
+                                data.anchors.map((obj,i) => {
+                                    obj.x = 0
+                                    obj.y = 0
+                                })
+                                data.rotatedAnchors.map((obj,i) => {
+                                    obj.x = 0
+                                    obj.y = 0
+                                })
+                            }
+                            
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
@@ -487,38 +561,66 @@ var Topology = {
                             // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
                             //判断连线是否连接成功
                             if(!data.to.id){
-                            canvas.data.lines.map((item,i) => {
-                                if(item.id == data.id){
-                                    canvas.data.lines.splice(i,1)
-                                    toastr.info('操作失败！')
-                                    
-                                    canvas.render();
-                                    setTimeout(function () {
-                                        selected = null;
-                                        selNodes = null;
-                                    });
-                                }
-                            })
+                                canvas.data.lines.map((item,i) => {
+                                    if(item.id == data.id){
+                                        canvas.data.lines.splice(i,1)
+                                        toastr.info('操作失败！')
+                                        
+                                        canvas.render();
+                                        setTimeout(function () {
+                                            selected = null;
+                                            selNodes = null;
+                                        });
+                                    }
+                                })
                             }else{
                                 window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                                $('#'+window.currentId).css({
-                                    color: '#ffffff',
-                                    position: 'absolute',
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
+                                if(data.from.id.includes("in") && data.to.id.includes("in")) {
+                                    canvas.data.lines.map((item,i) => {
+                                        if(item.id == data.id){
+                                            canvas.data.lines.splice(i,1)
+                                            toastr.info('输入不能连接输入！')
+                                            canvas.render();
+                                            setTimeout(function () {
+                                                selected = null;
+                                                selNodes = null;
+                                            });
+                                        }
+                                    })
+                                        
+                                }else if(data.from.id.includes("out") && data.to.id.includes("out")) {
+                                    canvas.data.lines.map((item,i) => {
+                                        if(item.id == data.id){
+                                            canvas.data.lines.splice(i,1)
+                                            toastr.info('输出不能连接输出！')
+                                            canvas.render();
+                                            setTimeout(function () {
+                                                selected = null;
+                                                selNodes = null;
+                                            });
+                                        }
+                                    })
+                                }else{
+                                    selected = {
+                                        "type": event,
+                                        "data": data
+                                    };
+                                    locked = data.locked;
+                                    self.initLine();
+                                }
+                                // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
+                                // $('#'+window.currentId).css({
+                                //     color: '#ffffff',
+                                //     position: 'absolute',
+                                //     top:(data.to.y + data.from.y)/2 +"px",
+                                //     left:(data.to.x + data.from.x)/2+"px"
+                                // })
                                 // 选择关系弹框
-                                $(`#selectRela`).css({
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
-                                selected = {
-                                    "type": event,
-                                    "data": data
-                                };
-                                locked = data.locked;
-                                self.initLine();
+                                // $(`#selectRela`).css({
+                                //     top:(data.to.y + data.from.y)/2 +"px",
+                                //     left:(data.to.x + data.from.x)/2+"px"
+                                // })
+                                
                             }
                             break;
                         case 'delete':
@@ -550,6 +652,7 @@ var Topology = {
                                 top:(data.node.rect.y + 80)+"px",
                                 left:(data.node.rect.x + 240)+"px"
                             })
+                            
                            self.dblclickNode = data
                            
                              
@@ -877,12 +980,12 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        console.log(selNodes)
-        console.log(arrow, index)
+        // console.log(selNodes)
+        // console.log(arrow, index)
         // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
-        $("#selectRela").show()
+        // $("#selectRela").show()
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
             if (index == sum) {
@@ -974,6 +1077,7 @@ var Topology = {
     },
     // 取消组合
     onUncombine: function () {
+        // debugger
         if (!selNodes || selNodes.length > 1) {
             return;
         }
@@ -981,7 +1085,7 @@ var Topology = {
         canvas.render();
     },
     parsew:function(){
-        debugger
+        // debugger
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
             canvas.addNode(data)

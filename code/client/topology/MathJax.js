@@ -318,9 +318,10 @@ function uploadSure(){
 
 //选择关系确定按钮
 function selectSure(){
-    let str = $('.selectRelation option:selected').text();
+    // let str = $('.selectRelation option:selected').text();
     console.log(str)
-    $('#'+window.currentId).text(str)
+    // $('#'+window.currentId).text(str)
+    console.log(window.currentId)
     $("#selectRela").hide();
 
 }
@@ -485,6 +486,7 @@ function ActionSure(event){
         })
         data.rect.x = data.rect.x - 40;
         data.rect.y = data.rect.y + 30*countIn -20;
+       
     }
     if($('.actionSelected1').val() == 1){
         inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
@@ -496,7 +498,7 @@ function ActionSure(event){
         })
         data.rect.x = data.rect.x +200;
         data.rect.y = data.rect.y + 30*countOut -20;
-       
+    
     }
     
     
