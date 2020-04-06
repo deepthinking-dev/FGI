@@ -821,7 +821,7 @@ body .form-input{
     margin:0 auto;
     /* top: 20%; 
     left: 40%; */
-    z-index: 2;
+    z-index: 999999;
 }
 #ruleAct div{
     position: relative;

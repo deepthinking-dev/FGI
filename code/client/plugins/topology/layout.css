@@ -18,7 +18,7 @@ body {
     border: #DDDDDD solid 1px;
     float: left;
     /*min-height: 50rem;*/
-    z-index: 999999999;
+    z-index: 9999;
     overflow: auto;
     border: none;
     background-image: url('/static/model.png');
