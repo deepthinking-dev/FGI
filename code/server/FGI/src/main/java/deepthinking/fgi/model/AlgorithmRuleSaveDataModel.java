@@ -15,15 +15,26 @@ import java.util.List;
 public class AlgorithmRuleSaveDataModel {
     @ApiModelProperty(value = "规则基本信息")
     private TableRole tableRole;
-    @ApiModelProperty(value = "算法算子关系集合")
-    private List<AlgorithmRuleDataModel> algorithmRuleDataModelList;
+    @ApiModelProperty(value = "规则中接口信息集合")
+    private List<OperatorInterfaceDataModel> operatorInterfaceDataModels;
+    @ApiModelProperty(value = "接口之间的连线")
+    private List<InterfaceRoleDataModel> interfaceRoleDataModels;
 
     public AlgorithmRuleSaveDataModel() {
     }
 
-    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<AlgorithmRuleDataModel> algorithmRuleDataModelList) {
+    public AlgorithmRuleSaveDataModel(TableRole tableRole, List<OperatorInterfaceDataModel> operatorInterfaceDataModels, List<InterfaceRoleDataModel> interfaceRoleDataModels) {
         this.tableRole = tableRole;
-        this.algorithmRuleDataModelList = algorithmRuleDataModelList;
+        this.operatorInterfaceDataModels = operatorInterfaceDataModels;
+        this.interfaceRoleDataModels = interfaceRoleDataModels;
+    }
+
+    public List<InterfaceRoleDataModel> getInterfaceRoleDataModels() {
+        return interfaceRoleDataModels;
+    }
+
+    public void setInterfaceRoleDataModels(List<InterfaceRoleDataModel> interfaceRoleDataModels) {
+        this.interfaceRoleDataModels = interfaceRoleDataModels;
     }
 
     public TableRole getTableRole() {
@@ -34,12 +45,11 @@ public class AlgorithmRuleSaveDataModel {
         this.tableRole = tableRole;
     }
 
-    public List<AlgorithmRuleDataModel> getAlgorithmRuleDataModelList() {
-        return algorithmRuleDataModelList;
+    public List<OperatorInterfaceDataModel> getOperatorInterfaceDataModels() {
+        return operatorInterfaceDataModels;
     }
 
-    public void setAlgorithmRuleDataModelList(List<AlgorithmRuleDataModel> algorithmRuleDataModelList) {
-        this.algorithmRuleDataModelList = algorithmRuleDataModelList;
+    public void setOperatorInterfaceDataModels(List<OperatorInterfaceDataModel> operatorInterfaceDataModels) {
+        this.operatorInterfaceDataModels = operatorInterfaceDataModels;
     }
-
 }

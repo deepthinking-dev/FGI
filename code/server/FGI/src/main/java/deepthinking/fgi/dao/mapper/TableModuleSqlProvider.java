@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableModule;
-import deepthinking.fgi.domain.TableModuleCriteria.Criteria;
-import deepthinking.fgi.domain.TableModuleCriteria.Criterion;
-import deepthinking.fgi.domain.TableModuleCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableModule;
+import deepthinking.fgi.domain.TableModuleCriteria;
+import deepthinking.fgi.domain.TableModuleCriteria.Criteria;
+import deepthinking.fgi.domain.TableModuleCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableModuleSqlProvider {
@@ -46,10 +47,6 @@ public class TableModuleSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_module");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
-        }
-        
         if (record.getModulename() != null) {
             sql.VALUES("ModuleName", "#{modulename,jdbcType=VARCHAR}");
         }
@@ -64,6 +61,10 @@ public class TableModuleSqlProvider {
         
         if (record.getDes() != null) {
             sql.VALUES("Des", "#{des,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUserid() != null) {
+            sql.VALUES("UserID", "#{userid,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {
@@ -90,6 +91,7 @@ public class TableModuleSqlProvider {
         sql.SELECT("SqlUrl");
         sql.SELECT("ModuleGroup");
         sql.SELECT("Des");
+        sql.SELECT("UserID");
         sql.SELECT("Remark");
         sql.FROM("table_module");
         applyWhere(sql, example, false);
@@ -134,6 +136,10 @@ public class TableModuleSqlProvider {
             sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         }
         
+        if (record.getUserid() != null) {
+            sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         }
@@ -157,6 +163,7 @@ public class TableModuleSqlProvider {
         sql.SET("SqlUrl = #{record.sqlurl,jdbcType=VARCHAR}");
         sql.SET("ModuleGroup = #{record.modulegroup,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
+        sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableModuleCriteria example = (TableModuleCriteria) parameter.get("example");
@@ -188,6 +195,10 @@ public class TableModuleSqlProvider {
         
         if (record.getDes() != null) {
             sql.SET("Des = #{des,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUserid() != null) {
+            sql.SET("UserID = #{userid,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {

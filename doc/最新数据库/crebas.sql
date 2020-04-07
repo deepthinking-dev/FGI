@@ -103,7 +103,8 @@ alter table Table_InterfaceParameters comment '算子接口参数信息表';
 create table Table_InterfaceRole
 (
    ID                   int not null auto_increment comment '主键ID',
-   InterfaceID          int,
+   RoleID               int comment '规则ID',
+   InterfaceID          int comment '接口ID',
    ParametersID         int comment '接口参数ID',
    PreInterfaceID       int comment '前序接口ID',
    PreParametersID      int comment '前序接口参数ID',
@@ -112,7 +113,7 @@ create table Table_InterfaceRole
    primary key (ID)
 );
 
-alter table Table_InterfaceRole comment '算法算子关系';
+alter table Table_InterfaceRole comment '算法接口关系';
 
 /*==============================================================*/
 /* Table: Table_Module                                          */
