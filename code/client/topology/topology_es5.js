@@ -490,16 +490,18 @@ var Topology = {
                             })
 
                             canvas.data.lines.map(item => {
-                                console.log(data[0].id,item.from.id,data[0].id.indexOf(item.from.id) != -1)
+                          
                                 if(item.from.id.indexOf(data[0].id) != -1){
-                                    console.log(item)
+                                   
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.from.id == obj.id) return obj
                                     })[0]
-                                    item.from.x = nodesa.rotatedAnchors[0].x
-                                    item.from.y = nodesa.rotatedAnchors[0].y
+                                    console.log(nodesa,"11111111111111111111111111111111111")
+                                    item.from.x = nodesa.rotatedAnchors[3].x
+                                    item.from.y = nodesa.rotatedAnchors[3].y
                                 }
                                 if(item.to.id.indexOf(data[0].id) != -1){
+                                    console.log(item,"22222222222222222222222222222222")
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.to.id == obj.id) return obj
                                     })[0]
@@ -562,52 +564,52 @@ var Topology = {
                             locked = data.locked;
                             self.initNode();
                             // debugger
-                            let data1 = JSON.parse(JSON.stringify(data)) 
-                            if(data.data.inNum > 0){
-                                let data2 = JSON.parse(JSON.stringify(data1)) 
-                                for(let i= 0;i<data.data.inNum; i++){
-                                    console.log(data)
-                                    let widths = data1.rect.width/10
-                                    let heights = data1.rect.height/10
-                                    let num = {
-                                            x:-widths,
-                                            y:(heights*data.data.inNum)+5*data1.data.inNum
-                                        }
+                            // let data1 = JSON.parse(JSON.stringify(data)) 
+                            // if(data.data.inNum > 0){
+                            //     let data2 = JSON.parse(JSON.stringify(data1)) 
+                            //     for(let i= 0;i<data.data.inNum; i++){
+                            //         console.log(data)
+                            //         let widths = data1.rect.width/10
+                            //         let heights = data1.rect.height/10
+                            //         let num = {
+                            //                 x:-widths,
+                            //                 y:(heights*data.data.inNum)+5*data1.data.inNum
+                            //             }
                                    
-                                    data2.id = data1.id+"IN" +i
-                                    data2.rect.width = widths
-                                    data2.rect.height = heights
-                                    data2.text ="in" +i
-                                    data2.rect.ex = data1.rect.x + num.x;
-                                    data2.rect.ey = data1.rect.y + num.y;
-                                    data2.rect.x = data1.rect.x + num.x;
-                                    data2.rect.y = data1.rect.y+ num.y;
-                                    data2.childStand = {
-                                        type:data1.id+'的弟弟',
-                                        wz:num,
-                                        bb:{
-                                            x:data1.rect.x,
-                                            y:data1.rect.y,
-                                            ex:data1.rect.ex,
-                                            ey:data1.rect.ey
-                                        }
-                                    }
-                                    data2.anchors.map((obj,i) => {
-                                        obj.x = data1.anchors[i].x-185 + num.x
-                                        obj.y = data1.anchors[i].y-85 + num.y
-                                    })
-                                    data2.rotatedAnchors.map((obj,i) => {
-                                        obj.x = data1.rotatedAnchors[i].x-185 + num.x
-                                        obj.y = data1.rotatedAnchors[i].y-85 + num.y
-                                    }) 
+                            //         data2.id = data1.id+"IN" +i
+                            //         data2.rect.width = widths
+                            //         data2.rect.height = heights
+                            //         data2.text ="in" +i
+                            //         data2.rect.ex = data1.rect.x + num.x;
+                            //         data2.rect.ey = data1.rect.y + num.y;
+                            //         data2.rect.x = data1.rect.x + num.x;
+                            //         data2.rect.y = data1.rect.y+ num.y;
+                            //         data2.childStand = {
+                            //             type:data1.id+'的弟弟',
+                            //             wz:num,
+                            //             bb:{
+                            //                 x:data1.rect.x,
+                            //                 y:data1.rect.y,
+                            //                 ex:data1.rect.ex,
+                            //                 ey:data1.rect.ey
+                            //             }
+                            //         }
+                            //         data2.anchors.map((obj,i) => {
+                            //             obj.x = data1.anchors[i].x-185 + num.x
+                            //             obj.y = data1.anchors[i].y-85 + num.y
+                            //         })
+                            //         data2.rotatedAnchors.map((obj,i) => {
+                            //             obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                            //             obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                            //         }) 
                                     
                                     
-                                    canvas.addNode(data2)
-                                    canvas.lockNodes([data2],true)
-                                }
+                            //         canvas.addNode(data2)
+                            //         canvas.lockNodes([data2],true)
+                            //     }
                                
-                                canvas.render();
-                            }
+                            //     canvas.render();
+                            // }
                             break;
                         case 'resizeNodes':
                             // canvas.resizeNodes(0,0)
@@ -894,6 +896,7 @@ var Topology = {
     // 初始化line
     initLine: function () {
         var self = this;
+        debugger
         $("#node_line_color").html("连线颜色");
         $("#flex_props_home").addClass("hidden");
         $("#flex_props_node").removeClass("hidden");
@@ -1076,7 +1079,7 @@ var Topology = {
         // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
-        $("#selectRela").show()
+        // $("#selectRela").show()
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
             if (index == sum) {
