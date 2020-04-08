@@ -318,10 +318,9 @@ function uploadSure(){
 
 //选择关系确定按钮
 function selectSure(){
-    // let str = $('.selectRelation option:selected').text();
+    let str = $('.selectRelation option:selected').text();
     console.log(str)
-    // $('#'+window.currentId).text(str)
-    console.log(window.currentId)
+    $('#'+window.currentId).text(str)
     $("#selectRela").hide();
 
 }

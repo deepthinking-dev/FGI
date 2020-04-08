@@ -254,66 +254,6 @@ public class TableAlgorithmCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andModuleidIsNull() {
-            addCriterion("ModuleID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidIsNotNull() {
-            addCriterion("ModuleID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidEqualTo(Integer value) {
-            addCriterion("ModuleID =", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidNotEqualTo(Integer value) {
-            addCriterion("ModuleID <>", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidGreaterThan(Integer value) {
-            addCriterion("ModuleID >", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ModuleID >=", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidLessThan(Integer value) {
-            addCriterion("ModuleID <", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidLessThanOrEqualTo(Integer value) {
-            addCriterion("ModuleID <=", value, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidIn(List<Integer> values) {
-            addCriterion("ModuleID in", values, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidNotIn(List<Integer> values) {
-            addCriterion("ModuleID not in", values, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidBetween(Integer value1, Integer value2) {
-            addCriterion("ModuleID between", value1, value2, "moduleid");
-            return (Criteria) this;
-        }
-
-        public Criteria andModuleidNotBetween(Integer value1, Integer value2) {
-            addCriterion("ModuleID not between", value1, value2, "moduleid");
-            return (Criteria) this;
-        }
-
         public Criteria andAlgorithmnameIsNull() {
             addCriterion("AlgorithmName is null");
             return (Criteria) this;
@@ -711,6 +651,66 @@ public class TableAlgorithmCriteria {
 
         public Criteria andDesNotBetween(String value1, String value2) {
             addCriterion("Des not between", value1, value2, "des");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNull() {
+            addCriterion("UserID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNotNull() {
+            addCriterion("UserID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridEqualTo(Integer value) {
+            addCriterion("UserID =", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotEqualTo(Integer value) {
+            addCriterion("UserID <>", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThan(Integer value) {
+            addCriterion("UserID >", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
+            addCriterion("UserID >=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThan(Integer value) {
+            addCriterion("UserID <", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThanOrEqualTo(Integer value) {
+            addCriterion("UserID <=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIn(List<Integer> values) {
+            addCriterion("UserID in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotIn(List<Integer> values) {
+            addCriterion("UserID not in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridBetween(Integer value1, Integer value2) {
+            addCriterion("UserID between", value1, value2, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
+            addCriterion("UserID not between", value1, value2, "userid");
             return (Criteria) this;
         }
 

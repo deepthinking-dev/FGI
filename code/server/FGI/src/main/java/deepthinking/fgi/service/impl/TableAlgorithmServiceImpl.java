@@ -4,8 +4,8 @@ import com.github.pagehelper.PageInfo;
 import deepthinking.fgi.Enum.AlgorithmtypeEnum;
 import deepthinking.fgi.Enum.InOrOutType;
 import deepthinking.fgi.dao.mapper.TableAlgorithmMapper;
-import deepthinking.fgi.dao.mapper.TableAlgorithmroleMapper;
 import deepthinking.fgi.dao.mapper.TableFuncMapper;
+import deepthinking.fgi.dao.mapper.TableOperatorinterfaceMapper;
 import deepthinking.fgi.domain.*;
 import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
@@ -36,7 +36,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     @Resource
     private TableFuncMapper tableFuncMapper;
     @Resource
-    private TableAlgorithmroleMapper tableAlgorithmroleMapper;
+    private TableOperatorinterfaceMapper tableOperatorinterfaceMapper;
 
     @Override
     public List<AlgorithmBaseInfo> getAllAlgorithm(String username) {
@@ -151,11 +151,10 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         查询算子是否已用于其他规则中
          */
     private boolean cheakAlgorithmrole(String algthId){
-        TableAlgorithmroleCriteria tableAlgorithmroleCriteria=new TableAlgorithmroleCriteria();
-        tableAlgorithmroleCriteria.or().andAlgorithmidEqualTo(Integer.parseInt(algthId));
-        tableAlgorithmroleCriteria.or().andPrealgorithmidEqualTo(Integer.parseInt(algthId));
-        List<TableAlgorithmrole> tableAlgorithmroles=tableAlgorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);
-        if(tableAlgorithmroles.size()>0){
+        TableOperatorinterfaceCriteria tableOperatorinterfaceCriteria=new TableOperatorinterfaceCriteria();
+        tableOperatorinterfaceCriteria.createCriteria().andAlgorithmidEqualTo(Integer.parseInt(algthId));
+        List<TableOperatorinterface> tableOperatorinterfaces=tableOperatorinterfaceMapper.selectByExample(tableOperatorinterfaceCriteria);
+        if(tableOperatorinterfaces.size()>0){
             return true;
         }
         return false;

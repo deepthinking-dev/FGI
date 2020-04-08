@@ -1,11 +1,22 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableAlgorithm;
-import deepthinking.fgi.domain.TableAlgorithmCriteria;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.*;
+import deepthinking.fgi.domain.TableAlgorithm;
+import deepthinking.fgi.domain.TableAlgorithmCriteria;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TableAlgorithmMapper {
@@ -46,16 +57,14 @@ public interface TableAlgorithmMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_algorithm (ID, ModuleID, ",
-        "AlgorithmName, AlgorithmAuthor, ",
+        "insert into table_algorithm (AlgorithmName, AlgorithmAuthor, ",
         "IsPublic, AlgorithmType, ",
         "AlgorithmFun, Des, ",
-        "Remark)",
-        "values (#{id,jdbcType=INTEGER}, #{moduleid,jdbcType=INTEGER}, ",
-        "#{algorithmname,jdbcType=VARCHAR}, #{algorithmauthor,jdbcType=VARCHAR}, ",
+        "UserID, Remark)",
+        "values (#{algorithmname,jdbcType=VARCHAR}, #{algorithmauthor,jdbcType=VARCHAR}, ",
         "#{ispublic,jdbcType=DECIMAL}, #{algorithmtype,jdbcType=DECIMAL}, ",
         "#{algorithmfun,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
-        "#{remark,jdbcType=VARCHAR})"
+        "#{userid,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableAlgorithm record);
@@ -79,13 +88,13 @@ public interface TableAlgorithmMapper {
     @SelectProvider(type=TableAlgorithmSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
         @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
         @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
         @Result(column="IsPublic", property="ispublic", jdbcType=JdbcType.DECIMAL),
         @Result(column="AlgorithmType", property="algorithmtype", jdbcType=JdbcType.DECIMAL),
         @Result(column="AlgorithmFun", property="algorithmfun", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
+        @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     List<TableAlgorithm> selectByExample(TableAlgorithmCriteria example);
@@ -98,20 +107,20 @@ public interface TableAlgorithmMapper {
      */
     @Select({
         "select",
-        "ID, ModuleID, AlgorithmName, AlgorithmAuthor, IsPublic, AlgorithmType, AlgorithmFun, ",
-        "Des, Remark",
+        "ID, AlgorithmName, AlgorithmAuthor, IsPublic, AlgorithmType, AlgorithmFun, Des, ",
+        "UserID, Remark",
         "from table_algorithm",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
         @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
         @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
         @Result(column="IsPublic", property="ispublic", jdbcType=JdbcType.DECIMAL),
         @Result(column="AlgorithmType", property="algorithmtype", jdbcType=JdbcType.DECIMAL),
         @Result(column="AlgorithmFun", property="algorithmfun", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
+        @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     TableAlgorithm selectByPrimaryKey(Integer id);
@@ -151,23 +160,17 @@ public interface TableAlgorithmMapper {
      */
     @Update({
         "update table_algorithm",
-        "set ModuleID = #{moduleid,jdbcType=INTEGER},",
-          "AlgorithmName = #{algorithmname,jdbcType=VARCHAR},",
+        "set AlgorithmName = #{algorithmname,jdbcType=VARCHAR},",
           "AlgorithmAuthor = #{algorithmauthor,jdbcType=VARCHAR},",
           "IsPublic = #{ispublic,jdbcType=DECIMAL},",
           "AlgorithmType = #{algorithmtype,jdbcType=DECIMAL},",
           "AlgorithmFun = #{algorithmfun,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
+          "UserID = #{userid,jdbcType=INTEGER},",
           "Remark = #{remark,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableAlgorithm record);
-
-    @Select({
-            "select",
-            "ID, ModuleID, AlgorithmName, AlgorithmAuthor,Des",
-            "from table_algorithm"
-    })
     @Results({
             @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
             @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),

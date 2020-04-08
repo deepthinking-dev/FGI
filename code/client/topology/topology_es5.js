@@ -36,7 +36,6 @@ var Topology = {
         },
     ],
     saveNode:[],
-    inNum:0,
     dblclickNode:{},
     // 对象的最初入口
     init: function () {
@@ -249,8 +248,9 @@ var Topology = {
                             text: item.tableAlgorithm.algorithmname,
                             rect: {
                                 width: 200,
-                                height: 100
+                                height: 50
                             },
+                            parentId:item.tableAlgorithm.id,
                             font: {
                                 fontFamily: 'Arial',
                                 color: 'aqua',                           
@@ -564,7 +564,7 @@ var Topology = {
                             //         })
                             //     }
                             // })
-                            break  
+                            break    
                         case 'moveOutNode':
                        
                             // canvas.lockNodes([data],false)
@@ -618,6 +618,9 @@ var Topology = {
                             break    
                         case 'moveOut':
                             
+                            // self.initNode();
+                            break
+                        case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
                          
@@ -634,12 +637,12 @@ var Topology = {
                                 }
                                 return arr;
                             }
+                            
+                            
+                            // canvas.combine(canvas.data.nodes);
                             unique(canvas.data.nodes)
+                            // canvas.render(true);
                             break;
-                        case 'rotateNodes':
-                            // console.log(event,data,22)
-                            data[0].rotate = 0
-                            break    
                         case 'addNode':
                         
                             selNodes = [data];
@@ -661,6 +664,47 @@ var Topology = {
                             //     })
                             // }
                             
+                                // iconV.id = data.id+'1'
+                            // let flags = canvas.data.nodes.filter(item => {
+                            //     return item == data.id+'xsxs'
+                            // })
+                            // console.log(canvas.data.nodes)
+                            // if(data.id.indexOf('xsxs') == -1){
+                            //     let nums = 50
+                            //     let iconV = Object.assign({},data)
+                            //     iconV.id = data.id+'xsxs'
+                            //     iconV.rect.x = data.rect.x + nums
+                            //     iconV.rect.y = data.rect.y + nums
+
+                            //     iconV.rect.ex = data.rect.ex + nums
+                            //     iconV.rect.ey = data.rect.ey + nums
+                            //     iconV.rect.center.x = data.rect.center.x + nums
+                            //     iconV.rect.center.y = data.rect.center.y + nums
+                            //     iconV.textRect.x = data.textRect.x + nums
+                            //     iconV.textRect.y = data.textRect.y + nums
+                            //     iconV.fullTextRect.x = data.fullTextRect.x + nums
+                            //     iconV.fullTextRect.y = data.fullTextRect.y + nums
+                            //     iconV.iconRect.x = data.iconRect.x + nums
+                            //     iconV.iconRect.y = data.iconRect.y + nums
+                            //     iconV.fullIconRect.x = data.fullIconRect.x + nums
+                            //     iconV.fullIconRect.y = data.fullIconRect.y + nums
+                                
+                            //     iconV.anchors.map((obj,i) => {
+                            //         obj.x = data.anchors[i].x + nums
+                            //         obj.y = data.anchors[i].y + nums
+                            //     })
+                            //     iconV.rotatedAnchors.map((obj,i) => {
+                            //         obj.x = data.anchors[i].x + nums
+                            //         obj.y = data.anchors[i].y + nums
+                            //     })
+                            //     console.log(iconV,canvas)
+                            //     canvas.addNode(iconV)
+                            //     canvas.render(true)
+                            // }
+                            
+                            // canvas.data.nodes.push(iconV)
+                            
+                            console.log(data,selected,canvas.data)
                             //存储编辑区数据
                             // unique(canvas.data.nodes)
                             // self.saveNode = unique(canvas.data.nodes)
@@ -733,66 +777,38 @@ var Topology = {
                             // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
                             //判断连线是否连接成功
                             if(!data.to.id){
-                                canvas.data.lines.map((item,i) => {
-                                    if(item.id == data.id){
-                                        canvas.data.lines.splice(i,1)
-                                        toastr.info('操作失败！')
-                                        
-                                        canvas.render();
-                                        setTimeout(function () {
-                                            selected = null;
-                                            selNodes = null;
-                                        });
-                                    }
-                                })
+                            canvas.data.lines.map((item,i) => {
+                                if(item.id == data.id){
+                                    canvas.data.lines.splice(i,1)
+                                    toastr.info('操作失败！')
+                                    
+                                    canvas.render();
+                                    setTimeout(function () {
+                                        selected = null;
+                                        selNodes = null;
+                                    });
+                                }
+                            })
                             }else{
                                 window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                                if(data.from.id.includes("in") && data.to.id.includes("in")) {
-                                    canvas.data.lines.map((item,i) => {
-                                        if(item.id == data.id){
-                                            canvas.data.lines.splice(i,1)
-                                            toastr.info('输入不能连接输入！')
-                                            canvas.render();
-                                            setTimeout(function () {
-                                                selected = null;
-                                                selNodes = null;
-                                            });
-                                        }
-                                    })
-                                        
-                                }else if(data.from.id.includes("out") && data.to.id.includes("out")) {
-                                    canvas.data.lines.map((item,i) => {
-                                        if(item.id == data.id){
-                                            canvas.data.lines.splice(i,1)
-                                            toastr.info('输出不能连接输出！')
-                                            canvas.render();
-                                            setTimeout(function () {
-                                                selected = null;
-                                                selNodes = null;
-                                            });
-                                        }
-                                    })
-                                }else{
-                                    selected = {
-                                        "type": event,
-                                        "data": data
-                                    };
-                                    locked = data.locked;
-                                    self.initLine();
-                                }
-                                // $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
-                                // $('#'+window.currentId).css({
-                                //     color: '#ffffff',
-                                //     position: 'absolute',
-                                //     top:(data.to.y + data.from.y)/2 +"px",
-                                //     left:(data.to.x + data.from.x)/2+"px"
-                                // })
+                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
+                                $('#'+window.currentId).css({
+                                    color: '#ffffff',
+                                    position: 'absolute',
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
                                 // 选择关系弹框
-                                // $(`#selectRela`).css({
-                                //     top:(data.to.y + data.from.y)/2 +"px",
-                                //     left:(data.to.x + data.from.x)/2+"px"
-                                // })
-                                
+                                $(`#selectRela`).css({
+                                    top:(data.to.y + data.from.y)/2 +"px",
+                                    left:(data.to.x + data.from.x)/2+"px"
+                                })
+                                selected = {
+                                    "type": event,
+                                    "data": data
+                                };
+                                locked = data.locked;
+                                self.initLine();
                             }
                             break;
                         case 'delete':
@@ -1049,12 +1065,6 @@ var Topology = {
         $("input[name=paddingTop]").val(selected.data.paddingTop);
         //下边距
         $("input[name=paddingBottom]").val(selected.data.paddingBottom);
-        // let  Point = Le5leTopology.Point
- 
-        // selected.data.anchors.push(new Point(selected.data.rect.x, selected.data.rect.y + selected.data.rect.height / 2, "Left"));
-        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width / 2, selected.data.rect.y, "None"));
-        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width, selected.data.rect.y + selected.data.rect.height / 2,"Right"));
-        // selected.data.anchors.push(new Point(selected.data.rect.x + selected.data.rect.width / 2, selected.data.rect.y + selected.data.rect.height, "None"));
         canvas.overflow()
     },
 
@@ -1238,12 +1248,12 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        // console.log(selNodes)
-        // console.log(arrow, index)
+        console.log(selNodes)
+        console.log(arrow, index)
         // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
-        // $("#selectRela").show()
+        $("#selectRela").show()
         //更改选择框显示的箭头
         $("#end_line_head").children().each(function (e) {
             if (index == sum) {
@@ -1337,7 +1347,6 @@ var Topology = {
     },
     // 取消组合
     onUncombine: function () {
-
         if (!selNodes || selNodes.length > 1) {
             return;
         }
@@ -1345,9 +1354,9 @@ var Topology = {
         canvas.render();
     },
     parsew:function(){
-
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
+            console.log(ss)
             canvas.addNode(data)
         })
         
@@ -1402,7 +1411,7 @@ var Topology = {
     // 粘贴
     parse: function () {
         canvas.parse();
-    }
+    },
 };
 // window全局，这样别的地方方便调用
 window.addAlgorithm = Topology.addAlgorithm;
@@ -1430,7 +1439,6 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
-window.initNode = Topology.initNode
 
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;

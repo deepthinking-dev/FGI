@@ -1,8 +1,9 @@
 package deepthinking.fgi.dao.mapper;
 
+import java.util.List;
+
 import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableAlgorithmconditionCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -54,15 +56,14 @@ public interface TableAlgorithmconditionMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_algorithmcondition (ID, AlgorithmRoleID, ",
-        "FuncID, Behavior, ",
-        "ValueSources, expression, ",
-        "Remark)",
-        "values (#{id,jdbcType=INTEGER}, #{algorithmroleid,jdbcType=INTEGER}, ",
-        "#{funcid,jdbcType=INTEGER}, #{behavior,jdbcType=VARCHAR}, ",
-        "#{valuesources,jdbcType=DECIMAL}, #{expression,jdbcType=VARCHAR}, ",
-        "#{remark,jdbcType=VARCHAR})"
+        "insert into table_algorithmcondition (InterfaceRoleID, InterfaceParametersID, ",
+        "Behavior, ValueSources, ",
+        "expression, Remark)",
+        "values (#{interfaceroleid,jdbcType=INTEGER}, #{interfaceparametersid,jdbcType=INTEGER}, ",
+        "#{behavior,jdbcType=VARCHAR}, #{valuesources,jdbcType=INTEGER}, ",
+        "#{expression,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableAlgorithmcondition record);
 
     /**
@@ -72,6 +73,7 @@ public interface TableAlgorithmconditionMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableAlgorithmconditionSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(TableAlgorithmcondition record);
 
     /**
@@ -83,10 +85,10 @@ public interface TableAlgorithmconditionMapper {
     @SelectProvider(type=TableAlgorithmconditionSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="AlgorithmRoleID", property="algorithmroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="FuncID", property="funcid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceRoleID", property="interfaceroleid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.INTEGER),
         @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
-        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.DECIMAL),
+        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.INTEGER),
         @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
@@ -100,16 +102,17 @@ public interface TableAlgorithmconditionMapper {
      */
     @Select({
         "select",
-        "ID, AlgorithmRoleID, FuncID, Behavior, ValueSources, expression, Remark",
+        "ID, InterfaceRoleID, InterfaceParametersID, Behavior, ValueSources, expression, ",
+        "Remark",
         "from table_algorithmcondition",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="AlgorithmRoleID", property="algorithmroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="FuncID", property="funcid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceRoleID", property="interfaceroleid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.INTEGER),
         @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
-        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.DECIMAL),
+        @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.INTEGER),
         @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
@@ -150,10 +153,10 @@ public interface TableAlgorithmconditionMapper {
      */
     @Update({
         "update table_algorithmcondition",
-        "set AlgorithmRoleID = #{algorithmroleid,jdbcType=INTEGER},",
-          "FuncID = #{funcid,jdbcType=INTEGER},",
+        "set InterfaceRoleID = #{interfaceroleid,jdbcType=INTEGER},",
+          "InterfaceParametersID = #{interfaceparametersid,jdbcType=INTEGER},",
           "Behavior = #{behavior,jdbcType=VARCHAR},",
-          "ValueSources = #{valuesources,jdbcType=DECIMAL},",
+          "ValueSources = #{valuesources,jdbcType=INTEGER},",
           "expression = #{expression,jdbcType=VARCHAR},",
           "Remark = #{remark,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
