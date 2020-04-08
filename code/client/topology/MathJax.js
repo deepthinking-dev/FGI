@@ -462,32 +462,56 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(event){
-    let obj ={
-        action:$('.actionSelected1').val(),
-        actionValue:$('.actionSelected2').val()
-    }
+    // let obj ={
+    //     action:$('.actionSelected1').val(),
+    //     actionValue:$('.actionSelected2').val()
+    // }
 
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
                         
     let widths = data.rect.width/10
     let heights = data.rect.height/10
-    if(!data.data){
-        data.data = 1
+    console.log(data.data,'444444444444',widths,heights) 
+
+    console.log(num)
+    if($('.actionSelected1').val() == 0){
+        if(!data.data.inNum){
+            data.data.inNum = 1
+            num = {
+                x:-widths,
+                y:heights+5
+            }
+        }else{
+
+            num = {
+                x:-widths,
+                y:(heights*data.data.inNum)+5*data.data.inNum
+            }
+        }
+        window.bigData.isAddInOutType = "in"
+        test.id = data.id +"in"+ data.data.inNum
+        test.text = "in"+ data.data.inNum
+
+   }else{
+    if(!data.data.outNum){
+        data.data.outNum = 1
         num = {
-            x:-widths,
+            x:data.rect.width,
             y:heights+5
         }
     }else{
-        
+
         num = {
-            x:-widths,
-            y:(heights*data.data)+5*data.data
+            x:data.rect.width,
+            y:(heights*data.data.outNum)+5*data.data.outNum
         }
     }
-    console.log(num)
-    
-    test.id = data.id + data.data
+       window.bigData.isAddInOutType = "out"
+       test.id = data.id +"out"+data.data.outNum
+       test.text = "out"+data.data.outNum
+   }
+
     test.rect.x = data.rect.x + num.x
     test.rect.y = data.rect.y + num.y
     test.rect.width = widths
@@ -509,7 +533,7 @@ function ActionSure(event){
     test.iconRect.y = data.iconRect.y + num.y
     test.fullIconRect.x = data.fullIconRect.x + num.x
     test.fullIconRect.y = data.fullIconRect.y + num.y
-    test.tipId = {
+    test.childStand = {
         type:data.id+'的弟弟',
         wz:num,
         bb:{
@@ -519,39 +543,45 @@ function ActionSure(event){
             ey:data.rect.ey
         }
     }
-    test.anchors.map((obj,i) => {
-        obj.x = data.anchors[i].x-185 + num.x
-        obj.y = data.anchors[i].y-85 + num.y
-    })
-    test.rotatedAnchors.map((obj,i) => {
-        obj.x = data.rotatedAnchors[i].x-185 + num.x
-        obj.y = data.rotatedAnchors[i].y-85 + num.y
-    })   
+    if($('.actionSelected1').val() == 0){
+        test.anchors.map((obj,i) => {
+            obj.x = data.anchors[i].x-185 + num.x
+            obj.y = data.anchors[i].y-85 + num.y
+        })
+        test.rotatedAnchors.map((obj,i) => {
+            obj.x = data.rotatedAnchors[i].x-185 + num.x
+            obj.y = data.rotatedAnchors[i].y-85 + num.y
+        })
+    }else{
+        test.anchors.map((obj,i) => {
+            obj.x = data.anchors[i].x+215 + num.x
+            obj.y = data.anchors[i].y+115 + num.y
+        })
+        test.rotatedAnchors.map((obj,i) => {
+            obj.x = data.rotatedAnchors[i].x-215 + num.x
+            obj.y = data.rotatedAnchors[i].y-115 + num.y
+        })
+    }
     test.text = $('.actionSelected2 option:selected').text();
 
-    canvas.render();
-    
+
+    console.log(test)
+    // canvas.render();
+
+    window.bigData.isAddInOut = true;
+
     let flag = canvas.addNode(test)
-
+    canvas.lockNodes([test], true)
     if(flag){
-        // debugger
-        // data.node.data[type] ++
         data.data++
-        // data.node.data?data.node.data++ :data.node.data = 1
-
-        // if(type == 'in'){
-
-        // }
-        // data.node.data = {
-        //     in:1,
-        //     out:1
-        // }
+    }else{
+        window.bigData.isAddInOut = false
     }
 
     $('#ruleAct').fadeToggle(500)
 
-
-
+    canvas.render();
+    // canvas.updateProps(canvas.data.nodes)
 
 //     $('#ruleAct').fadeToggle(500)
 //     let num = 40
