@@ -444,31 +444,31 @@ var Topology = {
                                             item.rect.width = widthsa/10
                                             item.rect.height = heightsa/10
 
-                                            item.rect.ex = data[0].rect.ex - widthsa
+                                            item.rect.ex = data[0].rect.ex  + item.rect.width 
                                             item.rect.ey = data[0].rect.y + nums.y + heightsa/10
                                             item.rect.center.x = data[0].rect.center.x + nums.x
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
                                             item.textRect.x = 0
-                                            item.textRect.y = 0
+                                            item.textRect.y = -item.rect.height/2
                                             item.textRect.width = 0
-                                            item.textRect.height = 0
+                                            item.textRect.height = -item.rect.height/2
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
                                             item.iconRect.y = data[0].iconRect.y + nums.y
-                                            item.fullIconRect.x = data[0].fullIconRect.x + nums.x
+                                            item.fullIconRect.x = data[0].fullIconRect.x+ nums.x
                                             item.fullIconRect.y = data[0].fullIconRect.y + nums.y
-                                            item.anchors[0].x = item.rect.x
-                                            item.anchors[0].y = item.rect.center.y
+                                            item.anchors[0].x = 0
+                                            item.anchors[0].y = 0
 
-                                            item.anchors[1].x = item.rect.center.x
-                                            item.anchors[1].y = item.rect.y
+                                            item.anchors[1].x = 0
+                                            item.anchors[1].y = 0
 
-                                            item.anchors[2].x = 0
-                                            item.anchors[2].y = 0
+                                            item.anchors[2].x = item.rect.ex
+                                            item.anchors[2].y = item.rect.center.y
 
-                                            item.anchors[3].x = 0
-                                            item.anchors[3].y = 0
+                                            item.anchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                                            item.anchors[3].y = item.rect.ey -item.rect.height/2
 
                                             item.rotatedAnchors[0].x = 0
                                             item.rotatedAnchors[0].y = 0
@@ -479,48 +479,12 @@ var Topology = {
                                             item.rotatedAnchors[2].x = 0
                                             item.rotatedAnchors[2].y = 0
 
-                                            item.rotatedAnchors[3].x = 0
-                                            item.rotatedAnchors[3].y = 0
+                                            item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                                            item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
+
+                                           
                                         }
-
-
-
-
-                                        // item.anchors[0].x = item.rect.x
-                                        // item.anchors[0].y = item.rect.center.y
-
-                                        // item.anchors[1].x = item.rect.center.x
-                                        // item.anchors[1].y = item.rect.y
-
-                                        // item.anchors[2].x = item.rect.ex
-                                        // item.anchors[2].y = item.rect.center.y
-
-                                        // item.anchors[3].x = item.rect.center.x
-                                        // item.anchors[3].y = item.rect.ey
-
-                                        // item.rotatedAnchors[0].x = item.rect.x
-                                        // item.rotatedAnchors[0].y = item.rect.center.y
-
-                                        // item.rotatedAnchors[1].x = item.rect.center.x
-                                        // item.rotatedAnchors[1].y = item.rect.y
-
-                                        // item.rotatedAnchors[2].x = item.rect.ex
-                                        // item.rotatedAnchors[2].y = item.rect.center.y
-
-                                        // item.rotatedAnchors[3].x = item.rect.center.x
-                                        // item.rotatedAnchors[3].y = item.rect.ey
-
-
-
-                                        canvas.render()
-                                        // item.anchors.map((obj,i) => {
-                                        //     obj.x = data[0].anchors[i].x -widthsa + nums.x
-                                        //     obj.y = data[0].anchors[i].y - heightsa + nums.y
-                                        // })
-                                        // item.rotatedAnchors.map((obj,i) => {
-                                        //     obj.x = data[0].rotatedAnchors[i].x - widthsa + nums.x
-                                        //     obj.y = data[0].rotatedAnchors[i].y - heightsa + nums.y
-                                        // })  
+                                        canvas.render()                                       
                                     }
                                 }
                             })
@@ -543,133 +507,14 @@ var Topology = {
                                     item.to.y = nodesa.rotatedAnchors[0].y
                                 }
                             })
-                           
-                            
-                    
-                            // if(data[0].id.includes("in") || data[0].id.includes("out")){
-                            //     canvas.lockNodes([data[0]],true)
-                            //    return false;
-                            // }
-                            // var child = []     
-                            // canvas.data.nodes.map(item => {
-                            //     // if(item.id != data[0].id){
-                            //     if(item.id.indexOf(data[0].id) == 0){
-                            //         // selNodes.push(item)
-                            //         child.push(item)
-                                
-                            //     }
-                            // })
-                            //    console.log(child)
-                            // if(child.length > 1 ){
-                            //     if (data.length === 1 && data[0].name == "combine") {
-                                
-                            //     }else{    
-                            //         //debugger                         
-                            //         canvas.combine(child)
-                            //         canvas.render()
-                            //     }
-                            // }
-                            
-                            
-                        //    let p =  child.splice(0,1)
-                        //    conso le.log(p,"44444")
-                        //    p.anchors.map((obj,i) => {
-                        //         obj.x = 0
-                        //         obj.y = 0
-                        //     })
-                        //     p.rotatedAnchors.map((obj,i) => {
-                        //         obj.x = 0
-                        //         obj.y = 0
-                        //     })
-                           
-                            
-                           // canvas.combine(child);
-                            // for(var i=0;i<child.length;i++){
-                            //     child[i].rect.x = data[0].rect.x - 40
-                            //     child[i].rect.y = data[0].rect.y + 30*(i+1) -20
-
-                            //     child[i].rect.ex = data[0].rect.ex - 40
-                            //     child[i].rect.ey = data[0].rect.ey +  30*(i+1) -20
-                            //     child[i].rect.center.x = data[0].rect.center.x - 40
-                            //     child[i].rect.center.y = data[0].rect.center.y +  30*(i+1) -20
-                            //     child[i].textRect.x = data[0].textRect.x - 40
-                            //     child[i].textRect.y = data[0].textRect.y +  30*(i+1) -20
-                            //     child[i].fullTextRect.x = data[0].fullTextRect.x - 40
-                            //     child[i].fullTextRect.y = data[0].fullTextRect.y +  30*(i+1) -20
-                            //     child[i].iconRect.x = data[0].iconRect.x - 40
-                            //     child[i].iconRect.y = data[0].iconRect.y +  30*(i+1) -20
-                            //     child[i].fullIconRect.x = data[0].fullIconRect.x - 40
-                            //     child[i].fullIconRect.y = data[0].fullIconRect.y +  30*(i+1) -20
-
-                            //     child[i].anchors.map((obj,i) => {
-                            
-                            //             obj.x = data[0].anchors[i].x
-                            //             obj.y = data[0].anchors[i].y
-                            //         })
-                            //     console.log(child[i].anchors,"111111111111111111111")
-                            // }
-                            
-                            //连线中间加字
-                            // canvas.data.lines.map(item => {
-                            //     if(item.from.id == data[0].id||item.to.id == data[0].id){
-                            //         $(`#${item.id}`).css({
-                            //             top:(item.to.y + item.from.y)/2 +"px",
-                            //             left:(item.to.x + item.from.x)/2+"px"
-                            //         })
-                            //     }
-                            // })
                             break    
                         case 'moveOutNode':
-                       
-                            // canvas.lockNodes([data],false)
-                        
-                            // if (data.name == "combine") {
-                            //     $("#menu_unCombine").removeClass("menu-a-disabled");
-                            //     $("#menu_unCombine").addClass("menu-a");
-                            //     $("#menu_combine").css("display", "none");
-                            //     $("#menu_unCombine").css("display", "block");
-                            //     canvas.uncombine(data);
-                            //     canvas.render();
-                            // }
                             
                             break   
                         case 'moveInNode':
                             if(data.childStand) canvas.lockNodes([data], false)
-                            // if(data.id.includes("in") || data.id.includes("out")){
-                            //     // canvas.lockNodes([data],true)
-                            //     canvas.uncombine(data);
-                            //     canvas.render();
-                            // }else{
-                            //     data.rotate = 0
-                            //     data.anchors.map((obj,i) => {
-                            //         obj.x = 0
-                            //         obj.y = 0
-                            //     })
-                            //     data.rotatedAnchors.map((obj,i) => {
-                            //         obj.x = 0
-                            //         obj.y = 0
-                            //     })
-                            // }
-                            // var child = []     
-                            // canvas.data.nodes.map(item => {
-                            //     // if(item.id != data[0].id){
-                            //     if(item.id.indexOf(data.id) == 0){
-                            //         // selNodes.push(item)
-                            //         child.push(item)
-                                
-                            //     }
-                            // })
-                            
-                            // if(child.length > 1 ){
-                            //     if (data.length === 1 && data.name == "combine") {
-                                
-                            //     }else{    
-                                     
-                            //         canvas.combine(child)
-                            //         canvas.render()
-                            //     }
-                            // }
-                            break
+                           
+                            break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
@@ -707,27 +552,29 @@ var Topology = {
                                 }else{
                                     window.Topology.dblclickNode.data.outNum ++
                                 }
-
-                                // window.Topology.dblclickNode.data ++
-                                // data.data ++
+                                
                             }
+                         
+                            console.log(data,selected,canvas.data)
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
                             self.initNode();
-                            let data1 = JSON.parse(JSON.stringify(data))
+                            // debugger
+                            let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data.data.inNum > 0){
-                                let data2 = Object.assign({},data1)
-                                for(let i= 0;i<data.data; i++){
+                                let data2 = JSON.parse(JSON.stringify(data1)) 
+                                for(let i= 0;i<data.data.inNum; i++){
+                                    console.log(data)
                                     let widths = data1.rect.width/10
                                     let heights = data1.rect.height/10
                                     let num = {
                                             x:-widths,
-                                            y:(heights*data.data)+5*data.data
+                                            y:(heights*data.data.inNum)+5*data1.data.inNum
                                         }
-
-                                    data2.id = data1.id+"in" +i
+                                   
+                                    data2.id = data1.id+"IN" +i
                                     data2.rect.width = widths
                                     data2.rect.height = heights
                                     data2.text ="in" +i
@@ -753,10 +600,13 @@ var Topology = {
                                         obj.x = data1.rotatedAnchors[i].x-185 + num.x
                                         obj.y = data1.rotatedAnchors[i].y-85 + num.y
                                     }) 
-                                    canvas.render();
+                                    
+                                    
                                     canvas.addNode(data2)
                                     canvas.lockNodes([data2],true)
                                 }
+                               
+                                canvas.render();
                             }
                             break;
                         case 'resizeNodes':
