@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableInterfaceparameters;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criterion;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableInterfaceparameters;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableInterfaceparametersSqlProvider {
@@ -54,6 +55,14 @@ public class TableInterfaceparametersSqlProvider {
             sql.VALUES("ParametersSources", "#{parameterssources,jdbcType=VARCHAR}");
         }
         
+        if (record.getParametersname() != null) {
+            sql.VALUES("ParametersName", "#{parametersname,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.VALUES("inOrOut", "#{inorout,jdbcType=DECIMAL}");
+        }
+        
         return sql.toString();
     }
 
@@ -72,6 +81,8 @@ public class TableInterfaceparametersSqlProvider {
         }
         sql.SELECT("InterfaceID");
         sql.SELECT("ParametersSources");
+        sql.SELECT("ParametersName");
+        sql.SELECT("inOrOut");
         sql.FROM("table_interfaceparameters");
         applyWhere(sql, example, false);
         
@@ -107,6 +118,14 @@ public class TableInterfaceparametersSqlProvider {
             sql.SET("ParametersSources = #{record.parameterssources,jdbcType=VARCHAR}");
         }
         
+        if (record.getParametersname() != null) {
+            sql.SET("ParametersName = #{record.parametersname,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.SET("inOrOut = #{record.inorout,jdbcType=DECIMAL}");
+        }
+        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -124,6 +143,8 @@ public class TableInterfaceparametersSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("InterfaceID = #{record.interfaceid,jdbcType=INTEGER}");
         sql.SET("ParametersSources = #{record.parameterssources,jdbcType=VARCHAR}");
+        sql.SET("ParametersName = #{record.parametersname,jdbcType=VARCHAR}");
+        sql.SET("inOrOut = #{record.inorout,jdbcType=DECIMAL}");
         
         TableInterfaceparametersCriteria example = (TableInterfaceparametersCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -146,6 +167,14 @@ public class TableInterfaceparametersSqlProvider {
         
         if (record.getParameterssources() != null) {
             sql.SET("ParametersSources = #{parameterssources,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getParametersname() != null) {
+            sql.SET("ParametersName = #{parametersname,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInorout() != null) {
+            sql.SET("inOrOut = #{inorout,jdbcType=DECIMAL}");
         }
         
         sql.WHERE("ID = #{id,jdbcType=INTEGER}");

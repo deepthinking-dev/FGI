@@ -1,8 +1,9 @@
 package deepthinking.fgi.dao.mapper;
 
+import java.util.List;
+
 import deepthinking.fgi.domain.TableInterfaceparameters;
 import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -55,8 +56,10 @@ public interface TableInterfaceparametersMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_interfaceparameters (InterfaceID, ParametersSources)",
-        "values (#{interfaceid,jdbcType=INTEGER}, #{parameterssources,jdbcType=VARCHAR})"
+        "insert into table_interfaceparameters (InterfaceID, ParametersSources, ",
+        "ParametersName, inOrOut)",
+        "values (#{interfaceid,jdbcType=INTEGER}, #{parameterssources,jdbcType=VARCHAR}, ",
+        "#{parametersname,jdbcType=VARCHAR}, #{inorout,jdbcType=DECIMAL})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableInterfaceparameters record);
@@ -81,7 +84,9 @@ public interface TableInterfaceparametersMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR)
+        @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ParametersName", property="parametersname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.DECIMAL)
     })
     List<TableInterfaceparameters> selectByExample(TableInterfaceparametersCriteria example);
 
@@ -93,14 +98,16 @@ public interface TableInterfaceparametersMapper {
      */
     @Select({
         "select",
-        "ID, InterfaceID, ParametersSources",
+        "ID, InterfaceID, ParametersSources, ParametersName, inOrOut",
         "from table_interfaceparameters",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR)
+        @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ParametersName", property="parametersname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.DECIMAL)
     })
     TableInterfaceparameters selectByPrimaryKey(Integer id);
 
@@ -140,7 +147,9 @@ public interface TableInterfaceparametersMapper {
     @Update({
         "update table_interfaceparameters",
         "set InterfaceID = #{interfaceid,jdbcType=INTEGER},",
-          "ParametersSources = #{parameterssources,jdbcType=VARCHAR}",
+          "ParametersSources = #{parameterssources,jdbcType=VARCHAR},",
+          "ParametersName = #{parametersname,jdbcType=VARCHAR},",
+          "inOrOut = #{inorout,jdbcType=DECIMAL}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableInterfaceparameters record);

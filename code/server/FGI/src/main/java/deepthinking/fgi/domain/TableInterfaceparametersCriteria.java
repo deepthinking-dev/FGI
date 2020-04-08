@@ -383,6 +383,136 @@ public class TableInterfaceparametersCriteria {
             addCriterion("ParametersSources not between", value1, value2, "parameterssources");
             return (Criteria) this;
         }
+
+        public Criteria andParametersnameIsNull() {
+            addCriterion("ParametersName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameIsNotNull() {
+            addCriterion("ParametersName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameEqualTo(String value) {
+            addCriterion("ParametersName =", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameNotEqualTo(String value) {
+            addCriterion("ParametersName <>", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameGreaterThan(String value) {
+            addCriterion("ParametersName >", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameGreaterThanOrEqualTo(String value) {
+            addCriterion("ParametersName >=", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameLessThan(String value) {
+            addCriterion("ParametersName <", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameLessThanOrEqualTo(String value) {
+            addCriterion("ParametersName <=", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameLike(String value) {
+            addCriterion("ParametersName like", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameNotLike(String value) {
+            addCriterion("ParametersName not like", value, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameIn(List<String> values) {
+            addCriterion("ParametersName in", values, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameNotIn(List<String> values) {
+            addCriterion("ParametersName not in", values, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameBetween(String value1, String value2) {
+            addCriterion("ParametersName between", value1, value2, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersnameNotBetween(String value1, String value2) {
+            addCriterion("ParametersName not between", value1, value2, "parametersname");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIsNull() {
+            addCriterion("inOrOut is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIsNotNull() {
+            addCriterion("inOrOut is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutEqualTo(Long value) {
+            addCriterion("inOrOut =", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotEqualTo(Long value) {
+            addCriterion("inOrOut <>", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutGreaterThan(Long value) {
+            addCriterion("inOrOut >", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutGreaterThanOrEqualTo(Long value) {
+            addCriterion("inOrOut >=", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutLessThan(Long value) {
+            addCriterion("inOrOut <", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutLessThanOrEqualTo(Long value) {
+            addCriterion("inOrOut <=", value, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutIn(List<Long> values) {
+            addCriterion("inOrOut in", values, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotIn(List<Long> values) {
+            addCriterion("inOrOut not in", values, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutBetween(Long value1, Long value2) {
+            addCriterion("inOrOut between", value1, value2, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andInoroutNotBetween(Long value1, Long value2) {
+            addCriterion("inOrOut not between", value1, value2, "inorout");
+            return (Criteria) this;
+        }
     }
 
     /**
