@@ -470,8 +470,8 @@ function ActionSure(event){
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
                         
-    let widths = data.rect.width/10
-    let heights = data.rect.height/10
+    let widths = 20
+    let heights = 10
     console.log(data.data,'444444444444',widths,heights) 
 
     console.log(num)
@@ -483,15 +483,16 @@ function ActionSure(event){
                 y:heights+5
             }
         }else{
-
+            debugger
             num = {
                 x:-widths,
-                y:(heights*data.data.inNum)+5*data.data.inNum
+                y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
             }
         }
         window.bigData.isAddInOutType = "in";
         test.id = data.id +"IN"+ data.data.inNum + "---" + $("#varTypeInput").val();
         test.text = "in"+ data.data.inNum;
+         
    }else{
     if(!data.data.outNum){
         data.data.outNum = 1
@@ -564,15 +565,31 @@ function ActionSure(event){
     test.text = $('.actionSelected2 option:selected').text();
 
 
-    console.log(test)
+    
     // canvas.render();
 
     window.bigData.isAddInOut = true;
 
     let flag = canvas.addNode(test)
+    // console.log(data.rect.y + 100,test.rect.ey)
     canvas.lockNodes([test], true)
     if(flag){
-        data.data++
+        let numw = 0
+        data.data.inNum > data.data.outNum ? numw = data.data.inNum : numw = data.data.outNum
+        console.log(data.rect.height,(heights*numw)+5*numw)
+        debugger
+        // if(data.rect.height - ((heights*numw)+5*numw) < (heights*numw)+5*numw){
+        //     window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+5
+        //     window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+5
+        //     console.log(data.rect.height)
+            
+        // }
+        if(data.rect.height - 15*numw < 0){
+            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+5
+            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+5
+            console.log(data.rect.height)
+            
+        }
     }else{
         window.bigData.isAddInOut = false
     }
@@ -580,6 +597,7 @@ function ActionSure(event){
     $('#ruleAct').fadeToggle(500)
 
     canvas.render();
+    console.log(guid())
     // canvas.updateProps(canvas.data.nodes)
 
 //     $('#ruleAct').fadeToggle(500)
@@ -688,6 +706,14 @@ function ActionSure(event){
 //     canvas.render();
 //     console.log(data)
 //     canvas.addNode(data)
+}
+
+function guid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = Math.random() * 16 | 0,
+			v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
 }
 //动作取消
 function ActionClose(){
