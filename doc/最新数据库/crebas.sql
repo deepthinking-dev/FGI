@@ -92,6 +92,8 @@ create table Table_InterfaceParameters
    ID                   int not null auto_increment comment '算子接口参数信息ID',
    InterfaceID          int comment '接口ID',
    ParametersSources    varchar(50) comment '参数来源',
+   ParametersName       varchar(50) comment '参数名称',
+   inOrOut              numeric comment '输入输出',
    primary key (ID)
 );
 
