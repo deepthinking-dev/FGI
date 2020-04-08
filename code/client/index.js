@@ -263,6 +263,8 @@ $(function(){
                                 
                                     textBaseline: 'top'
                                 },
+                                inNum:item.inNum,
+                                outNum:item.outNum,
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 paddingTop: 10,

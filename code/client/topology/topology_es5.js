@@ -36,6 +36,7 @@ var Topology = {
         },
     ],
     saveNode:[],
+    inNum:0,
     dblclickNode:{},
     // 对象的最初入口
     init: function () {
@@ -133,7 +134,6 @@ var Topology = {
                 $("#menu_bottom").addClass("menu-a");
                 //组合
                 if (selNodes.length > 1 || selNodes[0].name !== "combine") {
-                   // debugger
                     if (selNodes.length < 2) {
                         $("#menu_combine").addClass("menu-a-disabled");
                         $("#menu_combine").removeClass("menu-a");
@@ -189,7 +189,7 @@ var Topology = {
         });
         // -------查询开始-------------
         $(document).on('click', '#search_knowledge_btn', function () {
-            console.log("aaa");
+
             var table = $('#table_knowledge').DataTable();
             table.page('first').draw(false);
             // 点击查询的时候，数据表格数据重新加载。在重新加载的时候，从#query_form小获得查询条件。
@@ -199,6 +199,7 @@ var Topology = {
 
     addAlgorithm(option){
         if(option.type == "算子"){
+           // option.xxx = option.data.inNum;
             $("#algorithmPage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
@@ -230,7 +231,7 @@ var Topology = {
     // 初始化画布
     initCanvas: function () {
         var self = this;
-        console.log("initCanvas")
+
         // 3. 向引擎注册图形库图形及其相关元素
         $.ajax({
             url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
@@ -255,6 +256,8 @@ var Topology = {
                                 color: 'aqua',                           
                                 textBaseline: 'top'
                             },
+                            inNum:item.inNum,
+                            outNum:item.outNum,
                             children:[],
                             paddingLeft: 10,
                             paddingRight: 10,
@@ -307,12 +310,12 @@ var Topology = {
                 };
                 var canvasOptions = {on: onMessage};
                 canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
-                console.log(canvas)
+             
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    // debugger
-                    console.log(event,data,11111)
+                //    debugger
+                console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -320,7 +323,12 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            locked = data.locked;
+                            // if(data.id.includes("in") || data.id.includes("out")){
+                            //     locked = true;
+                            // }else{
+                            //     locked = data.locked;
+                            // }
+                           
                             self.initNode();
                             break;
                         case 'line':
@@ -365,55 +373,152 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                           
-                            console.log(data,canvas.data)
-                            if(data[0].id.includes("in") || data[0].id.includes("out")){
-                                canvas.lockNodes([data[0]],true)
-                               return false;
-                            }
-                            var child = []     
+                            
+                            // if(data[0].tipId.type = '弟弟')
+                            let widthsa = data[0].rect.width
+                            let heightsa = data[0].rect.height
+                            if(data[0].tipId) canvas.lockNodes([data[0]], true)
                             canvas.data.nodes.map(item => {
-                                // if(item.id != data[0].id){
-                                if(item.id.indexOf(data[0].id) == 0){
-                                    // selNodes.push(item)
-                                    child.push(item)
-                                    // item.rect.x = data[0].rect.x + num
-                                    // item.rect.y = data[0].rect.y + num
+                                // console.log(item,'sdsdsdsd')
+                                // canvas.lockNodes([data[0]], true)
+                                if(item.tipId){
+                                    // canvas.lockNodes([data[0]], false)
+                                    if(item.tipId.type == data[0].id+'的弟弟'){
+                                        console.log(item,'45454545')
+                                        // canvas.lockNodes([item], false)
+                                        let nums = item.tipId.wz
+                                        item.rect.x = data[0].rect.x + nums.x
+                                        item.rect.y = data[0].rect.y + nums.y 
 
-                                    // item.rect.ex = data[0].rect.ex + num
-                                    // item.rect.ey = data[0].rect.ey + num
-                                    // item.rect.center.x = data[0].rect.center.x + num
-                                    // item.rect.center.y = data[0].rect.center.y + num
-                                    // item.textRect.x = data[0].textRect.x + num
-                                    // item.textRect.y = data[0].textRect.y + num
-                                    // item.fullTextRect.x = data[0].fullTextRect.x + num
-                                    // item.fullTextRect.y = data[0].fullTextRect.y + num
-                                    // item.iconRect.x = data[0].iconRect.x + num
-                                    // item.iconRect.y = data[0].iconRect.y + num
-                                    // item.fullIconRect.x = data[0].fullIconRect.x + num
-                                    // item.fullIconRect.y = data[0].fullIconRect.y + num
+                                        item.rect.width = widthsa/10
+                                        item.rect.height = heightsa/10
 
-                                    // item.anchors.map((obj,i) => {
-                                    //     obj.x = data[0].anchors[i].x - 100
-                                    //     obj.y = data[0].anchors[i].y - 40
-                                    // })
-                                    // item.rotatedAnchors.map((obj,i) => {
-                                    //     obj.x = data[0].anchors[i].x -100
-                                    //     obj.y = data[0].anchors[i].y - 40
-                                    // })
+                                        item.rect.ex = data[0].rect.ex - widthsa
+                                        item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                                        item.rect.center.x = data[0].rect.center.x + nums.x
+                                        item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                                        item.textRect.x = 0
+                                        item.textRect.y = 0
+                                        item.textRect.width = 0
+                                        item.textRect.height = 0
+                                        item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                                        item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                                        item.iconRect.x = data[0].iconRect.x + nums.x
+                                        item.iconRect.y = data[0].iconRect.y + nums.y
+                                        item.fullIconRect.x = data[0].fullIconRect.x + nums.x
+                                        item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+
+
+
+                                               // item.anchors[0].x = item.rect.x 
+                                        // item.anchors[0].y = item.rect.center.y
+
+                                        // item.anchors[1].x = item.rect.center.x
+                                        // item.anchors[1].y = item.rect.y
+
+                                        // item.anchors[2].x = item.rect.ex
+                                        // item.anchors[2].y = item.rect.center.y
+
+                                        // item.anchors[3].x = item.rect.center.x
+                                        // item.anchors[3].y = item.rect.ey
+
+                                        // item.rotatedAnchors[0].x = item.rect.x
+                                        // item.rotatedAnchors[0].y = item.rect.center.y
+
+                                        // item.rotatedAnchors[1].x = item.rect.center.x
+                                        // item.rotatedAnchors[1].y = item.rect.y
+
+                                        // item.rotatedAnchors[2].x = item.rect.ex
+                                        // item.rotatedAnchors[2].y = item.rect.center.y
+
+                                        // item.rotatedAnchors[3].x = item.rect.center.x
+                                        // item.rotatedAnchors[3].y = item.rect.ey
+
+                                        item.anchors[0].x = item.rect.x   
+                                        item.anchors[0].y = item.rect.center.y
+
+                                        item.anchors[1].x = 10
+                                        item.anchors[1].y = 10
+
+                                        item.anchors[2].x = 0
+                                        item.anchors[2].y = 0
+
+                                        item.anchors[3].x = 10
+                                        item.anchors[3].y = 10
+
+                                        item.rotatedAnchors[0].x = item.rect.x
+                                        item.rotatedAnchors[0].y = item.rect.center.y - heightsa/2
+
+                                        item.rotatedAnchors[1].x = 10
+                                        item.rotatedAnchors[1].y = 10
+
+                                        item.rotatedAnchors[2].x = 0
+                                        item.rotatedAnchors[2].y = 0
+
+                                        item.rotatedAnchors[3].x = 10
+                                        item.rotatedAnchors[3].y = 10
+
+                                        canvas.render()
+                                        // item.anchors.map((obj,i) => {
+                                        //     obj.x = data[0].anchors[i].x -widthsa + nums.x
+                                        //     obj.y = data[0].anchors[i].y - heightsa + nums.y
+                                        // })
+                                        // item.rotatedAnchors.map((obj,i) => {
+                                        //     obj.x = data[0].rotatedAnchors[i].x - widthsa + nums.x
+                                        //     obj.y = data[0].rotatedAnchors[i].y - heightsa + nums.y
+                                        // })  
+                                    }
                                 }
                             })
-                            if(child.length > 1 ){
-                                if (data.length === 1 && data[0].name == "combine") {
-                                
-                                }else{                             
-                                    canvas.combine(child)
+
+                            canvas.data.lines.map(item => {
+                                console.log(data[0].id,item.from.id,data[0].id.indexOf(item.from.id) != -1)
+                                if(item.from.id.indexOf(data[0].id) != -1){
+                                    console.log(item)
+                                    let nodesa = canvas.data.nodes.filter(obj => {
+                                        if(item.from.id == obj.id) return obj
+                                    })[0]
+                                    item.from.x = nodesa.rotatedAnchors[0].x
+                                    item.from.y = nodesa.rotatedAnchors[0].y
                                 }
-                            }
+                                if(item.to.id.indexOf(data[0].id) != -1){
+                                    let nodesa = canvas.data.nodes.filter(obj => {
+                                        if(item.to.id == obj.id) return obj
+                                    })[0]
+                                    item.to.x = nodesa.rotatedAnchors[0].x
+                                    item.to.y = nodesa.rotatedAnchors[0].y
+                                }
+                            })
+                           
+                            
+                    
+                            // if(data[0].id.includes("in") || data[0].id.includes("out")){
+                            //     canvas.lockNodes([data[0]],true)
+                            //    return false;
+                            // }
+                            // var child = []     
+                            // canvas.data.nodes.map(item => {
+                            //     // if(item.id != data[0].id){
+                            //     if(item.id.indexOf(data[0].id) == 0){
+                            //         // selNodes.push(item)
+                            //         child.push(item)
+                                
+                            //     }
+                            // })
+                            //    console.log(child)
+                            // if(child.length > 1 ){
+                            //     if (data.length === 1 && data[0].name == "combine") {
+                                
+                            //     }else{    
+                            //         //debugger                         
+                            //         canvas.combine(child)
+                            //         canvas.render()
+                            //     }
+                            // }
                             
                             
                         //    let p =  child.splice(0,1)
-                        //    console.log(p,"44444")
+                        //    conso le.log(p,"44444")
                         //    p.anchors.map((obj,i) => {
                         //         obj.x = 0
                         //         obj.y = 0
@@ -422,7 +527,7 @@ var Topology = {
                         //         obj.x = 0
                         //         obj.y = 0
                         //     })
-                            // debugger
+                           
                             
                            // canvas.combine(child);
                             // for(var i=0;i<child.length;i++){
@@ -461,9 +566,9 @@ var Topology = {
                             // })
                             break  
                         case 'moveOutNode':
-                            console.log(event,data,333)
-                            canvas.lockNodes([data],false)
-                            console.log(data)
+                       
+                            // canvas.lockNodes([data],false)
+                        
                             if (data.name == "combine") {
                                 $("#menu_unCombine").removeClass("menu-a-disabled");
                                 $("#menu_unCombine").addClass("menu-a");
@@ -475,20 +580,41 @@ var Topology = {
                             
                             break   
                         case 'moveInNode':
-                            if(data.id.includes("in") || data.id.includes("out")){
-
-                            }else{
-                                data.rotate = 0
-                                data.anchors.map((obj,i) => {
-                                    obj.x = 0
-                                    obj.y = 0
-                                })
-                                data.rotatedAnchors.map((obj,i) => {
-                                    obj.x = 0
-                                    obj.y = 0
-                                })
-                            }
-                           
+                            if(data.tipId) canvas.lockNodes([data], false)
+                            // if(data.id.includes("in") || data.id.includes("out")){
+                            //     // canvas.lockNodes([data],true)
+                            //     canvas.uncombine(data);
+                            //     canvas.render();
+                            // }else{
+                            //     data.rotate = 0
+                            //     data.anchors.map((obj,i) => {
+                            //         obj.x = 0
+                            //         obj.y = 0
+                            //     })
+                            //     data.rotatedAnchors.map((obj,i) => {
+                            //         obj.x = 0
+                            //         obj.y = 0
+                            //     })
+                            // }
+                            // var child = []     
+                            // canvas.data.nodes.map(item => {
+                            //     // if(item.id != data[0].id){
+                            //     if(item.id.indexOf(data.id) == 0){
+                            //         // selNodes.push(item)
+                            //         child.push(item)
+                                
+                            //     }
+                            // })
+                            
+                            // if(child.length > 1 ){
+                            //     if (data.length === 1 && data.name == "combine") {
+                                
+                            //     }else{    
+                                     
+                            //         canvas.combine(child)
+                            //         canvas.render()
+                            //     }
+                            // }
                             break    
                         case 'moveOut':
                             
@@ -515,41 +641,87 @@ var Topology = {
                             data[0].rotate = 0
                             break    
                         case 'addNode':
-                         
+                        
                             selNodes = [data];
                             selected = {
                                 "type": event,
                                 "data": data
                             };
-                            console.log(data,selected)
-                            if(data.id.includes("in") || data.id.includes("out")){
-                                break;
-                            }else{
-                                data.anchors.map((obj,i) => {
-                                    obj.x = 0
-                                    obj.y = 0
-                                })
-                                data.rotatedAnchors.map((obj,i) => {
-                                    obj.x = 0
-                                    obj.y = 0
-                                })
-                            }
-                            
-                            //存储编辑区数据
-                            unique(canvas.data.nodes)
-                            self.saveNode = unique(canvas.data.nodes)
-                            // let nodeId = data.id
-                            // if(nodeId.indexOf('模型') != -1){
-                            //     toastr.info('新建算子')
-                            //     $("#suanfaType").css('display', "block");
-                            //     window.bigData.formulaType = 'add'
-                            //     let ModuleId =nodeId.substring(0,nodeId.length-2)
-                            //     window.bigData.formulaModuleId = ModuleId
+                        
+                            // if(data.id.includes("in") || data.id.includes("out")){
+                            //     break;
+                            // }else{
+                            //     data.anchors.map((obj,i) => {
+                            //         obj.x = 0
+                            //         obj.y = 0
+                            //     })
+                            //     data.rotatedAnchors.map((obj,i) => {
+                            //         obj.x = 0
+                            //         obj.y = 0
+                            //     })
                             // }
                             
-                            locked = data.locked;
-                            self.initNode();
+                            //存储编辑区数据
+                            // unique(canvas.data.nodes)
+                            // self.saveNode = unique(canvas.data.nodes)
+                            // // let nodeId = data.id
+                            // // if(nodeId.indexOf('模型') != -1){
+                            // //     toastr.info('新建算子')
+                            // //     $("#suanfaType").css('display', "block");
+                            // //     window.bigData.formulaType = 'add'
+                            // //     let ModuleId =nodeId.substring(0,nodeId.length-2)
+                            // //     window.bigData.formulaModuleId = ModuleId
+                            // // }
+                            
+                            // locked = data.locked;
+                            // self.initNode();
+                            // // debugger
+                            // if(data.data > 0){
+                                            
+                            
+                            //     let data1 =   JSON.parse(JSON.stringify(data)) 
+                            //     let data2 = JSON.parse(JSON.stringify(data1)) 
+                            //     for(var i = 0;i<data.data; i++){
+                                
+                            //         let num = 80
+                            //         data2.id = data1.id+"in" +i
+                            //         data2.rect.width = 15
+                            //         data2.rect.height = 15
+                            //         data2.text ="in" +i
+                            //         data2.rect.ex = data1.rect.x - 15;
+                            //         data2.rect.ey = data1.rect.y + 20 +20*i;
+                            //         data2.rect.x = data1.rect.x -15;
+                            //         data2.rect.y = data1.rect.y + 20*i;
+                            //         // data2.anchors.map((obj,i) => {
+                            //         //     if(obj.direction == 4){
+                            //         //         obj.x = 0
+                            //         //         obj.y = 0
+                            //         //     }
+                                       
+                                        
+                            //         // })
+                            //         canvas.render();
+                            //         canvas.addNode(data2)
+                            //         canvas.lockNodes([data2],true)
+                            //     }
+                               
+                                
+                            // }
                             break;
+                        case 'resizeNodes':
+                            // canvas.resizeNodes(0,0)
+                        break
+                        case 'lockNodes':
+                           if(data.nodes[0].tipId){
+                            canvas.lockNodes([data],true)
+                           }
+                            // data.nodes.map(item =>{
+                            //     if(item.id.includes("in")){
+                            //         canvas.lockNodes([data],true)
+                            //     }
+                            // })
+                           
+                        break
                         case 'addLine':
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
@@ -644,7 +816,13 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-                        
+                           
+                            // $("#menu_unCombine").removeClass("menu-a-disabled");
+                            // $("#menu_unCombine").addClass("menu-a");
+                            // $("#menu_combine").css("display", "none");
+                            // $("#menu_unCombine").css("display", "block");
+                            // canvas.uncombine(data);
+                            // canvas.render();
                             // let num = 50
                             // console.log(data)
                             $('#ruleAct').show();
@@ -654,8 +832,88 @@ var Topology = {
                             })
                             
                            self.dblclickNode = data
-                           
-                             
+
+                        // console.log(data)
+                        // let test = JSON.parse(JSON.stringify(data.node)),num = {}
+                        
+                        // let widths = data.node.rect.width/10
+                        // let heights = data.node.rect.height/10
+                        // console.log(data.node.data,'444444444444',widths,heights) 
+                        // if(!data.node.data){
+                        //     data.node.data = 1
+                        //     num = {
+                        //         x:-widths,
+                        //         y:heights+5
+                        //     }
+                        // }else{
+                            
+                        //     num = {
+                        //         x:-widths,
+                        //         y:(heights*data.node.data)+5*data.node.data
+                        //     }
+                        // }
+                        // console.log(num)
+                        
+                        // test.id = data.node.id + data.node.data
+                        // test.rect.x = data.node.rect.x + num.x
+                        // test.rect.y = data.node.rect.y + num.y
+                        // test.rect.width = widths
+                        // test.rect.height = heights
+
+                        // test.rect.ex = data.node.rect.ex + num.x
+                        // test.rect.ey = data.node.rect.ey + num.y
+                        // test.rect.center.x = data.node.rect.center.x + num.x
+                        // test.rect.center.y = data.node.rect.center.y + num.y
+                        // test.fullTextRect.x = 0
+                        // test.fullTextRect.y = 0
+                        // test.textRect.x = 0
+                        // test.textRect.y = 0
+                        // test.textRect.width = 0
+                        // test.textRect.height = 0
+                        // test.fullTextRect.x = data.node.fullTextRect.x + num.x
+                        // test.fullTextRect.y = data.node.fullTextRect.y + num.y
+                        // test.iconRect.x = data.node.iconRect.x + num.x
+                        // test.iconRect.y = data.node.iconRect.y + num.y
+                        // test.fullIconRect.x = data.node.fullIconRect.x + num.x
+                        // test.fullIconRect.y = data.node.fullIconRect.y + num.y
+                        // test.tipId = {
+                        //     type:data.node.id+'的弟弟',
+                        //     wz:num,
+                        //     bb:{
+                        //         x:data.node.rect.x,
+                        //         y:data.node.rect.y,
+                        //         ex:data.node.rect.ex,
+                        //         ey:data.node.rect.ey
+                        //     }
+                        // }
+                        // test.anchors.map((obj,i) => {
+                        //     obj.x = data.node.anchors[i].x-185 + num.x
+                        //     obj.y = data.node.anchors[i].y-85 + num.y
+                        // })
+                        // test.rotatedAnchors.map((obj,i) => {
+                        //     obj.x = data.node.rotatedAnchors[i].x-185 + num.x
+                        //     obj.y = data.node.rotatedAnchors[i].y-85 + num.y
+                        // })   
+                        // test.text = 'sdsd'
+                        // console.log(test)
+                        // canvas.render();
+                        
+                        // let flag = canvas.addNode(test)
+                        // canvas.lockNodes([test], true)
+                        // if(flag){
+                        //     // debugger
+                        //     // data.node.data[type] ++
+                        //     data.node.data++
+                        //     // data.node.data?data.node.data++ :data.node.data = 1
+
+                        //     // if(type == 'in'){
+
+                        //     // }
+                        //     // data.node.data = {
+                        //     //     in:1,
+                        //     //     out:1
+                        //     // }
+                        // }
                             // canvas.data.nodes.map(item => {
                             //     self.initNode();
                             //     if(item.id != data[0].id){
@@ -1042,11 +1300,12 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
+      // node.data.data = node.xxx;
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
     onTops: function () {
-        console.log(selNodes)
+   
     },
     // 置顶
     onTop: function () {
@@ -1073,11 +1332,12 @@ var Topology = {
         if (!selNodes || selNodes.length < 2) {
             return;
         }
+        // debugger
         canvas.combine(selNodes);
     },
     // 取消组合
     onUncombine: function () {
-        // debugger
+
         if (!selNodes || selNodes.length > 1) {
             return;
         }
@@ -1085,7 +1345,7 @@ var Topology = {
         canvas.render();
     },
     parsew:function(){
-        // debugger
+
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
             canvas.addNode(data)
@@ -1117,7 +1377,7 @@ var Topology = {
         canvas.data.nodes = []
         canvas.data.lines = []
         canvas.render();
-        console.log(canvas)
+    
     },
     // 删除
     onDelete: function () {
@@ -1141,7 +1401,6 @@ var Topology = {
     },
     // 粘贴
     parse: function () {
-        debugger
         canvas.parse();
     }
 };

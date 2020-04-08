@@ -467,66 +467,200 @@ function ActionSure(event){
         action:$('.actionSelected1').val(),
         actionValue:$('.actionSelected2').val()
     }
-    $('#ruleAct').fadeToggle(500)
-    let num = 80
-    let node = window.Topology.dblclickNode.node
 
-    let countIn = 0;
-    let countOut = 0;
-    let data =  JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)) 
-    let inOut =""
-    let textValue = ''
-    if($('.actionSelected1').val() == 0){
-        inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
-        textValue = "in" + $('.actionSelected2').eq(0).val();
-        canvas.data.nodes.map((s,i)=>{
-            if(s.id.includes(window.Topology.dblclickNode.node.id)){
-                countIn++; 
-            }
-        })
-        data.rect.x = data.rect.x - 40;
-        data.rect.y = data.rect.y + 30*countIn -20;
-       
-    }
-    if($('.actionSelected1').val() == 1){
-        inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
-        textValue = "out" + $('.actionSelected2').eq(0).val();
-        canvas.data.nodes.map((s,i)=>{
-            if(s.id.includes(window.Topology.dblclickNode.node.id)){
-                countOut++; 
-            }
-        })
-        data.rect.x = data.rect.x +200;
-        data.rect.y = data.rect.y + 30*countOut -20;
-    
-    }
-    
-    
 
-    data.rect.width = 40
-    data.rect.height = 20
-    data.text =textValue
-    data.rect.ex = data.rect.ex + num
-    data.rect.ey = data.rect.ey + num
-    data.rect.center.x = data.rect.center.x + num
-    data.rect.center.y = data.rect.center.y
-    data.textRect.x =data.textRect.x + num
-    data.textRect.y = data.textRect.y
-    data.fullTextRect.x = data.fullTextRect.x + num
-    data.fullTextRect.y = data.fullTextRect.y
-    data.iconRect.x = data.iconRect.x + num
-    data.iconRect.y = data.iconRect.y
-    data.fullIconRect.x = data.fullIconRect.x + num
-    data.fullIconRect.y = data.fullIconRect.y
-    data.FGIID = data.id
-    data.id = inOut
+    let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)),num = {}
+                        
+    let widths = data.node.rect.width/10
+    let heights = data.node.rect.height/10
+    console.log(data.node.data,'444444444444',widths,heights) 
+    if(!data.node.data){
+        data.node.data = 1
+        num = {
+            x:-widths,
+            y:heights+5
+        }
+    }else{
+        
+        num = {
+            x:-widths,
+            y:(heights*data.node.data)+5*data.node.data
+        }
+    }
+    console.log(num)
     
-    console.log(data.anchors)
-    // canvas.parse();
-    // window.Topology.dblclickNode.node.setChild([data])
-  
+    test.id = data.node.id + data.node.data
+    test.rect.x = data.node.rect.x + num.x
+    test.rect.y = data.node.rect.y + num.y
+    test.rect.width = widths
+    test.rect.height = heights
+
+    test.rect.ex = data.node.rect.ex + num.x
+    test.rect.ey = data.node.rect.ey + num.y
+    test.rect.center.x = data.node.rect.center.x + num.x
+    test.rect.center.y = data.node.rect.center.y + num.y
+    test.fullTextRect.x = 0
+    test.fullTextRect.y = 0
+    test.textRect.x = 0
+    test.textRect.y = 0
+    test.textRect.width = 0
+    test.textRect.height = 0
+    test.fullTextRect.x = data.node.fullTextRect.x + num.x
+    test.fullTextRect.y = data.node.fullTextRect.y + num.y
+    test.iconRect.x = data.node.iconRect.x + num.x
+    test.iconRect.y = data.node.iconRect.y + num.y
+    test.fullIconRect.x = data.node.fullIconRect.x + num.x
+    test.fullIconRect.y = data.node.fullIconRect.y + num.y
+    test.tipId = {
+        type:data.node.id+'的弟弟',
+        wz:num,
+        bb:{
+            x:data.node.rect.x,
+            y:data.node.rect.y,
+            ex:data.node.rect.ex,
+            ey:data.node.rect.ey
+        }
+    }
+    test.anchors.map((obj,i) => {
+        obj.x = data.node.anchors[i].x-185 + num.x
+        obj.y = data.node.anchors[i].y-85 + num.y
+    })
+    test.rotatedAnchors.map((obj,i) => {
+        obj.x = data.node.rotatedAnchors[i].x-185 + num.x
+        obj.y = data.node.rotatedAnchors[i].y-85 + num.y
+    })   
+    test.text = 'sdsd'
+    console.log(test)
     canvas.render();
-    canvas.addNode(data)
+    
+    let flag = canvas.addNode(test)
+    canvas.lockNodes([test], true)
+    if(flag){
+        // debugger
+        // data.node.data[type] ++
+        data.node.data++
+        // data.node.data?data.node.data++ :data.node.data = 1
+
+        // if(type == 'in'){
+
+        // }
+        // data.node.data = {
+        //     in:1,
+        //     out:1
+        // }
+    }
+
+
+
+
+
+
+//     $('#ruleAct').fadeToggle(500)
+//     let num = 40
+//     let node = window.Topology.dblclickNode.node
+
+//     let countIn = 0;
+//     let countOut = 0;
+//     let data = {}
+//     let inOut =""
+//     let textValue = ''
+    
+//     if(node.children.length > 0){
+//          data =  JSON.parse(JSON.stringify(window.Topology.dblclickNode.node.children[1])) 
+//          data.parentId = window.Topology.dblclickNode.node.children[0].id
+//          if($('.actionSelected1').val() == 0){
+//             console.log(data,'454545')
+
+            
+//             inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
+//             textValue = "in" + $('.actionSelected2').eq(0).val();
+//             canvas.data.nodes.map((s,i)=>{
+//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
+//                     countIn++; 
+//                 }
+//             })
+//             data.rect.x = data.rect.x;
+//             cLength = window.Topology.dblclickNode.node.children.length
+//             data.rect.y = data.rect.y + 20*(cLength -1);
+           
+//         }
+//         if($('.actionSelected1').val() == 1){
+//             inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
+//             textValue = "out" + $('.actionSelected2').eq(0).val();
+//             canvas.data.nodes.map((s,i)=>{
+//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
+//                     countOut++; 
+//                 }
+//             })
+//             data.rect.x = data.rect.x +200;
+//             data.rect.y = data.rect.y+ 20*countOut;
+        
+//         }
+//     }else{
+//          data = JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)) 
+//          data.parentId = window.Topology.dblclickNode.node.id
+//          if($('.actionSelected1').val() == 0){
+//             inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
+//             textValue = "in" + $('.actionSelected2').eq(0).val();
+//             canvas.data.nodes.map((s,i)=>{
+//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
+//                     countIn++; 
+//                 }
+//             })
+//             data.rect.x = data.rect.x -15;
+//             cLength = window.Topology.dblclickNode.node.children.length
+//             data.rect.y = data.rect.y + 20*(cLength -1);
+           
+//         }
+//         if($('.actionSelected1').val() == 1){
+//             inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
+//             textValue = "out" + $('.actionSelected2').eq(0).val();
+//             canvas.data.nodes.map((s,i)=>{
+//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
+//                     countOut++; 
+//                 }
+//             })
+//             data.rect.x = data.rect.x +230;
+//             data.rect.y = data.rect.y+ 20*countOut;
+        
+//         }
+//     }
+    
+   
+
+//     // debugger
+    
+   
+//     data.rect.width = 15
+//     data.rect.height = 15
+//     data.text =textValue
+//     data.rect.ex = data.rect.ex + num
+//     data.rect.ey = data.rect.ey + num
+//     data.rect.center.x = data.rect.center.x + num
+//     data.rect.center.y = data.rect.center.y
+//     data.textRect.x =data.textRect.x + num
+//     data.textRect.y = data.textRect.y
+//     data.fullTextRect.x = data.fullTextRect.x + num
+//     data.fullTextRect.y = data.fullTextRect.y
+//     data.iconRect.x = data.iconRect.x + num
+//     data.iconRect.y = data.iconRect.y
+//     data.fullIconRect.x = data.fullIconRect.x + num
+//     data.fullIconRect.y = data.fullIconRect.y
+//     data.FGIID = data.id
+//     data.id = inOut
+//     data.rectInParent = {
+//        x:0,
+//        y:0,
+//        width: 15,
+//        height:15
+//    }
+//     console.log("-----------------------------------------------------",data.rect)
+//     // canvas.parse();
+//     // window.Topology.dblclickNode.node.children[0].setChild([data])
+  
+//     canvas.render();
+//     console.log(data)
+//     canvas.addNode(data)
 }
 //动作取消
 function ActionClose(){
