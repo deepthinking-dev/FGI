@@ -198,7 +198,7 @@ var Topology = {
 
     addAlgorithm(option){
         if(option.type == "算子"){
-           // option.xxx = option.data.inNum;
+            option.xxx = option.data.inNum;
             $("#algorithmPage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
@@ -248,7 +248,7 @@ var Topology = {
                             text: item.tableAlgorithm.algorithmname,
                             rect: {
                                 width: 200,
-                                height: 50
+                                height: 100
                             },
                             parentId:item.tableAlgorithm.id,
                             font: {
@@ -569,14 +569,14 @@ var Topology = {
                        
                             // canvas.lockNodes([data],false)
                         
-                            if (data.name == "combine") {
-                                $("#menu_unCombine").removeClass("menu-a-disabled");
-                                $("#menu_unCombine").addClass("menu-a");
-                                $("#menu_combine").css("display", "none");
-                                $("#menu_unCombine").css("display", "block");
-                                canvas.uncombine(data);
-                                canvas.render();
-                            }
+                            // if (data.name == "combine") {
+                            //     $("#menu_unCombine").removeClass("menu-a-disabled");
+                            //     $("#menu_unCombine").addClass("menu-a");
+                            //     $("#menu_combine").css("display", "none");
+                            //     $("#menu_unCombine").css("display", "block");
+                            //     canvas.uncombine(data);
+                            //     canvas.render();
+                            // }
                             
                             break   
                         case 'moveInNode':
@@ -706,8 +706,8 @@ var Topology = {
                             
                             console.log(data,selected,canvas.data)
                             //存储编辑区数据
-                            // unique(canvas.data.nodes)
-                            // self.saveNode = unique(canvas.data.nodes)
+                            unique(canvas.data.nodes)
+                            self.saveNode = unique(canvas.data.nodes)
                             // // let nodeId = data.id
                             // // if(nodeId.indexOf('模型') != -1){
                             // //     toastr.info('新建算子')
@@ -717,40 +717,57 @@ var Topology = {
                             // //     window.bigData.formulaModuleId = ModuleId
                             // // }
                             
-                            // locked = data.locked;
-                            // self.initNode();
+                            locked = data.locked;
+                            self.initNode();
                             // // debugger
-                            // if(data.data > 0){
+
+                            if(data.data > 0){
                                             
-                            
-                            //     let data1 =   JSON.parse(JSON.stringify(data)) 
-                            //     let data2 = JSON.parse(JSON.stringify(data1)) 
-                            //     for(var i = 0;i<data.data; i++){
-                                
-                            //         let num = 80
-                            //         data2.id = data1.id+"in" +i
-                            //         data2.rect.width = 15
-                            //         data2.rect.height = 15
-                            //         data2.text ="in" +i
-                            //         data2.rect.ex = data1.rect.x - 15;
-                            //         data2.rect.ey = data1.rect.y + 20 +20*i;
-                            //         data2.rect.x = data1.rect.x -15;
-                            //         data2.rect.y = data1.rect.y + 20*i;
-                            //         // data2.anchors.map((obj,i) => {
-                            //         //     if(obj.direction == 4){
-                            //         //         obj.x = 0
-                            //         //         obj.y = 0
-                            //         //     }
-                                       
-                                        
-                            //         // })
-                            //         canvas.render();
-                            //         canvas.addNode(data2)
-                            //         canvas.lockNodes([data2],true)
-                            //     }
+                               debugger
+                                let data1 =   JSON.parse(JSON.stringify(data)) 
+                                let data2 = JSON.parse(JSON.stringify(data1)) 
+                                for(let i= 0;i<data.data; i++){
+                                    let num = {
+                                            x:-widths,
+                                            y:(heights*data.data)+5*data.data
+                                        }
+                                    let widths = data1.rect.width/10
+                                    let heights = data1.rect.height/10
+                                    data2.id = data1.id+"in" +i
+                                    data2.rect.width = widths
+                                    data2.rect.height = heights
+                                    data2.text ="in" +i
+                                    data2.rect.ex = data1.rect.x + num.x;
+                                    data2.rect.ey = data1.rect.y + num.y;
+                                    data2.rect.x = data1.rect.x + num.x;
+                                    data2.rect.y = data1.rect.y+ num.y;
+                                    data2.tipId = {
+                                        type:data1.id+'的弟弟',
+                                        wz:num,
+                                        bb:{
+                                            x:data1.rect.x,
+                                            y:data1.rect.y,
+                                            ex:data1.rect.ex,
+                                            ey:data1.rect.ey
+                                        }
+                                    }
+                                    data2.anchors.map((obj,i) => {
+                                        obj.x = data1.anchors[i].x-185 + num.x
+                                        obj.y = data1.anchors[i].y-85 + num.y
+                                    })
+                                    data2.rotatedAnchors.map((obj,i) => {
+                                        obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                                        obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                                    }) 
+                                    canvas.render();
+                                    canvas.addNode(data2)
+                                    canvas.lockNodes([data2],true)
+                               
+                                  
+                                }
                                
                                 
-                            // }
+                            }
                             break;
                         case 'resizeNodes':
                             // canvas.resizeNodes(0,0)
@@ -843,8 +860,8 @@ var Topology = {
                             // console.log(data)
                             $('#ruleAct').show();
                             $(`#ruleAct`).css({
-                                top:(data.node.rect.y + 80)+"px",
-                                left:(data.node.rect.x + 240)+"px"
+                                top:(data.rect.y + 80)+"px",
+                                left:(data.rect.x + 240)+"px"
                             })
                             
                            self.dblclickNode = data
@@ -1310,7 +1327,7 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-      // node.data.data = node.xxx;
+        node.data.data = node.xxx;
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶

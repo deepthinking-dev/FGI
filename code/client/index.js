@@ -255,7 +255,7 @@ $(function(){
                                 text: item[datas.Tname][datas.name],
                                 rect: {
                                     width: 200,
-                                    height: 50
+                                    height: 100
                                 },
                                 font: {
                                     fontFamily: 'Arial',
@@ -290,7 +290,7 @@ $(function(){
                                 text: item[datas.Tname],
                                 rect: {
                                     width: 200,
-                                    height: 50
+                                    height: 100
                                 },
                                 font: {
                                     fontFamily: 'Arial',
