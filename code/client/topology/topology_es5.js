@@ -125,7 +125,7 @@ var Topology = {
             //设置右键菜单
             if (selNodes != null) {
                 var selectId = selNodes[0].id;
-                var index = selectId.indexOf("算子")
+                var index = selectId.indexOf("tableAlgorithm")
                 window.selectId = selectId.slice(0,index);
                 //置顶
                 $("#menu_top").removeClass("menu-a-disabled");
@@ -245,7 +245,7 @@ var Topology = {
                         id:item.tableAlgorithm.id,
                         type:"算子",
                         data: {
-                            id:item.tableAlgorithm.id+"算子",
+                            id:item.tableAlgorithm.id+"tableAlgorithm",
                             text: item.tableAlgorithm.algorithmname,
                             rect: {
                                 width: 200,
@@ -749,7 +749,8 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-                            let currId = data.id.slice(0,-2);
+                            let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+                            let currId = data.id.slice(0,tableAlgorithmIndex);
                             $.ajax({
                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                 data:{algthId:currId},
