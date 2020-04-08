@@ -198,7 +198,6 @@ var Topology = {
 
     addAlgorithm(option){
         if(option.type == "算子"){
-            option.xxx = option.data.inNum;
             $("#algorithmPage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
@@ -256,8 +255,10 @@ var Topology = {
                                 color: 'aqua',                           
                                 textBaseline: 'top'
                             },
-                            inNum:item.inNum,
-                            outNum:item.outNum,
+                            data:{
+                                inNum:item.inNum,
+                                outNum:item.outNum,
+                            },                           
                             children:[],
                             paddingLeft: 10,
                             paddingRight: 10,
@@ -374,43 +375,116 @@ var Topology = {
                             break;
                         case 'moveNodes':
                             
-                            // if(data[0].tipId.type = '弟弟')
+                            // if(data[0].childStand.type = '弟弟')
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
-                            if(data[0].tipId) canvas.lockNodes([data[0]], true)
+                            if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             canvas.data.nodes.map(item => {
                                 // console.log(item,'sdsdsdsd')
                                 // canvas.lockNodes([data[0]], true)
-                                if(item.tipId){
+                                if(item.childStand){
                                     // canvas.lockNodes([data[0]], false)
-                                    if(item.tipId.type == data[0].id+'的弟弟'){
+                                    if(item.childStand.type == data[0].id+'的弟弟'){
                                         console.log(item,'45454545')
                                         // canvas.lockNodes([item], false)
-                                        let nums = item.tipId.wz
-                                        item.rect.x = data[0].rect.x + nums.x
-                                        item.rect.y = data[0].rect.y + nums.y 
-
-                                        item.rect.width = widthsa/10
-                                        item.rect.height = heightsa/10
-
-                                        item.rect.ex = data[0].rect.ex - widthsa
-                                        item.rect.ey = data[0].rect.y + nums.y + heightsa/10
-                                        item.rect.center.x = data[0].rect.center.x + nums.x
-                                        item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                        item.textRect.x = 0
-                                        item.textRect.y = 0
-                                        item.textRect.width = 0
-                                        item.textRect.height = 0
-                                        item.fullTextRect.x = data[0].fullTextRect.x + nums.x
-                                        item.fullTextRect.y = data[0].fullTextRect.y + nums.y
-                                        item.iconRect.x = data[0].iconRect.x + nums.x
-                                        item.iconRect.y = data[0].iconRect.y + nums.y
-                                        item.fullIconRect.x = data[0].fullIconRect.x + nums.x
-                                        item.fullIconRect.y = data[0].fullIconRect.y + nums.y
 
 
+                                        if(item.id.indexOf('in') != -1){
+                                            let nums = item.childStand.wz
+                                            item.rect.x = data[0].rect.x + nums.x
+                                            item.rect.y = data[0].rect.y + nums.y 
 
-                                               // item.anchors[0].x = item.rect.x 
+                                            item.rect.width = widthsa/10
+                                            item.rect.height = heightsa/10
+
+                                            item.rect.ex = data[0].rect.ex - widthsa
+                                            item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                                            item.rect.center.x = data[0].rect.center.x + nums.x
+                                            item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                                            item.textRect.x = 0
+                                            item.textRect.y = 0
+                                            item.textRect.width = 0
+                                            item.textRect.height = 0
+                                            item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                                            item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                                            item.iconRect.x = data[0].iconRect.x + nums.x
+                                            item.iconRect.y = data[0].iconRect.y + nums.y
+                                            item.fullIconRect.x = data[0].fullIconRect.x + nums.x
+                                            item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                                            item.anchors[0].x = item.rect.x   
+                                            item.anchors[0].y = item.rect.center.y
+
+                                            item.anchors[1].x = 0
+                                            item.anchors[1].y = 0
+
+                                            item.anchors[2].x = 0
+                                            item.anchors[2].y = 0
+
+                                            item.anchors[3].x = 0
+                                            item.anchors[3].y = 0
+
+                                            item.rotatedAnchors[0].x = item.rect.x
+                                            item.rotatedAnchors[0].y = item.rect.center.y - heightsa/2
+
+                                            item.rotatedAnchors[1].x = 0
+                                            item.rotatedAnchors[1].y = 0
+
+                                            item.rotatedAnchors[2].x = 0
+                                            item.rotatedAnchors[2].y = 0
+
+                                            item.rotatedAnchors[3].x = 0
+                                            item.rotatedAnchors[3].y = 0
+                                        }else{
+                                            let nums = item.childStand.wz
+                                            item.rect.x = data[0].rect.x + nums.x
+                                            item.rect.y = data[0].rect.y + nums.y 
+
+                                            item.rect.width = widthsa/10
+                                            item.rect.height = heightsa/10
+
+                                            item.rect.ex = data[0].rect.ex - widthsa
+                                            item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                                            item.rect.center.x = data[0].rect.center.x + nums.x
+                                            item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                                            item.textRect.x = 0
+                                            item.textRect.y = 0
+                                            item.textRect.width = 0
+                                            item.textRect.height = 0
+                                            item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                                            item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                                            item.iconRect.x = data[0].iconRect.x + nums.x
+                                            item.iconRect.y = data[0].iconRect.y + nums.y
+                                            item.fullIconRect.x = data[0].fullIconRect.x + nums.x
+                                            item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                                            item.anchors[0].x = item.rect.x   
+                                            item.anchors[0].y = item.rect.center.y
+
+                                            item.anchors[1].x = item.rect.center.x
+                                            item.anchors[1].y = item.rect.y
+
+                                            item.anchors[2].x = 0
+                                            item.anchors[2].y = 0
+
+                                            item.anchors[3].x = 0
+                                            item.anchors[3].y = 0
+
+                                            item.rotatedAnchors[0].x = 0
+                                            item.rotatedAnchors[0].y = 0
+
+                                            item.rotatedAnchors[1].x = 0
+                                            item.rotatedAnchors[1].y = 0
+
+                                            item.rotatedAnchors[2].x = 0
+                                            item.rotatedAnchors[2].y = 0
+
+                                            item.rotatedAnchors[3].x = 0
+                                            item.rotatedAnchors[3].y = 0
+                                        }
+                                        
+
+
+
+                                        // item.anchors[0].x = item.rect.x 
                                         // item.anchors[0].y = item.rect.center.y
 
                                         // item.anchors[1].x = item.rect.center.x
@@ -434,29 +508,7 @@ var Topology = {
                                         // item.rotatedAnchors[3].x = item.rect.center.x
                                         // item.rotatedAnchors[3].y = item.rect.ey
 
-                                        item.anchors[0].x = item.rect.x   
-                                        item.anchors[0].y = item.rect.center.y
-
-                                        item.anchors[1].x = 10
-                                        item.anchors[1].y = 10
-
-                                        item.anchors[2].x = 0
-                                        item.anchors[2].y = 0
-
-                                        item.anchors[3].x = 10
-                                        item.anchors[3].y = 10
-
-                                        item.rotatedAnchors[0].x = item.rect.x
-                                        item.rotatedAnchors[0].y = item.rect.center.y - heightsa/2
-
-                                        item.rotatedAnchors[1].x = 10
-                                        item.rotatedAnchors[1].y = 10
-
-                                        item.rotatedAnchors[2].x = 0
-                                        item.rotatedAnchors[2].y = 0
-
-                                        item.rotatedAnchors[3].x = 10
-                                        item.rotatedAnchors[3].y = 10
+                                        
 
                                         canvas.render()
                                         // item.anchors.map((obj,i) => {
@@ -580,7 +632,7 @@ var Topology = {
                             
                             break   
                         case 'moveInNode':
-                            if(data.tipId) canvas.lockNodes([data], false)
+                            if(data.childStand) canvas.lockNodes([data], false)
                             // if(data.id.includes("in") || data.id.includes("out")){
                             //     // canvas.lockNodes([data],true)
                             //     canvas.uncombine(data);
@@ -650,7 +702,17 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                        
+                            if(window.bigData.isAddInOut){
+                               debugger
+                                if(window.bigData.isAddInOutType == "in"){
+                                    window.Topology.dblclickNode.data.inNum ++ 
+                                }else{
+                                    window.Topology.dblclickNode.data.outNum ++ 
+                                }
+                                
+                                // window.Topology.dblclickNode.data ++
+                                // data.data ++
+                            }
                             // if(data.id.includes("in") || data.id.includes("out")){
                             //     break;
                             // }else{
@@ -720,19 +782,20 @@ var Topology = {
                             locked = data.locked;
                             self.initNode();
                             // // debugger
-
+                            let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data.data > 0){
                                             
                                debugger
-                                let data1 =   JSON.parse(JSON.stringify(data)) 
-                                let data2 = JSON.parse(JSON.stringify(data1)) 
+                              
+                                let data2 = Object.assign({},data1)
                                 for(let i= 0;i<data.data; i++){
+                                    let widths = data1.rect.width/10
+                                    let heights = data1.rect.height/10
                                     let num = {
                                             x:-widths,
                                             y:(heights*data.data)+5*data.data
                                         }
-                                    let widths = data1.rect.width/10
-                                    let heights = data1.rect.height/10
+                                   
                                     data2.id = data1.id+"in" +i
                                     data2.rect.width = widths
                                     data2.rect.height = heights
@@ -741,7 +804,7 @@ var Topology = {
                                     data2.rect.ey = data1.rect.y + num.y;
                                     data2.rect.x = data1.rect.x + num.x;
                                     data2.rect.y = data1.rect.y+ num.y;
-                                    data2.tipId = {
+                                    data2.childStand = {
                                         type:data1.id+'的弟弟',
                                         wz:num,
                                         bb:{
@@ -773,7 +836,7 @@ var Topology = {
                             // canvas.resizeNodes(0,0)
                         break
                         case 'lockNodes':
-                           if(data.nodes[0].tipId){
+                           if(data.nodes[0].childStand){
                             canvas.lockNodes([data],true)
                            }
                             // data.nodes.map(item =>{
@@ -858,6 +921,7 @@ var Topology = {
                             // canvas.render();
                             // let num = 50
                             // console.log(data)
+                            window.bigData.isAddInOut = false
                             $('#ruleAct').show();
                             $(`#ruleAct`).css({
                                 top:(data.rect.y + 80)+"px",
@@ -909,7 +973,7 @@ var Topology = {
                         // test.iconRect.y = data.node.iconRect.y + num.y
                         // test.fullIconRect.x = data.node.fullIconRect.x + num.x
                         // test.fullIconRect.y = data.node.fullIconRect.y + num.y
-                        // test.tipId = {
+                        // test.childStand = {
                         //     type:data.node.id+'的弟弟',
                         //     wz:num,
                         //     bb:{
@@ -1327,7 +1391,6 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        node.data.data = node.xxx;
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
