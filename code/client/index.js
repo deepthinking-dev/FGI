@@ -207,10 +207,10 @@ $(function(){
             $(e.target).parent().next().find('span').text("数据项")
             $(e.target).parent().next().append(`
                     <select class="zdcsTypeSelect">
-                        <option>byte</option>
-                        <option>short</option>
                         <option>int</option>
                         <option>long</option>
+                        <option>byte</option>
+                        <option>short</option>
                         <option>float</option>
                         <option>double</option>
                         <option>boolean</option>
@@ -809,10 +809,10 @@ $(function(){
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
                             <select class="zdcsTypeSelect" disabled>
-                                <option>byte</option>
-                                <option>short</option>
                                 <option>int</option>
                                 <option>long</option>
+                                <option>byte</option>
+                                <option>short</option>
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>

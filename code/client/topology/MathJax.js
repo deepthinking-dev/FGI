@@ -472,7 +472,6 @@ function ActionSure(event){
                         
     let widths = data.rect.width/10
     let heights = data.rect.height/10
-    console.log(data.data,'444444444444',widths,heights) 
     if(!data.data){
         data.data = 1
         num = {
@@ -528,12 +527,12 @@ function ActionSure(event){
         obj.x = data.rotatedAnchors[i].x-185 + num.x
         obj.y = data.rotatedAnchors[i].y-85 + num.y
     })   
-    test.text = 'sdsd'
-    console.log(test)
+    test.text = $('.actionSelected2 option:selected').text();
+
     canvas.render();
     
     let flag = canvas.addNode(test)
-    canvas.lockNodes([test], true)
+
     if(flag){
         // debugger
         // data.node.data[type] ++

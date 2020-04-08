@@ -176,17 +176,14 @@
        <!-- 关系选择 -->
        <div id="ruleAct">
         <div>
-            <span>动作</span>
             <select class="actionSelected1">
+                <option value="1">输出</option>
                 <option value="0">输入</option>
-                <option value="1">输出</option>                     
             </select>
-            <span>值</span>
-            <select class="actionSelected2">
-                <option value="1">值来源</option>
-                <option value="2">行为</option>     
-                <option value="3">表达式</option>                     
+            <select class="actionSelected2" style="margin: 20px 0">
+
             </select>
+            <input value="" id="varTypeInput" readonly>
             <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;">取消</button>
             <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;">确定</button>
         </div>
@@ -815,11 +812,21 @@
     </div>
     <div id="colorDiv">
         <ul>
+            <li style="background: #0eff23">常量</li>
+            <li style="background: #ff00e7">对象</li>
             <li style="background: red">INT</li>
+            <li style="background: #ff7749">byte</li>
+            <li style="background: #a4ff59">long</li>
+            <li style="background: #fb61ff">short</li>
             <li style="background: blue">FLOAT</li>
             <li style="background: green">DOUBLE</li>
             <li style="background: aqua">BOOLEAN</li>
             <li style="background: orange">NUMBER</li>
+            <li style="background: #7cc6ff">char</li>
+            <li style="background: #ff4286">date</li>
+            <li style="background: #00c1ff">string</li>
+            <li style="background: #6a46ff">BLOB</li>
+            <li style="background: #ffe964">array</li>
         </ul>
     </div>
 
@@ -1511,10 +1518,10 @@
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
                             <select class="zdcsTypeSelect">
-                                <option>byte</option>
-                                <option>short</option>
                                 <option>int</option>
                                 <option>long</option>
+                                <option>byte</option>
+                                <option>short</option>
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>

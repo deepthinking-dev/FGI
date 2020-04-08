@@ -646,7 +646,7 @@ body{
 }
 #colorDiv{
     width: 80px;
-    height: 150px;
+    height: 390px;
     position: absolute;
     top:10%;
     right: 22%;
@@ -656,8 +656,8 @@ body{
 }
 #colorDiv li{
     list-style: none;
-    height: 30px;
-    line-height: 30px;
+    height: 26px;
+    line-height: 26px;
     margin: 0;
     padding: 0;
     text-align: center;

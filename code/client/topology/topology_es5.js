@@ -236,6 +236,7 @@ var Topology = {
             url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
             data:'',
             success: function(data) {
+
                 $(".left-list").remove()
                 data.map(item => {
                     window.addAlgorithm({
@@ -615,11 +616,7 @@ var Topology = {
                             //         canvas.render()
                             //     }
                             // }
-                            break    
-                        case 'moveOut':
-                            
-                            // self.initNode();
-                            break
+                            break;
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
@@ -719,20 +716,19 @@ var Topology = {
                             
                             locked = data.locked;
                             self.initNode();
-                            // // debugger
 
                             if(data.data > 0){
-                                            
-                               debugger
+                                return
                                 let data1 =   JSON.parse(JSON.stringify(data)) 
-                                let data2 = JSON.parse(JSON.stringify(data1)) 
+                                let data2 = JSON.parse(JSON.stringify(data1))
+
                                 for(let i= 0;i<data.data; i++){
+                                    let widths = data1.rect.width/10
+                                    let heights = data1.rect.height/10
                                     let num = {
                                             x:-widths,
                                             y:(heights*data.data)+5*data.data
                                         }
-                                    let widths = data1.rect.width/10
-                                    let heights = data1.rect.height/10
                                     data2.id = data1.id+"in" +i
                                     data2.rect.width = widths
                                     data2.rect.height = heights
@@ -784,6 +780,7 @@ var Topology = {
                            
                         break
                         case 'addLine':
+                            debugger
                             data.strokeStyle = '#4295ec'
                             data.dash = 1
                             // data.name = '"polyline"'      
@@ -849,15 +846,41 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-                           
-                            // $("#menu_unCombine").removeClass("menu-a-disabled");
-                            // $("#menu_unCombine").addClass("menu-a");
-                            // $("#menu_combine").css("display", "none");
-                            // $("#menu_unCombine").css("display", "block");
-                            // canvas.uncombine(data);
-                            // canvas.render();
-                            // let num = 50
-                            // console.log(data)
+                            let currId = data.id.slice(0,-2);
+                            $.ajax({
+                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                data:{algthId:currId},
+                                success: function(data) {
+                                    $(".actionSelected2").empty();
+                                    $(".actionSelected2").off("change").on("change",()=>{
+                                        if($(".actionSelected2").val() == "2"){
+                                            $("#varTypeInput").val("常量")
+                                        }
+                                        if($(".actionSelected2").val() == "3"){
+                                            $("#varTypeInput").val("对象")
+                                        }
+                                        if($(".actionSelected2").val() == "1"){
+                                            $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
+                                        }
+                                    })
+                                    data.tableFuncs.map((s,i)=>{
+                                        if(i == 0){
+                                            if(s.vartype == 2){
+                                                $("#varTypeInput").val("常量")
+                                            }
+                                            if(s.vartype == 3){
+                                                $("#varTypeInput").val("对象")
+                                            }
+                                            if(s.vartype == 1){
+                                                $("#varTypeInput").val(s.valvalue)
+                                            }
+                                        }
+                                        $(".actionSelected2").append(`
+                                            <option dataValue=${s.valvalue} value=${s.vartype}>${s.varname}</option>
+                                        `)
+                                    })
+                                }
+                            })
                             $('#ruleAct').show();
                             $(`#ruleAct`).css({
                                 top:(data.rect.y + 80)+"px",
@@ -866,122 +889,6 @@ var Topology = {
                             
                            self.dblclickNode = data
 
-                        // console.log(data)
-                        // let test = JSON.parse(JSON.stringify(data.node)),num = {}
-                        
-                        // let widths = data.node.rect.width/10
-                        // let heights = data.node.rect.height/10
-                        // console.log(data.node.data,'444444444444',widths,heights) 
-                        // if(!data.node.data){
-                        //     data.node.data = 1
-                        //     num = {
-                        //         x:-widths,
-                        //         y:heights+5
-                        //     }
-                        // }else{
-                            
-                        //     num = {
-                        //         x:-widths,
-                        //         y:(heights*data.node.data)+5*data.node.data
-                        //     }
-                        // }
-                        // console.log(num)
-                        
-                        // test.id = data.node.id + data.node.data
-                        // test.rect.x = data.node.rect.x + num.x
-                        // test.rect.y = data.node.rect.y + num.y
-                        // test.rect.width = widths
-                        // test.rect.height = heights
-
-                        // test.rect.ex = data.node.rect.ex + num.x
-                        // test.rect.ey = data.node.rect.ey + num.y
-                        // test.rect.center.x = data.node.rect.center.x + num.x
-                        // test.rect.center.y = data.node.rect.center.y + num.y
-                        // test.fullTextRect.x = 0
-                        // test.fullTextRect.y = 0
-                        // test.textRect.x = 0
-                        // test.textRect.y = 0
-                        // test.textRect.width = 0
-                        // test.textRect.height = 0
-                        // test.fullTextRect.x = data.node.fullTextRect.x + num.x
-                        // test.fullTextRect.y = data.node.fullTextRect.y + num.y
-                        // test.iconRect.x = data.node.iconRect.x + num.x
-                        // test.iconRect.y = data.node.iconRect.y + num.y
-                        // test.fullIconRect.x = data.node.fullIconRect.x + num.x
-                        // test.fullIconRect.y = data.node.fullIconRect.y + num.y
-                        // test.tipId = {
-                        //     type:data.node.id+'的弟弟',
-                        //     wz:num,
-                        //     bb:{
-                        //         x:data.node.rect.x,
-                        //         y:data.node.rect.y,
-                        //         ex:data.node.rect.ex,
-                        //         ey:data.node.rect.ey
-                        //     }
-                        // }
-                        // test.anchors.map((obj,i) => {
-                        //     obj.x = data.node.anchors[i].x-185 + num.x
-                        //     obj.y = data.node.anchors[i].y-85 + num.y
-                        // })
-                        // test.rotatedAnchors.map((obj,i) => {
-                        //     obj.x = data.node.rotatedAnchors[i].x-185 + num.x
-                        //     obj.y = data.node.rotatedAnchors[i].y-85 + num.y
-                        // })   
-                        // test.text = 'sdsd'
-                        // console.log(test)
-                        // canvas.render();
-                        
-                        // let flag = canvas.addNode(test)
-                        // canvas.lockNodes([test], true)
-                        // if(flag){
-                        //     // debugger
-                        //     // data.node.data[type] ++
-                        //     data.node.data++
-                        //     // data.node.data?data.node.data++ :data.node.data = 1
-
-                        //     // if(type == 'in'){
-
-                        //     // }
-                        //     // data.node.data = {
-                        //     //     in:1,
-                        //     //     out:1
-                        //     // }
-                        // }
-                            // canvas.data.nodes.map(item => {
-                            //     self.initNode();
-                            //     if(item.id != data[0].id){
-                            //         // selNodes.push(item)
-                            //         item.rect.x = data[0].rect.x + num
-                            //         item.rect.y = data[0].rect.y + num
-
-                            //         item.rect.ex = data[0].rect.ex + num
-                            //         item.rect.ey = data[0].rect.ey + num
-                            //         item.rect.center.x = data[0].rect.center.x + num
-                            //         item.rect.center.y = data[0].rect.center.y + num
-                            //         item.textRect.x = data[0].textRect.x + num
-                            //         item.textRect.y = data[0].textRect.y + num
-                            //         item.fullTextRect.x = data[0].fullTextRect.x + num
-                            //         item.fullTextRect.y = data[0].fullTextRect.y + num
-                            //         item.iconRect.x = data[0].iconRect.x + num
-                            //         item.iconRect.y = data[0].iconRect.y + num
-                            //         item.fullIconRect.x = data[0].fullIconRect.x + num
-                            //         item.fullIconRect.y = data[0].fullIconRect.y + num
-
-                            //         item.anchors.map((obj,i) => {
-                            //             obj.x = data[0].anchors[i].x + num
-                            //             obj.y = data[0].anchors[i].y + num
-                            //         })
-                            //         item.rotatedAnchors.map((obj,i) => {
-                            //             obj.x = data[0].anchors[i].x + num
-                            //             obj.y = data[0].anchors[i].y + num
-                            //         })
-
-
-                            //     //     // 原生自动刷新方法有巨大bug，需待研究
-                            //     //     // canvas.updateProps(item);
-                            //     //     // canvas.render();
-                            //     // }
-                            // })
                         break;
                     }
 
