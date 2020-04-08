@@ -122,9 +122,11 @@ var Topology = {
         });
         // 画布右键属性
         $("#flex_canvas").bind("contextmenu", function () {
-            
             //设置右键菜单
             if (selNodes != null) {
+                var selectId = selNodes[0].id;
+                var index = selectId.indexOf("算子")
+                window.selectId = selectId.slice(0,index);
                 //置顶
                 $("#menu_top").removeClass("menu-a-disabled");
                 $("#menu_top").addClass("menu-a");
@@ -844,21 +846,6 @@ var Topology = {
                                         data.strokeStyle = strokeStyle;
                                         window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
                                         $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
-                                        $('#'+window.currentId).css({
-                                            color: '#ffffff',
-                                            position: 'absolute',
-                                            top:(data.to.y + data.from.y)/2 +"px",
-                                            left:(data.to.x + data.from.x)/2+"px"
-                                        })
-                                        // 选择关系弹框
-                                        $(`#selectRela`).css({
-                                            top:(data.to.y + data.from.y)/2 +"px",
-                                            left:(data.to.x + data.from.x)/2+"px"
-                                        })
-                                        selected = {
-                                            "type": event,
-                                            "data": data
-                                        };
                                         locked = data.locked;
                                         self.initLine();
                                     } else {

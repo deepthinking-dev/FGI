@@ -184,8 +184,8 @@
 
             </select>
             <input value="" id="varTypeInput" readonly>
-            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;">取消</button>
-            <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;">确定</button>
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;background: #f56c6c;color: #fff">取消</button>
+            <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
         </div>
     </div>
     <!-- 保存规则 -->
@@ -688,6 +688,11 @@
                                 新增自定义属性
                             </a>
                         </div>
+                        <div>
+                            <a class="menu-a" id="showAllmag">
+                                查看详情
+                            </a>
+                        </div>
                         <div disabled>
                             <a onclick="onTop()" class="menu-a-disabled" id="menu_top" disabled>
                                 置顶
@@ -750,12 +755,6 @@
                         <div>
                             <a onclick="parse()" class="menu-a">
                                 粘贴
-                                <span class="ml50">Ctrl + V</span>
-                            </a>
-                        </div>
-                        <div>
-                            <a onclick="parsew()" class="menu-a">
-                                xx
                                 <span class="ml50">Ctrl + V</span>
                             </a>
                         </div>
