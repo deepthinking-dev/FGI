@@ -270,7 +270,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         try {
             operatorInterfaceDataModels.forEach(operatorInterfaceDataModel -> {
                 TableOperatorinterface tableOperatorinterface=new TableOperatorinterface();
-                tableOperatorinterface.setRoleid(operatorInterfaceDataModel.getId());
+                tableOperatorinterface.setRoleid(operatorInterfaceDataModel.getRoleID());
                 tableOperatorinterface.setAlgorithmid(operatorInterfaceDataModel.getAlgorithmID());
                 tableOperatorinterface.setInterfacename(operatorInterfaceDataModel.getInterfaceName());
                 operatorinterfaceMapper.insert(tableOperatorinterface);
@@ -407,11 +407,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             //接口参数信息和动作信息由外键删除
             //删除接口关系
             TableInterfaceroleCriteria tableInterfaceroleCriteria=new TableInterfaceroleCriteria();
-            tableInterfaceroleCriteria.or().andInterfaceidEqualTo(Integer.parseInt(operatorinterfaceId));
-            tableInterfaceroleCriteria.or().andPreinterfaceidEqualTo(Integer.parseInt(operatorinterfaceId));
+            tableInterfaceroleCriteria.or().andInterfaceidEqualTo(operatorinterfaceId);
+            tableInterfaceroleCriteria.or().andPreinterfaceidEqualTo(operatorinterfaceId);
             interfaceroleMapper.deleteByExample(tableInterfaceroleCriteria);
             //删除接口本身信息
-            operatorinterfaceMapper.deleteByPrimaryKey(Integer.parseInt(operatorinterfaceId));
+            operatorinterfaceMapper.deleteByPrimaryKey(operatorinterfaceId);
             return true;
         }catch (Exception e){
             logger.error(e.getMessage());

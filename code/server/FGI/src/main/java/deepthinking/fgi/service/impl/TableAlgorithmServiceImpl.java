@@ -134,7 +134,13 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                 return 2;
             }
             List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-            tableFuncs.stream().forEach(fun->tableFuncMapper.updateByPrimaryKeySelective(fun));
+            tableFuncs.stream().forEach(fun->{
+                if(fun.getId()!=0&&fun.getId()!=null){
+                    tableFuncMapper.updateByPrimaryKeySelective(fun);
+                }else{
+                    tableFuncMapper.insert(fun);
+                }
+            });
         }catch (Exception e){
             logger.error(e.getMessage());
             return 0;

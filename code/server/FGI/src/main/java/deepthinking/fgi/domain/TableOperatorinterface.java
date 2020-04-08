@@ -12,8 +12,8 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "ID")
-    private Integer id;
+     @ApiModelProperty(value = "ID")
+    private String id;
 
     /**
      *
@@ -22,7 +22,7 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "规则ID")
+     @ApiModelProperty(value = "规则ID")
     private Integer roleid;
 
     /**
@@ -32,7 +32,7 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "算子ID")
+     @ApiModelProperty(value = "算子ID")
     private Integer algorithmid;
 
     /**
@@ -42,7 +42,7 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "接口名称")
+     @ApiModelProperty(value = "接口名称")
     private String interfacename;
 
     /**
@@ -53,7 +53,7 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -65,8 +65,8 @@ public class TableOperatorinterface {
      *
      * @mbg.generated
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**
