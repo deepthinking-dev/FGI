@@ -49,10 +49,10 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @param algorithmRuleSaveDataModel
      * @return
      */
-    AlgorithmRuleSaveDataModel saveOperatorInterfaceData(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
+//    AlgorithmRuleSaveDataModel saveOperatorInterfaceData(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
 
     /**
-     * 新增算法规则--连线信息
+     * 新增算法规则
      * @return
      */
     AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);

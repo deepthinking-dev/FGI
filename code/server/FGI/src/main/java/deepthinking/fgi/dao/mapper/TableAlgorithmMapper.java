@@ -171,9 +171,14 @@ public interface TableAlgorithmMapper {
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableAlgorithm record);
+
+    @Select({
+            "select",
+            "ID, AlgorithmName, AlgorithmAuthor,Des",
+            "from table_algorithm"
+    })
     @Results({
             @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-            @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
             @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
             @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
             @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
