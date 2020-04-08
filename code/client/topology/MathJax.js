@@ -467,14 +467,14 @@ function ActionSure(event){
         actionValue:$('.actionSelected2').val()
     }
 
-
-    let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)),num = {}
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
                         
-    let widths = data.node.rect.width/10
-    let heights = data.node.rect.height/10
-    console.log(data.node.data,'444444444444',widths,heights) 
-    if(!data.node.data){
-        data.node.data = 1
+    let widths = data.rect.width/10
+    let heights = data.rect.height/10
+    console.log(data.data,'444444444444',widths,heights) 
+    if(!data.data){
+        data.data = 1
         num = {
             x:-widths,
             y:heights+5
@@ -483,50 +483,50 @@ function ActionSure(event){
         
         num = {
             x:-widths,
-            y:(heights*data.node.data)+5*data.node.data
+            y:(heights*data.data)+5*data.data
         }
     }
     console.log(num)
     
-    test.id = data.node.id + data.node.data
-    test.rect.x = data.node.rect.x + num.x
-    test.rect.y = data.node.rect.y + num.y
+    test.id = data.id + data.data
+    test.rect.x = data.rect.x + num.x
+    test.rect.y = data.rect.y + num.y
     test.rect.width = widths
     test.rect.height = heights
 
-    test.rect.ex = data.node.rect.ex + num.x
-    test.rect.ey = data.node.rect.ey + num.y
-    test.rect.center.x = data.node.rect.center.x + num.x
-    test.rect.center.y = data.node.rect.center.y + num.y
+    test.rect.ex = data.rect.ex + num.x
+    test.rect.ey = data.rect.ey + num.y
+    test.rect.center.x = data.rect.center.x + num.x
+    test.rect.center.y = data.rect.center.y + num.y
     test.fullTextRect.x = 0
     test.fullTextRect.y = 0
     test.textRect.x = 0
     test.textRect.y = 0
     test.textRect.width = 0
     test.textRect.height = 0
-    test.fullTextRect.x = data.node.fullTextRect.x + num.x
-    test.fullTextRect.y = data.node.fullTextRect.y + num.y
-    test.iconRect.x = data.node.iconRect.x + num.x
-    test.iconRect.y = data.node.iconRect.y + num.y
-    test.fullIconRect.x = data.node.fullIconRect.x + num.x
-    test.fullIconRect.y = data.node.fullIconRect.y + num.y
+    test.fullTextRect.x = data.fullTextRect.x + num.x
+    test.fullTextRect.y = data.fullTextRect.y + num.y
+    test.iconRect.x = data.iconRect.x + num.x
+    test.iconRect.y = data.iconRect.y + num.y
+    test.fullIconRect.x = data.fullIconRect.x + num.x
+    test.fullIconRect.y = data.fullIconRect.y + num.y
     test.tipId = {
-        type:data.node.id+'的弟弟',
+        type:data.id+'的弟弟',
         wz:num,
         bb:{
-            x:data.node.rect.x,
-            y:data.node.rect.y,
-            ex:data.node.rect.ex,
-            ey:data.node.rect.ey
+            x:data.rect.x,
+            y:data.rect.y,
+            ex:data.rect.ex,
+            ey:data.rect.ey
         }
     }
     test.anchors.map((obj,i) => {
-        obj.x = data.node.anchors[i].x-185 + num.x
-        obj.y = data.node.anchors[i].y-85 + num.y
+        obj.x = data.anchors[i].x-185 + num.x
+        obj.y = data.anchors[i].y-85 + num.y
     })
     test.rotatedAnchors.map((obj,i) => {
-        obj.x = data.node.rotatedAnchors[i].x-185 + num.x
-        obj.y = data.node.rotatedAnchors[i].y-85 + num.y
+        obj.x = data.rotatedAnchors[i].x-185 + num.x
+        obj.y = data.rotatedAnchors[i].y-85 + num.y
     })   
     test.text = 'sdsd'
     console.log(test)
@@ -537,7 +537,7 @@ function ActionSure(event){
     if(flag){
         // debugger
         // data.node.data[type] ++
-        data.node.data++
+        data.data++
         // data.node.data?data.node.data++ :data.node.data = 1
 
         // if(type == 'in'){
@@ -549,7 +549,7 @@ function ActionSure(event){
         // }
     }
 
-
+    $('#ruleAct').fadeToggle(500)
 
 
 
