@@ -389,7 +389,7 @@ var Topology = {
                                         // canvas.lockNodes([item], false)
 
 
-                                        if(item.id.indexOf('in') != -1){
+                                        if(item.id.includes('IN')){
                                             let nums = item.childStand.wz
                                             item.rect.x = data[0].rect.x + nums.x
                                             item.rect.y = data[0].rect.y + nums.y
@@ -709,77 +709,13 @@ var Topology = {
                                 // window.Topology.dblclickNode.data ++
                                 // data.data ++
                             }
-                            // if(data.id.includes("in") || data.id.includes("out")){
-                            //     break;
-                            // }else{
-                            //     data.anchors.map((obj,i) => {
-                            //         obj.x = 0
-                            //         obj.y = 0
-                            //     })
-                            //     data.rotatedAnchors.map((obj,i) => {
-                            //         obj.x = 0
-                            //         obj.y = 0
-                            //     })
-                            // }
-                            
-                                // iconV.id = data.id+'1'
-                            // let flags = canvas.data.nodes.filter(item => {
-                            //     return item == data.id+'xsxs'
-                            // })
-                            // console.log(canvas.data.nodes)
-                            // if(data.id.indexOf('xsxs') == -1){
-                            //     let nums = 50
-                            //     let iconV = Object.assign({},data)
-                            //     iconV.id = data.id+'xsxs'
-                            //     iconV.rect.x = data.rect.x + nums
-                            //     iconV.rect.y = data.rect.y + nums
-
-                            //     iconV.rect.ex = data.rect.ex + nums
-                            //     iconV.rect.ey = data.rect.ey + nums
-                            //     iconV.rect.center.x = data.rect.center.x + nums
-                            //     iconV.rect.center.y = data.rect.center.y + nums
-                            //     iconV.textRect.x = data.textRect.x + nums
-                            //     iconV.textRect.y = data.textRect.y + nums
-                            //     iconV.fullTextRect.x = data.fullTextRect.x + nums
-                            //     iconV.fullTextRect.y = data.fullTextRect.y + nums
-                            //     iconV.iconRect.x = data.iconRect.x + nums
-                            //     iconV.iconRect.y = data.iconRect.y + nums
-                            //     iconV.fullIconRect.x = data.fullIconRect.x + nums
-                            //     iconV.fullIconRect.y = data.fullIconRect.y + nums
-                                
-                            //     iconV.anchors.map((obj,i) => {
-                            //         obj.x = data.anchors[i].x + nums
-                            //         obj.y = data.anchors[i].y + nums
-                            //     })
-                            //     iconV.rotatedAnchors.map((obj,i) => {
-                            //         obj.x = data.anchors[i].x + nums
-                            //         obj.y = data.anchors[i].y + nums
-                            //     })
-                            //     console.log(iconV,canvas)
-                            //     canvas.addNode(iconV)
-                            //     canvas.render(true)
-                            // }
-                            
-                            // canvas.data.nodes.push(iconV)
-                            
-                            console.log(data,selected,canvas.data)
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
-                            // // let nodeId = data.id
-                            // // if(nodeId.indexOf('模型') != -1){
-                            // //     toastr.info('新建算子')
-                            // //     $("#suanfaType").css('display', "block");
-                            // //     window.bigData.formulaType = 'add'
-                            // //     let ModuleId =nodeId.substring(0,nodeId.length-2)
-                            // //     window.bigData.formulaModuleId = ModuleId
-                            // // }
-                            
                             locked = data.locked;
                             self.initNode();
-                            // // debugger
                             let data1 = JSON.parse(JSON.stringify(data))
-                            if(data.data > 0){
+                            if(data.data.inNum > 0){
                                 let data2 = Object.assign({},data1)
                                 for(let i= 0;i<data.data; i++){
                                     let widths = data1.rect.width/10
@@ -818,11 +754,7 @@ var Topology = {
                                     canvas.render();
                                     canvas.addNode(data2)
                                     canvas.lockNodes([data2],true)
-                               
-                                  
                                 }
-                               
-                                
                             }
                             break;
                         case 'resizeNodes':
@@ -840,41 +772,121 @@ var Topology = {
                            
                         break
                         case 'addLine':
-                            data.strokeStyle = '#4295ec'
-                            data.dash = 1
+                            var strokeStyle;
+                            data.dash = 1;
                             if(!data.to.id){
-                            canvas.data.lines.map((item,i) => {
-                                if(item.id == data.id){
-                                    canvas.data.lines.splice(i,1)
-                                    toastr.info('操作失败！')
-                                    
-                                    canvas.render();
-                                    setTimeout(function () {
-                                        selected = null;
-                                        selNodes = null;
-                                    });
-                                }
-                            })
+                                canvas.data.lines.map((item,i) => {
+                                    if(item.id == data.id){
+                                        canvas.data.lines.splice(i,1)
+                                        toastr.info('操作失败！')
+                                        canvas.render();
+                                        setTimeout(function () {
+                                            selected = null;
+                                            selNodes = null;
+                                        });
+                                    }
+                                })
                             }else{
-                                window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                                $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}' ></span>`)
-                                $('#'+window.currentId).css({
-                                    color: '#ffffff',
-                                    position: 'absolute',
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
-                                // 选择关系弹框
-                                $(`#selectRela`).css({
-                                    top:(data.to.y + data.from.y)/2 +"px",
-                                    left:(data.to.x + data.from.x)/2+"px"
-                                })
-                                selected = {
-                                    "type": event,
-                                    "data": data
-                                };
-                                locked = data.locked;
-                                self.initLine();
+                                if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
+                                    let fromIndex = data.from.id.indexOf('---');
+                                    let fromType = data.from.id.slice(fromIndex+3);
+                                    let toIndex = data.to.id.indexOf('---');
+                                    let toType = data.to.id.slice(toIndex+3);
+                                    debugger
+                                    if(fromType == toType){
+                                        switch (fromType) {
+                                            case '常量':
+                                                strokeStyle = '#0eff23';
+                                                break;
+                                            case '对象':
+                                                strokeStyle = '#ff00e7';
+                                                break;
+                                            case 'int':
+                                                strokeStyle = 'red';
+                                                break;
+                                            case 'byte':
+                                                strokeStyle = '#ff7749';
+                                                break;
+                                            case 'long':
+                                                strokeStyle = '#a4ff59';
+                                                break;
+                                            case 'short':
+                                                strokeStyle = '#fb61ff';
+                                                break;
+                                            case 'float':
+                                                strokeStyle = 'blue';
+                                                break;
+                                            case 'double':
+                                                strokeStyle = 'green';
+                                                break;
+                                            case 'boolean':
+                                                strokeStyle = 'aqua';
+                                                break;
+                                            case 'number':
+                                                strokeStyle = 'orange';
+                                                break;
+                                            case 'char':
+                                                strokeStyle = '#7cc6ff';
+                                                break;
+                                            case 'date':
+                                                strokeStyle = '#ff4286';
+                                                break;
+                                            case 'string':
+                                                strokeStyle = '#00c1ff';
+                                                break;
+                                            case 'blob':
+                                                strokeStyle = '#6a46ff';
+                                                break;
+                                            case 'array':
+                                                strokeStyle = '#ffe964';
+                                                break;
+                                        }
+                                        data.strokeStyle = strokeStyle;
+                                        window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                                        $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
+                                        $('#'+window.currentId).css({
+                                            color: '#ffffff',
+                                            position: 'absolute',
+                                            top:(data.to.y + data.from.y)/2 +"px",
+                                            left:(data.to.x + data.from.x)/2+"px"
+                                        })
+                                        // 选择关系弹框
+                                        $(`#selectRela`).css({
+                                            top:(data.to.y + data.from.y)/2 +"px",
+                                            left:(data.to.x + data.from.x)/2+"px"
+                                        })
+                                        selected = {
+                                            "type": event,
+                                            "data": data
+                                        };
+                                        locked = data.locked;
+                                        self.initLine();
+                                    } else {
+                                        toastr.info('输出输入类型不匹配！')
+                                        canvas.data.lines.map((item,i) => {
+                                            if(item.id == data.id){
+                                                canvas.data.lines.splice(i,1)
+                                                canvas.render();
+                                                setTimeout(function () {
+                                                    selected = null;
+                                                    selNodes = null;
+                                                });
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    toastr.info('只能输出连接输入！')
+                                    canvas.data.lines.map((item,i) => {
+                                        if(item.id == data.id){
+                                            canvas.data.lines.splice(i,1)
+                                            canvas.render();
+                                            setTimeout(function () {
+                                                selected = null;
+                                                selNodes = null;
+                                            });
+                                        }
+                                    })
+                                }
                             }
                             break;
                         case 'delete':
@@ -1284,7 +1296,6 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        node.data.data = node.xxx;
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶

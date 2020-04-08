@@ -260,13 +260,12 @@ $(function(){
                                 font: {
                                     fontFamily: 'Arial',
                                     color: 'aqua',
-                                
                                     textBaseline: 'top'
                                 },
                                 data:{
                                     inNum:item.inNum,
                                     outNum:item.outNum,
-                                },                            
+                                },
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 paddingTop: 10,

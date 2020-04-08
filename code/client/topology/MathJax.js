@@ -489,10 +489,9 @@ function ActionSure(event){
                 y:(heights*data.data.inNum)+5*data.data.inNum
             }
         }
-        window.bigData.isAddInOutType = "in"
-        test.id = data.id +"in"+ data.data.inNum
-        test.text = "in"+ data.data.inNum
-
+        window.bigData.isAddInOutType = "in";
+        test.id = data.id +"IN"+ data.data.inNum + "---" + $("#varTypeInput").val();
+        test.text = "in"+ data.data.inNum;
    }else{
     if(!data.data.outNum){
         data.data.outNum = 1
@@ -508,7 +507,7 @@ function ActionSure(event){
         }
     }
        window.bigData.isAddInOutType = "out"
-       test.id = data.id +"out"+data.data.outNum
+       test.id = data.id +"OUT"+data.data.outNum + "---" + $("#varTypeInput").val();
        test.text = "out"+data.data.outNum
    }
 
