@@ -89,8 +89,8 @@ alter table Table_Func comment '算子参数定义';
 /*==============================================================*/
 create table Table_InterfaceParameters
 (
-   ID                   int not null auto_increment comment '算子接口参数信息ID',
-   InterfaceID          int comment '接口ID',
+   ID                   varchar(64) not null comment '算子接口参数信息ID',
+   InterfaceID          varchar(64) comment '接口ID',
    ParametersSources    varchar(50) comment '参数来源',
    ParametersName       varchar(50) comment '参数名称',
    inOrOut              numeric comment '输入输出',
@@ -106,10 +106,10 @@ create table Table_InterfaceRole
 (
    ID                   int not null auto_increment comment '主键ID',
    RoleID               int comment '规则ID',
-   InterfaceID          int comment '接口ID',
-   ParametersID         int comment '接口参数ID',
-   PreInterfaceID       int comment '前序接口ID',
-   PreParametersID      int comment '前序接口参数ID',
+   InterfaceID          varchar(64) comment '接口ID',
+   ParametersID         varchar(64) comment '接口参数ID',
+   PreInterfaceID       varchar(64) comment '前序接口ID',
+   PreParametersID      varchar(64) comment '前序接口参数ID',
    Des                  varchar(500) comment '描述',
    Remark               varchar(500) comment '备注',
    primary key (ID)
@@ -168,7 +168,7 @@ alter table Table_ModuleUserRelation comment '算子用户关系';
 /*==============================================================*/
 create table Table_OperatorInterface
 (
-   ID                   int not null auto_increment comment '接口ID',
+   ID                   varchar(64) not null comment '接口ID',
    RoleID               int comment '规则ID',
    AlgorithmID          int comment '算子ID',
    InterfaceName        varchar(50) comment '接口名称',

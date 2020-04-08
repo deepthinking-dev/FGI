@@ -90,16 +90,16 @@ public class AlgorithmRuleController {
     }
 
     @PostMapping("/saveAlgorithmRule")
-    @ApiOperation(value = "04-05 新增算法规则--(所有连线信息)", notes = "返回新增的规则本身信息", httpMethod = "POST")
+    @ApiOperation(value = "04-05 新增算法规则", notes = "返回新增的规则本身信息", httpMethod = "POST")
     public AlgorithmRuleSaveDataModel saveAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
         return tableRoleService.saveAlgorithmRule(algorithmRuleSaveDataModel);
     }
 
-    @PostMapping("/saveOperatorInterfaceData")
-    @ApiOperation(value = "04-06 新增接口信息(添加一个新增一个)", notes = "返回新增的接口本身信息", httpMethod = "POST")
-    public AlgorithmRuleSaveDataModel saveOperatorInterfaceData(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
-        return tableRoleService.saveOperatorInterfaceData(algorithmRuleSaveDataModel);
-    }
+//    @PostMapping("/saveOperatorInterfaceData")
+//    @ApiOperation(value = "04-06 新增接口信息(添加一个新增一个)", notes = "返回新增的接口本身信息", httpMethod = "POST")
+//    public AlgorithmRuleSaveDataModel saveOperatorInterfaceData(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
+//        return tableRoleService.saveOperatorInterfaceData(algorithmRuleSaveDataModel);
+//    }
 
     @PostMapping("/modInterfaceRole")
     @ApiOperation(value = "04-07 修改接口信息", notes = "返回修改后的接口信息", httpMethod = "POST")
