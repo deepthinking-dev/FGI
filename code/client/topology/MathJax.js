@@ -466,14 +466,14 @@ function ActionSure(event){
     //     action:$('.actionSelected1').val(),
     //     actionValue:$('.actionSelected2').val()
     // }
- 
+
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
                         
     let widths = data.rect.width/10
     let heights = data.rect.height/10
     console.log(data.data,'444444444444',widths,heights) 
-   
+
     console.log(num)
     if($('.actionSelected1').val() == 0){
         if(!data.data.inNum){
@@ -483,16 +483,15 @@ function ActionSure(event){
                 y:heights+5
             }
         }else{
-            
+
             num = {
                 x:-widths,
                 y:(heights*data.data.inNum)+5*data.data.inNum
             }
         }
-        window.bigData.isAddInOutType = "in"
-        test.id = data.id +"in"+ data.data.inNum
-        test.text = "in"+ data.data.inNum
-        
+        window.bigData.isAddInOutType = "in";
+        test.id = data.id +"IN"+ data.data.inNum + "---" + $("#varTypeInput").val();
+        test.text = "in"+ data.data.inNum;
    }else{
     if(!data.data.outNum){
         data.data.outNum = 1
@@ -501,17 +500,17 @@ function ActionSure(event){
             y:heights+5
         }
     }else{
-        
+
         num = {
             x:data.rect.width,
             y:(heights*data.data.outNum)+5*data.data.outNum
         }
     }
        window.bigData.isAddInOutType = "out"
-       test.id = data.id +"out"+data.data.outNum
+       test.id = data.id +"OUT"+data.data.outNum + "---" + $("#varTypeInput").val();
        test.text = "out"+data.data.outNum
    }
-  
+
     test.rect.x = data.rect.x + num.x
     test.rect.y = data.rect.y + num.y
     test.rect.width = widths
@@ -562,8 +561,9 @@ function ActionSure(event){
             obj.y = data.rotatedAnchors[i].y-115 + num.y
         })
     }
-      
-    
+    test.text = $('.actionSelected2 option:selected').text();
+
+
     console.log(test)
     // canvas.render();
 
@@ -572,20 +572,7 @@ function ActionSure(event){
     let flag = canvas.addNode(test)
     canvas.lockNodes([test], true)
     if(flag){
-       
-        // debugger
-        
-        // data.node.data[type] ++
-        // data.data++
-        // data.node.data?data.node.data++ :data.node.data = 1
-
-        // if(type == 'in'){
-
-        // }
-        // data.node.data = {
-        //     in:1,
-        //     out:1
-        // }
+        data.data++
     }else{
         window.bigData.isAddInOut = false
     }

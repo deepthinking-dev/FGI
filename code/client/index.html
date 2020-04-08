@@ -176,19 +176,16 @@
        <!-- 关系选择 -->
        <div id="ruleAct">
         <div>
-            <span>动作</span>
             <select class="actionSelected1">
+                <option value="1">输出</option>
                 <option value="0">输入</option>
-                <option value="1">输出</option>                     
             </select>
-            <span>值</span>
-            <select class="actionSelected2">
-                <option value="1">值来源</option>
-                <option value="2">行为</option>     
-                <option value="3">表达式</option>                     
+            <select class="actionSelected2" style="margin: 20px 0">
+
             </select>
-            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;">取消</button>
-            <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;">确定</button>
+            <input value="" id="varTypeInput" readonly>
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;background: #f56c6c;color: #fff">取消</button>
+            <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
         </div>
     </div>
     <!-- 保存规则 -->
@@ -691,6 +688,11 @@
                                 新增自定义属性
                             </a>
                         </div>
+                        <div>
+                            <a class="menu-a" id="showAllmag">
+                                查看详情
+                            </a>
+                        </div>
                         <div disabled>
                             <a onclick="onTop()" class="menu-a-disabled" id="menu_top" disabled>
                                 置顶
@@ -756,12 +758,6 @@
                                 <span class="ml50">Ctrl + V</span>
                             </a>
                         </div>
-                        <div>
-                            <a onclick="parsew()" class="menu-a">
-                                xx
-                                <span class="ml50">Ctrl + V</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 </div>
@@ -815,11 +811,21 @@
     </div>
     <div id="colorDiv">
         <ul>
-            <li style="background: red">INT</li>
-            <li style="background: blue">FLOAT</li>
-            <li style="background: green">DOUBLE</li>
-            <li style="background: aqua">BOOLEAN</li>
-            <li style="background: orange">NUMBER</li>
+            <li style="background: #0eff23">常量</li>
+            <li style="background: #ff00e7">对象</li>
+            <li style="background: red">int</li>
+            <li style="background: #ff7749">byte</li>
+            <li style="background: #a4ff59">long</li>
+            <li style="background: #fb61ff">short</li>
+            <li style="background: blue">float</li>
+            <li style="background: green">double</li>
+            <li style="background: aqua">boolean</li>
+            <li style="background: orange">number</li>
+            <li style="background: #7cc6ff">char</li>
+            <li style="background: #ff4286">date</li>
+            <li style="background: #00c1ff">string</li>
+            <li style="background: #6a46ff">blob</li>
+            <li style="background: #ffe964">array</li>
         </ul>
     </div>
 
@@ -1513,10 +1519,10 @@
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
                             <select class="zdcsTypeSelect">
-                                <option>byte</option>
-                                <option>short</option>
                                 <option>int</option>
                                 <option>long</option>
+                                <option>byte</option>
+                                <option>short</option>
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>

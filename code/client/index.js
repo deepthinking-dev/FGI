@@ -207,10 +207,10 @@ $(function(){
             $(e.target).parent().next().find('span').text("数据项")
             $(e.target).parent().next().append(`
                     <select class="zdcsTypeSelect">
-                        <option>byte</option>
-                        <option>short</option>
                         <option>int</option>
                         <option>long</option>
+                        <option>byte</option>
+                        <option>short</option>
                         <option>float</option>
                         <option>double</option>
                         <option>boolean</option>
@@ -260,13 +260,12 @@ $(function(){
                                 font: {
                                     fontFamily: 'Arial',
                                     color: 'aqua',
-                                
                                     textBaseline: 'top'
                                 },
                                 data:{
                                     inNum:item.inNum,
                                     outNum:item.outNum,
-                                },                            
+                                },
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 paddingTop: 10,
@@ -329,12 +328,7 @@ $(function(){
         window.bigData.delAlgorithmId = $(e.target).data('id')
         $('#lkrAlgorithm').fadeToggle(500)
     })
-      // 点击编辑算子
-    $('body').on('click','.lkr-list-editAlgorithm',(e) => {
-        window.bigData.editAlgorithmId = $(e.target).data('id');
-        let algorithmtype = $(e.target).attr('data-type');
-        window.bigData.formulaType = 'edit'
-        window.bigData.formulaModuleId = $(e.target).attr('data-moduleid');
+    function showMsg(){
         $.ajax({
             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
             data:{
@@ -412,12 +406,10 @@ $(function(){
                                         $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
                                         $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
                                     }
-
                                 }
                             }
                         }
                     }
-
                     $('.Frame').fadeToggle(500)
                 }else if(algorithmtype==3){
                     $('#LogicName').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
@@ -426,7 +418,6 @@ $(function(){
                         url:urlConfig.host+'/module/getModuleColumns',
                         data:{moduleId:window.bigData.formulaModuleId},
                         success: function(data) {
-
                             let str1 =``
                             if(data.length>0){
                                 data.map(item => {
@@ -434,7 +425,6 @@ $(function(){
                                 })
                                 $('.Logic-form-field').html(str1)
                             }
-
                             algorithmfun = algorithmfun.split(" and ")
                             let str =``
                             for(let i=0;i<algorithmfun.length;i++){
@@ -630,20 +620,17 @@ $(function(){
                                         </li>`
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
-
-
                             }
                             $('.logicUl').html(str)
                             $('.Logic').fadeToggle(500)
                         }
                     })
-
                 }
             }
         })
+    }
+      // 点击编辑算子
 
-    })
-    //点击数据项
 
     $('body').on('click','.inputFields',(e) => {
         window.filed.inputFieldsTarget = $(e.target)
@@ -751,13 +738,10 @@ $(function(){
     $('body').on('click','button.delTab',(e) => {
         $(e.target).parents('tr').remove();
     })
-    $('body').on('dblclick','.dbclickAlgorithm',(e) => {
-        if($('#dictordySpan').hasClass('addDicClose')) {
-            $(".addDicClose").attr("class","editDicClose");
-        }
-        $("#dataModulePage").hide();
-        $("#lkrFrame").hide();
-        let AlgorithmId= $(e.target).attr('algorithmid')
+    $("#showAllmag").on("click",()=>{
+        showMsg(window.selectId)
+    })
+    function showMsg(AlgorithmId){
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
             data:{algthId:AlgorithmId} ,
@@ -811,10 +795,10 @@ $(function(){
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
                             <select class="zdcsTypeSelect" disabled>
-                                <option>byte</option>
-                                <option>short</option>
                                 <option>int</option>
                                 <option>long</option>
+                                <option>byte</option>
+                                <option>short</option>
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>
@@ -1126,15 +1110,21 @@ $(function(){
 
                         }
                     })
-                
+
                     $(".Logic").fadeToggle(500)
                 }
             }
         })
+    }
+    $('body').on('dblclick','.dbclickAlgorithm',(e) => {
+        if($('#dictordySpan').hasClass('addDicClose')) {
+            $(".addDicClose").attr("class","editDicClose");
+        }
+        $("#dataModulePage").hide();
+        $("#lkrFrame").hide();
+        let AlgorithmId= $(e.target).attr('algorithmid')
+        showMsg(AlgorithmId)
     })
-
-
-
 })
 
 
