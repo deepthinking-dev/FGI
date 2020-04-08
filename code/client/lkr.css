@@ -644,3 +644,22 @@ body{
     background: #f56c6c;
     color: #fff;
 }
+#colorDiv{
+    width: 80px;
+    height: 150px;
+    position: absolute;
+    top:10%;
+    right: 22%;
+}
+#colorDiv ul{
+    padding: 0;
+}
+#colorDiv li{
+    list-style: none;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+}
