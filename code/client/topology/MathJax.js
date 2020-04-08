@@ -554,11 +554,11 @@ function ActionSure(event){
         })
     }else{
         test.anchors.map((obj,i) => {
-            obj.x = data.anchors[i].x+215 + num.x
+            obj.x = data.anchors[i].x+218 + num.x
             obj.y = data.anchors[i].y+115 + num.y
         })
         test.rotatedAnchors.map((obj,i) => {
-            obj.x = data.rotatedAnchors[i].x-215 + num.x
+            obj.x = data.rotatedAnchors[i].x+218 + num.x
             obj.y = data.rotatedAnchors[i].y-115 + num.y
         })
     }
