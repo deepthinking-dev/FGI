@@ -825,8 +825,9 @@ body .form-input{
 #actionDiv{
     position: absolute;
     height:500px;
-    width: 380px;
-    /* display: flex; */
+    width: 800px;
+    left: 25%;
+    top: 20%;
     display: none;
     background-image: url(./static/mum1.png);
     background-size: 100% 100%;
@@ -839,13 +840,13 @@ body .form-input{
     font-size: 16px;
     color: #fff;
     display: inline-block;
-    width: 120px;
+    width: 80px;
     height: 30px;
     vertical-align: top;
     line-height: 30px;
     margin-right: 20px;
 }
-#xwzly_in,#xwzly_out,#bds_in,#bds_out,#xwSelect_in,#xwSelect_out{
+.xwzly_in,.xwzly_out,.bds_in,.bds_out,.xwSelect_in,.xwSelect_out,#selectOutIn{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -853,7 +854,7 @@ body .form-input{
     border: none;
     outline: none;
     color: #fff;
-    width: 200px;
+    width: 125px;
     height: 30px;
     padding-left: 10px;
 }

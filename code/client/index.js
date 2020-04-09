@@ -13,31 +13,130 @@ $(function(){
         // $("#dicDiv").show();
         // dictionary()
     })
-    $('body').on('click','#selecteAction',(e) => {
-       $("#actionDiv").hide();
-       var s = {
-           id:window.currentActionId,
-           xwzly:$("#xwzly").val(),
-           xw:$("#xwSelect").val(),
-           bds:$("#bds").val()
-       };
-       if(!sessionStorage.actionIds) {
-           sessionStorage.actionIds = JSON.stringify([s])
-       } else {
-           var ids = JSON.parse(sessionStorage.actionIds);
-           var flag = true;
-           ids.map(t=>{
-               if(t.id == s.id){
-                   t = s;
-                   flag = false
-               }
-           })
-           if(flag){
-               var xxx = JSON.parse(sessionStorage.actionIds);
-               xxx.push(s)
-               sessionStorage.actionIds = JSON.stringify(xxx);
-           }
-       }
+    $("#selectOutIn").change(()=> {
+        if ($("#selectOutIn").val() == "1") {
+            $("#actionInDiv").show();
+            $("#actionOutDiv").hide();
+
+        } else {
+            $("#actionInDiv").hide();
+            $("#actionOutDiv").show();
+        }
+    })
+    $('body').on('click','.deleteActionData',(e) => {
+        $(e.target).parent().remove()
+    })
+    $('body').on('click','#addActionButton',(e) => {
+        if($("#selectOutIn").val() == "1"){
+                $("#actionInDiv").append(`
+                      <div style="margin: 10px 0">
+                           <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                           <span>行为</span><select class="xwSelect_in">
+                           <option value=">">></option>
+                           <option value="<"><</option>
+                           <option value="=">=</option>
+                           <option value=">=">>=</option>
+                           <option value="<="><=</option>
+                           <option value="!=">!=</option>
+                           <option value="assignment">赋值</option>
+                       </select>
+                           <span>表达式</span><input type="text" value="" class="bds_in">
+                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                      </div>
+                    `)
+        } else {
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.id}>${s.varname}</option>`
+                    })
+                    $("#actionOutDiv").append(`
+                          <div style="margin: 10px 0">
+                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                               <span>行为</span><select class="xwSelect_out">
+                               <option value=">">></option>
+                               <option value="<"><</option>
+                               <option value="=">=</option>
+                               <option value=">=">>=</option>
+                               <option value="<="><=</option>
+                               <option value="!=">!=</option>
+                               <option value="assignment">赋值</option>
+                           </select>
+                               <span>表达式</span><input type="text" value="" class="bds_out">
+                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                          </div>
+                        `)
+                }
+            })
+        }
+    })
+    $('body').on('click','#addAction',(e) => {
+        $("#actionDiv").hide();
+        $("#actionOutDiv").hide()
+        if($("#selectOutIn").val() == "1"){//输入
+            var dataArr = [];
+            $('#actionInDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_in").val(),
+                    "expression": $(this).find(".bds_in").val(),
+                    "id": 0,
+                    "interfaceparametersid":$("#addActionButton").attr("in_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources": 0
+                };
+                dataArr.push(obj)
+            })
+           var data = {
+                "interfaceRoleDataModels": [
+                    {
+                        "algorithmconditions": dataArr,
+                        "des": "",
+                        "id": 0,
+                        "interfaceID": $("#addActionButton").attr("in_big"),
+                        "parametersID": $("#addActionButton").attr("in_small"),
+                        "preInterfaceID": $("#addActionButton").attr("out_big"),
+                        "preParametersID": $("#addActionButton").attr("out_small"),
+                        "remark": "",
+                        "roleid": 0,
+                    }
+                ],
+            }
+            console.log(data);
+        } else {
+            var arrOut = [];
+            $('#actionOutDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_out").val(),
+                    "expression": $(this).find(".bds_out").val(),
+                    "id": 0,
+                    "interfaceparametersid":$("#addActionButton").attr("out_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources": $(this).find(".xwzly_out").val()
+                };
+                arrOut.push(obj)
+            })
+            var dataOut = {
+                "interfaceRoleDataModels": [
+                    {
+                        "algorithmconditions": arrOut,
+                        "des": "",
+                        "id": 0,
+                        "interfaceID": $("#addActionButton").attr("in_big"),
+                        "parametersID": $("#addActionButton").attr("in_small"),
+                        "preInterfaceID": $("#addActionButton").attr("out_big"),
+                        "preParametersID": $("#addActionButton").attr("out_small"),
+                        "remark": "",
+                        "roleid": 0,
+                    }
+                ],
+            }
+            console.log(dataOut);
+        }
     })
     $('body').on('click','.addDicClose',(e) => {
         $("#editDic").hide();

@@ -190,49 +190,19 @@
     </div>
 <!--       动作-->
        <div id="actionDiv">
-           <div style="text-align: center;margin-top: 20px;color: #409eff;font-size: 20px">
-               输出
-           </div>
-           <div style="margin: 20px 0">
-               <span>行为值来源</span><select id="xwzly_out"></select>
-           </div>
-           <div>
-               <span>行为</span><select id="xwSelect_out">
-                   <option value=">">></option>
-                   <option value="<"><</option>
-                   <option value="=">=</option>
-                   <option value=">=">>=</option>
-                   <option value="<="><=</option>
-                   <option value="!=">!=</option>
-                   <option value="assignment">赋值</option>
+           <div style="text-align: center;margin-top: 20px">
+               <span>动作对象</span>
+               <select id="selectOutIn">
+                   <option value="1">输入端参数</option>
+                   <option value="2">输出端参数</option>
                </select>
+               <button type="button" id="addActionButton" style="background: #409eff;color: #fff;height: 26px;width: 26px;border: none;margin-left: 10px">+</button>
            </div>
-           <div style="margin: 20px 0">
-               <span>表达式</span><input type="text" value="" id="bds_out">
-           </div>
-           <div style="text-align: center;margin-top: 20px;color: #409eff;font-size: 20px">
-               输入
-           </div>
-           <div style="margin: 20px 0">
-               <span>行为值来源</span><select id="xwzly_in"></select>
-           </div>
-           <div>
-               <span>行为</span><select id="xwSelect_in">
-               <option value=">">></option>
-               <option value="<"><</option>
-               <option value="=">=</option>
-               <option value=">=">>=</option>
-               <option value="<="><=</option>
-               <option value="!=">!=</option>
-               <option value="assignment">赋值</option>
-           </select>
-           </div>
-           <div style="margin: 30px 0">
-               <span>表达式</span><input type="text" value="" id="bds_in">
-           </div>
-           <div style="margin-top: 30px">
+           <div style="margin: 20px 30px;height: 350px;overflow: auto;" id="actionInDiv"></div>
+           <div style="margin: 20px 30px;height: 350px;overflow: auto;display: none" id="actionOutDiv"></div>
+           <div style="position: absolute;bottom: 20px;right: 0">
                <button onclick="closeActionDiv()" class="btn pointer" type="button" style="margin-right: 40px;background: #f56c6c;color: #fff;float: right">取消</button>
-               <button id="" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+               <button id="addAction" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
            </div>
        </div>
     <!-- 保存规则 -->
@@ -1904,7 +1874,8 @@
         })
     });
      function closeActionDiv() {
-        $("#actionDiv").hide()
+         $("#actionDiv").hide()
+         $("#actionOutDiv").hide()
      }
 </script>
 </body>

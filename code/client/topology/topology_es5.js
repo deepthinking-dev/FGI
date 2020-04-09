@@ -333,41 +333,18 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-
-                            //window.currentActionId = data.id;
                             let Index_in = data.from.id.indexOf("tableAlgorithm");
                             let Index_out = data.to.id.indexOf("tableAlgorithm");
-                            let id_in = data.from.id.slice(0,Index_in);
+                            let id_in = data.from.id.slice(0,Index_in);//算子id
                             let id_out = data.to.id.slice(0,Index_out);
+
+                            let out_big = data.from.id.slice(0,data.from.id.indexOf('OUT'));//输出大矩形id
+                            let out_small = data.from.id;//输出小矩形id
+                            let in_big = data.to.id.slice(0,data.to.id.indexOf('IN'));
+                            let in_small = data.to.id;
+                            $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             $('#actionDiv').show();
-                            $(`#actionDiv`).css({
-                                top:(data.from.y + data.to.y)/2+"px",
-                                left:(data.from.x + data.to.x)/2+"px"
-                            })
-                            $("#xwzly_in").empty();
-                            $("#xwzly_out").empty();
-                            $.ajax({
-                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                data:{algthId:id_in},
-                                success(res) {
-                                    res.tableFuncs.map(s=>{
-                                        $("#xwzly_in").append(`
-                                            <option value=${s.varname}>${s.varname}</option>
-                                        `)
-                                    })
-                                }
-                            })
-                            $.ajax({
-                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                data:{algthId:id_out},
-                                success(res) {
-                                    res.tableFuncs.map(s=>{
-                                        $("#xwzly_out").append(`
-                                            <option value=${s.varname}>${s.varname}</option>
-                                        `)
-                                    })
-                                }
-                            })
+                            $('#actionInDiv').show();
                             selected = {
                                 "type": event,
                                 "data": data
