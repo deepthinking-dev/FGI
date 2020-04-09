@@ -342,6 +342,7 @@ var Topology = {
                             let out_small = data.from.id;//输出小矩形id
                             let in_big = data.to.id.slice(0,data.to.id.indexOf('IN'));
                             let in_small = data.to.id;
+                            $('#selectOutIn').val('1')
                             $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             $('#actionDiv').show();
                             $('#actionInDiv').show();
