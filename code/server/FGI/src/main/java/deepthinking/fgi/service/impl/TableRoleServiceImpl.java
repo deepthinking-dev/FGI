@@ -328,13 +328,63 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         try {
             TableInterfacerole interfacerole=interfaceRoleDataModel.getTable_InterfaceRole();
             interfaceroleMapper.updateByPrimaryKeySelective(interfacerole);
-            //删除以前的动作，再新增当前的动作
+            List<TableAlgorithmcondition> tableAlgorithmconditions= interfaceRoleDataModel.getAlgorithmconditions();
+            //查询以前的动作
             TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
             tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfacerole.getId());
-            algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
-            List<TableAlgorithmcondition> tableAlgorithmconditions= interfaceRoleDataModel.getAlgorithmconditions();
-            if(tableAlgorithmconditions.size()>0){
+            List<TableAlgorithmcondition> oldData=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
+            List<TableAlgorithmcondition> addConditon=new ArrayList<>();
+            List<TableAlgorithmcondition> delConditon=new ArrayList<>();
+            List<TableAlgorithmcondition> updConditon=new ArrayList<>();
+            if(oldData.size()>0){
+                for(TableAlgorithmcondition condition:tableAlgorithmconditions){
+                    boolean flag=false;
+                    for(TableAlgorithmcondition old:oldData){
+                        if(old.getId()==condition.getId()){
+                            updConditon.add(condition);
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        addConditon.add(condition);
+                    }
+                }
+                for(TableAlgorithmcondition old:oldData){
+                    boolean flag=false;
+                    for(TableAlgorithmcondition tupdata:updConditon){
+                        if(old.getId()==tupdata.getId()){
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        delConditon.add(old);
+                    }
+                }
+                //删除
+                delConditon.forEach(data->algorithmconditionMapper.deleteByPrimaryKey(data.getId()));
+                //新增
+                addConditon.forEach(data->algorithmconditionMapper.insert(data));
+                //修改
+                updConditon.forEach(data->algorithmconditionMapper.updateByPrimaryKeySelective(data));
+            }else{
                 tableAlgorithmconditions.forEach(tableAlgorithmcondition->algorithmconditionMapper.insert(tableAlgorithmcondition));
+            }
+
+
+
+            if(tableAlgorithmconditions.size()>0){
+
+                tableAlgorithmconditions.forEach(tableAlgorithmcondition->{
+                    if(tableAlgorithmcondition.getId()!=null&&tableAlgorithmcondition.getId()!=0){
+                        algorithmconditionMapper.updateByPrimaryKeySelective(tableAlgorithmcondition);
+                    }else {
+                        algorithmconditionMapper.insert(tableAlgorithmcondition);
+                    }
+                });
+            }else{
+                tableAlgorithmconditions.forEach(tableAlgorithmcondition->algorithmconditionMapper.deleteByPrimaryKey(tableAlgorithmcondition.getId()));
             }
             return true;
         }catch (Exception e){
@@ -352,12 +402,49 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             tableOperatorinterface.setAlgorithmid(operatorInterfaceDataModel.getAlgorithmID());
             tableOperatorinterface.setRoleid(operatorInterfaceDataModel.getRoleID());
             operatorinterfaceMapper.updateByPrimaryKeySelective(tableOperatorinterface);
-            //先删除以前的参数，再新增,以后再优化
+
             TableInterfaceparametersCriteria tableInterfaceparametersCriteria=new TableInterfaceparametersCriteria();
             tableInterfaceparametersCriteria.createCriteria().andInterfaceidEqualTo(operatorInterfaceDataModel.getId());
-            interfaceparametersMapper.deleteByExample(tableInterfaceparametersCriteria);
+            List<TableInterfaceparameters> oldData=interfaceparametersMapper.selectByExample(tableInterfaceparametersCriteria);
             List<TableInterfaceparameters> interfaceparameters=operatorInterfaceDataModel.getTableInterfaceparametersList();
-            interfaceparameters.forEach(interfaceparameter->interfaceparametersMapper.insert(interfaceparameter));
+            if(oldData.size()>0){
+                List<TableInterfaceparameters> addPara=new ArrayList<>();
+                List<TableInterfaceparameters> updataPara=new ArrayList<>();
+                List<TableInterfaceparameters> deletedataPara=new ArrayList<>();
+                for(TableInterfaceparameters para:interfaceparameters){
+                    boolean flag=false;
+                    for(TableInterfaceparameters old:oldData){
+                        if(para.getId().equals(old.getId())){//修改
+                            updataPara.add(para);
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        addPara.add(para);
+                    }
+                }
+                for(TableInterfaceparameters old:oldData){
+                    boolean flag=false;
+                    for(TableInterfaceparameters updte:updataPara){
+                        if(old.getId().equals(updte.getId())){
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        deletedataPara.add(old);
+                    }
+                }
+                //修改
+                updataPara.forEach(data->interfaceparametersMapper.updateByPrimaryKeySelective(data));
+                //删除
+                deletedataPara.forEach(data->interfaceparametersMapper.deleteByPrimaryKey(data.getId()));
+                //新增
+                addPara.forEach(data->interfaceparametersMapper.insert(data));
+            }else{
+                interfaceparameters.forEach(interfaceparameter->interfaceparametersMapper.insert(interfaceparameter));
+            }
             return operatorInterfaceDataModel;
         }catch (Exception e){
             e.printStackTrace();
