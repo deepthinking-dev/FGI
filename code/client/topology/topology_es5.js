@@ -177,6 +177,7 @@ var Topology = {
                 $("#menu_lock").addClass("menu-a-disabled");
                 $("#menu_lock").removeClass("menu-a");
             }
+            window.lineDiv = false;
             //显示右键菜单
             $("#canvas_menus").css({
                 "left": document.body.scrollLeft + event.clientX, "top":
@@ -335,8 +336,8 @@ var Topology = {
                         case 'line':
                             let Index_in = data.from.id.indexOf("tableAlgorithm");
                             let Index_out = data.to.id.indexOf("tableAlgorithm");
-                            let id_in = data.from.id.slice(0,Index_in);//算子id
-                            let id_out = data.to.id.slice(0,Index_out);
+                            let id_in = data.to.id.slice(0,Index_in);//算子id
+                            let id_out = data.from.id.slice(0,Index_out);
 
                             let out_big = data.from.id.slice(0,data.from.id.indexOf('OUT'));//输出大矩形id
                             let out_small = data.from.id;//输出小矩形id
@@ -344,7 +345,46 @@ var Topology = {
                             let in_small = data.to.id;
                             $('#selectOutIn').val('1')
                             $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
-                            $('#actionDiv').show();
+                            window.lineDiv = true;
+                            deleteLineDataId = out_small + "AND" + in_small;
+                            $("#actionInDiv").empty();
+                            $("#actionOutDiv").empty();
+                            globalActionDatas.map(s=>{
+                                if(s.id == out_small + "AND" + in_small){
+                                    try{
+                                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                                        lineDatas.map(t=>{
+                                            $("#actionInDiv").append(`
+                                              <div style="margin: 10px 0">
+                                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                                   <span>行为</span><select class="xwSelect_in">
+                                                   <option value=">">></option>
+                                                   <option value="<"><</option>
+                                                   <option value="=">=</option>
+                                                   <option value=">=">>=</option>
+                                                   <option value="<="><=</option>
+                                                   <option value="!=">!=</option>
+                                                   <option value="assignment">赋值</option>
+                                               </select>
+                                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                              </div>
+                                            `)
+                                        })
+                                        lineDatas.map((t,i)=>{
+                                            $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                        })
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            })
+                            setTimeout(()=>{
+                                if(window.lineDiv){
+                                    $('#actionDiv').show();
+                                }
+                            },300)
+
                             $('#actionInDiv').show();
                             selected = {
                                 "type": event,
@@ -517,8 +557,10 @@ var Topology = {
                             
                             break   
                         case 'moveInNode':
-                            if(data.childStand) canvas.lockNodes([data], false)
-                           
+                            if(data.childStand){
+                                canvas.lockNodes([data], false)
+                            }
+
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
@@ -1198,7 +1240,6 @@ var Topology = {
         }
         canvas.render(true);
     },
-    // 删除
     onRender: function () {
         canvas.data.nodes = []
         canvas.data.lines = []
@@ -1206,8 +1247,13 @@ var Topology = {
     
     },
     // 删除
-    onDelete: function () {
+    onDelete: function (e) {
         canvas.delete();
+        globalActionDatas.map((s,i)=>{
+            if(s.id == deleteLineDataId){
+                globalActionDatas.splice(i,1)
+            }
+        })
     },
     // 撤销
     undo: function () {
@@ -1228,7 +1274,7 @@ var Topology = {
     // 粘贴
     parse: function () {
         canvas.parse();
-    },
+    }
 };
 // window全局，这样别的地方方便调用
 window.addAlgorithm = Topology.addAlgorithm;
@@ -1256,7 +1302,6 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
-
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;
 // window.rectify = user.rectify;

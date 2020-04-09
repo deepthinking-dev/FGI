@@ -17,10 +17,74 @@ $(function(){
         if ($("#selectOutIn").val() == "1") {
             $("#actionInDiv").show();
             $("#actionOutDiv").hide();
-
+            $("#actionInDiv").empty();
+            $("#actionOutDiv").empty();
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                    var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                    lineDatas.map(t=>{
+                        $("#actionInDiv").append(`
+                              <div style="margin: 10px 0">
+                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                   <span>行为</span><select class="xwSelect_in">
+                                   <option value=">">></option>
+                                   <option value="<"><</option>
+                                   <option value="=">=</option>
+                                   <option value=">=">>=</option>
+                                   <option value="<="><=</option>
+                                   <option value="!=">!=</option>
+                                   <option value="assignment">赋值</option>
+                               </select>
+                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                              </div>
+                            `)
+                    })
+                    lineDatas.map((t,i)=>{
+                        $('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                    })
+                }
+            })
         } else {
             $("#actionInDiv").hide();
             $("#actionOutDiv").show();
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.id}>${s.varname}</option>`
+                    })
+                    globalActionDatas.map(s=>{
+                        if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                            var lineDatas = s.dataOut.interfaceRoleDataModels[0].algorithmconditions;
+                            lineDatas.map(t=>{
+                                $("#actionOutDiv").append(`
+                                      <div style="margin: 10px 0">
+                                           <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                           <span>行为</span><select class="xwSelect_out">
+                                           <option value=">">></option>
+                                           <option value="<"><</option>
+                                           <option value="=">=</option>
+                                           <option value=">=">>=</option>
+                                           <option value="<="><=</option>
+                                           <option value="!=">!=</option>
+                                           <option value="assignment">赋值</option>
+                                       </select>
+                                           <span>表达式</span><input type="text" value=${t.expression} class="bds_out">
+                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                      </div>
+                                `)
+                            })
+                            lineDatas.map((t,i)=>{
+                                $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                            })
+                        }
+                    })
+                }
+            })
         }
     })
     $('body').on('click','.deleteActionData',(e) => {
@@ -105,7 +169,20 @@ $(function(){
                     }
                 ],
             }
-            console.log(data);
+            var flag = true;
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    s.dataIn = data;
+                    flag = false
+                }
+            })
+            if(flag){
+                globalActionDatas.push({
+                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
+                    dataIn:data,
+                    dataOut:""
+                })
+            }
         } else {
             var arrOut = [];
             $('#actionOutDiv div').each(function () {
@@ -135,7 +212,20 @@ $(function(){
                     }
                 ],
             }
-            console.log(dataOut);
+            var flag = true;
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    s.dataOut = data;
+                    flag = false
+                }
+            })
+            if(flag){
+                globalActionDatas.push({
+                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
+                    dataIn:"",
+                    dataOut:dataOut
+                })
+            }
         }
     })
     $('body').on('click','.addDicClose',(e) => {
