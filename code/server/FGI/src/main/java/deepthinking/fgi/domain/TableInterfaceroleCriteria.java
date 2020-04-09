@@ -324,52 +324,62 @@ public class TableInterfaceroleCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidEqualTo(Integer value) {
+        public Criteria andInterfaceidEqualTo(String value) {
             addCriterion("InterfaceID =", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidNotEqualTo(Integer value) {
+        public Criteria andInterfaceidNotEqualTo(String value) {
             addCriterion("InterfaceID <>", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidGreaterThan(Integer value) {
+        public Criteria andInterfaceidGreaterThan(String value) {
             addCriterion("InterfaceID >", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInterfaceidGreaterThanOrEqualTo(String value) {
             addCriterion("InterfaceID >=", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidLessThan(Integer value) {
+        public Criteria andInterfaceidLessThan(String value) {
             addCriterion("InterfaceID <", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidLessThanOrEqualTo(Integer value) {
+        public Criteria andInterfaceidLessThanOrEqualTo(String value) {
             addCriterion("InterfaceID <=", value, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidIn(List<Integer> values) {
+        public Criteria andInterfaceidLike(String value) {
+            addCriterion("InterfaceID like", value, "interfaceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceidNotLike(String value) {
+            addCriterion("InterfaceID not like", value, "interfaceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceidIn(List<String> values) {
             addCriterion("InterfaceID in", values, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidNotIn(List<Integer> values) {
+        public Criteria andInterfaceidNotIn(List<String> values) {
             addCriterion("InterfaceID not in", values, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidBetween(Integer value1, Integer value2) {
+        public Criteria andInterfaceidBetween(String value1, String value2) {
             addCriterion("InterfaceID between", value1, value2, "interfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceidNotBetween(Integer value1, Integer value2) {
+        public Criteria andInterfaceidNotBetween(String value1, String value2) {
             addCriterion("InterfaceID not between", value1, value2, "interfaceid");
             return (Criteria) this;
         }
@@ -384,52 +394,62 @@ public class TableInterfaceroleCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andParametersidEqualTo(Integer value) {
+        public Criteria andParametersidEqualTo(String value) {
             addCriterion("ParametersID =", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidNotEqualTo(Integer value) {
+        public Criteria andParametersidNotEqualTo(String value) {
             addCriterion("ParametersID <>", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidGreaterThan(Integer value) {
+        public Criteria andParametersidGreaterThan(String value) {
             addCriterion("ParametersID >", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParametersidGreaterThanOrEqualTo(String value) {
             addCriterion("ParametersID >=", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidLessThan(Integer value) {
+        public Criteria andParametersidLessThan(String value) {
             addCriterion("ParametersID <", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidLessThanOrEqualTo(Integer value) {
+        public Criteria andParametersidLessThanOrEqualTo(String value) {
             addCriterion("ParametersID <=", value, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidIn(List<Integer> values) {
+        public Criteria andParametersidLike(String value) {
+            addCriterion("ParametersID like", value, "parametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersidNotLike(String value) {
+            addCriterion("ParametersID not like", value, "parametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParametersidIn(List<String> values) {
             addCriterion("ParametersID in", values, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidNotIn(List<Integer> values) {
+        public Criteria andParametersidNotIn(List<String> values) {
             addCriterion("ParametersID not in", values, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidBetween(Integer value1, Integer value2) {
+        public Criteria andParametersidBetween(String value1, String value2) {
             addCriterion("ParametersID between", value1, value2, "parametersid");
             return (Criteria) this;
         }
 
-        public Criteria andParametersidNotBetween(Integer value1, Integer value2) {
+        public Criteria andParametersidNotBetween(String value1, String value2) {
             addCriterion("ParametersID not between", value1, value2, "parametersid");
             return (Criteria) this;
         }
@@ -444,52 +464,62 @@ public class TableInterfaceroleCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidEqualTo(Integer value) {
+        public Criteria andPreinterfaceidEqualTo(String value) {
             addCriterion("PreInterfaceID =", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidNotEqualTo(Integer value) {
+        public Criteria andPreinterfaceidNotEqualTo(String value) {
             addCriterion("PreInterfaceID <>", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidGreaterThan(Integer value) {
+        public Criteria andPreinterfaceidGreaterThan(String value) {
             addCriterion("PreInterfaceID >", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPreinterfaceidGreaterThanOrEqualTo(String value) {
             addCriterion("PreInterfaceID >=", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidLessThan(Integer value) {
+        public Criteria andPreinterfaceidLessThan(String value) {
             addCriterion("PreInterfaceID <", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidLessThanOrEqualTo(Integer value) {
+        public Criteria andPreinterfaceidLessThanOrEqualTo(String value) {
             addCriterion("PreInterfaceID <=", value, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidIn(List<Integer> values) {
+        public Criteria andPreinterfaceidLike(String value) {
+            addCriterion("PreInterfaceID like", value, "preinterfaceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreinterfaceidNotLike(String value) {
+            addCriterion("PreInterfaceID not like", value, "preinterfaceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreinterfaceidIn(List<String> values) {
             addCriterion("PreInterfaceID in", values, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidNotIn(List<Integer> values) {
+        public Criteria andPreinterfaceidNotIn(List<String> values) {
             addCriterion("PreInterfaceID not in", values, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidBetween(Integer value1, Integer value2) {
+        public Criteria andPreinterfaceidBetween(String value1, String value2) {
             addCriterion("PreInterfaceID between", value1, value2, "preinterfaceid");
             return (Criteria) this;
         }
 
-        public Criteria andPreinterfaceidNotBetween(Integer value1, Integer value2) {
+        public Criteria andPreinterfaceidNotBetween(String value1, String value2) {
             addCriterion("PreInterfaceID not between", value1, value2, "preinterfaceid");
             return (Criteria) this;
         }
@@ -504,52 +534,62 @@ public class TableInterfaceroleCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidEqualTo(Integer value) {
+        public Criteria andPreparametersidEqualTo(String value) {
             addCriterion("PreParametersID =", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidNotEqualTo(Integer value) {
+        public Criteria andPreparametersidNotEqualTo(String value) {
             addCriterion("PreParametersID <>", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidGreaterThan(Integer value) {
+        public Criteria andPreparametersidGreaterThan(String value) {
             addCriterion("PreParametersID >", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPreparametersidGreaterThanOrEqualTo(String value) {
             addCriterion("PreParametersID >=", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidLessThan(Integer value) {
+        public Criteria andPreparametersidLessThan(String value) {
             addCriterion("PreParametersID <", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidLessThanOrEqualTo(Integer value) {
+        public Criteria andPreparametersidLessThanOrEqualTo(String value) {
             addCriterion("PreParametersID <=", value, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidIn(List<Integer> values) {
+        public Criteria andPreparametersidLike(String value) {
+            addCriterion("PreParametersID like", value, "preparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreparametersidNotLike(String value) {
+            addCriterion("PreParametersID not like", value, "preparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreparametersidIn(List<String> values) {
             addCriterion("PreParametersID in", values, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidNotIn(List<Integer> values) {
+        public Criteria andPreparametersidNotIn(List<String> values) {
             addCriterion("PreParametersID not in", values, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidBetween(Integer value1, Integer value2) {
+        public Criteria andPreparametersidBetween(String value1, String value2) {
             addCriterion("PreParametersID between", value1, value2, "preparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andPreparametersidNotBetween(Integer value1, Integer value2) {
+        public Criteria andPreparametersidNotBetween(String value1, String value2) {
             addCriterion("PreParametersID not between", value1, value2, "preparametersid");
             return (Criteria) this;
         }

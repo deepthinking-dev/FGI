@@ -12,8 +12,8 @@ public class TableInterfaceparameters {
      *
      * @mbg.generated
      */
-      @ApiModelProperty(value = "ID")
-    private Integer id;
+     @ApiModelProperty(value = "ID")
+    private String id;
 
     /**
      *
@@ -23,7 +23,7 @@ public class TableInterfaceparameters {
      * @mbg.generated
      */
      @ApiModelProperty(value = "接口ID")
-    private Integer interfaceid;
+    private String interfaceid;
 
     /**
      *
@@ -63,7 +63,7 @@ public class TableInterfaceparameters {
      *
      * @mbg.generated
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -75,8 +75,8 @@ public class TableInterfaceparameters {
      *
      * @mbg.generated
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**
@@ -87,7 +87,7 @@ public class TableInterfaceparameters {
      *
      * @mbg.generated
      */
-    public Integer getInterfaceid() {
+    public String getInterfaceid() {
         return interfaceid;
     }
 
@@ -99,8 +99,8 @@ public class TableInterfaceparameters {
      *
      * @mbg.generated
      */
-    public void setInterfaceid(Integer interfaceid) {
-        this.interfaceid = interfaceid;
+    public void setInterfaceid(String interfaceid) {
+        this.interfaceid = interfaceid == null ? null : interfaceid.trim();
     }
 
     /**

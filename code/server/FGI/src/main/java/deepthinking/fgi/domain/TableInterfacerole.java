@@ -33,7 +33,7 @@ public class TableInterfacerole {
      * @mbg.generated
      */
      @ApiModelProperty(value = "接口ID")
-    private Integer interfaceid;
+    private String interfaceid;
 
     /**
      *
@@ -42,8 +42,8 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-     @ApiModelProperty(value = "接口参数ID")
-    private Integer parametersid;
+      @ApiModelProperty(value = "接口参数ID")
+    private String parametersid;
 
     /**
      *
@@ -53,7 +53,7 @@ public class TableInterfacerole {
      * @mbg.generated
      */
      @ApiModelProperty(value = "前序接口ID")
-    private Integer preinterfaceid;
+    private String preinterfaceid;
 
     /**
      *
@@ -63,7 +63,7 @@ public class TableInterfacerole {
      * @mbg.generated
      */
      @ApiModelProperty(value = "前序接口参数ID")
-    private Integer preparametersid;
+    private String preparametersid;
 
     /**
      *
@@ -141,7 +141,7 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public Integer getInterfaceid() {
+    public String getInterfaceid() {
         return interfaceid;
     }
 
@@ -153,8 +153,8 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public void setInterfaceid(Integer interfaceid) {
-        this.interfaceid = interfaceid;
+    public void setInterfaceid(String interfaceid) {
+        this.interfaceid = interfaceid == null ? null : interfaceid.trim();
     }
 
     /**
@@ -165,7 +165,7 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public Integer getParametersid() {
+    public String getParametersid() {
         return parametersid;
     }
 
@@ -177,8 +177,8 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public void setParametersid(Integer parametersid) {
-        this.parametersid = parametersid;
+    public void setParametersid(String parametersid) {
+        this.parametersid = parametersid == null ? null : parametersid.trim();
     }
 
     /**
@@ -189,7 +189,7 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public Integer getPreinterfaceid() {
+    public String getPreinterfaceid() {
         return preinterfaceid;
     }
 
@@ -201,8 +201,8 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public void setPreinterfaceid(Integer preinterfaceid) {
-        this.preinterfaceid = preinterfaceid;
+    public void setPreinterfaceid(String preinterfaceid) {
+        this.preinterfaceid = preinterfaceid == null ? null : preinterfaceid.trim();
     }
 
     /**
@@ -213,7 +213,7 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public Integer getPreparametersid() {
+    public String getPreparametersid() {
         return preparametersid;
     }
 
@@ -225,8 +225,8 @@ public class TableInterfacerole {
      *
      * @mbg.generated
      */
-    public void setPreparametersid(Integer preparametersid) {
-        this.preparametersid = preparametersid;
+    public void setPreparametersid(String preparametersid) {
+        this.preparametersid = preparametersid == null ? null : preparametersid.trim();
     }
 
     /**

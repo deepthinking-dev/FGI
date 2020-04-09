@@ -5,8 +5,8 @@ import java.util.Map;
 
 import deepthinking.fgi.domain.TableInterfaceparameters;
 import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
 import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criterion;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableInterfaceparametersSqlProvider {
@@ -48,7 +48,7 @@ public class TableInterfaceparametersSqlProvider {
         sql.INSERT_INTO("table_interfaceparameters");
         
         if (record.getInterfaceid() != null) {
-            sql.VALUES("InterfaceID", "#{interfaceid,jdbcType=INTEGER}");
+            sql.VALUES("InterfaceID", "#{interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParameterssources() != null) {
@@ -107,11 +107,11 @@ public class TableInterfaceparametersSqlProvider {
         sql.UPDATE("table_interfaceparameters");
         
         if (record.getId() != null) {
-            sql.SET("ID = #{record.id,jdbcType=INTEGER}");
+            sql.SET("ID = #{record.id,jdbcType=VARCHAR}");
         }
         
         if (record.getInterfaceid() != null) {
-            sql.SET("InterfaceID = #{record.interfaceid,jdbcType=INTEGER}");
+            sql.SET("InterfaceID = #{record.interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParameterssources() != null) {
@@ -140,8 +140,8 @@ public class TableInterfaceparametersSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("table_interfaceparameters");
         
-        sql.SET("ID = #{record.id,jdbcType=INTEGER}");
-        sql.SET("InterfaceID = #{record.interfaceid,jdbcType=INTEGER}");
+        sql.SET("ID = #{record.id,jdbcType=VARCHAR}");
+        sql.SET("InterfaceID = #{record.interfaceid,jdbcType=VARCHAR}");
         sql.SET("ParametersSources = #{record.parameterssources,jdbcType=VARCHAR}");
         sql.SET("ParametersName = #{record.parametersname,jdbcType=VARCHAR}");
         sql.SET("inOrOut = #{record.inorout,jdbcType=DECIMAL}");
@@ -162,7 +162,7 @@ public class TableInterfaceparametersSqlProvider {
         sql.UPDATE("table_interfaceparameters");
         
         if (record.getInterfaceid() != null) {
-            sql.SET("InterfaceID = #{interfaceid,jdbcType=INTEGER}");
+            sql.SET("InterfaceID = #{interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParameterssources() != null) {
@@ -177,7 +177,7 @@ public class TableInterfaceparametersSqlProvider {
             sql.SET("inOrOut = #{inorout,jdbcType=DECIMAL}");
         }
         
-        sql.WHERE("ID = #{id,jdbcType=INTEGER}");
+        sql.WHERE("ID = #{id,jdbcType=VARCHAR}");
         
         return sql.toString();
     }

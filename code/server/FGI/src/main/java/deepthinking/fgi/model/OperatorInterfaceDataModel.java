@@ -9,7 +9,7 @@ import java.util.List;
 @ApiModel(value = "算法规则中算子接口信息")
 public class OperatorInterfaceDataModel {
     @ApiModelProperty(value = "ID")
-    private int id;
+    private String id;
     @ApiModelProperty(value = "规则ID")
     private int RoleID;
     @ApiModelProperty(value = "算子ID")
@@ -22,11 +22,11 @@ public class OperatorInterfaceDataModel {
     public OperatorInterfaceDataModel() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

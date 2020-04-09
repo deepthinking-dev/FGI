@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableOperatorinterface;
-import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criteria;
-import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criterion;
-import deepthinking.fgi.domain.TableOperatorinterfaceCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableOperatorinterface;
+import deepthinking.fgi.domain.TableOperatorinterfaceCriteria;
+import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criteria;
+import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableOperatorinterfaceSqlProvider {
@@ -101,7 +102,7 @@ public class TableOperatorinterfaceSqlProvider {
         sql.UPDATE("table_operatorinterface");
         
         if (record.getId() != null) {
-            sql.SET("ID = #{record.id,jdbcType=INTEGER}");
+            sql.SET("ID = #{record.id,jdbcType=VARCHAR}");
         }
         
         if (record.getRoleid() != null) {
@@ -130,7 +131,7 @@ public class TableOperatorinterfaceSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("table_operatorinterface");
         
-        sql.SET("ID = #{record.id,jdbcType=INTEGER}");
+        sql.SET("ID = #{record.id,jdbcType=VARCHAR}");
         sql.SET("RoleID = #{record.roleid,jdbcType=INTEGER}");
         sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
         sql.SET("InterfaceName = #{record.interfacename,jdbcType=VARCHAR}");
@@ -162,7 +163,7 @@ public class TableOperatorinterfaceSqlProvider {
             sql.SET("InterfaceName = #{interfacename,jdbcType=VARCHAR}");
         }
         
-        sql.WHERE("ID = #{id,jdbcType=INTEGER}");
+        sql.WHERE("ID = #{id,jdbcType=VARCHAR}");
         
         return sql.toString();
     }
