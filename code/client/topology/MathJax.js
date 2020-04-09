@@ -122,7 +122,7 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        toastr.success('保存成功！');
+                        toastr.success(data.msg);
                         Topology.init();
                         dictionary()
                     }
@@ -266,7 +266,7 @@ function ConfirmLogic(){
             data:JSON.stringify(param),
             success: function(data) {
                 if(data.status == 1){
-                    toastr.success('保存成功！');
+                    toastr.success(data.msg);
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
                     dictionary()
@@ -483,7 +483,6 @@ function ActionSure(event){
                 y:heights+5
             }
         }else{
-            debugger
             num = {
                 x:-widths,
                 y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
@@ -576,8 +575,6 @@ function ActionSure(event){
     if(flag){
         let numw = 0
         data.data.inNum > data.data.outNum ? numw = data.data.inNum : numw = data.data.outNum
-        console.log(data.rect.height,(heights*numw)+5*numw)
-        debugger
         // if(data.rect.height - ((heights*numw)+5*numw) < (heights*numw)+5*numw){
         //     window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+5
         //     window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+5

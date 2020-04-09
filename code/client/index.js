@@ -13,6 +13,32 @@ $(function(){
         // $("#dicDiv").show();
         // dictionary()
     })
+    $('body').on('click','#selecteAction',(e) => {
+       $("#actionDiv").hide();
+       var s = {
+           id:window.currentActionId,
+           xwzly:$("#xwzly").val(),
+           xw:$("#xwSelect").val(),
+           bds:$("#bds").val()
+       };
+       if(!sessionStorage.actionIds) {
+           sessionStorage.actionIds = JSON.stringify([s])
+       } else {
+           var ids = JSON.parse(sessionStorage.actionIds);
+           var flag = true;
+           ids.map(t=>{
+               if(t.id == s.id){
+                   t = s;
+                   flag = false
+               }
+           })
+           if(flag){
+               var xxx = JSON.parse(sessionStorage.actionIds);
+               xxx.push(s)
+               sessionStorage.actionIds = JSON.stringify(xxx);
+           }
+       }
+    })
     $('body').on('click','.addDicClose',(e) => {
         $("#editDic").hide();
         $("#dicDiv").show();

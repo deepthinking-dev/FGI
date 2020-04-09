@@ -317,8 +317,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                //    debugger
-                console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -335,6 +333,41 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+
+                            //window.currentActionId = data.id;
+                            let Index_in = data.from.id.indexOf("tableAlgorithm");
+                            let Index_out = data.to.id.indexOf("tableAlgorithm");
+                            let id_in = data.from.id.slice(0,Index_in);
+                            let id_out = data.to.id.slice(0,Index_out);
+                            $('#actionDiv').show();
+                            $(`#actionDiv`).css({
+                                top:(data.from.y + data.to.y)/2+"px",
+                                left:(data.from.x + data.to.x)/2+"px"
+                            })
+                            $("#xwzly_in").empty();
+                            $("#xwzly_out").empty();
+                            $.ajax({
+                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                data:{algthId:id_in},
+                                success(res) {
+                                    res.tableFuncs.map(s=>{
+                                        $("#xwzly_in").append(`
+                                            <option value=${s.varname}>${s.varname}</option>
+                                        `)
+                                    })
+                                }
+                            })
+                            $.ajax({
+                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                data:{algthId:id_out},
+                                success(res) {
+                                    res.tableFuncs.map(s=>{
+                                        $("#xwzly_out").append(`
+                                            <option value=${s.varname}>${s.varname}</option>
+                                        `)
+                                    })
+                                }
+                            })
                             selected = {
                                 "type": event,
                                 "data": data
@@ -382,15 +415,11 @@ var Topology = {
                             let heightsa = data[0].rect.height
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             canvas.data.nodes.map(item => {
-                                // console.log(item,'sdsdsdsd')
+
                                 // canvas.lockNodes([data[0]], true)
                                 if(item.childStand){
                                     // canvas.lockNodes([data[0]], false)
                                     if(item.childStand.type == data[0].id+'的弟弟'){
-                                        console.log(item,'45454545')
-                                        // canvas.lockNodes([item], false)
-
-
                                         if(item.id.includes('IN')){
                                             let nums = item.childStand.wz
                                             item.rect.x = data[0].rect.x + nums.x
@@ -496,12 +525,10 @@ var Topology = {
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.from.id == obj.id) return obj
                                     })[0]
-                                    console.log(nodesa,"11111111111111111111111111111111111")
                                     item.from.x = nodesa.rotatedAnchors[3].x
                                     item.from.y = nodesa.rotatedAnchors[3].y
                                 }
                                 if(item.to.id.indexOf(data[0].id) != -1){
-                                    console.log(item,"22222222222222222222222222222222")
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.to.id == obj.id) return obj
                                     })[0]
@@ -525,7 +552,6 @@ var Topology = {
                             function unique(arr){         
                                 for(var i=0; i<arr.length; i++){
                                     for(var j=i+1; j<arr.length; j++){
-                                        debugger
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
                                             arr.splice(j,1);                                           
                                             j--;
@@ -549,7 +575,6 @@ var Topology = {
                                 "data": data
                             };
                             if(window.bigData.isAddInOut){
-                            //    debugger
                                 if(window.bigData.isAddInOutType == "in"){
                                     window.Topology.dblclickNode.data.inNum ++
                                     // if( window.Topology.dblclickNode.data.inNum > 5){
@@ -568,17 +593,13 @@ var Topology = {
                                 // }
                                 
                             }
-                            
-                         
-                            console.log(data,selected,canvas.data)
+
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
                             self.initNode(); 
-                            
-                            
-                            // debugger
+
                             let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data1.childStand){
                                 return
@@ -586,7 +607,6 @@ var Topology = {
                             if(data.data.inNum > 0){
                                 let data2 = JSON.parse(JSON.stringify(data1)) 
                                 for(let i= 0;i<data.data.inNum; i++){
-                                    console.log(i)
                                     let widths = data1.rect.width/10
                                     let heights = data1.rect.height/10
                                     let num = {
@@ -639,7 +659,6 @@ var Topology = {
                                
                                 canvas.render();
                             }
-                            console.log(canvas.data.nodes)
                             break;
                         case 'resizeNodes':
                             // canvas.resizeNodes(0,0)
@@ -676,7 +695,6 @@ var Topology = {
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
-                                    debugger
                                     if(fromType == toType){
                                         switch (fromType) {
                                             case '常量':
@@ -784,7 +802,7 @@ var Topology = {
                             $.ajax({
                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                 data:{algthId:currId},
-                                success: function(data) {
+                                success: function(res) {
                                     $(".actionSelected2").empty();
                                     $(".actionSelected2").off("change").on("change",()=>{
                                         if($(".actionSelected2").val() == "2"){
@@ -797,7 +815,7 @@ var Topology = {
                                             $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
                                         }
                                     })
-                                    data.tableFuncs.map((s,i)=>{
+                                    res.tableFuncs.map((s,i)=>{
                                         if(i == 0){
                                             if(s.vartype == 2){
                                                 $("#varTypeInput").val("常量")
@@ -813,14 +831,14 @@ var Topology = {
                                             <option dataValue=${s.valvalue} value=${s.vartype}>${s.varname}</option>
                                         `)
                                     })
+                                    $('#ruleAct').show();
+                                    $(`#ruleAct`).css({
+                                        top:(data.rect.y + 80)+"px",
+                                        left:(data.rect.x + 240)+"px"
+                                    })
+                                    self.dblclickNode = data
                                 }
                             })
-                            $('#ruleAct').show();
-                            $(`#ruleAct`).css({
-                                top:(data.rect.y + 80)+"px",
-                                left:(data.rect.x + 240)+"px"
-                            })
-                           self.dblclickNode = data
                         break;
                     }
 
@@ -927,16 +945,15 @@ var Topology = {
     // 初始化line
     initLine: function () {
         var self = this;
-        debugger
         $("#node_line_color").html("连线颜色");
         $("#flex_props_home").addClass("hidden");
         $("#flex_props_node").removeClass("hidden");
         $(".node-show").addClass('hidden');
         $(".line-show").removeClass('hidden');
-        $("input[name=from_x]").val(selected.data.from.x);
-        $("input[name=from_y]").val(selected.data.from.y);
-        $("input[name=to_x]").val(selected.data.to.x);
-        $("input[name=to_y]").val(selected.data.to.y);
+        // $("input[name=from_x]").val(selected.data.from.x);
+        // $("input[name=from_y]").val(selected.data.from.y);
+        // $("input[name=to_x]").val(selected.data.to.x);
+        // $("input[name=to_y]").val(selected.data.to.y);
         //起点箭头
         var fromArrow = selected.data.fromArrow;
         var fromArrow1 = selected.data.fromArrow;
@@ -1087,7 +1104,6 @@ var Topology = {
     },
     // 起止箭头更改
     onClickFromArrow: function (arrow, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#start_line_head").children().each(function (e) {
@@ -1105,9 +1121,6 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        console.log(selNodes)
-        console.log(arrow, index)
-        // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
         // $("#selectRela").show()
@@ -1127,7 +1140,6 @@ var Topology = {
     },
     // 连线类型更改
     onClickName: function (arrow, index, type) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_style_head").children().each(function (e) {
@@ -1149,7 +1161,6 @@ var Topology = {
     },
     // 连线样式更改
     onClickDash: function (dash, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_type_head").children().each(function (e) {
@@ -1198,7 +1209,6 @@ var Topology = {
         if (!selNodes || selNodes.length < 2) {
             return;
         }
-        // debugger
         canvas.combine(selNodes);
     },
     // 取消组合
@@ -1212,7 +1222,6 @@ var Topology = {
     parsew:function(){
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
-            console.log(ss)
             canvas.addNode(data)
         })
         

@@ -188,6 +188,53 @@
             <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
         </div>
     </div>
+<!--       动作-->
+       <div id="actionDiv">
+           <div style="text-align: center;margin-top: 20px;color: #409eff;font-size: 20px">
+               输出
+           </div>
+           <div style="margin: 20px 0">
+               <span>行为值来源</span><select id="xwzly_out"></select>
+           </div>
+           <div>
+               <span>行为</span><select id="xwSelect_out">
+                   <option value=">">></option>
+                   <option value="<"><</option>
+                   <option value="=">=</option>
+                   <option value=">=">>=</option>
+                   <option value="<="><=</option>
+                   <option value="!=">!=</option>
+                   <option value="assignment">赋值</option>
+               </select>
+           </div>
+           <div style="margin: 20px 0">
+               <span>表达式</span><input type="text" value="" id="bds_out">
+           </div>
+           <div style="text-align: center;margin-top: 20px;color: #409eff;font-size: 20px">
+               输入
+           </div>
+           <div style="margin: 20px 0">
+               <span>行为值来源</span><select id="xwzly_in"></select>
+           </div>
+           <div>
+               <span>行为</span><select id="xwSelect_in">
+               <option value=">">></option>
+               <option value="<"><</option>
+               <option value="=">=</option>
+               <option value=">=">>=</option>
+               <option value="<="><=</option>
+               <option value="!=">!=</option>
+               <option value="assignment">赋值</option>
+           </select>
+           </div>
+           <div style="margin: 30px 0">
+               <span>表达式</span><input type="text" value="" id="bds_in">
+           </div>
+           <div style="margin-top: 30px">
+               <button onclick="closeActionDiv()" class="btn pointer" type="button" style="margin-right: 40px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button id="" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
     <!-- 保存规则 -->
     <div id="sureRule">
         <div class="title">
@@ -1297,9 +1344,10 @@
         $('#dataModulePage').fadeToggle(500)
     }
     function editAlgorithm(){
-        $('#AddAlgorithm').fadeToggle(500);
-        $("#dataModulePage").hide();
-        $("#dicDiv").hide();
+        $(".Frame").fadeToggle(500);
+        // $('#AddAlgorithm').fadeToggle(500);
+        // $("#dataModulePage").hide();
+        // $("#dicDiv").hide();
         window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
@@ -1855,7 +1903,9 @@
             }
         })
     });
-           
+     function closeActionDiv() {
+        $("#actionDiv").hide()
+     }
 </script>
 </body>
 </html>

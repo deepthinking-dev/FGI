@@ -822,6 +822,41 @@ body .form-input{
     left: 40%; */
     z-index: 999999;
 }
+#actionDiv{
+    position: absolute;
+    height:500px;
+    width: 380px;
+    /* display: flex; */
+    display: none;
+    background-image: url(./static/mum1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    z-index: 999999;
+}
+#actionDiv span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 30px;
+    vertical-align: top;
+    line-height: 30px;
+    margin-right: 20px;
+}
+#xwzly_in,#xwzly_out,#bds_in,#bds_out,#xwSelect_in,#xwSelect_out{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 200px;
+    height: 30px;
+    padding-left: 10px;
+}
 #ruleAct div{
     position: relative;
     width: 100%;
