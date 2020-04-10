@@ -1038,29 +1038,29 @@ $(function(){
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
+                            <i style="margin-top: 5px">
                                 <span style="color:#fff;margin-right: 20px;">参数名称</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">类型</span>
                                 <select class="zdcsSelect" disabled>
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                             <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">取值</span>
                                 <input type="text" value="" class="zdcsText" disabled>
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">输入输出</span>
                                 <select class="zdcsExport" disabled>
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
-                            </p>
+                            </i>
                         </div>
                     `)
                     })

@@ -851,8 +851,8 @@
                         <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 40px">
                     </div>
                 </div>
-            <h4 style="color: aqua;margin: 20px 30px 0">参数信息</h4>
-            <button style="background: #409eff;color: #fff;margin: 20px 0" id="addZdcs">新增参数</button>
+            <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
+            <button style="background: #409eff;color: #fff;margin-bottom: 20px" id="addZdcs">新增参数</button>
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
@@ -1535,30 +1535,30 @@
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
+                            <i style="margin-top: 5px">
                                 <span style="color:#fff;margin-right: 20px;">参数名称</span>
                                 <input class="zdcsCsmc" type="text" value="${t.varname}">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">类型</span>
                                 <select class="zdcsSelect">
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">取值</span>
                                 <input type="text" value="" class="zdcsText">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">输入输出</span>
                                 <select class="zdcsExport">
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
                                 <button class="deleteZdcs" style="float: right;margin-right: 20px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
-                            </p>
+                            </i>
                         </div>
                     `)
                     })
