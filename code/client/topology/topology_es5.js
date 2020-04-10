@@ -753,7 +753,8 @@ var Topology = {
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
-                                    if(fromType == toType){
+                                    fromType = '常量'
+                                    if(fromType){
                                         switch (fromType) {
                                             case '常量':
                                                 strokeStyle = '#0eff23';

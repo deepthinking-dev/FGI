@@ -804,30 +804,6 @@ body .form-input{
     float: right;
     color:#fff;
 }
-#actionDiv{
-    position: absolute;
-    height:500px;
-    width: 800px;
-    left: 25%;
-    top: 20%;
-    display: none;
-    background-image: url(./static/mum1.png);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    margin:0 auto;
-    z-index: 999999;
-}
-#actionDiv span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 80px;
-    height: 30px;
-    vertical-align: top;
-    line-height: 30px;
-    margin-right: 20px;
-}
 /* 动作选择框 */
 #ruleAct{
     position: absolute;
@@ -845,6 +821,30 @@ body .form-input{
     left: 40%; */
     z-index: 999999;
 }
+#actionSelectDiv{
+    position: absolute;
+    height:200px;
+    width: 400px;
+    left: 35%;
+    top: 30%;
+    display: none;
+    background-image: url(./static/mum1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    z-index: 1000000;
+}
+#actionSelectDiv span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    vertical-align: top;
+    line-height: 30px;
+    margin-right: 20px;
+}
 #actionDiv{
     position: absolute;
     height:500px;
@@ -856,7 +856,7 @@ body .form-input{
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin:0 auto;
-    z-index: 999999;
+    z-index: 10000;
 }
 #actionDiv span{
     text-align: right;
