@@ -383,6 +383,8 @@ $(function(){
             }
             if($(s).attr("divid")){
                 obj.id = Number($(s).attr("divid"))
+            }
+            if($("#editDicYes").attr("editId")){
                 obj.algorithmid = Number($("#editDicYes").attr("editId"))
             }
             tables.push(obj)
@@ -427,7 +429,6 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
-                    toastr.success('保存成功！');
                     $("#editDic").hide()
                 }
             })
@@ -439,9 +440,14 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
-                    dictionary()
-                    Topology.init();
-                    $("#dicDiv").show()
+                    if(data.status == 1){
+                        dictionary()
+                        Topology.init();
+                        $("#dicDiv").show()
+                        toastr.success(data.msg);
+                    } else {
+                        toastr.error(data.msg);
+                    }
                 }
             })
         }
