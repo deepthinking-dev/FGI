@@ -446,30 +446,22 @@ $(function(){
     $('body').on('click','#addZdcs',(e) => {
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
-                <p style="margin-top: 5px">
-                    <span style="color:#fff;margin-right: 20px;">参数名称</span>
-                    <input class="zdcsCsmc" type="text" value="">
-                </p>
-                <p>
-                    <span style="color:#fff;margin-right: 20px">类型</span>
+                    <span style="color:#fff;">参数名称</span>
+                    <input class="zdcsCsmc" type="text" value=""> 
+                    <span style="color:#fff;">类型</span>
                     <select class="zdcsSelect">
                         <option value="2">常量</option>
                         <option value="3">对象</option>
                         <option value="1">基本类型</option>
                     </select>
-                </p>
-                <p>
-                    <span style="color:#fff;;margin-right: 20px">取值</span>
+                    <span style="color:#fff;">取值</span>
                     <input type="text" value="" class="zdcsText">
-                </p>
-                <p>
-                    <span style="color:#fff;margin-right: 20px">输入输出</span>
+                    <span style="color:#fff;">输入输出</span>
                     <select class="zdcsExport">
                         <option value="0">输入</option>
                         <option value="1">输出</option>
                     </select>
-                     <button class="deleteZdcs" style="float: right;margin-right: 20px;height: 30px;line-height: 30px;background: #f56c6c;border: none;color: #fff;">删除</button>
-                </p>
+                     <button class="deleteZdcs" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px">删除</button>
             </div>
         `)
     })
@@ -503,7 +495,7 @@ $(function(){
         }
     })
     $('body').on('click','.deleteZdcs',(e) => {
-        $(e.target).parent().parent().remove()
+        $(e.target).parent().remove()
     })
 
     $('body').on('click','#getAllSz',(e) => {
