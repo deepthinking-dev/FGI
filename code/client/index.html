@@ -174,19 +174,34 @@
 </head>
 <body> 
        <!-- 关系选择 -->
-       <div id="ruleAct">
-        <div>
-            <select class="actionSelected1">
-                <option value="1">输出</option>
-                <option value="0">输入</option>
-            </select>
-            <select class="actionSelected2" style="margin: 20px 0">
+    <div id="ruleAct">
+        <div class="ruleInfo">
+            <span class="ActTitle">算法详情</span>
+            <div class="ActContont">
+                <div style="margin: 5px 20px;display:flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">作者：</label>
+                    <span class="ruleActionZZ">111</span>
+                </div>
+                <div style="margin: 5px 20px;display: flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">算法名称：</label>
+                    <span class="ruleActionMC">222</span>
+                </div>
+                <div style="margin: 5px 20px;display: flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">算法描述：</label>
+                    <span class="ruleActionMS">333</span>
+                </div>
+            </div>
+        </div>
+        <button class="ruleAddButton" type="button" onclick="ruleAddButtonS()">+</button> 
+        <div class="ruleContentDiv">
 
-            </select>
-            <input value="" id="varTypeInput" readonly>
-            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 35px;background: #f56c6c;color: #fff">取消</button>
+        </div>
+
+        <div class="footerAct">
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
             <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
         </div>
+
     </div>
     <!-- 保存规则 -->
     <div id="sureRule">

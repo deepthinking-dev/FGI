@@ -177,12 +177,6 @@ $('body').on('change','.MathJaxInput2',(e) => {
         $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:none;");
         $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:block;");
     }
-    if(objS == "其他模块计算结果"){
-
-        $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:none;");
-        $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:none;");
-        $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:block;");
-    }
 })
 
 //确定选择字段信息确定按钮
@@ -338,72 +332,77 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
-    let algorithmRuleDataList = []
-    let spanId = $('#topo_canvas div span')
-    let coordinate = []
-    console.log(window.Topology)
-    if(spanId.length > 0){
-        for(let i=0;i<spanId.length-1;i++){
-            let  id=spanId.eq(i).attr('id')
-            let str = id.split("_")
-            let obj={
-                algorithmModel:null,
-                algorithmid:str[0].substring(0,str[0].length-2),
-                des:'',
-                id:'',
-                preaAlgorithmModel:null,
-                prealgorithmid:str[2].substring(0,str[2].length-2),
-                remark:null,
-                roleId:null,
-                tableAlgorithmcondition:{
-                    algorithmroleid:'',
+    let algorithmRuleDataList = [{
+        algorithmconditions:[],
+        des:'',
+        id:0,
+        interfaceID:0,
+        parametersID:0,
+        preInterfaceID:0,
+        preParametersID:0,
+        remark:"",
+        roleid:'',
+        table_InterfaceRole:{
+            des:'',
+            id:0,
+            interfaceid:0,
+            parametersid:0,
+            preinterfaceid:0,
+            preparametersid:0,
+            remark:"",
+            roleid:0
+        }
+    }]
+    canvas.data.nodes.map(item => {
+        if(item.childStand){
+            if(item.childStand.type == data[0].id+'的弟弟'){
+                console.log(item,'45454545')  
+                let obj = {
+                    behavior:'',
+                    expression:'',
                     id:'',
-                    logicrelation:spanId.eq(i).text(),
-                    logicvalue:'',
-                    remark:''
+                    interfaceparametersid:0,
+                    interfaceroleid:0,
+                    remark:'',
+                    valuesources:''
+                } 
+                algorithmRuleDataList.algorithmconditions.push(obj)                         
+            }
+        }
+    })
+
+
+    let operatorInterfaceDataModels = [
+        {
+            algorithmID:0,
+            id:0 ,
+            interfaceName:"",
+            roleID:0,
+            tableInterfaceparametersList:[
+                {
+                    id:0,
+                    inorout:0,
+                    interfaceid:0,
+                    parametersname:"",
+                    parameterssources:''
                 }
-            }
-            algorithmRuleDataList.push(obj)
+            ]
         }
-
+    ]
+    let tableRole={
+        coordinate:'',
+        des:'',
+        entrancenote:'',
+        id:0,
+        remark:'',
+        rolename:'',
+        uuserid:0
     }
-    let node =window.Topology.saveNode
-    if(node.length ==0){
-        alert('请建立规则')
-        return false;
-    }else{     
-        node.map(item=>{
-            let obj ={
-                id:(item.id).substring(0,(item.id).length-2),
-                x:item.rect.x,
-                y:item.rect.y,
-                width:item.rect.width,
-                height:item.rect.height,
-                ex:item.rect.ex,
-                ey:item.rect.ey,
-            }
-            coordinate.push(obj)
-        })
-    }
-    
-    console.log(coordinate)
-     console.log(algorithmRuleDataList)
-     if($("#ruleName").val() == ''){
-         toastr.info('请输入规则名称')
-         return false;
-     }
     let algorithmRuleSaveDataModel ={
-        algorithmRuleDataModelList:algorithmRuleDataList,
-        coordinateinfo:JSON.stringify(coordinate),
-        tableRole:{
-            des:$("#ruleDes").val(),
-            id:'',
-            remark:$("#ruleRemark").val(),
-            rolename:$("#ruleName").val(),
-            tno:''
-        }
-
-    }
+        interfaceRoleDataModels :algorithmRuleDataList,
+        operatorInterfaceDataModels:operatorInterfaceDataModels,
+        tableRole:tableRole
+      }
     $.ajax({
         type:"post",
         dataType: "json",
@@ -461,251 +460,161 @@ function ruleDelClose(){
 }
 
 //动作确定
-function ActionSure(event){
-    // let obj ={
-    //     action:$('.actionSelected1').val(),
-    //     actionValue:$('.actionSelected2').val()
-    // }
-
+function ActionSure(){
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
-                        
-    let widths = 20
-    let heights = 10
-    console.log(data.data,'444444444444',widths,heights) 
-
-    console.log(num)
-    if($('.actionSelected1').val() == 0){
-        if(!data.data.inNum){
-            data.data.inNum = 1
-            num = {
-                x:-widths,
-                y:heights+5
-            }
-        }else{
-            debugger
-            num = {
-                x:-widths,
-                y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
-            }
-        }
-        window.bigData.isAddInOutType = "in";
-        test.id = data.id +"IN"+ data.data.inNum + "---" + $("#varTypeInput").val();
-        test.text = "in"+ data.data.inNum;
-         
-   }else{
-    if(!data.data.outNum){
-        data.data.outNum = 1
-        num = {
-            x:data.rect.width,
-            y:heights+5
-        }
-    }else{
-
-        num = {
-            x:data.rect.width,
-            y:(heights*data.data.outNum)+5*data.data.outNum
-        }
+    let actionInfoNum = $('.ruleContentDiv .actionInfo')
+   
+    let saveList ={
+        id :data.id,
+        children:[]
     }
-       window.bigData.isAddInOutType = "out"
-       test.id = data.id +"OUT"+data.data.outNum + "---" + $("#varTypeInput").val();
-       test.text = "out"+data.data.outNum
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    if(actionInfoNum.length  > data.data.inNum){
+        for(let i =0;i< actionInfoNum.length ;i++){
+            let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")           
+            if(!uuid){
+                let xinguid = guid()
+                $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
+                let widths = 20
+                let heights = 10
+                console.log(data.data,'444444444444',widths,heights) 
+                console.log(num)
+            
+                
+                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                    num = {
+                        x:-widths,
+                        y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
+                    }
+                    window.bigData.isAddInOutType = "in";
+                    test.id = data.id +"IN"+ "_" +xinguid+ "---" + $('.ruleContentDiv .actionInfo').eq(i).find("#varTypeInput").val();
+                    test.text = "in"+ data.data.inNum;
+                    
+            }else{
+                    num = {
+                        x:data.rect.width,
+                        y:(heights*data.data.outNum)+10*data.data.outNum +10
+                    }
+                window.bigData.isAddInOutType = "out"
+                test.id = data.id +"OUT"+ "_" +xinguid+"---" + $('.ruleContentDiv .actionInfo').eq(i).find("#varTypeInput").val();
+                test.text = "out"+data.data.outNum
+            }
+
+                test.rect.x = data.rect.x + num.x
+                test.rect.y = data.rect.y + num.y
+                test.rect.width = widths
+                test.rect.height = heights
+
+                test.rect.ex = data.rect.ex + num.x
+                test.rect.ey = data.rect.ey + num.y
+                test.rect.center.x = data.rect.center.x + num.x
+                test.rect.center.y = data.rect.center.y + num.y
+                test.fullTextRect.x = 0
+                test.fullTextRect.y = 0
+                test.textRect.x = test.rect.x
+                test.textRect.y =  test.rect.y
+                test.textRect.width = 0
+                test.textRect.height = 0
+                test.paddingTopNum = 0
+                test.paddingTop = 0
+                test.fullTextRect.x = data.fullTextRect.x + num.x
+                test.fullTextRect.y = data.fullTextRect.y + num.y
+                test.iconRect.x = data.iconRect.x + num.x
+                test.iconRect.y = data.iconRect.y + num.y
+                test.fullIconRect.x = data.fullIconRect.x + num.x
+                test.fullIconRect.y = data.fullIconRect.y + num.y
+                test.childStand = {
+                    type:data.id+'的弟弟',
+                    wz:num,
+                    bb:{
+                        x:data.rect.x,
+                        y:data.rect.y,
+                        ex:data.rect.ex,
+                        ey:data.rect.ey
+                    }
+                }
+                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                    test.anchors.map((obj,i) => {
+                        obj.x = data.anchors[i].x-185 + num.x
+                        obj.y = data.anchors[i].y-85 + num.y
+                    })
+                    test.rotatedAnchors.map((obj,i) => {
+                        obj.x = data.rotatedAnchors[i].x-185 + num.x
+                        obj.y = data.rotatedAnchors[i].y-85 + num.y
+                    })
+                }else{
+                    test.anchors.map((obj,i) => {
+                        obj.x = data.anchors[i].x+218 + num.x
+                        obj.y = data.anchors[i].y+115 + num.y
+                    })
+                    test.rotatedAnchors.map((obj,i) => {
+                        obj.x = data.rotatedAnchors[i].x+220 + num.x
+                        obj.y = data.rotatedAnchors[i].y-115 + num.y
+                    })
+                }
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').text();
+                window.bigData.isAddInOut = true;
+
+                let flag = canvas.addNode(test)
+                canvas.lockNodes([test], true)
+                if(flag){
+                    if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                        if(data.data.inNum  > data.data.outNum){
+                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
+                            }
+                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.inNum+1) +10*(data.data.inNum+1)))
+                        }
+                    }else{
+                        if(data.data.outNum > data.data.inNum){
+                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
+                            }
+                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.outNum+1) +10*(data.data.outNum+1)))
+                        }
+                    }
+                }else{
+                    window.bigData.isAddInOut = false
+                }
+
+                $('#ruleAct').fadeToggle(500)
+
+                canvas.render();
+            }
+        }
+
+    }
+    let isFlag = false
+    let lsList = []
+    for(let i =0;i< actionInfoNum.length ;i++){
+        obj = {
+           id:$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id"),
+           uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
+           algorithmid:currId,
+           varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
+           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').val(),
+           valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+           inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val(),
+           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+       }
+       lsList.push(obj)
    }
-
-    test.rect.x = data.rect.x + num.x
-    test.rect.y = data.rect.y + num.y
-    test.rect.width = widths
-    test.rect.height = heights
-
-    test.rect.ex = data.rect.ex + num.x
-    test.rect.ey = data.rect.ey + num.y
-    test.rect.center.x = data.rect.center.x + num.x
-    test.rect.center.y = data.rect.center.y + num.y
-    test.fullTextRect.x = 0
-    test.fullTextRect.y = 0
-    test.textRect.x = 0
-    test.textRect.y = 0
-    test.textRect.width = 0
-    test.textRect.height = 0
-    test.fullTextRect.x = data.fullTextRect.x + num.x
-    test.fullTextRect.y = data.fullTextRect.y + num.y
-    test.iconRect.x = data.iconRect.x + num.x
-    test.iconRect.y = data.iconRect.y + num.y
-    test.fullIconRect.x = data.fullIconRect.x + num.x
-    test.fullIconRect.y = data.fullIconRect.y + num.y
-    test.childStand = {
-        type:data.id+'的弟弟',
-        wz:num,
-        bb:{
-            x:data.rect.x,
-            y:data.rect.y,
-            ex:data.rect.ex,
-            ey:data.rect.ey
+    window.Topology.tools.map(isCZdata=>{
+        if(isCZdata.id == data.id){
+            isFlag =true
+            isCZdata.children = lsList
         }
+    })
+    if(!isFlag){
+        saveList.children = lsList
+        window.Topology.tools.push(saveList)
     }
-    if($('.actionSelected1').val() == 0){
-        test.anchors.map((obj,i) => {
-            obj.x = data.anchors[i].x-185 + num.x
-            obj.y = data.anchors[i].y-85 + num.y
-        })
-        test.rotatedAnchors.map((obj,i) => {
-            obj.x = data.rotatedAnchors[i].x-185 + num.x
-            obj.y = data.rotatedAnchors[i].y-85 + num.y
-        })
-    }else{
-        test.anchors.map((obj,i) => {
-            obj.x = data.anchors[i].x+218 + num.x
-            obj.y = data.anchors[i].y+115 + num.y
-        })
-        test.rotatedAnchors.map((obj,i) => {
-            obj.x = data.rotatedAnchors[i].x+218 + num.x
-            obj.y = data.rotatedAnchors[i].y-115 + num.y
-        })
-    }
-    test.text = $('.actionSelected2 option:selected').text();
-
-
-    
-    // canvas.render();
-
-    window.bigData.isAddInOut = true;
-
-    let flag = canvas.addNode(test)
-    // console.log(data.rect.y + 100,test.rect.ey)
-    canvas.lockNodes([test], true)
-    if(flag){
-        let numw = 0
-        data.data.inNum > data.data.outNum ? numw = data.data.inNum : numw = data.data.outNum
-        console.log(data.rect.height,(heights*numw)+5*numw)
-        debugger
-        // if(data.rect.height - ((heights*numw)+5*numw) < (heights*numw)+5*numw){
-        //     window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+5
-        //     window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+5
-        //     console.log(data.rect.height)
-            
-        // }
-        if(data.rect.height - 15*numw < 0){
-            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+5
-            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+5
-            console.log(data.rect.height)
-            
-        }
-    }else{
-        window.bigData.isAddInOut = false
-    }
-
-    $('#ruleAct').fadeToggle(500)
-
-    canvas.render();
-    console.log(guid())
-    // canvas.updateProps(canvas.data.nodes)
-
-//     $('#ruleAct').fadeToggle(500)
-//     let num = 40
-//     let node = window.Topology.dblclickNode.node
-
-//     let countIn = 0;
-//     let countOut = 0;
-//     let data = {}
-//     let inOut =""
-//     let textValue = ''
-    
-//     if(node.children.length > 0){
-//          data =  JSON.parse(JSON.stringify(window.Topology.dblclickNode.node.children[1])) 
-//          data.parentId = window.Topology.dblclickNode.node.children[0].id
-//          if($('.actionSelected1').val() == 0){
-//             console.log(data,'454545')
-
-            
-//             inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
-//             textValue = "in" + $('.actionSelected2').eq(0).val();
-//             canvas.data.nodes.map((s,i)=>{
-//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
-//                     countIn++; 
-//                 }
-//             })
-//             data.rect.x = data.rect.x;
-//             cLength = window.Topology.dblclickNode.node.children.length
-//             data.rect.y = data.rect.y + 20*(cLength -1);
-           
-//         }
-//         if($('.actionSelected1').val() == 1){
-//             inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
-//             textValue = "out" + $('.actionSelected2').eq(0).val();
-//             canvas.data.nodes.map((s,i)=>{
-//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
-//                     countOut++; 
-//                 }
-//             })
-//             data.rect.x = data.rect.x +200;
-//             data.rect.y = data.rect.y+ 20*countOut;
-        
-//         }
-//     }else{
-//          data = JSON.parse(JSON.stringify(window.Topology.dblclickNode.node)) 
-//          data.parentId = window.Topology.dblclickNode.node.id
-//          if($('.actionSelected1').val() == 0){
-//             inOut = data.id+"in" + $('.actionSelected2').eq(0).val();
-//             textValue = "in" + $('.actionSelected2').eq(0).val();
-//             canvas.data.nodes.map((s,i)=>{
-//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
-//                     countIn++; 
-//                 }
-//             })
-//             data.rect.x = data.rect.x -15;
-//             cLength = window.Topology.dblclickNode.node.children.length
-//             data.rect.y = data.rect.y + 20*(cLength -1);
-           
-//         }
-//         if($('.actionSelected1').val() == 1){
-//             inOut = data.id+"out" + $('.actionSelected2').eq(0).val();
-//             textValue = "out" + $('.actionSelected2').eq(0).val();
-//             canvas.data.nodes.map((s,i)=>{
-//                 if(s.id.includes(window.Topology.dblclickNode.node.id)){
-//                     countOut++; 
-//                 }
-//             })
-//             data.rect.x = data.rect.x +230;
-//             data.rect.y = data.rect.y+ 20*countOut;
-        
-//         }
-//     }
-    
-   
-
-//     // debugger
-    
-   
-//     data.rect.width = 15
-//     data.rect.height = 15
-//     data.text =textValue
-//     data.rect.ex = data.rect.ex + num
-//     data.rect.ey = data.rect.ey + num
-//     data.rect.center.x = data.rect.center.x + num
-//     data.rect.center.y = data.rect.center.y
-//     data.textRect.x =data.textRect.x + num
-//     data.textRect.y = data.textRect.y
-//     data.fullTextRect.x = data.fullTextRect.x + num
-//     data.fullTextRect.y = data.fullTextRect.y
-//     data.iconRect.x = data.iconRect.x + num
-//     data.iconRect.y = data.iconRect.y
-//     data.fullIconRect.x = data.fullIconRect.x + num
-//     data.fullIconRect.y = data.fullIconRect.y
-//     data.FGIID = data.id
-//     data.id = inOut
-//     data.rectInParent = {
-//        x:0,
-//        y:0,
-//        width: 15,
-//        height:15
-//    }
-//     console.log("-----------------------------------------------------",data.rect)
-//     // canvas.parse();
-//     // window.Topology.dblclickNode.node.children[0].setChild([data])
   
-//     canvas.render();
-//     console.log(data)
-//     canvas.addNode(data)
+  
 }
 
 function guid() {
@@ -718,4 +627,64 @@ function guid() {
 //动作取消
 function ActionClose(){
     $('#ruleAct').fadeToggle(500)
+}
+
+//加
+function ruleAddButtonS(){
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    $.ajax({
+        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+        data:{algthId:currId},
+        success: function(data) {
+            let str =`<div class="actionInfo">
+                    <select class="actionSelected1">
+                        <option value="1">输出</option>
+                        <option value="0">输入</option>
+                    </select>
+                    <select class="actionSelected2" style="margin:10px 0">
+                    </select>
+                    <input value="" id="varTypeInput">                                                 
+                    <button type="button" onclick="reduceButton(event)">x</button> 
+                    </div>` 
+                    $('.ruleContentDiv').append(str);
+                    let actionInfoNum = $('.ruleContentDiv .actionInfo').length-1
+                    let lstr1 = '<option value="2">常量</option>'
+                    data.tableFuncs.map(item => {
+                        lstr1 += `<option>${item.varname}</option>`
+                    })
+                  $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".actionSelected2").html(lstr1)
+                  $('body').off("change").on('change','.actionSelected2',(e) => {
+                    //   debugger
+                    data.tableFuncs.map(item => {
+                       if($(".actionSelected2").val() == item.varname){
+                        $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                 
+                       }
+                        if($(".actionSelected2").val() == "2"){
+                            $(e.target).parent().children('#varTypeInput').val("")
+                        }
+                    })
+                 })
+
+        }
+    })
+  
+    function changeAction2(e,data){
+        debugger
+        data.tableFuncs.map(item => {
+            if($(".actionSelected2").val() == item.varname){
+                $(e.target).siblings('#varTypeInput').val(item.valvalue)
+       
+            }
+             if($(".actionSelected2").val() == "2"){
+                 $("#varTypeInput").val("常量")
+             }
+         })
+      }
+}
+//减
+function reduceButton(e){
+    $(e.target).parent().remove()
 }

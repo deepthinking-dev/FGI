@@ -808,8 +808,8 @@ body .form-input{
 /* 动作选择框 */
 #ruleAct{
     position: absolute;
-    height:280px;
-    width: 256px;
+    height:400px;
+    width: 600px;
     /* display: flex; */
     display: none;
     /* justify-content: center;
@@ -822,35 +822,73 @@ body .form-input{
     left: 40%; */
     z-index: 999999;
 }
-#ruleAct div{
+#ruleAct .ruleInfo{
     position: relative;
     width: 100%;
-    height: 100%;
-    margin: 20px;
+    height: 120px;
+    border-bottom: 1px solid #4295ec;
 }
-#ruleAct div span{
+#ruleAct .ruleInfo .ActTitle{
     font-size: 14px;
     color: #00EEFD;
     text-align: left;
     display: block;
     margin: 10px 0;
+    padding-left: 20px;
 }
-#ruleAct div select{
+#ruleAct .ruleInfo .ActContont{
+    position: relative;
+    width: 100%;
+    /* height: 100%; */
+    color:#fff;
+}
+#ruleAct .ruleContentDiv{
+    max-height: 180px;
+    overflow: auto;
+    margin-top: 31px;
+}
+#ruleAct .actionInfo {
+    /* margin-top: 15px; */
+    margin-left: 20px;
+}
+#ruleAct .actionInfo select{
     background-image: url(./static/select.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin:0 auto;
-    width: 220px;
+    width: 165px;
     height: 39px;
     outline: none;
     border: none;
-    /* background: none;*/
+    padding-left: 5px;
 }
-#ruleAct div textarea{
-    width: 220px;
-    height: 70px;
+#ruleAct .actionInfo  input{
+    padding-left: 5px;
+    width: 190px;
 }
-#ruleAct div button{
+#ruleAct .ruleAddButton{
     float: right;
-    margin-top: 25px;
+    margin-right: 20px;
+    margin-top: 5px;
+    background-color: green;
+    outline: none;
+    border: none;
+}
+#ruleAct .actionInfo button{
+    margin-top: 14px;
+    width: 15px;
+    height: 15px;
+    line-height: 11px;
+    color: #fff;
+    background-color: red;
+    outline: none;
+    border: none;
+    margin-left: 5px;
+    padding-left: 4px;
+    padding-top: 0;
+}
+#ruleAct .footerAct{
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
 }
