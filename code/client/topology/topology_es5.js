@@ -835,10 +835,12 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            debugger
+                            console.log(data)
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
 
-                            
+
                             break;
                         // case 'resize':
                         //     if (!this.mouseMoving) {
