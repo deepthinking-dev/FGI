@@ -475,6 +475,7 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")           
             if(!uuid){
+                debugger
                 let xinguid = guid()
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
@@ -484,23 +485,33 @@ function ActionSure(){
             
                 
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                    data.data.inNum ++
                     num = {
                         x:-widths,
                         y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
                     }
+                    let type = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(type== "基本类型"){
+                        type =$('.ruleContentDiv .actionInfo').eq(i).find('.varTypeInput').val();
+                    }
                     window.bigData.isAddInOutType = "in";
-                    test.id = data.id +"IN"+ "_" +xinguid+ "---" + $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    test.id = data.id +"IN"+ "_" +xinguid+ "---" +type;
                     test.text = "in"+ data.data.inNum;
                     
-            }else{
+                }else{
+                    data.data.outNum ++
                     num = {
                         x:data.rect.width,
                         y:(heights*data.data.outNum)+10*data.data.outNum +10
                     }
-                window.bigData.isAddInOutType = "out"
-                test.id = data.id +"OUT"+ "_" +xinguid+"---" + $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
-                test.text = "out"+data.data.outNum
-            }
+                    window.bigData.isAddInOutType = "out"
+                    let type = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(type== "基本类型"){
+                        type =$('.ruleContentDiv .actionInfo').eq(i).find('.varTypeInput').val();
+                    }
+                    test.id = data.id +"OUT"+ "_" +xinguid+"---" +type;
+                    test.text = "out"+data.data.outNum
+                }
 
                 test.rect.x = data.rect.x + num.x
                 test.rect.y = data.rect.y + num.y
@@ -581,9 +592,7 @@ function ActionSure(){
                     window.bigData.isAddInOut = false
                 }
 
-                $('#ruleAct').fadeToggle(500)
 
-                canvas.render();
             }
         }
 
@@ -591,11 +600,23 @@ function ActionSure(){
     let isFlag = false
     let lsList = []
     for(let i =0;i< actionInfoNum.length ;i++){
+        let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+        if(id){
+            id =id
+        }else{
+            id =""
+        }
+        let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+        if(varName){
+            varName = varName
+        }else{
+            varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+        }
         obj = {
-           id:$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id"),
+           id:id,
            uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
            algorithmid:currId,
-           varname:$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val(),
+           varname:varName,
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
            inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val(),
@@ -613,8 +634,8 @@ function ActionSure(){
         saveList.children = lsList
         window.Topology.tools.push(saveList)
     }
-  
-  
+    canvas.render();
+    $('#ruleAct').fadeToggle(500)
 }
 
 function guid() {
@@ -626,6 +647,51 @@ function guid() {
 }
 //动作取消
 function ActionClose(){
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let actionInfoNum = $('.ruleContentDiv .actionInfo')
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    let saveList ={
+        id :data.id,
+        children:[]
+    }
+    let isFlag = false
+    let lsList = []
+    for(let i =0;i< actionInfoNum.length ;i++){
+        let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+        if(id){
+            id =id
+        }else{
+            id =""
+        }
+        let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+        if(varName){
+            varName = varName
+        }else{
+            varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+        }
+        obj = {
+           id:id,
+           uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
+           algorithmid:currId,
+           varname:varName,
+           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+           valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+           inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val(),
+           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+       }
+       lsList.push(obj)
+   }
+    window.Topology.tools.map(isCZdata=>{
+        if(isCZdata.id == data.id){
+            isFlag =true
+            isCZdata.children = lsList
+        }
+    })
+    if(!isFlag){
+        saveList.children = lsList
+        window.Topology.tools.push(saveList)
+    }
     $('#ruleAct').fadeToggle(500)
 }
 
