@@ -430,6 +430,7 @@ $(function(){
         `)
     })
     $('body').on('change','.zdcsSelect',(e) => {
+        debugger
         if(e.target.value == "2" || e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();

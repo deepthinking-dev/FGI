@@ -722,6 +722,7 @@ var Topology = {
                            
                         break
                         case 'addLine':
+                            debugger
                             var strokeStyle;
                             data.dash = 1;
                             if(!data.to.id){
@@ -738,6 +739,7 @@ var Topology = {
                                 })
                             }else{
                                 if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
+                                    debugger
                                     let fromIndex = data.from.id.indexOf('---');
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
@@ -864,19 +866,26 @@ var Topology = {
                                                     if(item.childStand){
                                                         if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
                                                             let uuid = (item.id).split("_")[1]
-                                                             data.tableFuncs.map(index =>{
-                                                                 if((item.id).split("_")[2] == index.id){
-                                                                    str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                                            <select class="actionSelected1" disabled>
-                                                                                <option value="1">输出</option>
-                                                                                <option value="0">输入</option>
-                                                                            </select>
-                                                                            <input value="${index.varname}" id="varTypeInput" disabled>  
-                                                                            <input value="${index.valvalue}" id="varTypeInput" disabled>  
-                                                                                                                        
-                                                                        </div>`                                                             
-                                                                }
-                                                             }) 
+                                                                data.tableFuncs.map(index =>{
+                                                                    if((item.id).split("_")[2] == index.id){
+                                                                        str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                        if(index.inorout == 1){
+                                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                        }else{
+                                                                            str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                        }
+                                                                            str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                        if(index.vartype == 1){
+                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                        }else if(index.vartype == 2){
+                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                        }  else{
+                                                                            str+=`<input value="对象" class="actionSelected2">`
+                                                                        } 
+                                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                            </div>`                                                           
+                                                                    }
+                                                            }) 
                                                            
                                                         }
                                                     }
@@ -884,6 +893,7 @@ var Topology = {
                                                 $('.ruleContentDiv').html(str)
                                                 data.tableFuncs.map((s,i)=>{
                                                     $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
+                                                    $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true); 
                                                     // if(s.vartype == 1 && s.vartype == 2){
                                                     //     $(".actionSelected2").text(index.valvalue)
                                                     // }               
@@ -905,36 +915,38 @@ var Topology = {
                                                     if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
                                                         item.children.map(index =>{
                                                             if(index.id){
-                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                                        <select class="actionSelected1" disabled>
-                                                                            <option value="1">输出</option>
-                                                                            <option value="0">输入</option>
-                                                                        </select>
-                                                                        <select class="actionSelected2" style="margin:10px 0">
-                                                                            <option value="1">基本类型</option>
-                                                                            <option value="2">常量</option>
-                                                                            <option value="3">对象</option>
-                                                                        </select>
-                                                                        <input value="${index.valvalue}" id="varTypeInput">                                                 
-                                                                    </div>`
+                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                if(index.inorout == 1){
+                                                                    str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                }else{
+                                                                    str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                }
+                                                                    str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                if(index.vartype == 1){
+                                                                    str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                }else if(index.vartype == 2){
+                                                                    str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                }  else{
+                                                                    str+=`<input value="对象" class="actionSelected2">`
+                                                                } 
+                                                                    str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                    </div>`   
                                                             }else{
-                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                                        <select class="actionSelected1">
-                                                                            <option value="1">输出</option>
-                                                                            <option value="0">输入</option>
-                                                                        </select>
-                                                                        <select class="actionSelected2" style="margin:10px 0">
-                                                                            <option value="1">基本类型</option>
-                                                                            <option value="2">常量</option>
-                                                                            <option value="3">对象</option>
-                                                                        </select>
-                                                                        <input value="${index.valvalue}" id="varTypeInput">   
-                                                                        <button type="button" onclick="reduceButton(event)">x</button>                                               
-                                                                    </div>`
-                                                            }
-                                                                                                                        
-                                                                //    $('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
-                                                                //    $('.actionSelected2').find("option[value='"+index.vartype+"']").attr("selected",true);    
+                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                                                                    <select class="actionSelected1">
+                                                                        <option value="1">输出</option>
+                                                                        <option value="0">输入</option>
+                                                                    </select>
+                                                                    <input value="${index.varname}" id="varTypeInput">  
+                                                                    <select class="actionSelected2" style="margin:10px 0">
+                                                                        <option value="1">基本类型</option>
+                                                                        <option value="2">常量</option>
+                                                                        <option value="3">对象</option>
+                                                                    </select>
+                                                                    <input value="${index.valvalue}" id="varTypeInput">   
+                                                                    <button type="button" onclick="reduceButton(event)">x</button>                                               
+                                                                </div>`
+                                                            }   
                                                         }) 
                                                         $('.ruleContentDiv').html(str)
                                                         item.children.map((s,i)=>{

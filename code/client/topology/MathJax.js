@@ -489,7 +489,7 @@ function ActionSure(){
                         y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
                     }
                     window.bigData.isAddInOutType = "in";
-                    test.id = data.id +"IN"+ "_" +xinguid+ "---" + $('.ruleContentDiv .actionInfo').eq(i).find("#varTypeInput").val();
+                    test.id = data.id +"IN"+ "_" +xinguid+ "---" + $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     test.text = "in"+ data.data.inNum;
                     
             }else{
@@ -498,7 +498,7 @@ function ActionSure(){
                         y:(heights*data.data.outNum)+10*data.data.outNum +10
                     }
                 window.bigData.isAddInOutType = "out"
-                test.id = data.id +"OUT"+ "_" +xinguid+"---" + $('.ruleContentDiv .actionInfo').eq(i).find("#varTypeInput").val();
+                test.id = data.id +"OUT"+ "_" +xinguid+"---" + $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                 test.text = "out"+data.data.outNum
             }
 
@@ -554,7 +554,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').text();
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                 window.bigData.isAddInOut = true;
 
                 let flag = canvas.addNode(test)
@@ -595,7 +595,7 @@ function ActionSure(){
            id:$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id"),
            uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
            algorithmid:currId,
-           varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
+           varname:$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val(),
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
            inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val(),
@@ -643,46 +643,50 @@ function ruleAddButtonS(){
                         <option value="1">输出</option>
                         <option value="0">输入</option>
                     </select>
-                    <select class="actionSelected2" style="margin:10px 0">
+                    <input value="" class="varNameInput" style="display: none;">   
+                    <select class="varNameInput1">
                     </select>
-                    <input value="" id="varTypeInput">                                                 
+                    <input value="" class="actionSelected2" disabled>   
+                    <input value="" id="varTypeInput" disabled>                                                 
                     <button type="button" onclick="reduceButton(event)">x</button> 
                     </div>` 
                     $('.ruleContentDiv').append(str);
                     let actionInfoNum = $('.ruleContentDiv .actionInfo').length-1
-                    let lstr1 = '<option value="2">常量</option>'
+                    let lstr1=`<option>请选择</option>`
                     data.tableFuncs.map(item => {
-                        lstr1 += `<option>${item.varname}</option>`
+                       lstr1 += `<option>${item.varname}</option>`
                     })
-                  $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".actionSelected2").html(lstr1)
-                  $('body').off("change").on('change','.actionSelected2',(e) => {
+                  $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
+                  $('body').off("change").on('change','.varNameInput1',(e) => {
                     //   debugger
                     data.tableFuncs.map(item => {
-                       if($(".actionSelected2").val() == item.varname){
-                        $(e.target).parent().children('#varTypeInput').val(item.valvalue)
-                 
-                       }
-                        if($(".actionSelected2").val() == "2"){
+                       if($(e.target).val()== item.varname){
+                            if(item.vartype == "1"){
+                                $(e.target).parent().children('.actionSelected2').val("基本类型")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            }
+                            
+                            if(item.vartype == "2"){
+                                $(e.target).parent().children('.actionSelected2').val("常量")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            }
+                            if(item.vartype == "3"){
+                                $(e.target).parent().children('.actionSelected2').val("对象")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            }                
+                       }else if($(e.target).val()== "请选择"){
+                            $(e.target).parent().children('.actionSelected2').val("")
                             $(e.target).parent().children('#varTypeInput').val("")
-                        }
+                            $(e.target).parent().children('.varNameInput').val("")
+                       }
                     })
                  })
 
         }
     })
-  
-    function changeAction2(e,data){
-        debugger
-        data.tableFuncs.map(item => {
-            if($(".actionSelected2").val() == item.varname){
-                $(e.target).siblings('#varTypeInput').val(item.valvalue)
-       
-            }
-             if($(".actionSelected2").val() == "2"){
-                 $("#varTypeInput").val("常量")
-             }
-         })
-      }
 }
 //减
 function reduceButton(e){
