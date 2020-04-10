@@ -391,7 +391,7 @@ function ruleSure(){
     ]
     let tableRole={
         coordinate:'',
-        des:'',
+        des:$("#ruleDes").val(),
         entrancenote:'',
         id:0,
         remark:'',
@@ -607,15 +607,25 @@ function ActionSure(){
         }else{
             id =""
         }
+        let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+        if(typeIn== "基本类型"){
+            typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+        }
         let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
         if(varName){
             varName = varName
         }else{
             varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
         }
+        let uuid = ''
+        if(id){
+            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+        }else{
+            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+        }
         obj = {
            id:id,
-           uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
+           uuid:uuid,
            algorithmid:currId,
            varname:varName,
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
@@ -625,40 +635,105 @@ function ActionSure(){
        }
        lsList.push(obj)
    }
+   let UPdataList = []
+   let AddList = []
+   let DelList = []
     window.Topology.tools.map(isCZdata=>{
         debugger
         if(isCZdata.id == data.id){
             isFlag =true
-            isCZdata.children.map(item=>{
-                let sy = item.uuid.indexOf('---')
-               let uuID = item.uuid.slice(0,sy)
-                for(let i =0;i< actionInfoNum.length ;i++){
-                    if(uuID == $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")){
-                        return
-                    }else{
-                        canvas.data.nodes.map(item=>{
-                            if(!item.childStand){
-                                return
-                            }else{
-                                let XYID =  item.id.substr((item.id.indexOf('---')-36),36)
-                                if(XYID == uuID){
-                                    console.log(XYID)
-                                }
-                               
-                               
-                            }
-                                
-                            
-                        })
-                        // item.uuid
-                        // canvas.delete()
+            for(let i =0;i< actionInfoNum.length ;i++){
+                let UPFlag = false
+                for(let j=0; j<isCZdata.children.length;j++){
+                    debugger
+                    let sy = isCZdata.children[j].uuid.indexOf('---')
+                    let uuID = isCZdata.children[j].uuid.slice(0,sy)
+                    let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    clyId = clyId.split('---')[0]
+                    if(uuID == clyId){
+                        UPdataList.push(isCZdata.children[j])
+                        UPFlag = true
+                        break;
                     }
                 }
-            })
+                if(!UPFlag){
+                    let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    if(id){
+                        id =id
+                    }else{
+                        id =""
+                    }
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                    }
+                    let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+                    if(varName){
+                        varName = varName
+                    }else{
+                        varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+                    }
+                    let uuid = ''
+                    if(id){
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    }else{
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+                    }
+                    obj = {
+                        id:id,
+                        uuid:uuid,
+                        algorithmid:currId,
+                        varname:varName,
+                        vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+                        valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                        inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val(),
+                        remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+                    }
+                    AddList.push(obj)
+                }
+            }
+
+
+            for(let m=0; m<isCZdata.children.length;m++){
+                let delFlag = false
+                for(let n=0;n<UPdataList.length;n++){
+                    if(isCZdata.children[m].uuid == UPdataList[n].uuid){
+                        delFlag = true
+                        break;    
+                    }
+                }
+                if(!delFlag){
+                    DelList.push(isCZdata.children[m])
+                }
+            }
+            lsList = UPdataList.concat(AddList)
             isCZdata.children = lsList
+            console.log(UPdataList,"111111111修改")
+            console.log(AddList,"222222222新增")
+            console.log(DelList,"33333333333删除")
+            let DelNodes =[]
+            if(DelList.length > 0){
+                DelList.map(item=>{
+                    let Del1UUid = item.uuid.split('---')[0]
+                    canvas.data.nodes.map(item1 => {
+                        if(item1.childStand){
+                            debugger
+                            let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                            if(Del1UUid == Del2UUid){
+                                DelNodes.push(item1)                 
+                            }
+                        }
+                    })
+                })
+            }
+            if(DelNodes.length > 0){
+                console.log(DelNodes,"从node节点删除77777777777777")
+                canvas.delete(DelNodes)
+            }
         }
     })
     if(!isFlag){
+        debugger
         saveList.children = lsList
         window.Topology.tools.push(saveList)
     }
