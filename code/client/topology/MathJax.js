@@ -475,7 +475,7 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")           
             if(!uuid){
-                debugger
+
                 let xinguid = guid()
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
@@ -490,26 +490,27 @@ function ActionSure(){
                         x:-widths,
                         y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
                     }
-                    let type = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
-                    if(type== "基本类型"){
-                        type =$('.ruleContentDiv .actionInfo').eq(i).find('.varTypeInput').val();
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     window.bigData.isAddInOutType = "in";
-                    test.id = data.id +"IN"+ "_" +xinguid+ "---" +type;
+                    test.id = data.id +"IN"+ "_" +xinguid+ "---" +typeIn;
                     test.text = "in"+ data.data.inNum;
                     
                 }else{
+                    debugger
                     data.data.outNum ++
                     num = {
                         x:data.rect.width,
                         y:(heights*data.data.outNum)+10*data.data.outNum +10
                     }
                     window.bigData.isAddInOutType = "out"
-                    let type = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
-                    if(type== "基本类型"){
-                        type =$('.ruleContentDiv .actionInfo').eq(i).find('.varTypeInput').val();
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
-                    test.id = data.id +"OUT"+ "_" +xinguid+"---" +type;
+                    test.id = data.id +"OUT"+ "_" +xinguid+"---" +typeIn;
                     test.text = "out"+data.data.outNum
                 }
 
@@ -617,7 +618,7 @@ function ActionSure(){
            uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
            algorithmid:currId,
            varname:varName,
-           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2 option:selected').val(),
+           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
            inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val(),
            remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
