@@ -603,12 +603,21 @@ var Topology = {
                             self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
                             self.initNode(); 
+
                             // debugger
                             let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data1.childStand){                              
                                 return
                             }else{
                                 self.isClickAction.push({isClick:true,id:data.id})
+                                function guid() {
+                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                        var r = Math.random() * 16 | 0,
+                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                        return v.toString(16);
+                                    });
+                                }
+                                data.bkType=  guid() 
                             }
                             if(data.data.inNum > 0){
                                 let data2 = JSON.parse(JSON.stringify(data1)) 
@@ -879,7 +888,7 @@ var Topology = {
                                                                         if(index.inorout == 1){
                                                                             str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                                         }else{
-                                                                            str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                         }
                                                                             str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
                                                                         if(index.vartype == 1){

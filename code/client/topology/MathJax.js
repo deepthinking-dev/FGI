@@ -332,46 +332,31 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
-    let algorithmRuleDataList = [{
-        algorithmconditions:[],
-        des:'',
-        id:0,
-        interfaceID:0,
-        parametersID:0,
-        preInterfaceID:0,
-        preParametersID:0,
-        remark:"",
-        roleid:'',
-        table_InterfaceRole:{
+    let algorithmRuleDataList = []
+    window.globalActionDatas.map(item=>{
+       let totalId = item.id
+       let id = totalId.split("AND")
+       let OutSZId = id[0].split("tableAlgorithmOUT_")[0]
+       let OutSZPr = id[0].split("tableAlgorithmOUT_")[1].split("---")[0]
+       let INSZId = id[1].split("tableAlgorithmIN_")[0]
+       let INSZPr = id[1].split("tableAlgorithmIN_")[1].split("---")[0]
+       console.log(id,OutSZId,OutSZPr,INSZId,INSZPr)
+
+       let obj ={
             des:'',
             id:0,
-            interfaceid:0,
-            parametersid:0,
-            preinterfaceid:0,
-            preparametersid:0,
+            interfaceID:INSZId,
+            parametersID:INSZPr,
+            preInterfaceID:OutSZId,
+            preParametersID:OutSZPr,
             remark:"",
-            roleid:0
-        }
-    }]
-    canvas.data.nodes.map(item => {
-        if(item.childStand){
-            if(item.childStand.type == data[0].id+'的弟弟'){
-                console.log(item,'45454545')  
-                let obj = {
-                    behavior:'',
-                    expression:'',
-                    id:'',
-                    interfaceparametersid:0,
-                    interfaceroleid:0,
-                    remark:'',
-                    valuesources:''
-                } 
-                algorithmRuleDataList.algorithmconditions.push(obj)                         
-            }
-        }
-    })
-
-
+            roleid:''
+       }
+      let algorithmconditions =  item.dataIn.interfaceRoleDataModels[0].algorithmconditions.concat(item.dataOut.interfaceRoleDataModels[0].algorithmconditions)
+      algorithmRuleDataList.push(obj)
+      algorithmRuleDataList.push(algorithmconditions)
+   })
+   console.log(algorithmRuleDataList)
     let operatorInterfaceDataModels = [
         {
             algorithmID:0,
@@ -389,13 +374,34 @@ function ruleSure(){
             ]
         }
     ]
+    window.Topology.tools.map(item=>{
+        let objF = {
+            algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
+            id:0 ,
+            interfaceName:"",
+            roleID:0,
+            tableInterfaceparametersList:[]
+        }
+        item.children.map(index=>{
+            let CsObj = {
+                id:index.uuid.slice(0,index.uuid.indexOf("---")),
+                inorout:index.inorout,
+                interfaceid:0,
+                parametersname:index.varname,
+                parameterssources:''
+            }
+            tableInterfaceparametersList.push(CsObj)
+        })
+        operatorInterfaceDataModels.push(objF)
+    })
+    console.log(operatorInterfaceDataModels)
     let tableRole={
         coordinate:'',
-        des:$("#ruleDes").val(),
-        entrancenote:'',
+        des:$("#ruleRemark").val(),
+        entrancenote:$("#ruleDes").attr("data"),
         id:0,
         remark:'',
-        rolename:'',
+        rolename:$("#ruleName").val(),
         uuserid:0
     }
     let algorithmRuleSaveDataModel ={
@@ -623,6 +629,18 @@ function ActionSure(){
         }else{
             uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
         }
+        let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+        if(inorout){
+            inorout =inorout
+        }else{
+            inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+        }
+          
+        if(inorout == "输入"){
+            inorout = 1
+        }else{
+            inorout = 0
+        }
         obj = {
            id:id,
            uuid:uuid,
@@ -630,7 +648,7 @@ function ActionSure(){
            varname:varName,
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
-           inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val(),
+           inorout:inorout,
            remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
        }
        lsList.push(obj)
@@ -679,6 +697,18 @@ function ActionSure(){
                     }else{
                         uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
                     }
+                    let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+                    if(inorout){
+                        inorout =inorout
+                    }else{
+                        inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+                    }
+                      
+                    if(inorout == "输入"){
+                        inorout = 1
+                    }else{
+                        inorout = 0
+                    }
                     obj = {
                         id:id,
                         uuid:uuid,
@@ -686,7 +716,7 @@ function ActionSure(){
                         varname:varName,
                         vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
                         valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
-                        inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val(),
+                        inorout:inorout,
                         remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
                     }
                     AddList.push(obj)
@@ -773,6 +803,18 @@ function ActionClose(){
         }else{
             varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
         }
+        let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+        if(inorout){
+            inorout =inorout
+        }else{
+            inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+        }
+          
+        if(inorout == "输入"){
+            inorout = 1
+        }else{
+            inorout = 0
+        }
         obj = {
            id:id,
            uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
@@ -780,7 +822,7 @@ function ActionClose(){
            varname:varName,
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
-           inorout:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val(),
+           inorout:inorout,
            remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
        }
        lsList.push(obj)
