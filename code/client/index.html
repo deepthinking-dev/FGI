@@ -239,6 +239,17 @@
                <button id="actionSelectButton" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
            </div>
        </div>
+<!--       入库备注-->
+       <div id="rkDiv">
+           <div style="text-align: center;margin: 25px 0">
+                <p style="color:#fff;">入库备注</p>
+           </div>
+           <textarea id="bzMsg"></textarea>
+           <div style="position: absolute;bottom: 20px;right: 0">
+               <button class="btn pointer" onclick="closeBz()" type="button" style="margin-right: 35px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button class="btn pointer" onclick="saveBzMsg()"  type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
     <!-- 保存规则 -->
     <div id="sureRule">
         <div class="title">
@@ -727,7 +738,7 @@
                            </div>
                            <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
-                                <div onclick='editAlgorithm()'>编辑算子</div>
+<!--                                <div onclick='editAlgorithm()'>编辑算子</div>-->
                                 <div id='getAllGzgz'>已有规则</div>
                             </div>
 
@@ -737,6 +748,11 @@
                         <div disabled>
                             <a onclick="onTops()" class="menu-a-disabled" disabled>
                                 新增自定义属性
+                            </a>
+                        </div>
+                        <div id="showRk" style="display: none">
+                            <a class="menu-a" onclick="showRk()">
+                                入库备注
                             </a>
                         </div>
                         <div>
@@ -825,7 +841,8 @@
           <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-              <input type="button" id="addDic" value="新增">
+              <input type="button" id="addDic" value="新增字典">
+              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算子">
               <table id="dicTable">
 
               </table>
@@ -910,6 +927,35 @@
         inputFieldsTarget:'',
         fieldname:''
     }
+    function changeVarType(e){
+        if(e.target.value == "2" || e.target.value == "3"){
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("取值")
+            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
+        } else {
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("数据项")
+            $(e.target).parent().next().append(`
+                    <select class="zdcsTypeSelect">
+                        <option>int</option>
+                        <option>long</option>
+                        <option>byte</option>
+                        <option>short</option>
+                        <option>float</option>
+                        <option>double</option>
+                        <option>boolean</option>
+                        <option>char</option>
+                        <option>date</option>
+                        <option>string</option>
+                        <option>BLOB</option>
+                        <option>boolean</option>
+                        <option>array</option>
+                    </select>`)
+        }
+    }
+
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).data('id')
@@ -1352,6 +1398,7 @@
         // $('#AddAlgorithm').fadeToggle(500);
         // $("#dataModulePage").hide();
         // $("#dicDiv").hide();
+        AlgorithmConfirm()
         window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
@@ -1536,29 +1583,29 @@
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;margin-right: 20px;">参数名称</span>
+                                <span style="color:#fff;">参数名称</span>
                                 <input class="zdcsCsmc" type="text" value="${t.varname}">
                             </i>
                             <i>
-                                <span style="color:#fff;margin-right: 20px">类型</span>
-                                <select class="zdcsSelect">
+                                <span style="color:#fff;">类型</span>
+                                <select class="zdcsSelect" onchange="changeVarType(event)">
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
                             </i>
                             <i>
-                                <span style="color:#fff;;margin-right: 20px">取值</span>
+                                <span style="color:#fff;">取值</span>
                                 <input type="text" value="" class="zdcsText">
                             </i>
                             <i>
-                                <span style="color:#fff;margin-right: 20px">输入输出</span>
+                                <span style="color:#fff;">输入输出</span>
                                 <select class="zdcsExport">
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
-                                <button class="deleteZdcs" style="float: right;margin-right: 20px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
                             </i>
+                            <button class="deleteZdcs" style="float: right;margin-right: 30px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
                         </div>
                     `)
                     })
@@ -1913,6 +1960,17 @@
      }
      function closeactionSelectDiv() {
          $("#actionSelectDiv").hide()
+     }
+     function showRk() {
+         $("#rkDiv").show()
+     }
+     function closeBz() {
+        $("#rkDiv").hide()
+     }
+     function saveBzMsg() {
+         let val = $('#bzMsg').val();
+         $("#rkDiv").hide();
+         $("#ruleDes").attr("data",val)
      }
 </script>
 </body>

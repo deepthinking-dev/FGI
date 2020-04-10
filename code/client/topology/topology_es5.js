@@ -120,6 +120,7 @@ var Topology = {
         $("#flex_canvas").bind("contextmenu", function () {
             //设置右键菜单
             if (selNodes != null) {
+                $("#showRk").show();
                 var selectId = selNodes[0].id;
                 var index = selectId.indexOf("tableAlgorithm")
                 window.selectId = selectId.slice(0,index);
@@ -157,6 +158,7 @@ var Topology = {
                 $("#menu_lock").removeClass("menu-a-disabled");
                 $("#menu_lock").addClass("menu-a");
             } else {
+                $("#showRk").hide();
                 //置顶
                 $("#menu_top").addClass("menu-a-disabled");
                 $("#menu_top").removeClass("menu-a");
@@ -314,7 +316,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event,data,"555555555555555555555555555555")
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -327,7 +328,6 @@ var Topology = {
                             // }else{
                             //     locked = data.locked;
                             // }
-                           
                             self.initNode();
                             break;
                         case 'line':
@@ -353,7 +353,7 @@ var Topology = {
                                         lineDatas.map(t=>{
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0">
-                                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
                                                    <span>行为</span><select class="xwSelect_in">
                                                    <option value=">">></option>
                                                    <option value="<"><</option>
@@ -381,7 +381,6 @@ var Topology = {
                                     $('#actionDiv').show();
                                 }
                             },300)
-
                             $('#actionInDiv').show();
                             selected = {
                                 "type": event,
@@ -524,8 +523,6 @@ var Topology = {
 
                                             item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
                                             item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
-
-                                           
                                         }
                                         canvas.render()                                       
                                     }
@@ -839,8 +836,6 @@ var Topology = {
                             console.log(data)
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
-
-
                             break;
                         // case 'resize':
                         //     if (!this.mouseMoving) {

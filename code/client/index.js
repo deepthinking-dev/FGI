@@ -26,7 +26,7 @@ $(function(){
                         lineDatas.map(t=>{
                             $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
-                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                   <span>行为值来源</span><input class="xwzly_in" disabled>
                                    <span>行为</span><select class="xwSelect_in">
                                    <option value=">">></option>
                                    <option value="<"><</option>
@@ -102,7 +102,7 @@ $(function(){
         if($("#selectOutIn").val() == "1"){
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
-                           <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                           <span>行为值来源</span><input class="xwzly_in" disabled>
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
@@ -383,6 +383,8 @@ $(function(){
             }
             if($(s).attr("divid")){
                 obj.id = Number($(s).attr("divid"))
+            }
+            if($("#editDicYes").attr("editId")){
                 obj.algorithmid = Number($("#editDicYes").attr("editId"))
             }
             tables.push(obj)
@@ -427,7 +429,6 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
-                    toastr.success('保存成功！');
                     $("#editDic").hide()
                 }
             })
@@ -439,9 +440,14 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     console.log(data);
-                    dictionary()
-                    Topology.init();
-                    $("#dicDiv").show()
+                    if(data.status == 1){
+                        dictionary()
+                        Topology.init();
+                        $("#dicDiv").show()
+                        toastr.success(data.msg);
+                    } else {
+                        toastr.error(data.msg);
+                    }
                 }
             })
         }
@@ -455,7 +461,7 @@ $(function(){
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
-                    <select class="zdcsSelect">
+                    <select class="zdcsSelect" onchange="changeVarType(event)">
                         <option value="2">常量</option>
                         <option value="3">对象</option>
                         <option value="1">基本类型</option>
@@ -472,37 +478,9 @@ $(function(){
                         <option value="1">输出</option>
                     </select>
                 </i>  
-                 <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
+                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
             </div>
         `)
-    })
-    $('body').on('change','.zdcsSelect',(e) => {
-        if(e.target.value == "2" || e.target.value == "3"){
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("取值")
-            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
-        } else {
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("数据项")
-            $(e.target).parent().next().append(`
-                    <select class="zdcsTypeSelect">
-                        <option>int</option>
-                        <option>long</option>
-                        <option>byte</option>
-                        <option>short</option>
-                        <option>float</option>
-                        <option>double</option>
-                        <option>boolean</option>
-                        <option>char</option>
-                        <option>date</option>
-                        <option>string</option>
-                        <option>BLOB</option>
-                        <option>boolean</option>
-                        <option>array</option>
-                    </select>`)
-        }
     })
     $('body').on('click','.deleteZdcs',(e) => {
         $(e.target).parent().remove()
@@ -1042,11 +1020,11 @@ $(function(){
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;margin-right: 20px;">参数名称</span>
+                                <span style="color:#fff;">参数名称</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
                             </i>
                             <i>
-                                <span style="color:#fff;;margin-right: 20px">类型</span>
+                                <span style="color:#fff;">类型</span>
                                 <select class="zdcsSelect" disabled>
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
@@ -1054,11 +1032,11 @@ $(function(){
                                 </select>
                             </i>
                             <i>
-                                <span style="color:#fff;;margin-right: 20px">取值</span>
+                                <span style="color:#fff;">取值</span>
                                 <input type="text" value="" class="zdcsText" disabled>
                             </i>
                             <i>
-                                <span style="color:#fff;margin-right: 20px">输入输出</span>
+                                <span style="color:#fff;">输入输出</span>
                                 <select class="zdcsExport" disabled>
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
