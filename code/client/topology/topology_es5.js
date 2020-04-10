@@ -173,6 +173,7 @@ var Topology = {
                 $("#menu_lock").addClass("menu-a-disabled");
                 $("#menu_lock").removeClass("menu-a");
             }
+            window.lineDiv = false;
             //显示右键菜单
             $("#canvas_menus").css({
                 "left": document.body.scrollLeft + event.clientX, "top":
@@ -313,8 +314,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                //    debugger
-                console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -331,6 +330,58 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+                            let Index_in = data.from.id.indexOf("tableAlgorithm");
+                            let Index_out = data.to.id.indexOf("tableAlgorithm");
+                            let id_in = data.to.id.slice(0,Index_in);//算子id
+                            let id_out = data.from.id.slice(0,Index_out);
+
+                            let out_big = data.from.id.slice(0,data.from.id.indexOf('OUT'));//输出大矩形id
+                            let out_small = data.from.id;//输出小矩形id
+                            let in_big = data.to.id.slice(0,data.to.id.indexOf('IN'));
+                            let in_small = data.to.id;
+                            $('#selectOutIn').val('1')
+                            $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
+                            window.lineDiv = true;
+                            deleteLineDataId = out_small + "AND" + in_small;
+                            $("#actionInDiv").empty();
+                            $("#actionOutDiv").empty();
+                            globalActionDatas.map(s=>{
+                                if(s.id == out_small + "AND" + in_small){
+                                    try{
+                                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                                        lineDatas.map(t=>{
+                                            $("#actionInDiv").append(`
+                                              <div style="margin: 10px 0">
+                                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                                   <span>行为</span><select class="xwSelect_in">
+                                                   <option value=">">></option>
+                                                   <option value="<"><</option>
+                                                   <option value="=">=</option>
+                                                   <option value=">=">>=</option>
+                                                   <option value="<="><=</option>
+                                                   <option value="!=">!=</option>
+                                                   <option value="assignment">赋值</option>
+                                               </select>
+                                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                              </div>
+                                            `)
+                                        })
+                                        lineDatas.map((t,i)=>{
+                                            $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                        })
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            })
+                            setTimeout(()=>{
+                                if(window.lineDiv){
+                                    $('#actionDiv').show();
+                                }
+                            },300)
+
+                            $('#actionInDiv').show();
                             selected = {
                                 "type": event,
                                 "data": data
@@ -378,7 +429,6 @@ var Topology = {
                             canvas.data.nodes.map(item => {
                                 if(item.childStand){
                                     if(item.childStand.type == data[0].id+'的弟弟'){
-                                        console.log(item,'45454545')
                                         if(item.id.includes('IN')){
                                             let nums = item.childStand.wz
                                             item.rect.x = data[0].rect.x + nums.x
@@ -549,9 +599,7 @@ var Topology = {
                                 }
                                 
                             }
-                            
-                         
-                            console.log(data,selected,canvas.data)
+
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
@@ -636,9 +684,8 @@ var Topology = {
                                                                        
                                 }
                                
-                                canvas.render();
-                            }
-                            console.log(canvas.data.nodes)
+                            //     canvas.render();
+                            // }
                             break;
                         case 'resizeNodes':
                             var child = []     
@@ -695,7 +742,6 @@ var Topology = {
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
-                                    debugger
                                     if(fromType == toType){
                                         switch (fromType) {
                                             case '常量':
@@ -1016,16 +1062,15 @@ var Topology = {
     // 初始化line
     initLine: function () {
         var self = this;
-        debugger
         $("#node_line_color").html("连线颜色");
         $("#flex_props_home").addClass("hidden");
         $("#flex_props_node").removeClass("hidden");
         $(".node-show").addClass('hidden');
         $(".line-show").removeClass('hidden');
-        $("input[name=from_x]").val(selected.data.from.x);
-        $("input[name=from_y]").val(selected.data.from.y);
-        $("input[name=to_x]").val(selected.data.to.x);
-        $("input[name=to_y]").val(selected.data.to.y);
+        // $("input[name=from_x]").val(selected.data.from.x);
+        // $("input[name=from_y]").val(selected.data.from.y);
+        // $("input[name=to_x]").val(selected.data.to.x);
+        // $("input[name=to_y]").val(selected.data.to.y);
         //起点箭头
         var fromArrow = selected.data.fromArrow;
         var fromArrow1 = selected.data.fromArrow;
@@ -1176,7 +1221,6 @@ var Topology = {
     },
     // 起止箭头更改
     onClickFromArrow: function (arrow, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#start_line_head").children().each(function (e) {
@@ -1194,9 +1238,6 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        console.log(selNodes)
-        console.log(arrow, index)
-        // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
         // $("#selectRela").show()
@@ -1216,7 +1257,6 @@ var Topology = {
     },
     // 连线类型更改
     onClickName: function (arrow, index, type) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_style_head").children().each(function (e) {
@@ -1238,7 +1278,6 @@ var Topology = {
     },
     // 连线样式更改
     onClickDash: function (dash, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_type_head").children().each(function (e) {
@@ -1287,7 +1326,6 @@ var Topology = {
         if (!selNodes || selNodes.length < 2) {
             return;
         }
-        // debugger
         canvas.combine(selNodes);
     },
     // 取消组合
@@ -1301,7 +1339,6 @@ var Topology = {
     parsew:function(){
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
-            console.log(ss)
             canvas.addNode(data)
         })
         
@@ -1326,7 +1363,6 @@ var Topology = {
         }
         canvas.render(true);
     },
-    // 删除
     onRender: function () {
         canvas.data.nodes = []
         canvas.data.lines = []
@@ -1334,8 +1370,13 @@ var Topology = {
     
     },
     // 删除
-    onDelete: function () {
+    onDelete: function (e) {
         canvas.delete();
+        globalActionDatas.map((s,i)=>{
+            if(s.id == deleteLineDataId){
+                globalActionDatas.splice(i,1)
+            }
+        })
     },
     // 撤销
     undo: function () {
@@ -1356,7 +1397,7 @@ var Topology = {
     // 粘贴
     parse: function () {
         canvas.parse();
-    },
+    }
 };
 // window全局，这样别的地方方便调用
 window.addAlgorithm = Topology.addAlgorithm;
@@ -1384,7 +1425,6 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
-
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;
 // window.rectify = user.rectify;

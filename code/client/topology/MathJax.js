@@ -122,7 +122,7 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        toastr.success('保存成功！');
+                        toastr.success(data.msg);
                         Topology.init();
                         dictionary()
                     }

@@ -5,8 +5,8 @@ import java.util.Map;
 
 import deepthinking.fgi.domain.TableInterfacerole;
 import deepthinking.fgi.domain.TableInterfaceroleCriteria;
-import deepthinking.fgi.domain.TableInterfaceroleCriteria.Criteria;
 import deepthinking.fgi.domain.TableInterfaceroleCriteria.Criterion;
+import deepthinking.fgi.domain.TableInterfaceroleCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableInterfaceroleSqlProvider {
@@ -52,19 +52,19 @@ public class TableInterfaceroleSqlProvider {
         }
         
         if (record.getInterfaceid() != null) {
-            sql.VALUES("InterfaceID", "#{interfaceid,jdbcType=INTEGER}");
+            sql.VALUES("InterfaceID", "#{interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParametersid() != null) {
-            sql.VALUES("ParametersID", "#{parametersid,jdbcType=INTEGER}");
+            sql.VALUES("ParametersID", "#{parametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreinterfaceid() != null) {
-            sql.VALUES("PreInterfaceID", "#{preinterfaceid,jdbcType=INTEGER}");
+            sql.VALUES("PreInterfaceID", "#{preinterfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreparametersid() != null) {
-            sql.VALUES("PreParametersID", "#{preparametersid,jdbcType=INTEGER}");
+            sql.VALUES("PreParametersID", "#{preparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getDes() != null) {
@@ -130,19 +130,19 @@ public class TableInterfaceroleSqlProvider {
         }
         
         if (record.getInterfaceid() != null) {
-            sql.SET("InterfaceID = #{record.interfaceid,jdbcType=INTEGER}");
+            sql.SET("InterfaceID = #{record.interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParametersid() != null) {
-            sql.SET("ParametersID = #{record.parametersid,jdbcType=INTEGER}");
+            sql.SET("ParametersID = #{record.parametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreinterfaceid() != null) {
-            sql.SET("PreInterfaceID = #{record.preinterfaceid,jdbcType=INTEGER}");
+            sql.SET("PreInterfaceID = #{record.preinterfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreparametersid() != null) {
-            sql.SET("PreParametersID = #{record.preparametersid,jdbcType=INTEGER}");
+            sql.SET("PreParametersID = #{record.preparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getDes() != null) {
@@ -169,10 +169,10 @@ public class TableInterfaceroleSqlProvider {
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("RoleID = #{record.roleid,jdbcType=INTEGER}");
-        sql.SET("InterfaceID = #{record.interfaceid,jdbcType=INTEGER}");
-        sql.SET("ParametersID = #{record.parametersid,jdbcType=INTEGER}");
-        sql.SET("PreInterfaceID = #{record.preinterfaceid,jdbcType=INTEGER}");
-        sql.SET("PreParametersID = #{record.preparametersid,jdbcType=INTEGER}");
+        sql.SET("InterfaceID = #{record.interfaceid,jdbcType=VARCHAR}");
+        sql.SET("ParametersID = #{record.parametersid,jdbcType=VARCHAR}");
+        sql.SET("PreInterfaceID = #{record.preinterfaceid,jdbcType=VARCHAR}");
+        sql.SET("PreParametersID = #{record.preparametersid,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
@@ -196,19 +196,19 @@ public class TableInterfaceroleSqlProvider {
         }
         
         if (record.getInterfaceid() != null) {
-            sql.SET("InterfaceID = #{interfaceid,jdbcType=INTEGER}");
+            sql.SET("InterfaceID = #{interfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getParametersid() != null) {
-            sql.SET("ParametersID = #{parametersid,jdbcType=INTEGER}");
+            sql.SET("ParametersID = #{parametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreinterfaceid() != null) {
-            sql.SET("PreInterfaceID = #{preinterfaceid,jdbcType=INTEGER}");
+            sql.SET("PreInterfaceID = #{preinterfaceid,jdbcType=VARCHAR}");
         }
         
         if (record.getPreparametersid() != null) {
-            sql.SET("PreParametersID = #{preparametersid,jdbcType=INTEGER}");
+            sql.SET("PreParametersID = #{preparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getDes() != null) {

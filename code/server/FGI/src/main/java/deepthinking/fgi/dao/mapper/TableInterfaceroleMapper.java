@@ -60,9 +60,9 @@ public interface TableInterfaceroleMapper {
         "ParametersID, PreInterfaceID, ",
         "PreParametersID, Des, ",
         "Remark)",
-        "values (#{roleid,jdbcType=INTEGER}, #{interfaceid,jdbcType=INTEGER}, ",
-        "#{parametersid,jdbcType=INTEGER}, #{preinterfaceid,jdbcType=INTEGER}, ",
-        "#{preparametersid,jdbcType=INTEGER}, #{des,jdbcType=VARCHAR}, ",
+        "values (#{roleid,jdbcType=INTEGER}, #{interfaceid,jdbcType=VARCHAR}, ",
+        "#{parametersid,jdbcType=VARCHAR}, #{preinterfaceid,jdbcType=VARCHAR}, ",
+        "#{preparametersid,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
         "#{remark,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
@@ -88,10 +88,10 @@ public interface TableInterfaceroleMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="RoleID", property="roleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="ParametersID", property="parametersid", jdbcType=JdbcType.INTEGER),
-        @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ParametersID", property="parametersid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
@@ -113,10 +113,10 @@ public interface TableInterfaceroleMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="RoleID", property="roleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="ParametersID", property="parametersid", jdbcType=JdbcType.INTEGER),
-        @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.INTEGER),
-        @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ParametersID", property="parametersid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
@@ -158,10 +158,10 @@ public interface TableInterfaceroleMapper {
     @Update({
         "update table_interfacerole",
         "set RoleID = #{roleid,jdbcType=INTEGER},",
-          "InterfaceID = #{interfaceid,jdbcType=INTEGER},",
-          "ParametersID = #{parametersid,jdbcType=INTEGER},",
-          "PreInterfaceID = #{preinterfaceid,jdbcType=INTEGER},",
-          "PreParametersID = #{preparametersid,jdbcType=INTEGER},",
+          "InterfaceID = #{interfaceid,jdbcType=VARCHAR},",
+          "ParametersID = #{parametersid,jdbcType=VARCHAR},",
+          "PreInterfaceID = #{preinterfaceid,jdbcType=VARCHAR},",
+          "PreParametersID = #{preparametersid,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
           "Remark = #{remark,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"

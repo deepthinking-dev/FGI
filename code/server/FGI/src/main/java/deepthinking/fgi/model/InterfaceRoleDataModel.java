@@ -19,13 +19,13 @@ public class InterfaceRoleDataModel {
     @ApiModelProperty(value = "规则ID")
     private Integer roleid;
     @ApiModelProperty(value = "接口ID")
-    private Integer InterfaceID;
+    private String InterfaceID;
     @ApiModelProperty(value = "接口参数ID")
-    private Integer ParametersID;
+    private String ParametersID;
     @ApiModelProperty(value = "前序接口ID")
-    private Integer PreInterfaceID;
+    private String PreInterfaceID;
     @ApiModelProperty(value = "前序接口参数ID")
-    private Integer PreParametersID;
+    private String PreParametersID;
     @ApiModelProperty(value = "接口参数动作集合")
     private List<TableAlgorithmcondition> algorithmconditions;
     @ApiModelProperty(value = "描述")
@@ -54,8 +54,8 @@ public class InterfaceRoleDataModel {
     public InterfaceRoleDataModel() {
     }
 
-    public InterfaceRoleDataModel(Integer id, Integer roleid, Integer interfaceID, Integer parametersID, Integer preInterfaceID,
-                                  Integer preParametersID, List<TableAlgorithmcondition> algorithmconditions, String des, String remark) {
+    public InterfaceRoleDataModel(Integer id, Integer roleid, String interfaceID, String parametersID,
+                                  String preInterfaceID, String preParametersID, List<TableAlgorithmcondition> algorithmconditions, String des, String remark) {
         this.id = id;
         this.roleid = roleid;
         InterfaceID = interfaceID;
@@ -67,14 +67,6 @@ public class InterfaceRoleDataModel {
         this.remark = remark;
     }
 
-    public Integer getRoleid() {
-        return roleid;
-    }
-
-    public void setRoleid(Integer roleid) {
-        this.roleid = roleid;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -83,35 +75,43 @@ public class InterfaceRoleDataModel {
         this.id = id;
     }
 
-    public Integer getInterfaceID() {
+    public Integer getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
+    }
+
+    public String getInterfaceID() {
         return InterfaceID;
     }
 
-    public void setInterfaceID(Integer interfaceID) {
+    public void setInterfaceID(String interfaceID) {
         InterfaceID = interfaceID;
     }
 
-    public Integer getParametersID() {
+    public String getParametersID() {
         return ParametersID;
     }
 
-    public void setParametersID(Integer parametersID) {
+    public void setParametersID(String parametersID) {
         ParametersID = parametersID;
     }
 
-    public Integer getPreInterfaceID() {
+    public String getPreInterfaceID() {
         return PreInterfaceID;
     }
 
-    public void setPreInterfaceID(Integer preInterfaceID) {
+    public void setPreInterfaceID(String preInterfaceID) {
         PreInterfaceID = preInterfaceID;
     }
 
-    public Integer getPreParametersID() {
+    public String getPreParametersID() {
         return PreParametersID;
     }
 
-    public void setPreParametersID(Integer preParametersID) {
+    public void setPreParametersID(String preParametersID) {
         PreParametersID = preParametersID;
     }
 

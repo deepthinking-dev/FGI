@@ -84,4 +84,10 @@ public class ModuleController {
     public List<TableModulefield> getModuleColumns(String moduleId){
         return tableModulefieldService.getModuleColumns(moduleId);
     }
+    @GetMapping("/findTableModuleByName")
+    @ApiOperation(value = "01-11 根据模型名称查询确定模型，用于赋值操作", notes = "返回确定的模型 ", httpMethod = "GET")
+    @ApiImplicitParam(name = "name", value = "模型名称", dataType = "string", paramType = "query", required = true)
+    public TableModule findTableModuleByName(String name){
+        return tableModuleService.findTableModuleByName(name);
+    }
 }

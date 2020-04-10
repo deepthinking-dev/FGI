@@ -134,7 +134,48 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                 return 2;
             }
             List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-            tableFuncs.stream().forEach(fun->tableFuncMapper.updateByPrimaryKeySelective(fun));
+            //查询以前所有的参数
+            TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
+            tableFuncCriteria.createCriteria().andAlgorithmidEqualTo(algorithmModel.getTableAlgorithm().getId());
+            List<TableFunc> oldData=tableFuncMapper.selectByExample(tableFuncCriteria);
+            List<TableFunc> addData=new ArrayList<>();
+            List<TableFunc> delData=new ArrayList<>();
+            List<TableFunc> updData=new ArrayList<>();
+            if(oldData.size()>0){
+                for(TableFunc func:tableFuncs){
+                    boolean fg=false;
+                    for(TableFunc old:oldData){
+                        if(func.getId()==old.getId()){
+                            updData.add(func);
+                            fg=true;
+                            break;
+                        }
+                    }
+                    if(!fg){
+                        addData.add(func);
+                    }
+                }
+                for(TableFunc old:oldData){
+                    boolean fg=false;
+                    for(TableFunc upd:updData){
+                        if(old.getId()==upd.getId()){
+                            fg=true;
+                            break;
+                        }
+                    }
+                    if(!fg){
+                        delData.add(old);
+                    }
+                }
+                //删除
+                delData.forEach(data->tableFuncMapper.deleteByPrimaryKey(data.getId()));
+                //修改
+                updData.forEach(data->tableFuncMapper.updateByPrimaryKeySelective(data));
+                //新增
+                addData.forEach(data->tableFuncMapper.insert(data));
+            }else {
+                tableFuncs.stream().forEach(fun->tableFuncMapper.insert(fun));
+            }
         }catch (Exception e){
             logger.error(e.getMessage());
             return 0;
