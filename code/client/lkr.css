@@ -96,7 +96,7 @@ body{
     height: 6%;
 }
 .mouldFoot>div{
-    width: 50%;
+    width: 100%;
     cursor: pointer;
     color: #ebeef8;
     display: flex;
@@ -466,6 +466,16 @@ body{
     margin:15px 0;
     margin-left: 20px;
     border: none;
+    height: 30px;
+}
+#addSzBuuton{
+    background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin:15px 0;
+    margin-left:20px;
+    border: none;
+    height: 30px;
 }
 #dicDiv{
     position: absolute;
@@ -485,7 +495,7 @@ body{
     z-index: 10;
     position: absolute;
     left: 20%;
-    top: 15%;
+    top: 10%;
     width: 1000px;
     height: 700px;
     background-image: url(./static/FrameBg.png);

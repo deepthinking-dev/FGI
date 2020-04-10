@@ -738,7 +738,7 @@
                            </div>
                            <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
-                                <div onclick='editAlgorithm()'>编辑算子</div>
+<!--                                <div onclick='editAlgorithm()'>编辑算子</div>-->
                                 <div id='getAllGzgz'>已有规则</div>
                             </div>
 
@@ -841,7 +841,8 @@
           <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-              <input type="button" id="addDic" value="新增">
+              <input type="button" id="addDic" value="新增字典">
+              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算子">
               <table id="dicTable">
 
               </table>
@@ -1397,6 +1398,7 @@
         // $('#AddAlgorithm').fadeToggle(500);
         // $("#dataModulePage").hide();
         // $("#dicDiv").hide();
+        AlgorithmConfirm()
         window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
