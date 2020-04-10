@@ -476,34 +476,6 @@ $(function(){
             </div>
         `)
     })
-    $('body').on('change','.zdcsSelect',(e) => {
-        if(e.target.value == "2" || e.target.value == "3"){
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("取值")
-            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
-        } else {
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("数据项")
-            $(e.target).parent().next().append(`
-                    <select class="zdcsTypeSelect">
-                        <option>int</option>
-                        <option>long</option>
-                        <option>byte</option>
-                        <option>short</option>
-                        <option>float</option>
-                        <option>double</option>
-                        <option>boolean</option>
-                        <option>char</option>
-                        <option>date</option>
-                        <option>string</option>
-                        <option>BLOB</option>
-                        <option>boolean</option>
-                        <option>array</option>
-                    </select>`)
-        }
-    })
     $('body').on('click','.deleteZdcs',(e) => {
         $(e.target).parent().remove()
     })

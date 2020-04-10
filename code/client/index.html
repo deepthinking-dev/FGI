@@ -239,6 +239,17 @@
                <button id="actionSelectButton" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
            </div>
        </div>
+<!--       入库备注-->
+       <div id="rkDiv">
+           <div style="text-align: center;margin: 25px 0">
+                <p style="color:#fff;">入库备注</p>
+           </div>
+           <textarea id="bzMsg"></textarea>
+           <div style="position: absolute;bottom: 20px;right: 0">
+               <button class="btn pointer" onclick="closeBz()" type="button" style="margin-right: 35px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button class="btn pointer" onclick="saveBzMsg()"  type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
     <!-- 保存规则 -->
     <div id="sureRule">
         <div class="title">
@@ -739,6 +750,11 @@
                                 新增自定义属性
                             </a>
                         </div>
+                        <div id="showRk" style="display: none">
+                            <a class="menu-a" onclick="showRk()">
+                                入库备注
+                            </a>
+                        </div>
                         <div>
                             <a class="menu-a" id="showAllmag">
                                 查看详情
@@ -910,6 +926,34 @@
         inputFieldsTarget:'',
         fieldname:''
     }
+    $('body').on('change','.zdcsSelect',(e) => {
+        if(e.target.value == "2" || e.target.value == "3"){
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("取值")
+            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
+        } else {
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("数据项")
+            $(e.target).parent().next().append(`
+                    <select class="zdcsTypeSelect">
+                        <option>int</option>
+                        <option>long</option>
+                        <option>byte</option>
+                        <option>short</option>
+                        <option>float</option>
+                        <option>double</option>
+                        <option>boolean</option>
+                        <option>char</option>
+                        <option>date</option>
+                        <option>string</option>
+                        <option>BLOB</option>
+                        <option>boolean</option>
+                        <option>array</option>
+                    </select>`)
+        }
+    })
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).data('id')
@@ -1913,6 +1957,17 @@
      }
      function closeactionSelectDiv() {
          $("#actionSelectDiv").hide()
+     }
+     function showRk() {
+         $("#rkDiv").show()
+     }
+     function closeBz() {
+        $("#rkDiv").hide()
+     }
+     function saveBzMsg() {
+         let val = $('#bzMsg').val();
+         $("#rkDiv").hide();
+         $("#ruleDes").attr("data",val)
      }
 </script>
 </body>

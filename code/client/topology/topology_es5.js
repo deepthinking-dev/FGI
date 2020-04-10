@@ -120,6 +120,7 @@ var Topology = {
         $("#flex_canvas").bind("contextmenu", function () {
             //设置右键菜单
             if (selNodes != null) {
+                $("#showRk").show();
                 var selectId = selNodes[0].id;
                 var index = selectId.indexOf("tableAlgorithm")
                 window.selectId = selectId.slice(0,index);
@@ -157,6 +158,7 @@ var Topology = {
                 $("#menu_lock").removeClass("menu-a-disabled");
                 $("#menu_lock").addClass("menu-a");
             } else {
+                $("#showRk").hide();
                 //置顶
                 $("#menu_top").addClass("menu-a-disabled");
                 $("#menu_top").removeClass("menu-a");

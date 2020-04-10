@@ -691,3 +691,30 @@ body{
     line-height: 40px;
     margin-right: 10px;
 }
+#rkDiv{
+    position: absolute;
+    height:400px;
+    width: 600px;
+    left: 30%;
+    top: 20%;
+    display: none;
+    background-image: url(./static/mum1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    z-index: 10000000;
+}
+#bzMsg{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    resize:none;
+    width: 500px;
+    height:250px;
+    margin-left: 50px;
+    font-size: 16px;
+}
