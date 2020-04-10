@@ -1061,6 +1061,7 @@ $(function(){
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>
+                                <option>number</option>
                                 <option>char</option>
                                 <option>date</option>
                                 <option>string</option>

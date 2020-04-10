@@ -729,7 +729,6 @@ var Topology = {
                            
                         break
                         case 'addLine':
-                            debugger
                             var strokeStyle;
                             data.dash = 1;
                             if(!data.to.id){
