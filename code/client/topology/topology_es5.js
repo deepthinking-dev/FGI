@@ -684,8 +684,8 @@ var Topology = {
                                                                        
                                 }
                                
-                            //     canvas.render();
-                            // }
+                                canvas.render();
+                            }
                             break;
                         case 'resizeNodes':
                             var child = []     
