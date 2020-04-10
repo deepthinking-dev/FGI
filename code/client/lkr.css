@@ -680,4 +680,14 @@ body{
     width: 220px;
     height: 39px;
 }
-
+#actionSelectDiv span{
+    text-align:  center;
+    font-size: 15px;
+    color: #fff;
+    display: inline-block;
+    width: 70px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 10px;
+}

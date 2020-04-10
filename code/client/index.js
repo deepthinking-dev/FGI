@@ -158,7 +158,10 @@ $(function(){
                 url: urlConfig.host + '/module/findTableModuleByName',
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
-                    console.log(res);
+                    if(res == ""){
+                        toastr.info("非本系统模型，无选择参数！");
+                        return false;
+                    }
                     $("#actionSelectDiv").show();
                     $("#actionSelectParma").empty();
                     res.modulefields.map(t=>{
