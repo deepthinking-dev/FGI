@@ -314,6 +314,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
+                    console.log(event,data,"555555555555555555555555555555")
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -838,6 +839,8 @@ var Topology = {
                         case 'delete':
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
+
+                            
                             break;
                         // case 'resize':
                         //     if (!this.mouseMoving) {

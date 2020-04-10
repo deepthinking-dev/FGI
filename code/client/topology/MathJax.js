@@ -566,7 +566,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                 window.bigData.isAddInOut = true;
 
                 let flag = canvas.addNode(test)
@@ -626,8 +626,35 @@ function ActionSure(){
        lsList.push(obj)
    }
     window.Topology.tools.map(isCZdata=>{
+        debugger
         if(isCZdata.id == data.id){
             isFlag =true
+            isCZdata.children.map(item=>{
+                let sy = item.uuid.indexOf('---')
+               let uuID = item.uuid.slice(0,sy)
+                for(let i =0;i< actionInfoNum.length ;i++){
+                    if(uuID == $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")){
+                        return
+                    }else{
+                        canvas.data.nodes.map(item=>{
+                            if(!item.childStand){
+                                return
+                            }else{
+                                let XYID =  item.id.substr((item.id.indexOf('---')-36),36)
+                                if(XYID == uuID){
+                                    console.log(XYID)
+                                }
+                               
+                               
+                            }
+                                
+                            
+                        })
+                        // item.uuid
+                        // canvas.delete()
+                    }
+                }
+            })
             isCZdata.children = lsList
         }
     })
