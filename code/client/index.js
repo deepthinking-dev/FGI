@@ -13,6 +13,287 @@ $(function(){
         // $("#dicDiv").show();
         // dictionary()
     })
+    $("#selectOutIn").change(()=> {
+        $("#actionInDiv").empty();
+        $("#actionOutDiv").empty();
+        if ($("#selectOutIn").val() == "1") {
+            $("#actionInDiv").show();
+            $("#actionOutDiv").hide();
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                    try{
+                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                        lineDatas.map(t=>{
+                            $("#actionInDiv").append(`
+                              <div style="margin: 10px 0">
+                                   <span>行为值来源</span><input class="xwzly_in" disabled>
+                                   <span>行为</span><select class="xwSelect_in">
+                                   <option value=">">></option>
+                                   <option value="<"><</option>
+                                   <option value="=">=</option>
+                                   <option value=">=">>=</option>
+                                   <option value="<="><=</option>
+                                   <option value="!=">!=</option>
+                                   <option value="assignment">赋值</option>
+                               </select>
+                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                              </div>
+                            `)
+                        })
+                        lineDatas.map((t,i)=>{
+                            $('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                        })
+                    }catch (e) {
+
+                    }
+                }
+            })
+        } else {
+            $("#actionInDiv").hide();
+            $("#actionOutDiv").show();
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                    })
+                    globalActionDatas.map(s=>{
+                        if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                            try {
+                                var lineDatas = s.dataOut.interfaceRoleDataModels[0].algorithmconditions;
+                                lineDatas.map(t=>{
+                                    $("#actionOutDiv").append(`
+                                      <div style="margin: 10px 0">
+                                           <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                           <span>行为</span><select class="xwSelect_out">
+                                           <option value=">">></option>
+                                           <option value="<"><</option>
+                                           <option value="=">=</option>
+                                           <option value=">=">>=</option>
+                                           <option value="<="><=</option>
+                                           <option value="!=">!=</option>
+                                           <option value="assignment">赋值</option>
+                                       </select>
+                                           <span>表达式</span><input type="text" value=${t.expression} class="bds_out">
+                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                      </div>
+                                `)
+                                })
+                                lineDatas.map((t,i)=>{
+                                    $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                    $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                                })
+                            }catch (e) {
+
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    })
+    $('body').on('click','.deleteActionData',(e) => {
+        $(e.target).parent().remove()
+    })
+    $('body').on('click','#addActionButton',(e) => {
+        if($("#selectOutIn").val() == "1"){
+                $("#actionInDiv").append(`
+                      <div style="margin: 10px 0">
+                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                           <span>行为</span><select class="xwSelect_in">
+                           <option value=">">></option>
+                           <option value="<"><</option>
+                           <option value="=">=</option>
+                           <option value=">=">>=</option>
+                           <option value="<="><=</option>
+                           <option value="!=">!=</option>
+                           <option value="assignment">赋值</option>
+                       </select>
+                           <span>表达式</span><input type="text" value="" class="bds_in">
+                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                      </div>
+                    `)
+        } else {
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                    })
+                    $("#actionOutDiv").append(`
+                          <div style="margin: 10px 0">
+                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                               <span>行为</span><select class="xwSelect_out">
+                               <option value=">">></option>
+                               <option value="<"><</option>
+                               <option value="=">=</option>
+                               <option value=">=">>=</option>
+                               <option value="<="><=</option>
+                               <option value="!=">!=</option>
+                               <option value="assignment">赋值</option>
+                           </select>
+                               <span>表达式</span><input type="text" value="" class="bds_out">
+                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                          </div>
+                        `)
+                }
+            })
+        }
+    })
+    $('body').on('dblclick','.bds_out',(e) => {
+        if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
+            if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
+                toastr.info('行为值来源为对象才能赋值！')
+                return false
+            }
+        }
+        if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') == "3" && $(e.target).parent().children('.xwSelect_out').val() == "assignment"){//对象&&赋值
+            currentActionInput = $(e.target)
+            $.ajax({
+                url: urlConfig.host + '/module/findTableModuleByName',
+                data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
+                success(res) {
+                    if(res == ""){
+                        toastr.info("非本系统模型，无选择参数！");
+                        return false;
+                    }
+                    $("#actionSelectDiv").show();
+                    $("#actionSelectParma").empty();
+                    res.modulefields.map(t=>{
+                        $("#actionSelectParma").append(`
+                            <option value=${t.fieldname}>${t.fieldname}</option>
+                        `)
+                    })
+                    if(currentActionInput.val()){
+                        var val = currentActionInput.val();
+                        var start = val.indexOf(".");
+                        var end = val.indexOf("=");
+                        $("#actionSelectParma").val(val.slice(start+1,end))
+                    }
+                }
+            })
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.varname}>${s.varname}</option>`
+                    })
+                    $("#actionSelectName").html(`${optionx}`)
+                    if(currentActionInput.val()){
+                        var v = currentActionInput.val();
+                        var s = v.indexOf("[");
+                        var e = v.indexOf("]");
+                        $("#actionSelectName").val(v.slice(s+1,e))
+                    }
+                }
+            })
+        }
+    })
+    $('body').on('click','#actionSelectButton',(e) => {
+        var selectName = currentActionInput.parent().children('.xwzly_out').find("option:selected").attr('valvalue');
+        var fieldname = $("#actionSelectParma").val();
+        var fromName = $("#actionSelectName").val();
+        $("#actionSelectDiv").hide();
+        currentActionInput.val(selectName + "." + fieldname + "=" + "[" + fromName+ "]")
+    })
+    $('body').on('click','#addAction',(e) => {
+        $("#actionDiv").hide();
+        $("#actionOutDiv").hide()
+        if($("#selectOutIn").val() == "1"){//输入
+            var dataArr = [];
+            $('#actionInDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_in").val(),
+                    "expression": $(this).find(".bds_in").val(),
+                    "id": 0,
+                    "interfaceparametersid":$("#addActionButton").attr("in_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources": 0
+                };
+                dataArr.push(obj)
+            })
+           var data = {
+                "interfaceRoleDataModels": [
+                    {
+                        "algorithmconditions": dataArr,
+                        "des": "",
+                        "id": 0,
+                        "interfaceID": $("#addActionButton").attr("in_big"),
+                        "parametersID": $("#addActionButton").attr("in_small"),
+                        "preInterfaceID": $("#addActionButton").attr("out_big"),
+                        "preParametersID": $("#addActionButton").attr("out_small"),
+                        "remark": "",
+                        "roleid": 0,
+                    }
+                ],
+            }
+            var flag = true;
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    s.dataIn = data;
+                    flag = false
+                }
+            })
+            if(flag){
+                globalActionDatas.push({
+                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
+                    dataIn:data,
+                    dataOut:""
+                })
+            }
+        } else {
+            var arrOut = [];
+            $('#actionOutDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_out").val(),
+                    "expression": $(this).find(".bds_out").val(),
+                    "id": 0,
+                    "interfaceparametersid":$("#addActionButton").attr("out_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources": $(this).find(".xwzly_out").val()
+                };
+                arrOut.push(obj)
+            })
+            var dataOut = {
+                "interfaceRoleDataModels": [
+                    {
+                        "algorithmconditions": arrOut,
+                        "des": "",
+                        "id": 0,
+                        "interfaceID": $("#addActionButton").attr("in_big"),
+                        "parametersID": $("#addActionButton").attr("in_small"),
+                        "preInterfaceID": $("#addActionButton").attr("out_big"),
+                        "preParametersID": $("#addActionButton").attr("out_small"),
+                        "remark": "",
+                        "roleid": 0,
+                    }
+                ],
+            }
+            var flag = true;
+            globalActionDatas.map(s=>{
+                if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    s.dataOut = dataOut;
+                    flag = false
+                }
+            })
+            if(flag){
+                globalActionDatas.push({
+                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
+                    dataIn:"",
+                    dataOut:dataOut
+                })
+            }
+        }
+    })
     $('body').on('click','.addDicClose',(e) => {
         $("#editDic").hide();
         $("#dicDiv").show();
@@ -168,63 +449,35 @@ $(function(){
     $('body').on('click','#addZdcs',(e) => {
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
-                <p style="margin-top: 5px">
-                    <span style="color:#fff;margin-right: 20px;">参数名称</span>
-                    <input class="zdcsCsmc" type="text" value="">
-                </p>
-                <p>
-                    <span style="color:#fff;margin-right: 20px">类型</span>
-                    <select class="zdcsSelect">
+                <i>
+                  <span style="color:#fff;">参数名称</span>
+                    <input class="zdcsCsmc" type="text" value=""> 
+                </i>
+                <i>
+                 <span style="color:#fff;">类型</span>
+                    <select class="zdcsSelect" onchange="changeVarType(event)">
                         <option value="2">常量</option>
                         <option value="3">对象</option>
                         <option value="1">基本类型</option>
                     </select>
-                </p>
-                <p>
-                    <span style="color:#fff;;margin-right: 20px">取值</span>
+                </i>  
+                <i>
+                    <span style="color:#fff;">取值</span>
                     <input type="text" value="" class="zdcsText">
-                </p>
-                <p>
-                    <span style="color:#fff;margin-right: 20px">输入输出</span>
-                    <select class="zdcsExport">
+                </i>  
+                <i>
+                   <span style="color:#fff;">输入输出</span>
+                   <select class="zdcsExport">
                         <option value="0">输入</option>
                         <option value="1">输出</option>
                     </select>
-                     <button class="deleteZdcs" style="float: right;margin-right: 20px;height: 30px;line-height: 30px;background: #f56c6c;border: none;color: #fff;">删除</button>
-                </p>
+                </i>  
+                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
             </div>
         `)
     })
-    $('body').on('change','.zdcsSelect',(e) => {
-        if(e.target.value == "2" || e.target.value == "3"){
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("取值")
-            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
-        } else {
-            $(e.target).parent().next().find('input').remove();
-            $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("数据项")
-            $(e.target).parent().next().append(`
-                    <select class="zdcsTypeSelect">
-                        <option>int</option>
-                        <option>long</option>
-                        <option>byte</option>
-                        <option>short</option>
-                        <option>float</option>
-                        <option>double</option>
-                        <option>boolean</option>
-                        <option>char</option>
-                        <option>date</option>
-                        <option>string</option>
-                        <option>BLOB</option>
-                        <option>boolean</option>
-                        <option>array</option>
-                    </select>`)
-        }
-    })
     $('body').on('click','.deleteZdcs',(e) => {
-        $(e.target).parent().parent().remove()
+        $(e.target).parent().remove()
     })
 
     $('body').on('click','#getAllSz',(e) => {
@@ -760,29 +1013,29 @@ $(function(){
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
-                                <span style="color:#fff;margin-right: 20px;">参数名称</span>
+                            <i style="margin-top: 5px">
+                                <span style="color:#fff;">参数名称</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
-                            </p>
-                            <p>
-                                <span style="color:#fff;;margin-right: 20px">类型</span>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">类型</span>
                                 <select class="zdcsSelect" disabled>
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                             <p>
-                                <span style="color:#fff;;margin-right: 20px">取值</span>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">取值</span>
                                 <input type="text" value="" class="zdcsText" disabled>
-                            </p>
-                            <p>
-                                <span style="color:#fff;margin-right: 20px">输入输出</span>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">输入输出</span>
                                 <select class="zdcsExport" disabled>
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
-                            </p>
+                            </i>
                         </div>
                     `)
                     })

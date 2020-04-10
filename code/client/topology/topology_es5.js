@@ -29,14 +29,10 @@ var Topology = {
         lineDown: 9
     },
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
-    tools: [
-        {
-            group: '基本模型',
-            children: []
-        },
-    ],
+    tools: [],
     saveNode:[],
     dblclickNode:{},
+    isClickAction:[],
     // 对象的最初入口
     init: function () {
         var self = this;
@@ -124,6 +120,7 @@ var Topology = {
         $("#flex_canvas").bind("contextmenu", function () {
             //设置右键菜单
             if (selNodes != null) {
+                $("#showRk").show();
                 var selectId = selNodes[0].id;
                 var index = selectId.indexOf("tableAlgorithm")
                 window.selectId = selectId.slice(0,index);
@@ -161,6 +158,7 @@ var Topology = {
                 $("#menu_lock").removeClass("menu-a-disabled");
                 $("#menu_lock").addClass("menu-a");
             } else {
+                $("#showRk").hide();
                 //置顶
                 $("#menu_top").addClass("menu-a-disabled");
                 $("#menu_top").removeClass("menu-a");
@@ -177,6 +175,7 @@ var Topology = {
                 $("#menu_lock").addClass("menu-a-disabled");
                 $("#menu_lock").removeClass("menu-a");
             }
+            window.lineDiv = false;
             //显示右键菜单
             $("#canvas_menus").css({
                 "left": document.body.scrollLeft + event.clientX, "top":
@@ -317,8 +316,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                //    debugger
-                console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -331,10 +328,60 @@ var Topology = {
                             // }else{
                             //     locked = data.locked;
                             // }
-                           
                             self.initNode();
                             break;
                         case 'line':
+                            let Index_in = data.from.id.indexOf("tableAlgorithm");
+                            let Index_out = data.to.id.indexOf("tableAlgorithm");
+                            let id_in = data.to.id.slice(0,Index_in);//算子id
+                            let id_out = data.from.id.slice(0,Index_out);
+
+                            let out_big = data.from.id.slice(0,data.from.id.indexOf('OUT'));//输出大矩形id
+                            let out_small = data.from.id;//输出小矩形id
+                            let in_big = data.to.id.slice(0,data.to.id.indexOf('IN'));
+                            let in_small = data.to.id;
+                            $('#selectOutIn').val('1')
+                            $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
+                            window.lineDiv = true;
+                            deleteLineDataId = out_small + "AND" + in_small;
+                            $("#actionInDiv").empty();
+                            $("#actionOutDiv").empty();
+                            globalActionDatas.map(s=>{
+                                if(s.id == out_small + "AND" + in_small){
+                                    try{
+                                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                                        lineDatas.map(t=>{
+                                            $("#actionInDiv").append(`
+                                              <div style="margin: 10px 0">
+                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                   <span>行为</span><select class="xwSelect_in">
+                                                   <option value=">">></option>
+                                                   <option value="<"><</option>
+                                                   <option value="=">=</option>
+                                                   <option value=">=">>=</option>
+                                                   <option value="<="><=</option>
+                                                   <option value="!=">!=</option>
+                                                   <option value="assignment">赋值</option>
+                                               </select>
+                                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                              </div>
+                                            `)
+                                        })
+                                        lineDatas.map((t,i)=>{
+                                            $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                        })
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            })
+                            setTimeout(()=>{
+                                if(window.lineDiv){
+                                    $('#actionDiv').show();
+                                }
+                            },300)
+                            $('#actionInDiv').show();
                             selected = {
                                 "type": event,
                                 "data": data
@@ -376,21 +423,12 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            
-                            // if(data[0].childStand.type = '弟弟')
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             canvas.data.nodes.map(item => {
-                                // console.log(item,'sdsdsdsd')
-                                // canvas.lockNodes([data[0]], true)
                                 if(item.childStand){
-                                    // canvas.lockNodes([data[0]], false)
                                     if(item.childStand.type == data[0].id+'的弟弟'){
-                                        console.log(item,'45454545')
-                                        // canvas.lockNodes([item], false)
-
-
                                         if(item.id.includes('IN')){
                                             let nums = item.childStand.wz
                                             item.rect.x = data[0].rect.x + nums.x
@@ -403,10 +441,12 @@ var Topology = {
                                             item.rect.ey = data[0].rect.y + nums.y + heightsa/10
                                             item.rect.center.x = data[0].rect.center.x + nums.x
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.x = 0
-                                            item.textRect.y = 0
-                                            item.textRect.width = 0
-                                            item.textRect.height = 0
+                                            item.textRect.x =  item.rect.x 
+                                            item.textRect.y =  item.rect.y
+                                            item.textRect.width = 18
+                                            item.textRect.height = 5
+                                            item.paddingTopNum = -3
+                                            item.paddingTop = -3
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -438,7 +478,7 @@ var Topology = {
                                             item.rotatedAnchors[3].y = 0
                                         }else{
                                             let nums = item.childStand.wz
-                                            item.rect.x = data[0].rect.x + nums.x
+                                            item.rect.x = data[0].rect.x +data[0].rect.width
                                             item.rect.y = data[0].rect.y + nums.y
 
                                             item.rect.width = widthsa/10
@@ -448,10 +488,12 @@ var Topology = {
                                             item.rect.ey = data[0].rect.y + nums.y + heightsa/10
                                             item.rect.center.x = data[0].rect.center.x + nums.x
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.x = 0
-                                            item.textRect.y = -item.rect.height/2
-                                            item.textRect.width = 0
-                                            item.textRect.height = -item.rect.height/2
+                                            item.textRect.x =  item.rect.x 
+                                            item.textRect.y =  item.rect.y
+                                            item.textRect.width = 18
+                                            item.textRect.height = 5
+                                            item.paddingTopNum = -10
+                                            item.paddingTop = -10
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -481,8 +523,6 @@ var Topology = {
 
                                             item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
                                             item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
-
-                                           
                                         }
                                         canvas.render()                                       
                                     }
@@ -496,12 +536,10 @@ var Topology = {
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.from.id == obj.id) return obj
                                     })[0]
-                                    console.log(nodesa,"11111111111111111111111111111111111")
                                     item.from.x = nodesa.rotatedAnchors[3].x
                                     item.from.y = nodesa.rotatedAnchors[3].y
                                 }
                                 if(item.to.id.indexOf(data[0].id) != -1){
-                                    console.log(item,"22222222222222222222222222222222")
                                     let nodesa = canvas.data.nodes.filter(obj => {
                                         if(item.to.id == obj.id) return obj
                                     })[0]
@@ -511,11 +549,18 @@ var Topology = {
                             })
                             break    
                         case 'moveOutNode':
-                            
+                            console.log(data)
                             break   
-                        case 'moveInNode':
+                        case 'moveInNode':   
+                            if(data.name == "combine"){
+                                $("#menu_unCombine").removeClass("menu-a-disabled");
+                                $("#menu_unCombine").addClass("menu-a");
+                                $("#menu_combine").css("display", "none");
+                                $("#menu_unCombine").css("display", "block");
+                                canvas.uncombine(data);
+                                canvas.render();
+                            }
                             if(data.childStand) canvas.lockNodes([data], false)
-                           
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
@@ -534,84 +579,142 @@ var Topology = {
                                 }
                                 return arr;
                             }
-                            
-                            
-                            // canvas.combine(canvas.data.nodes);
                             unique(canvas.data.nodes)
-                            // canvas.render(true);
                             break;
                         case 'addNode':
-                        
+                            
                             selNodes = [data];
                             selected = {
                                 "type": event,
                                 "data": data
                             };
+                       
                             if(window.bigData.isAddInOut){
-                               debugger
                                 if(window.bigData.isAddInOutType == "in"){
-                                    window.Topology.dblclickNode.data.inNum ++
+                                    window.Topology.dblclickNode.data.inNum ++   
                                 }else{
-                                    window.Topology.dblclickNode.data.outNum ++
+                                    window.Topology.dblclickNode.data.outNum ++                         
                                 }
                                 
                             }
-                         
-                            console.log(data,selected,canvas.data)
+
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
-                            self.initNode();
+                            self.initNode(); 
                             // debugger
-                            // let data1 = JSON.parse(JSON.stringify(data)) 
-                            // if(data.data.inNum > 0){
-                            //     let data2 = JSON.parse(JSON.stringify(data1)) 
-                            //     for(let i= 0;i<data.data.inNum; i++){
-                            //         console.log(data)
-                            //         let widths = data1.rect.width/10
-                            //         let heights = data1.rect.height/10
-                            //         let num = {
-                            //                 x:-widths,
-                            //                 y:(heights*data.data.inNum)+5*data1.data.inNum
-                            //             }
-                                   
-                            //         data2.id = data1.id+"IN" +i
-                            //         data2.rect.width = widths
-                            //         data2.rect.height = heights
-                            //         data2.text ="in" +i
-                            //         data2.rect.ex = data1.rect.x + num.x;
-                            //         data2.rect.ey = data1.rect.y + num.y;
-                            //         data2.rect.x = data1.rect.x + num.x;
-                            //         data2.rect.y = data1.rect.y+ num.y;
-                            //         data2.childStand = {
-                            //             type:data1.id+'的弟弟',
-                            //             wz:num,
-                            //             bb:{
-                            //                 x:data1.rect.x,
-                            //                 y:data1.rect.y,
-                            //                 ex:data1.rect.ex,
-                            //                 ey:data1.rect.ey
-                            //             }
-                            //         }
-                            //         data2.anchors.map((obj,i) => {
-                            //             obj.x = data1.anchors[i].x-185 + num.x
-                            //             obj.y = data1.anchors[i].y-85 + num.y
-                            //         })
-                            //         data2.rotatedAnchors.map((obj,i) => {
-                            //             obj.x = data1.rotatedAnchors[i].x-185 + num.x
-                            //             obj.y = data1.rotatedAnchors[i].y-85 + num.y
-                            //         }) 
-                                    
-                                    
-                            //         canvas.addNode(data2)
-                            //         canvas.lockNodes([data2],true)
-                            //     }
+                            let data1 = JSON.parse(JSON.stringify(data)) 
+                            if(data1.childStand){                              
+                                return
+                            }else{
+                                self.isClickAction.push({isClick:true,id:data.id})
+                            }
+                            if(data.data.inNum > 0){
+                                let data2 = JSON.parse(JSON.stringify(data1)) 
+                                function guid() {
+                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                        var r = Math.random() * 16 | 0,
+                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                        return v.toString(16);
+                                    });
+                                }
+                                for(let i= 0;i<data.data.inNum; i++){
+                                    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+                                    let currId = data.id.slice(0,tableAlgorithmIndex);
+                                    $.ajax({
+                                        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                        data:{algthId:currId},
+                                        success: function(data) {
+                                            data.tableFuncs.map((item,index) =>{
+                                                if(i == index){
+                                                    let widths = 20
+                                                    let heights = 10
+                                                    let num = {
+                                                            x:-widths,
+                                                            y:(heights*i) + 10*i+10
+                                                        }
+                                                    let type ="";
+                                                    if(item.vartype == 1){
+                                                        type = item.valvalue
+                                                    }
+                                                    if(item.vartype == 2){
+                                                        type = "常量"
+                                                    }
+                                                    if(item.vartype == 3){
+                                                        type ="对象"
+                                                    }
+                                                    data2.id = data1.id+"IN_" +item.id+"_"+ guid()+"---"+type;
+                                                    data2.rect.width = widths
+                                                    data2.rect.height = heights
+                                                    data2.text = item.varname;
+                                                    // data2.text = ""   
+                                                    
+                                                    data2.rect.ex = data1.rect.x + num.x;
+                                                    data2.rect.ey = data1.rect.y + num.y;
+                                                    data2.rect.x = data1.rect.x + num.x;
+                                                    data2.rect.y = data1.rect.y+ num.y;
+                                                    data2.textRect.x = data2.rect.x - widths/2;
+                                                    data2.textRect.y = data2.rect.y -heights*2;
+                                                    data2.textRect.width = 18;
+                                                    data2.textRect.height = 5;
+                                                    data2.paddingTopNum = -3
+                                                    data2.paddingTop = -3
+                                                    // data2.textRect.ex = data2.rect.x + data2.textRect.width;
+                                                    // data2.textRect.ey = data2.rect.y +data2.textRect.height;
+                                                    data2.childStand = {
+                                                        type:data1.id+'的弟弟',
+                                                        wz:num,
+                                                        bb:{
+                                                            x:data1.rect.x,
+                                                            y:data1.rect.y,
+                                                            ex:data1.rect.ex,
+                                                            ey:data1.rect.ey
+                                                        }
+                                                    }
+                                                    data2.anchors.map((obj,i) => {
+                                                        obj.x = data1.anchors[i].x-185 + num.x
+                                                        obj.y = data1.anchors[i].y-85 + num.y
+                                                    })
+                                                    data2.rotatedAnchors.map((obj,i) => {
+                                                        obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                                                        obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                                                    }) 
+                                                    canvas.addNode(data2)
+                                                    canvas.lockNodes([data2],true) 
+                                                }
+                                            })
+                                        }
+                                    })
+                                    // let widths = data1.rect.width/10
+                                    // let heights = data1.rect.height/10
+                                                                       
+                                }
                                
-                            //     canvas.render();
-                            // }
+                                canvas.render();
+                            }
                             break;
                         case 'resizeNodes':
+                            var child = []     
+                            canvas.data.nodes.map(item => {
+                                // if(item.id != data[0].id){
+                                if(item.id.indexOf(data[0].id) == 0){
+                                    // selNodes.push(item)
+                                    child.push(item)
+                                
+                                }
+                            })
+                            console.log(child)
+                            if(child.length > 1 ){
+                                if (data.length === 1 && data[0].name == "combine") {
+                                
+                                }else{    
+                                    //debugger                         
+                                    canvas.combine(child)
+                                    canvas.render()
+                                }
+                            }
+                            
                             // canvas.resizeNodes(0,0)
                         break
                         case 'lockNodes':
@@ -626,6 +729,7 @@ var Topology = {
                            
                         break
                         case 'addLine':
+                            debugger
                             var strokeStyle;
                             data.dash = 1;
                             if(!data.to.id){
@@ -646,7 +750,6 @@ var Topology = {
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
-                                    debugger
                                     if(fromType == toType){
                                         switch (fromType) {
                                             case '常量':
@@ -751,40 +854,159 @@ var Topology = {
                         case 'dblclick':
                             let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
                             let currId = data.id.slice(0,tableAlgorithmIndex);
-                            $.ajax({
-                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                data:{algthId:currId},
-                                success: function(data) {
-                                    $(".actionSelected2").empty();
-                                    $(".actionSelected2").off("change").on("change",()=>{
-                                        if($(".actionSelected2").val() == "2"){
-                                            $("#varTypeInput").val("常量")
-                                        }
-                                        if($(".actionSelected2").val() == "3"){
-                                            $("#varTypeInput").val("对象")
-                                        }
-                                        if($(".actionSelected2").val() == "1"){
-                                            $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
+                            self.isClickAction.map(SS=>{
+ 
+                                    $.ajax({
+                                        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                        data:{algthId:currId},
+                                        success: function(data) {
+                                            $(".actionSelected2").empty();
+                                            $('.ruleActionZZ').text(data.tableAlgorithm.algorithmauthor)
+                                            $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
+                                            $('.ruleActionMS').text(data.tableAlgorithm.des)
+                                            let str =``
+                                            if(SS.isClick || SS.id ==data.tableAlgorithm.id){
+                                                SS.isClick = false
+                                                canvas.data.nodes.map(item=>{
+                                                    if(item.childStand){
+                                                        if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
+                                                            let uuid = (item.id).split("_")[2]
+                                                                data.tableFuncs.map(index =>{
+                                                                    if((item.id).split("_")[1] == index.id){
+                                                                        str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                        if(index.inorout == 1){
+                                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                        }else{
+                                                                            str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                        }
+                                                                            str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                        if(index.vartype == 1){
+                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                        }else if(index.vartype == 2){
+                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                        }  else{
+                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                        } 
+                                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                            </div>`                                                           
+                                                                    }
+                                                            }) 
+                                                           
+                                                        }
+                                                    }
+                                                })
+                                                $('.ruleContentDiv').html(str)
+                                                data.tableFuncs.map((s,i)=>{
+                                                    $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
+                                                    $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true); 
+                                                    // if(s.vartype == 1 && s.vartype == 2){
+                                                    //     $(".actionSelected2").text(index.valvalue)
+                                                    // }               
+                                                })
+                                                $(".actionSelected2").off("change").on("change",()=>{
+                                                    if($(".actionSelected2").val() == "2"){
+                                                        $("#varTypeInput").val("常量")
+                                                    }
+                                                    if($(".actionSelected2").val() == "3"){
+                                                        $("#varTypeInput").val("对象")
+                                                    }
+                                                    if($(".actionSelected2").val() == "1"){
+                                                        $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
+                                                    }
+                                                })
+                                            }else{
+                                                self.tools.map(item=>{
+                                                    debugger
+                                                    if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
+                                                        item.children.map((index,t) =>{
+                                                            if(index.id){
+                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                if(index.inorout == 1){
+                                                                    str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                }else{
+                                                                    str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                }
+                                                                    str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                if(index.vartype == "基本类型"){
+                                                                    str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                }else if(index.vartype == "常量"){
+                                                                    str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                } else{
+                                                                    str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                } 
+                                                                    str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                    </div>`   
+                                                            }else{
+                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                                                                        <select class="actionSelected1">
+                                                                            <option value="1">输出</option>
+                                                                            <option value="0">输入</option>
+                                                                        </select>
+                                                                        <select class="varNameInput1">
+                                                                        </select>`
+                                                                    if(index.vartype == "基本类型"){
+                                                                        str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                    }else if(index.vartype == "常量"){
+                                                                        str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                    } else{
+                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                    } 
+                                                                    str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                                    <button type="button" onclick="reduceButton(event)">x</button>                                               
+                                                                </div>`   
+                                                            } 
+                                                           
+                                                            $('body').off("change").on('change','.varNameInput1',(e) => {
+                                                                //   debugger
+                                                                data.tableFuncs.map(item => {
+                                                                   if($(e.target).val()== item.varname){
+                                                                        if(item.vartype == "1"){
+                                                                            $(e.target).parent().children('.actionSelected2').val("基本类型")
+                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                        }
+                                                                        
+                                                                        if(item.vartype == "2"){
+                                                                            $(e.target).parent().children('.actionSelected2').val("常量")
+                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                        }
+                                                                        if(item.vartype == "3"){
+                                                                            $(e.target).parent().children('.actionSelected2').val("对象")
+                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                        }                
+                                                                   }else if($(e.target).val()== "请选择"){
+                                                                        $(e.target).parent().children('.actionSelected2').val("")
+                                                                        $(e.target).parent().children('#varTypeInput').val("")
+                                                                        $(e.target).parent().children('.varNameInput').val("")
+                                                                   }
+                                                                })
+                                                             })  
+                                                        }) 
+                                                        $('.ruleContentDiv').html(str)
+                                                        let lstr1=`<option>请选择</option>`
+                                                        data.tableFuncs.map(item => {
+                                                            lstr1 += `<option value="${item.varname}">${item.varname}</option>`
+                                                        })
+                                                        item.children.map((index,t)=>{
+                                                            if(!index.id){
+                                                                $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
+                                                                setTimeout(function () {
+                                                                    $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
+                                                                }, 100);
+                                                                
+                                                            }
+                                                         
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                            
                                         }
                                     })
-                                    data.tableFuncs.map((s,i)=>{
-                                        if(i == 0){
-                                            if(s.vartype == 2){
-                                                $("#varTypeInput").val("常量")
-                                            }
-                                            if(s.vartype == 3){
-                                                $("#varTypeInput").val("对象")
-                                            }
-                                            if(s.vartype == 1){
-                                                $("#varTypeInput").val(s.valvalue)
-                                            }
-                                        }
-                                        $(".actionSelected2").append(`
-                                            <option dataValue=${s.valvalue} value=${s.vartype}>${s.varname}</option>
-                                        `)
-                                    })
-                                }
                             })
+                            
                             $('#ruleAct').show();
                             $(`#ruleAct`).css({
                                 top:(data.rect.y + 80)+"px",
@@ -897,16 +1119,15 @@ var Topology = {
     // 初始化line
     initLine: function () {
         var self = this;
-        debugger
         $("#node_line_color").html("连线颜色");
         $("#flex_props_home").addClass("hidden");
         $("#flex_props_node").removeClass("hidden");
         $(".node-show").addClass('hidden');
         $(".line-show").removeClass('hidden');
-        $("input[name=from_x]").val(selected.data.from.x);
-        $("input[name=from_y]").val(selected.data.from.y);
-        $("input[name=to_x]").val(selected.data.to.x);
-        $("input[name=to_y]").val(selected.data.to.y);
+        // $("input[name=from_x]").val(selected.data.from.x);
+        // $("input[name=from_y]").val(selected.data.from.y);
+        // $("input[name=to_x]").val(selected.data.to.x);
+        // $("input[name=to_y]").val(selected.data.to.y);
         //起点箭头
         var fromArrow = selected.data.fromArrow;
         var fromArrow1 = selected.data.fromArrow;
@@ -1057,7 +1278,6 @@ var Topology = {
     },
     // 起止箭头更改
     onClickFromArrow: function (arrow, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#start_line_head").children().each(function (e) {
@@ -1075,9 +1295,6 @@ var Topology = {
     },
     // 箭头终点更改
     onClickToArrow: function (arrow, index) {
-        console.log(selNodes)
-        console.log(arrow, index)
-        // console.log($(e).attr("class"))
         var sum = 0;
         //显示选择关系
         // $("#selectRela").show()
@@ -1097,7 +1314,6 @@ var Topology = {
     },
     // 连线类型更改
     onClickName: function (arrow, index, type) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_style_head").children().each(function (e) {
@@ -1119,7 +1335,6 @@ var Topology = {
     },
     // 连线样式更改
     onClickDash: function (dash, index) {
-        // console.log($(e).attr("class"))
         var sum = 0;
         //更改选择框显示的箭头
         $("#line_type_head").children().each(function (e) {
@@ -1168,7 +1383,6 @@ var Topology = {
         if (!selNodes || selNodes.length < 2) {
             return;
         }
-        // debugger
         canvas.combine(selNodes);
     },
     // 取消组合
@@ -1182,7 +1396,6 @@ var Topology = {
     parsew:function(){
         var ss = JSON.parse(ww)
         ss.nodes.map(data => {
-            console.log(ss)
             canvas.addNode(data)
         })
         
@@ -1207,7 +1420,6 @@ var Topology = {
         }
         canvas.render(true);
     },
-    // 删除
     onRender: function () {
         canvas.data.nodes = []
         canvas.data.lines = []
@@ -1215,8 +1427,13 @@ var Topology = {
     
     },
     // 删除
-    onDelete: function () {
+    onDelete: function (e) {
         canvas.delete();
+        globalActionDatas.map((s,i)=>{
+            if(s.id == deleteLineDataId){
+                globalActionDatas.splice(i,1)
+            }
+        })
     },
     // 撤销
     undo: function () {
@@ -1237,7 +1454,7 @@ var Topology = {
     // 粘贴
     parse: function () {
         canvas.parse();
-    },
+    }
 };
 // window全局，这样别的地方方便调用
 window.addAlgorithm = Topology.addAlgorithm;
@@ -1265,7 +1482,6 @@ window.gradientFromColorChange = Topology.gradientFromColorChange;
 window.onChangeProp = Topology.onChangeProp;
 window.parsew = Topology.parsew;
 window.onRender = Topology.onRender;
-
 // window.bkTypeChange = Topology.bkTypeChange;
 // window.rechargeable = user.rechargeable;
 // window.rectify = user.rectify;
