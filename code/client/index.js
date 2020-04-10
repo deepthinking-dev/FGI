@@ -58,7 +58,7 @@ $(function(){
                 success(res) {
                     let optionx = "";
                     res.tableFuncs.map(s=>{
-                        optionx += `<option value=${s.id}>${s.varname}</option>`
+                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                     })
                     globalActionDatas.map(s=>{
                         if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
@@ -146,15 +146,59 @@ $(function(){
         }
     })
     $('body').on('dblclick','.bds_out',(e) => {
+        if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
+            if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
+                toastr.info('行为值来源为对象才能赋值！')
+                return false
+            }
+        }
         if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') == "3" && $(e.target).parent().children('.xwSelect_out').val() == "assignment"){//对象&&赋值
+            currentActionInput = $(e.target)
             $.ajax({
                 url: urlConfig.host + '/module/findTableModuleByName',
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
                     console.log(res);
+                    $("#actionSelectDiv").show();
+                    $("#actionSelectParma").empty();
+                    res.modulefields.map(t=>{
+                        $("#actionSelectParma").append(`
+                            <option value=${t.fieldname}>${t.fieldname}</option>
+                        `)
+                    })
+                    if(currentActionInput.val()){
+                        var val = currentActionInput.val();
+                        var start = val.indexOf(".");
+                        var end = val.indexOf("=");
+                        $("#actionSelectParma").val(val.slice(start+1,end))
+                    }
+                }
+            })
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:$("#addActionButton").attr("id_out")},
+                success(res) {
+                    let optionx = "";
+                    res.tableFuncs.map(s=>{
+                        optionx += `<option value=${s.varname}>${s.varname}</option>`
+                    })
+                    $("#actionSelectName").html(`${optionx}`)
+                    if(currentActionInput.val()){
+                        var v = currentActionInput.val();
+                        var s = v.indexOf("[");
+                        var e = v.indexOf("]");
+                        $("#actionSelectName").val(v.slice(s+1,e))
+                    }
                 }
             })
         }
+    })
+    $('body').on('click','#actionSelectButton',(e) => {
+        var selectName = currentActionInput.parent().children('.xwzly_out').find("option:selected").attr('valvalue');
+        var fieldname = $("#actionSelectParma").val();
+        var fromName = $("#actionSelectName").val();
+        $("#actionSelectDiv").hide();
+        currentActionInput.val(selectName + "." + fieldname + "=" + "[" + fromName+ "]")
     })
     $('body').on('click','#addAction',(e) => {
         $("#actionDiv").hide();
