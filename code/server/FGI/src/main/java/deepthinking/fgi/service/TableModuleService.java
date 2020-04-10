@@ -70,4 +70,11 @@ public interface TableModuleService extends BaseService<TableModule,Integer> {
      * @return
      */
     List<Map<String,Object>> findAllFiledByTableName(String tableName);
+
+    /**
+     * 根据模型名称查询确定模型，用于赋值操作
+     * @param name
+     * @return
+     */
+    TableModule findTableModuleByName(String name);
 }
