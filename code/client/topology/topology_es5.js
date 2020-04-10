@@ -684,9 +684,9 @@ var Topology = {
                                                                        
                                 }
                                
-                            //     canvas.render();
+                                canvas.render();
                             }
-                        break
+                            break;
                         case 'resizeNodes':
                             var child = []     
                             canvas.data.nodes.map(item => {
