@@ -499,7 +499,6 @@ function ActionSure(){
                     test.text = "in"+ data.data.inNum;
                     
                 }else{
-                    debugger
                     data.data.outNum ++
                     num = {
                         x:data.rect.width,
@@ -639,13 +638,11 @@ function ActionSure(){
    let AddList = []
    let DelList = []
     window.Topology.tools.map(isCZdata=>{
-        debugger
         if(isCZdata.id == data.id){
             isFlag =true
             for(let i =0;i< actionInfoNum.length ;i++){
                 let UPFlag = false
                 for(let j=0; j<isCZdata.children.length;j++){
-                    debugger
                     let sy = isCZdata.children[j].uuid.indexOf('---')
                     let uuID = isCZdata.children[j].uuid.slice(0,sy)
                     let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
@@ -717,7 +714,6 @@ function ActionSure(){
                     let Del1UUid = item.uuid.split('---')[0]
                     canvas.data.nodes.map(item1 => {
                         if(item1.childStand){
-                            debugger
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                             if(Del1UUid == Del2UUid){
                                 DelNodes.push(item1)                 
@@ -733,7 +729,6 @@ function ActionSure(){
         }
     })
     if(!isFlag){
-        debugger
         saveList.children = lsList
         window.Topology.tools.push(saveList)
     }
@@ -827,7 +822,6 @@ function ruleAddButtonS(){
                     })
                   $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
                   $('body').off("change").on('change','.varNameInput1',(e) => {
-                    //   debugger
                     data.tableFuncs.map(item => {
                        if($(e.target).val()== item.varname){
                             if(item.vartype == "1"){

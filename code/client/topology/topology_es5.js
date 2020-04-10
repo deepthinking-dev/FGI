@@ -602,8 +602,7 @@ var Topology = {
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
-                            self.initNode(); 
-                            // debugger
+                            self.initNode();
                             let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data1.childStand){                              
                                 return
@@ -709,12 +708,11 @@ var Topology = {
                                 if (data.length === 1 && data[0].name == "combine") {
                                 
                                 }else{    
-                                    //debugger                         
+
                                     canvas.combine(child)
                                     canvas.render()
                                 }
                             }
-                            
                             // canvas.resizeNodes(0,0)
                         break
                         case 'lockNodes':
@@ -831,7 +829,6 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            debugger
                             console.log(data)
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
@@ -917,7 +914,6 @@ var Topology = {
                                                 })
                                             }else{
                                                 self.tools.map(item=>{
-                                                    debugger
                                                     if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
                                                         item.children.map((index,t) =>{
                                                             if(index.id){
@@ -958,7 +954,6 @@ var Topology = {
                                                             } 
                                                            
                                                             $('body').off("change").on('change','.varNameInput1',(e) => {
-                                                                //   debugger
                                                                 data.tableFuncs.map(item => {
                                                                    if($(e.target).val()== item.varname){
                                                                         if(item.vartype == "1"){
