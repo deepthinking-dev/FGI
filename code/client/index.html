@@ -40,7 +40,9 @@
             background-size: 100% 100%;
             background-repeat: no-repeat;
         }
-        
+        i{
+            font-style:normal
+        }
     </style>
      <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -233,7 +235,7 @@
                </p>
            </div>
            <div style="position: absolute;bottom: 20px;right: 0">
-               <button onclick="closeactionSelectDiv()" class="btn pointer" type="button" style="margin-right: 25px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button onclick="closeactionSelectDiv()" class="btn pointer" type="button" style="margin-right: 35px;background: #f56c6c;color: #fff;float: right">取消</button>
                <button id="actionSelectButton" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
            </div>
        </div>
@@ -836,25 +838,22 @@
             <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
         <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 20px">
-            <p>
-            <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
-            </p>
-            <div  style="margin: 10px 0">
-                <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 40px">
-            </div>
-            <div  style="margin: 10px 0">
-                <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px">
-            </div>
-            <div>
-                <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 40px">
-            </div>
-            <p>
-            <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
-            <button style="background: #409eff;margin-left: 25px;color: #fff" id="addZdcs">新增参数</button>
-            </p>
-            <div id="zdcsList">
 
-            </div>
+            <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
+                <div style="margin-left: 30px">
+                    <div style="margin: 10px 0">
+                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 40px">
+                    </div>
+                    <div  style="margin: 10px 0">
+                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 40px">
+                    </div>
+                    <div>
+                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 40px">
+                    </div>
+                </div>
+            <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
+            <button style="background: #409eff;color: #fff;margin-bottom: 20px" id="addZdcs">新增参数</button>
+            <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
     </div>
@@ -1536,30 +1535,30 @@
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
+                            <i style="margin-top: 5px">
                                 <span style="color:#fff;margin-right: 20px;">参数名称</span>
                                 <input class="zdcsCsmc" type="text" value="${t.varname}">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">类型</span>
                                 <select class="zdcsSelect">
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">取值</span>
                                 <input type="text" value="" class="zdcsText">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">输入输出</span>
                                 <select class="zdcsExport">
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
                                 <button class="deleteZdcs" style="float: right;margin-right: 20px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
-                            </p>
+                            </i>
                         </div>
                     `)
                     })

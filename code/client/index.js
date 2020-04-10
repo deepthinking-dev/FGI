@@ -158,7 +158,10 @@ $(function(){
                 url: urlConfig.host + '/module/findTableModuleByName',
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
-                    console.log(res);
+                    if(res == ""){
+                        toastr.info("非本系统模型，无选择参数！");
+                        return false;
+                    }
                     $("#actionSelectDiv").show();
                     $("#actionSelectParma").empty();
                     res.modulefields.map(t=>{
@@ -446,27 +449,34 @@ $(function(){
     $('body').on('click','#addZdcs',(e) => {
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
-                    <span style="color:#fff;">参数名称</span>
+                <i>
+                  <span style="color:#fff;">参数名称</span>
                     <input class="zdcsCsmc" type="text" value=""> 
-                    <span style="color:#fff;">类型</span>
+                </i>
+                <i>
+                 <span style="color:#fff;">类型</span>
                     <select class="zdcsSelect">
                         <option value="2">常量</option>
                         <option value="3">对象</option>
                         <option value="1">基本类型</option>
                     </select>
+                </i>  
+                <i>
                     <span style="color:#fff;">取值</span>
                     <input type="text" value="" class="zdcsText">
-                    <span style="color:#fff;">输入输出</span>
-                    <select class="zdcsExport">
+                </i>  
+                <i>
+                   <span style="color:#fff;">输入输出</span>
+                   <select class="zdcsExport">
                         <option value="0">输入</option>
                         <option value="1">输出</option>
                     </select>
-                     <button class="deleteZdcs" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px">删除</button>
+                </i>  
+                 <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
             </div>
         `)
     })
     $('body').on('change','.zdcsSelect',(e) => {
-        debugger
         if(e.target.value == "2" || e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
@@ -1031,29 +1041,29 @@ $(function(){
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
+                            <i style="margin-top: 5px">
                                 <span style="color:#fff;margin-right: 20px;">参数名称</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">类型</span>
                                 <select class="zdcsSelect" disabled>
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                             <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;;margin-right: 20px">取值</span>
                                 <input type="text" value="" class="zdcsText" disabled>
-                            </p>
-                            <p>
+                            </i>
+                            <i>
                                 <span style="color:#fff;margin-right: 20px">输入输出</span>
                                 <select class="zdcsExport" disabled>
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
-                            </p>
+                            </i>
                         </div>
                     `)
                     })

@@ -749,13 +749,11 @@ var Topology = {
                                 })
                             }else{
                                 if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
-                                    debugger
                                     let fromIndex = data.from.id.indexOf('---');
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
-                                    fromType = '常量'
-                                    if(fromType){
+                                    if(fromType == toType){
                                         switch (fromType) {
                                             case '常量':
                                                 strokeStyle = '#0eff23';
