@@ -353,7 +353,7 @@ var Topology = {
                                         lineDatas.map(t=>{
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0">
-                                                   <span>行为值来源</span><select class="xwzly_in" disabled></select>
+                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
                                                    <span>行为</span><select class="xwSelect_in">
                                                    <option value=">">></option>
                                                    <option value="<"><</option>
