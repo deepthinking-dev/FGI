@@ -316,7 +316,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event,data,"555555555555555555555555555555")
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -329,7 +328,6 @@ var Topology = {
                             // }else{
                             //     locked = data.locked;
                             // }
-                           
                             self.initNode();
                             break;
                         case 'line':
@@ -383,7 +381,6 @@ var Topology = {
                                     $('#actionDiv').show();
                                 }
                             },300)
-
                             $('#actionInDiv').show();
                             selected = {
                                 "type": event,
@@ -526,8 +523,6 @@ var Topology = {
 
                                             item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
                                             item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
-
-                                           
                                         }
                                         canvas.render()                                       
                                     }
@@ -839,8 +834,6 @@ var Topology = {
                         case 'delete':
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
-
-                            
                             break;
                         // case 'resize':
                         //     if (!this.mouseMoving) {
