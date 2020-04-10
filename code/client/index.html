@@ -926,7 +926,7 @@
         inputFieldsTarget:'',
         fieldname:''
     }
-    $('body').on('change','.zdcsSelect',(e) => {
+    function changeVarType(e){
         if(e.target.value == "2" || e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
@@ -953,7 +953,8 @@
                         <option>array</option>
                     </select>`)
         }
-    })
+    }
+
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).data('id')
@@ -1585,7 +1586,7 @@
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
-                                <select class="zdcsSelect">
+                                <select class="zdcsSelect" onchange="changeVarType(event)">
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>

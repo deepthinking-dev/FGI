@@ -455,7 +455,7 @@ $(function(){
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
-                    <select class="zdcsSelect">
+                    <select class="zdcsSelect" onchange="changeVarType(event)">
                         <option value="2">常量</option>
                         <option value="3">对象</option>
                         <option value="1">基本类型</option>
