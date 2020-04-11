@@ -538,7 +538,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             if(algorithmconditions!=null&&algorithmconditions.size()>0){
                 //删除以前的
                 int interfaceRoleId=algorithmconditions.get(0).getInterfaceroleid();
-                int interfaceParametersID=algorithmconditions.get(0).getInterfaceparametersid();
+                String interfaceParametersID=algorithmconditions.get(0).getInterfaceparametersid();
                 TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
                 tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfaceRoleId).andInterfaceparametersidEqualTo(interfaceParametersID);
                 algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);

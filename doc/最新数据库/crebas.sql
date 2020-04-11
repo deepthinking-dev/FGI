@@ -50,7 +50,7 @@ create table Table_AlgorithmCondition
 (
    ID                   int not null auto_increment comment '主键ID',
    InterfaceRoleID      int comment '算法算子ID',
-   InterfaceParametersID int comment '接口参数ID',
+   InterfaceParametersID varchar(64) comment '接口参数ID',
    Behavior             varchar(20) comment '行为',
    ValueSources         int comment '值来源',
    expression           varchar(100) comment '表达式',

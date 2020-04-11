@@ -1,12 +1,11 @@
 package deepthinking.fgi.dao.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import deepthinking.fgi.domain.TableAlgorithmcondition;
-import deepthinking.fgi.domain.TableAlgorithmconditionCriteria;
 import deepthinking.fgi.domain.TableAlgorithmconditionCriteria.Criteria;
 import deepthinking.fgi.domain.TableAlgorithmconditionCriteria.Criterion;
+import deepthinking.fgi.domain.TableAlgorithmconditionCriteria;
+import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableAlgorithmconditionSqlProvider {
@@ -52,7 +51,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getInterfaceparametersid() != null) {
-            sql.VALUES("InterfaceParametersID", "#{interfaceparametersid,jdbcType=INTEGER}");
+            sql.VALUES("InterfaceParametersID", "#{interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {
@@ -125,7 +124,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getInterfaceparametersid() != null) {
-            sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=INTEGER}");
+            sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {
@@ -160,7 +159,7 @@ public class TableAlgorithmconditionSqlProvider {
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("InterfaceRoleID = #{record.interfaceroleid,jdbcType=INTEGER}");
-        sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=INTEGER}");
+        sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=VARCHAR}");
         sql.SET("Behavior = #{record.behavior,jdbcType=VARCHAR}");
         sql.SET("ValueSources = #{record.valuesources,jdbcType=INTEGER}");
         sql.SET("expression = #{record.expression,jdbcType=VARCHAR}");
@@ -186,7 +185,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getInterfaceparametersid() != null) {
-            sql.SET("InterfaceParametersID = #{interfaceparametersid,jdbcType=INTEGER}");
+            sql.SET("InterfaceParametersID = #{interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {

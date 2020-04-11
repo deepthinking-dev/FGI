@@ -12,7 +12,7 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-      @ApiModelProperty(value = "ID")
+     @ApiModelProperty(value = "ID")
     private Integer id;
 
     /**
@@ -22,7 +22,7 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-     @ApiModelProperty(value = "算法算子ID")
+      @ApiModelProperty(value = "算法算子ID")
     private Integer interfaceroleid;
 
     /**
@@ -33,7 +33,7 @@ public class TableAlgorithmcondition {
      * @mbg.generated
      */
      @ApiModelProperty(value = "算法参数ID")
-    private Integer interfaceparametersid;
+    private String interfaceparametersid;
 
     /**
      *
@@ -52,7 +52,7 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-      @ApiModelProperty(value = "条件值来源（输入或者输出）")
+      @ApiModelProperty(value = "条件值来源（输入或者输出的ID）")
     private Integer valuesources;
 
     /**
@@ -62,7 +62,7 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-      @ApiModelProperty(value = "表达式")
+     @ApiModelProperty(value = "表达式")
     private String expression;
 
     /**
@@ -131,7 +131,7 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-    public Integer getInterfaceparametersid() {
+    public String getInterfaceparametersid() {
         return interfaceparametersid;
     }
 
@@ -143,8 +143,8 @@ public class TableAlgorithmcondition {
      *
      * @mbg.generated
      */
-    public void setInterfaceparametersid(Integer interfaceparametersid) {
-        this.interfaceparametersid = interfaceparametersid;
+    public void setInterfaceparametersid(String interfaceparametersid) {
+        this.interfaceparametersid = interfaceparametersid == null ? null : interfaceparametersid.trim();
     }
 
     /**

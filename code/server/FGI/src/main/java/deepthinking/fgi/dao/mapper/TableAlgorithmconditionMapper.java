@@ -1,9 +1,8 @@
 package deepthinking.fgi.dao.mapper;
 
-import java.util.List;
-
 import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableAlgorithmconditionCriteria;
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -59,7 +58,7 @@ public interface TableAlgorithmconditionMapper {
         "insert into table_algorithmcondition (InterfaceRoleID, InterfaceParametersID, ",
         "Behavior, ValueSources, ",
         "expression, Remark)",
-        "values (#{interfaceroleid,jdbcType=INTEGER}, #{interfaceparametersid,jdbcType=INTEGER}, ",
+        "values (#{interfaceroleid,jdbcType=INTEGER}, #{interfaceparametersid,jdbcType=VARCHAR}, ",
         "#{behavior,jdbcType=VARCHAR}, #{valuesources,jdbcType=INTEGER}, ",
         "#{expression,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
@@ -86,7 +85,7 @@ public interface TableAlgorithmconditionMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="InterfaceRoleID", property="interfaceroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
         @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.INTEGER),
         @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
@@ -110,7 +109,7 @@ public interface TableAlgorithmconditionMapper {
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="InterfaceRoleID", property="interfaceroleid", jdbcType=JdbcType.INTEGER),
-        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.INTEGER),
+        @Result(column="InterfaceParametersID", property="interfaceparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Behavior", property="behavior", jdbcType=JdbcType.VARCHAR),
         @Result(column="ValueSources", property="valuesources", jdbcType=JdbcType.INTEGER),
         @Result(column="expression", property="expression", jdbcType=JdbcType.VARCHAR),
@@ -154,7 +153,7 @@ public interface TableAlgorithmconditionMapper {
     @Update({
         "update table_algorithmcondition",
         "set InterfaceRoleID = #{interfaceroleid,jdbcType=INTEGER},",
-          "InterfaceParametersID = #{interfaceparametersid,jdbcType=INTEGER},",
+          "InterfaceParametersID = #{interfaceparametersid,jdbcType=VARCHAR},",
           "Behavior = #{behavior,jdbcType=VARCHAR},",
           "ValueSources = #{valuesources,jdbcType=INTEGER},",
           "expression = #{expression,jdbcType=VARCHAR},",
