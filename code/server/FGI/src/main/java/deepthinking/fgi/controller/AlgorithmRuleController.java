@@ -8,6 +8,7 @@ import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUtils;
+import deepthinking.fgi.util.XMLUtil;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,11 +46,10 @@ public class AlgorithmRuleController {
     @ApiImplicitParam(name = "id", value = "规则编号", dataType = "integer", paramType = "query", required = true)
     public void saveAlgorithmRule2File(Integer id, HttpServletResponse response){
         String filename = UUID.randomUUID().toString();
-//        String path = FileUtils.getConTextPath() + "/WEB-INF/" + filename;
         String path = FileUtils.getProjectPath() + "/" + filename;
         System.out.println("path:" + path);
         try {
-            FileUtils.writeFile(path, JSONArray.toJSON(tableRoleService.GetTableExportData(id)).toString().getBytes());
+            XMLUtil.convertToXml(tableRoleService.GetTableExportData(id), path);
             // 以流的形式下载文件。
             InputStream fis = new BufferedInputStream(new FileInputStream(path));
             byte[] buffer = new byte[fis.available()];
@@ -59,7 +59,7 @@ public class AlgorithmRuleController {
             response.reset();
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("算法规则导出.txt", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("算法规则导出.xml", "UTF-8"));
             toClient.write(buffer);
             toClient.flush();
             toClient.close();
