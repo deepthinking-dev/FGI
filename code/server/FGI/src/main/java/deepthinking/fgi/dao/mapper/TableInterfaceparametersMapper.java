@@ -1,9 +1,8 @@
 package deepthinking.fgi.dao.mapper;
 
-import java.util.List;
-
 import deepthinking.fgi.domain.TableInterfaceparameters;
 import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -12,7 +11,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -56,12 +54,13 @@ public interface TableInterfaceparametersMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_interfaceparameters (InterfaceID, ParametersSources, ",
-        "ParametersName, inOrOut)",
-        "values (#{interfaceid,jdbcType=VARCHAR}, #{parameterssources,jdbcType=VARCHAR}, ",
-        "#{parametersname,jdbcType=VARCHAR}, #{inorout,jdbcType=DECIMAL})"
+        "insert into table_interfaceparameters (ID, InterfaceID, ",
+        "ParametersSources, ParametersName, ",
+        "inOrOut)",
+        "values (#{id,jdbcType=VARCHAR}, #{interfaceid,jdbcType=VARCHAR}, ",
+        "#{parameterssources,jdbcType=VARCHAR}, #{parametersname,jdbcType=VARCHAR}, ",
+        "#{inorout,jdbcType=DECIMAL})"
     })
-    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=String.class)
     int insert(TableInterfaceparameters record);
 
     /**
@@ -71,7 +70,6 @@ public interface TableInterfaceparametersMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableInterfaceparametersSqlProvider.class, method="insertSelective")
-    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=String.class)
     int insertSelective(TableInterfaceparameters record);
 
     /**

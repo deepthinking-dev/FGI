@@ -49,15 +49,11 @@
            </table>
 		<table tableName="Table_AlgorithmCondition" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
-		<table tableName="Table_InterfaceParameters" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>-->
+		<!--<table tableName="Table_InterfaceParameters" ></table>-->
 		<!--<table tableName="Table_InterfaceRole" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>-->
-		<!--<table tableName="Table_OperatorInterface" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>-->
+		<!--<table tableName="Table_OperatorInterface" ></table>-->
 	</context>
 </generatorConfiguration>  

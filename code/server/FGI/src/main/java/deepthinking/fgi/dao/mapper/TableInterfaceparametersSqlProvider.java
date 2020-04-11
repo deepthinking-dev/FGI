@@ -1,12 +1,11 @@
 package deepthinking.fgi.dao.mapper;
 
+import deepthinking.fgi.domain.TableInterfaceparameters;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criterion;
+import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
 import java.util.List;
 import java.util.Map;
-
-import deepthinking.fgi.domain.TableInterfaceparameters;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criterion;
-import deepthinking.fgi.domain.TableInterfaceparametersCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableInterfaceparametersSqlProvider {
@@ -46,6 +45,10 @@ public class TableInterfaceparametersSqlProvider {
     public String insertSelective(TableInterfaceparameters record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_interfaceparameters");
+        
+        if (record.getId() != null) {
+            sql.VALUES("ID", "#{id,jdbcType=VARCHAR}");
+        }
         
         if (record.getInterfaceid() != null) {
             sql.VALUES("InterfaceID", "#{interfaceid,jdbcType=VARCHAR}");
