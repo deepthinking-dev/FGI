@@ -15,6 +15,8 @@ public class InterfaceParamXmlModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String id;
+
     private String name;    //参数名称
 
     private Integer origin;  //参数来源
@@ -27,7 +29,7 @@ public class InterfaceParamXmlModel implements Serializable {
 
     private BehavioursXmlModel actions; //动作
 
-    private InterfaceParamXmlModel interfa;     //下一个接口
+    private InterfaceXmlModel interfa;     //下一个接口
 
     public InterfaceParamXmlModel() {
     }
@@ -64,11 +66,11 @@ public class InterfaceParamXmlModel implements Serializable {
         this.actions = actions;
     }
 
-    public InterfaceParamXmlModel getInterfa() {
+    public InterfaceXmlModel getInterfa() {
         return interfa;
     }
 
-    public void setInterfa(InterfaceParamXmlModel interfa) {
+    public void setInterfa(InterfaceXmlModel interfa) {
         this.interfa = interfa;
     }
 
@@ -86,5 +88,13 @@ public class InterfaceParamXmlModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
