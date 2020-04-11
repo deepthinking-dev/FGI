@@ -336,11 +336,14 @@ var Topology = {
                             let id_in = data.to.id.slice(0,Index_in);//算子id
                             let id_out = data.from.id.slice(0,Index_out);
 
-                            let out_big = data.from.id.slice(0,data.from.id.indexOf('OUT'));//输出大矩形id
-                            let out_small = data.from.id;//输出小矩形id
-                            let in_big = data.to.id.slice(0,data.to.id.indexOf('IN'));
-                            let in_small = data.to.id;
+
                             $('#selectOutIn').val('1')
+
+                            let out_big = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
+                            let in_big= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
+                            let out_small = data.from.id.split('OUT_')[1].slice(0,-5)//输出小矩形uuid
+                            let in_small = data.to.id.split('IN_')[1].slice(0,-5)//输入小矩形uuid
+
                             $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             window.lineDiv = true;
                             deleteLineDataId = out_small + "AND" + in_small;
@@ -757,6 +760,14 @@ var Topology = {
                                     let fromType = data.from.id.slice(fromIndex+3);
                                     let toIndex = data.to.id.indexOf('---');
                                     let toType = data.to.id.slice(toIndex+3);
+
+                                    //输出大矩形id = data.from.id.slice(0,data.from.id.indexOf('OUT'))
+                                    //输入大矩形id = data.to.id.slice(0,data.to.id.indexOf('IN'))
+                                    let uuidOut = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
+                                    let uuidIn= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
+                                    let uuidOutSmall = data.from.id.split('OUT_')[1].slice(0,-5)//输出小矩形uuid
+                                    let uuidInSmall = data.to.id.split('IN_')[1].slice(0,-5)//输入小矩形uuid
+
                                     if(fromType == toType){
                                         switch (fromType) {
                                             case '常量':
@@ -816,6 +827,8 @@ var Topology = {
                                                 flag = false
                                             }
                                         })
+
+
                                         if(flag){//新增线
                                             var dataBaseIn = {
                                                 "interfaceRoleDataModels":
@@ -823,10 +836,10 @@ var Topology = {
                                                         "algorithmconditions": [],
                                                         "des": "",
                                                         "id": 0,
-                                                        "interfaceID": data.to.id.slice(0,data.to.id.indexOf('IN')),
-                                                        "parametersID": data.to.id,
-                                                        "preInterfaceID": data.from.id.slice(0,data.from.id.indexOf('OUT')),
-                                                        "preParametersID":  data.from.id,
+                                                        "interfaceID": uuidIn,
+                                                        "parametersID": uuidInSmall,
+                                                        "preInterfaceID": uuidOut,
+                                                        "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
                                                     }
@@ -838,17 +851,17 @@ var Topology = {
                                                         "algorithmconditions": [],
                                                         "des": "",
                                                         "id": 0,
-                                                        "interfaceID": data.to.id.slice(0,data.to.id.indexOf('IN')),
-                                                        "parametersID": data.to.id,
-                                                        "preInterfaceID": data.from.id.slice(0,data.from.id.indexOf('OUT')),
-                                                        "preParametersID":  data.from.id,
+                                                        "interfaceID": uuidIn,
+                                                        "parametersID": uuidInSmall,
+                                                        "preInterfaceID": uuidOut,
+                                                        "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
                                                     }
                                                 ,
                                             }
                                             globalActionDatas.push({
-                                                id:data.from.id + "AND" + data.to.id,
+                                                id:uuidOutSmall + "AND" + uuidInSmall,
                                                 dataIn:dataBaseIn,
                                                 dataOut:dataBaseOut
                                             })
@@ -1483,6 +1496,7 @@ var Topology = {
     // 删除
     onDelete: function (e) {
         canvas.delete();
+        debugger
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
