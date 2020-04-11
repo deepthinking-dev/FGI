@@ -332,16 +332,16 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
-    let algorithmRuleDataList = []
+     //动作
+    let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let totalId = item.id
        let id = totalId.split("AND")
        let OutSZId = id[0].split("tableAlgorithmOUT_")[0]
-       let OutSZPr = id[0].split("tableAlgorithmOUT_")[1].split("---")[0]
+       let OutSZPr = id[0].substr((id[0].indexOf('---')-36),36)
        let INSZId = id[1].split("tableAlgorithmIN_")[0]
-       let INSZPr = id[1].split("tableAlgorithmIN_")[1].split("---")[0]
+       let INSZPr = id[1].substr((id[1].indexOf('---')-36),36)
        console.log(id,OutSZId,OutSZPr,INSZId,INSZPr)
-
        let obj ={
             des:'',
             id:0,
@@ -350,22 +350,23 @@ function ruleSure(){
             preInterfaceID:OutSZId,
             preParametersID:OutSZPr,
             remark:"",
-            roleid:''
-       }
-      let algorithmconditions =  item.dataIn.interfaceRoleDataModels[0].algorithmconditions.concat(item.dataOut.interfaceRoleDataModels[0].algorithmconditions)
-      algorithmRuleDataList.push(obj)
-      algorithmRuleDataList.push(algorithmconditions)
-   })
-   console.log(algorithmRuleDataList)
-    let operatorInterfaceDataModels = []
-    window.Topology.tools.map(item=>{
+            roleid:'',
+            algorithmconditions:[]
 
+       }
+       obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels[0].algorithmconditions.concat(item.dataOut.interfaceRoleDataModels[0].algorithmconditions)
+      algorithmRuleDataList.push(obj)
+   })
+    //参数借口
+    let operatorInterfaceDataModels = [] 
+    window.Topology.tools.map(item=>{
         let bigList = []
         let objF = {
             algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
-            id:0 ,
+            id:window.idStoreData[item.id] ,
             interfaceName:item.name,
-            roleID:0
+            roleID:0,
+            tableInterfaceparametersList:[]
         }
         bigList.push(objF)
         item.children.map(index=>{
@@ -376,16 +377,15 @@ function ruleSure(){
                 parametersname:index.varname,
                 parameterssources:index.id
             }
-            bigList.push(CsObj)
+            objF.tableInterfaceparametersList.push(CsObj)
         })
         operatorInterfaceDataModels.push(bigList)
     })
-
-    console.log(operatorInterfaceDataModels)
-    let tableRole={
+    //规则本身信息
+    let tableRole={   
         coordinate:JSON.stringify(canvas.data),
         des:$("#ruleRemark").val(),
-        entrancenote:$("#ruleDes").attr("data"),
+        entrancenote:$("#ruleDes").attr("data")?$("#ruleDes").attr("data"):"",
         id:0,
         remark:'',
         rolename:$("#ruleName").val(),
@@ -396,6 +396,7 @@ function ruleSure(){
         operatorInterfaceDataModels:operatorInterfaceDataModels,
         tableRole:tableRole
       }
+      console.log(algorithmRuleSaveDataModel)
     $.ajax({
         type:"post",
         dataType: "json",
