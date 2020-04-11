@@ -5,6 +5,7 @@ import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
+import deepthinking.fgi.model.xml.RuleXmlModel;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @author 王若山
      * @return
      */
-    TableRole GetTableExportData(Integer id);
+    RuleXmlModel GetTableExportData(Integer id);
 
     /**
      * 根据用户获取所有算法规则 username暂时不用
