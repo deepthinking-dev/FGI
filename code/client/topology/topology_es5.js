@@ -349,13 +349,65 @@ var Topology = {
                             deleteLineDataId = out_small + "AND" + in_small;
                             $("#actionInDiv").empty();
                             $("#actionOutDiv").empty();
-                            globalActionDatas.map(s=>{
-                                if(s.id == out_small + "AND" + in_small){
+
+                            var localData = true;//使用本地缓存数据
+                            var responseCurrentData = false;
+                            var resBaseOut;
+                            var resBaseIn;
+                            if(responseActionDatas){//后台返回数据
+                                responseActionDatas.map(t=>{
+                                    if((t.preParametersID == out_small) && (t.parametersID == in_small)){
+                                        console.log(t);
+                                        responseCurrentData= t;
+                                        resBaseOut = [];
+                                        resBaseIn = [];
+                                        localData = false;
+                                    }
+                                })
+                                if(responseCurrentData){
+                                    responseCurrentData.algorithmconditions.map(s=>{
+                                        if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
+                                            resBaseOut.push(s)
+                                        }
+                                        if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
+                                            resBaseIn.push(s)
+                                        }
+                                    })
+                                    var resOutAll = {
+                                        "interfaceRoleDataModels":
+                                            {
+                                                "algorithmconditions":resBaseOut,
+                                                "des": "",
+                                                "id": responseCurrentData.id,
+                                                "interfaceID": responseCurrentData.interfaceID,
+                                                "parametersID":responseCurrentData.parametersID,
+                                                "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                "preParametersID": responseCurrentData.preParametersID,
+                                                "remark": "",
+                                                "roleid": responseCurrentData.roleid,
+                                            }
+                                    }
+                                    var resInAll = {
+                                        "interfaceRoleDataModels":
+                                            {
+                                                "algorithmconditions": resBaseIn,
+                                                "des": "",
+                                                "id": responseCurrentData.id,
+                                                "interfaceID": responseCurrentData.interfaceID,
+                                                "parametersID": responseCurrentData.parametersID,
+                                                "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                "preParametersID": responseCurrentData.preParametersID,
+                                                "remark": "",
+                                                "roleid": responseCurrentData.roleid,
+                                            }
+                                    }
+                                    resCurrentLineData.dataIn = resInAll;
+                                    resCurrentLineData.dataOut = resOutAll;
+                                    $("#addActionButton").attr("resData",true)
                                     try{
-                                        var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                                        lineDatas.map(t=>{
+                                        resBaseIn.map(t=>{
                                             $("#actionInDiv").append(`
-                                              <div style="margin: 10px 0">
+                                              <div style="margin: 10px 0" actionId=${t.id}>
                                                    <span>行为值来源</span><input class="xwzly_in" disabled>
                                                    <span>行为</span><select class="xwSelect_in">
                                                    <option value=">">></option>
@@ -371,14 +423,46 @@ var Topology = {
                                               </div>
                                             `)
                                         })
-                                        lineDatas.map((t,i)=>{
+                                        resBaseIn.map((t,i)=>{
                                             $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
                                         })
                                     } catch (e) {
                                         console.log(e);
                                     }
                                 }
-                            })
+                            }
+                            if(localData){//本地缓存数据
+                                globalActionDatas.map(s=>{
+                                    if(s.id == out_small + "AND" + in_small){
+                                        try{
+                                            var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                            lineDatas.map(t=>{
+                                                $("#actionInDiv").append(`
+                                              <div style="margin: 10px 0">
+                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                   <span>行为</span><select class="xwSelect_in">
+                                                   <option value=">">></option>
+                                                   <option value="<"><</option>
+                                                   <option value="=">=</option>
+                                                   <option value=">=">>=</option>
+                                                   <option value="<="><=</option>
+                                                   <option value="!=">!=</option>
+                                                   <option value="assignment">赋值</option>
+                                               </select>
+                                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                              </div>
+                                            `)
+                                            })
+                                            lineDatas.map((t,i)=>{
+                                                $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                            })
+                                        } catch (e) {
+                                            console.log(e);
+                                        }
+                                    }
+                                })
+                            }
                             setTimeout(()=>{
                                 if(window.lineDiv){
                                     $('#actionDiv').show();
