@@ -19,7 +19,7 @@ public class InterfaceParamXmlModel implements Serializable {
 
     private String name;    //参数名称
 
-    private Integer origin;  //参数来源
+    private String origin;  //参数来源
 
     private int iotype; //输入输出 0-输出 1-输入
 
@@ -42,11 +42,11 @@ public class InterfaceParamXmlModel implements Serializable {
         this.name = name;
     }
 
-    public Integer getOrigin() {
+    public String getOrigin() {
         return origin;
     }
 
-    public void setOrigin(Integer origin) {
+    public void setOrigin(String origin) {
         this.origin = origin;
     }
 
