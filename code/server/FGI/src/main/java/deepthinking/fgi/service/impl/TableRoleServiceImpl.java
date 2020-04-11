@@ -266,20 +266,20 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         return algorithmRuleSaveDataModel;
     }
 
-    private List<OperatorInterfaceDataModel> saveOperatorInterfaceData(List<OperatorInterfaceDataModel> operatorInterfaceDataModels) {
+    private List<OperatorInterfaceDataModel> saveOperatorInterfaceData(List<OperatorInterfaceDataModel> operatorInterfaceDataModels,int rouleID) {
         try {
             operatorInterfaceDataModels.forEach(operatorInterfaceDataModel -> {
                 TableOperatorinterface tableOperatorinterface=new TableOperatorinterface();
                 tableOperatorinterface.setRoleid(operatorInterfaceDataModel.getRoleID());
                 tableOperatorinterface.setAlgorithmid(operatorInterfaceDataModel.getAlgorithmID());
                 tableOperatorinterface.setInterfacename(operatorInterfaceDataModel.getInterfaceName());
+                tableOperatorinterface.setRoleid(rouleID);
                 operatorinterfaceMapper.insert(tableOperatorinterface);
                 operatorInterfaceDataModel.setId(tableOperatorinterface.getId());
                 //新增参数信息
                 List<TableInterfaceparameters> interfaceparameters=operatorInterfaceDataModel.getTableInterfaceparametersList();
                 if(interfaceparameters.size()>0){
                     interfaceparameters.forEach(parameter->{
-//                        parameter.setInterfaceid(tableOperatorinterface.getId());
                         interfaceparametersMapper.insert(parameter);
                     });
                 }
@@ -300,12 +300,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             insert(tableRole);
             //新增接口信息
             List<OperatorInterfaceDataModel> operatorInterfaceDataModels=algorithmRuleSaveDataModel.getOperatorInterfaceDataModels();
-            saveOperatorInterfaceData(operatorInterfaceDataModels);
+            saveOperatorInterfaceData(operatorInterfaceDataModels,tableRole.getId());
             //新增所有的线
             List<InterfaceRoleDataModel> interfaceRoleDataModels =algorithmRuleSaveDataModel.getInterfaceRoleDataModels();
             if(interfaceRoleDataModels.size()>0){
                 interfaceRoleDataModels.forEach(interfaceRoleDataModel -> {
                     TableInterfacerole tableInterfacerole=interfaceRoleDataModel.getTable_InterfaceRole();
+                    tableInterfacerole.setRoleid(tableRole.getId());
                     interfaceroleMapper.insert(tableInterfacerole);
                     interfaceRoleDataModel.setId(tableInterfacerole.getId());
                     //保存动作
