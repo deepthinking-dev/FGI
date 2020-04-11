@@ -1089,7 +1089,7 @@ var Topology = {
 
                 }
                 canvasOptions.on = onMessage;
-                canvas.open(data);
+             
                 // canvas.updateProps();
                 // canvas.random();
             }

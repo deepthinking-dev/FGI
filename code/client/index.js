@@ -947,6 +947,25 @@ $(function(){
         $('#lkrRule').fadeToggle(500)
     })
 
+   // 点击编辑规则
+    $('body').on('click','.lkr-list-ediRule',(e) => {
+        // window.bigData.delRuleId = $(e.target).data('id')
+        let ruleid =  $(e.target).data('id')
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+            type:"get",
+            data: {Id:ruleid},
+            success(data) {
+                if(data){
+                    let ruleData = data.tableRole.coordinate
+                    canvas.open(JSON.parse(ruleData))
+                }
+               
+            }
+        })
+    })
+
+
     $('body').on('click','button.delTab',(e) => {
         $(e.target).parents('tr').remove();
     })
