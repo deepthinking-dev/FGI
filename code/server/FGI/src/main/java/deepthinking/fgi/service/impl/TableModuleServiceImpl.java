@@ -184,10 +184,10 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
     public TableModule findTableModuleByName(String name) {
         TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
         tableModuleCriteria.createCriteria().andModulenameEqualTo(name);
-        List<TableModule> data=new ArrayList<>();
-        data=tableModuleMapper.selectByExample(tableModuleCriteria);
+        List<TableModule> data=tableModuleMapper.selectByExample(tableModuleCriteria);
         if(data.size()>0){
-            return data.get(0);
+            TableModule tableModule=getModuleById(data.get(0).getId().toString());
+            return tableModule;
         }else{
             return null;
         }
