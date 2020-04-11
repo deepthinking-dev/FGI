@@ -341,8 +341,8 @@ var Topology = {
 
                             let out_big = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
                             let in_big= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
-                            let out_small = data.from.id.split('OUT_')[1].slice(0,-5)//输出小矩形uuid
-                            let in_small = data.to.id.split('IN_')[1].slice(0,-5)//输入小矩形uuid
+                            let out_small = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
+                            let in_small =  data.to.id.split('---')[0].slice(data.to.id.split('---')[0].length -36)//输入小矩形uuid
 
                             $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             window.lineDiv = true;
@@ -755,6 +755,8 @@ var Topology = {
                                     }
                                 })
                             }else{
+                                let fromSzId = data.from.id.split("tableAlgorithm")[0];
+                                let toSzId = data.to.id.split("tableAlgorithm")[0];
                                 if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
                                     let fromIndex = data.from.id.indexOf('---');
                                     let fromType = data.from.id.slice(fromIndex+3);
@@ -765,8 +767,8 @@ var Topology = {
                                     //输入大矩形id = data.to.id.slice(0,data.to.id.indexOf('IN'))
                                     let uuidOut = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
                                     let uuidIn= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
-                                    let uuidOutSmall = data.from.id.split('OUT_')[1].slice(0,-5)//输出小矩形uuid
-                                    let uuidInSmall = data.to.id.split('IN_')[1].slice(0,-5)//输入小矩形uuid
+                                    let uuidOutSmall = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
+                                    let uuidInSmall =  data.to.id.split('---')[0].slice(data.to.id.split('---')[0].length -36)//输入小矩形uuid
 
                                     if(fromType == toType){
                                         switch (fromType) {
@@ -842,6 +844,7 @@ var Topology = {
                                                         "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
+                                                        fromSzId
                                                     }
                                                 ,
                                             }
@@ -857,6 +860,7 @@ var Topology = {
                                                         "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
+                                                        toSzId
                                                     }
                                                 ,
                                             }
@@ -1496,7 +1500,6 @@ var Topology = {
     // 删除
     onDelete: function (e) {
         canvas.delete();
-        debugger
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
