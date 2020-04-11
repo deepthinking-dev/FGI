@@ -392,19 +392,43 @@ function ruleSure(){
         tableRole:tableRole
       }
       console.log(algorithmRuleSaveDataModel)
-    $.ajax({
-        type:"post",
-        dataType: "json",
-        url:urlConfig.host+'/algorithmRule/saveAlgorithmRule',
-        contentType: "application/json;charset=UTF-8",
-        data:JSON.stringify(algorithmRuleSaveDataModel),
-        success: function(data) {
-            if(data == true){
+    if(window.bigData.ruleType == "edit"){
+        // $.ajax({
+        //     type:"post",
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+        //     contentType: "application/json;charset=UTF-8",
+        //     data:JSON.stringify(operatorInterfaceDataModels),
+        //     success: function(data) {
+        //         $("#sureRule").fadeToggle(500)
+        //         toastr.success('修改成功！');
+        //     }
+        // })
+        // $.ajax({
+        //     type:"post",
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/modAlgorithmRuleBase',
+        //     contentType: "application/json;charset=UTF-8",
+        //     data:JSON.stringify(tableRole),
+        //     success: function(data) {
+        //         $("#sureRule").fadeToggle(500)
+        //         toastr.success('修改成功！');
+        //     }
+        // })
+    }else{
+        $.ajax({
+            type:"post",
+            dataType: "json",
+            url:urlConfig.host+'/algorithmRule/saveAlgorithmRule',
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify(algorithmRuleSaveDataModel),
+            success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 toastr.success('保存成功！');
             }
-        }
-    })
+        })
+    }
+   
 }
 //删除算子
 function ConfirmDelAlgorithm(){
@@ -620,9 +644,9 @@ function ActionSure(){
         }
           
         if(inorout == "输入"){
-            inorout = 1
-        }else{
             inorout = 0
+        }else{
+            inorout = 1
         }
         obj = {
            id:id,
@@ -686,9 +710,9 @@ function ActionSure(){
                     }
                       
                     if(inorout == "输入"){
-                        inorout = 1
-                    }else{
                         inorout = 0
+                    }else{
+                        inorout = 1
                     }
                     obj = {
                         id:id,
@@ -791,9 +815,9 @@ function ActionClose(){
         }
           
         if(inorout == "输入"){
-            inorout = 1
+            inorout =0
         }else{
-            inorout = 0
+            inorout =1
         }
         obj = {
            id:id,

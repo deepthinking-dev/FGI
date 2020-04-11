@@ -908,6 +908,12 @@
     var globalActionDatas = [];
     var deleteLineDataId;
     var currentActionInput;
+    var responseActionDatas;
+    var refreshId;
+    var resCurrentLineData={
+        dataIn:"",
+        dataOut:""
+    };
     var idStoreData={
             
         }
@@ -925,6 +931,8 @@
         formulaModuleId:'',
         isAddInOut:false,
         isAddInOutType: 'out',
+        editRuleId:'',
+        ruleType:'add'
     }
     window.filed ={
         inputFieldsTarget:'',
