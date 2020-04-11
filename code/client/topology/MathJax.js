@@ -337,10 +337,10 @@ function ruleSure(){
     window.globalActionDatas.map(item=>{
        let totalId = item.id
        let id = totalId.split("AND")
-       let OutSZId = id[0].split("tableAlgorithmOUT_")[0]
-       let OutSZPr = id[0].substr((id[0].indexOf('---')-36),36)
-       let INSZId = id[1].split("tableAlgorithmIN_")[0]
-       let INSZPr = id[1].substr((id[1].indexOf('---')-36),36)
+       let OutSZId = id[0]
+       let OutSZPr = id[0]
+       let INSZId = id[1].split("_")[0]
+       let INSZPr = id[1].split("_")[1]
        console.log(id,OutSZId,OutSZPr,INSZId,INSZPr)
        let obj ={
             des:'',
@@ -354,7 +354,7 @@ function ruleSure(){
             algorithmconditions:[]
 
        }
-       obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels[0].algorithmconditions.concat(item.dataOut.interfaceRoleDataModels[0].algorithmconditions)
+       obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
       algorithmRuleDataList.push(obj)
    })
     //参数借口
