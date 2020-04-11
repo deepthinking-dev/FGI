@@ -106,25 +106,25 @@ $(function(){
                                 })
                                 resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
                                     $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                                    $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
                                 })
                             }
                         })
-                    } else {
-                        $.ajax({
-                            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                            data:{algthId:$("#addActionButton").attr("id_out")},
-                            success(res) {
-                                let optionx = "";
-                                res.tableFuncs.map(s=>{
-                                    optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                                })
-                                globalActionDatas.map(s=>{
-                                    if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
-                                        try {
-                                            var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
-                                            lineDatas.map(t=>{
-                                                $("#actionOutDiv").append(`
+                    }
+            } else {
+                $.ajax({
+                    url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                    data:{algthId:$("#addActionButton").attr("id_out")},
+                    success(res) {
+                        let optionx = "";
+                        res.tableFuncs.map(s=>{
+                            optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                        })
+                        globalActionDatas.map(s=>{
+                            if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                                try {
+                                    var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                                    lineDatas.map(t=>{
+                                        $("#actionOutDiv").append(`
                                                    <div style="margin: 10px 0">
                                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
                                                    <span>行为</span><select class="xwSelect_out">
@@ -140,20 +140,18 @@ $(function(){
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
-                                            })
-                                            lineDatas.map((t,i)=>{
-                                                $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
-                                                $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
-                                            })
-                                        }catch (e) {
+                                    })
+                                    lineDatas.map((t,i)=>{
+                                        $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                        $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                                    })
+                                }catch (e) {
 
-                                        }
-                                    }
-                                })
+                                }
                             }
                         })
-
                     }
+                })
             }
         }
     })
@@ -292,7 +290,7 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("out_small"),
                         "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                         "remark": "",
-                        "valuesources": $(this).find(".xwzly_out").val()
+                        "valuesources":Number($(this).find(".xwzly_out").val())
                     };
                     sendData.push(obj)
                 })
@@ -349,7 +347,7 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("out_small"),
                         "interfaceroleid": 0,
                         "remark": "",
-                        "valuesources": $(this).find(".xwzly_out").val()
+                        "valuesources":Number($(this).find(".xwzly_out").val())
                     };
                     arrOut.push(obj)
                 })

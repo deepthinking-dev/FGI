@@ -331,6 +331,7 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+                            debugger
                             let Index_in = data.from.id.indexOf("tableAlgorithm");
                             let Index_out = data.to.id.indexOf("tableAlgorithm");
                             let id_in = data.to.id.slice(0,Index_in);//算子id
