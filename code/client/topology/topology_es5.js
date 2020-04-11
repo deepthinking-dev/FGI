@@ -617,7 +617,7 @@ var Topology = {
                                         return v.toString(16);
                                     });
                                 }
-                                data.bkType=  guid() 
+                                idStoreData[data.id] = guid()
                             }
                             if(data.data.inNum > 0){
                                 let data2 = JSON.parse(JSON.stringify(data1)) 
@@ -626,7 +626,7 @@ var Topology = {
                                         var r = Math.random() * 16 | 0,
                                             v = c == 'x' ? r : (r & 0x3 | 0x8);
                                         return v.toString(16);
-                                    });
+                                    }); 
                                 }
                                 for(let i= 0;i<data.data.inNum; i++){
                                     let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
@@ -1014,22 +1014,26 @@ var Topology = {
                                                                             $(e.target).parent().children('.actionSelected2').val("基本类型")
                                                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                            $(e.target).parent().attr("Funcs-id",item.id)
                                                                         }
                                                                         
                                                                         if(item.vartype == "2"){
                                                                             $(e.target).parent().children('.actionSelected2').val("常量")
                                                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                            $(e.target).parent().attr("Funcs-id",item.id)
                                                                         }
                                                                         if(item.vartype == "3"){
                                                                             $(e.target).parent().children('.actionSelected2').val("对象")
                                                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                                                            $(e.target).parent().attr("Funcs-id",item.id)
                                                                         }                
                                                                    }else if($(e.target).val()== "请选择"){
                                                                         $(e.target).parent().children('.actionSelected2').val("")
                                                                         $(e.target).parent().children('#varTypeInput').val("")
                                                                         $(e.target).parent().children('.varNameInput').val("")
+                                                                        $(e.target).parent().attr("")
                                                                    }
                                                                 })
                                                              })  
