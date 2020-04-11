@@ -22,7 +22,7 @@ $(function(){
             globalActionDatas.map(s=>{
                 if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
                     try{
-                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                        var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                         lineDatas.map(t=>{
                             $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
@@ -63,7 +63,7 @@ $(function(){
                     globalActionDatas.map(s=>{
                         if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
                             try {
-                                var lineDatas = s.dataOut.interfaceRoleDataModels[0].algorithmconditions;
+                                var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
                                 lineDatas.map(t=>{
                                     $("#actionOutDiv").append(`
                                       <div style="margin: 10px 0">
@@ -206,6 +206,7 @@ $(function(){
     $('body').on('click','#addAction',(e) => {
         $("#actionDiv").hide();
         $("#actionOutDiv").hide()
+        debugger
         if($("#selectOutIn").val() == "1"){//输入
             var dataArr = [];
             $('#actionInDiv div').each(function () {
@@ -220,35 +221,11 @@ $(function(){
                 };
                 dataArr.push(obj)
             })
-           var data = {
-                "interfaceRoleDataModels": [
-                    {
-                        "algorithmconditions": dataArr,
-                        "des": "",
-                        "id": 0,
-                        "interfaceID": $("#addActionButton").attr("in_big"),
-                        "parametersID": $("#addActionButton").attr("in_small"),
-                        "preInterfaceID": $("#addActionButton").attr("out_big"),
-                        "preParametersID": $("#addActionButton").attr("out_small"),
-                        "remark": "",
-                        "roleid": 0,
-                    }
-                ],
-            }
-            var flag = true;
             globalActionDatas.map(s=>{
                 if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
-                    s.dataIn = data;
-                    flag = false
+                    s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArr;
                 }
             })
-            if(flag){
-                globalActionDatas.push({
-                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
-                    dataIn:data,
-                    dataOut:""
-                })
-            }
         } else {
             var arrOut = [];
             $('#actionOutDiv div').each(function () {
@@ -263,35 +240,11 @@ $(function(){
                 };
                 arrOut.push(obj)
             })
-            var dataOut = {
-                "interfaceRoleDataModels": [
-                    {
-                        "algorithmconditions": arrOut,
-                        "des": "",
-                        "id": 0,
-                        "interfaceID": $("#addActionButton").attr("in_big"),
-                        "parametersID": $("#addActionButton").attr("in_small"),
-                        "preInterfaceID": $("#addActionButton").attr("out_big"),
-                        "preParametersID": $("#addActionButton").attr("out_small"),
-                        "remark": "",
-                        "roleid": 0,
-                    }
-                ],
-            }
-            var flag = true;
             globalActionDatas.map(s=>{
                 if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
-                    s.dataOut = dataOut;
-                    flag = false
+                    s.dataOut.interfaceRoleDataModels.algorithmconditions = arrOut;
                 }
             })
-            if(flag){
-                globalActionDatas.push({
-                    id:$("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small"),
-                    dataIn:"",
-                    dataOut:dataOut
-                })
-            }
         }
     })
     $('body').on('click','.addDicClose',(e) => {

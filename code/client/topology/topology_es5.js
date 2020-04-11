@@ -349,7 +349,7 @@ var Topology = {
                             globalActionDatas.map(s=>{
                                 if(s.id == out_small + "AND" + in_small){
                                     try{
-                                        var lineDatas = s.dataIn.interfaceRoleDataModels[0].algorithmconditions;
+                                        var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                                         lineDatas.map(t=>{
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0">
@@ -810,6 +810,50 @@ var Topology = {
                                         $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
                                         locked = data.locked;
                                         self.initLine();
+                                        var flag = true;
+                                        globalActionDatas.map(s=>{//回显线
+                                            if(s.id == data.from.id + "AND" + data.to.id){
+                                                flag = false
+                                            }
+                                        })
+                                        if(flag){//新增线
+                                            var dataBaseIn = {
+                                                "interfaceRoleDataModels":
+                                                    {
+                                                        "algorithmconditions": [],
+                                                        "des": "",
+                                                        "id": 0,
+                                                        "interfaceID": data.to.id.slice(0,data.to.id.indexOf('IN')),
+                                                        "parametersID": data.to.id,
+                                                        "preInterfaceID": data.from.id.slice(0,data.from.id.indexOf('OUT')),
+                                                        "preParametersID":  data.from.id,
+                                                        "remark": "",
+                                                        "roleid": 0,
+                                                    }
+                                                ,
+                                            }
+                                            var dataBaseOut = {
+                                                "interfaceRoleDataModels":
+                                                    {
+                                                        "algorithmconditions": [],
+                                                        "des": "",
+                                                        "id": 0,
+                                                        "interfaceID": data.to.id.slice(0,data.to.id.indexOf('IN')),
+                                                        "parametersID": data.to.id,
+                                                        "preInterfaceID": data.from.id.slice(0,data.from.id.indexOf('OUT')),
+                                                        "preParametersID":  data.from.id,
+                                                        "remark": "",
+                                                        "roleid": 0,
+                                                    }
+                                                ,
+                                            }
+                                            globalActionDatas.push({
+                                                id:data.from.id + "AND" + data.to.id,
+                                                dataIn:dataBaseIn,
+                                                dataOut:dataBaseOut
+                                            })
+                                        }
+
                                     } else {
                                         toastr.info('输出输入类型不匹配！')
                                         canvas.data.lines.map((item,i) => {
