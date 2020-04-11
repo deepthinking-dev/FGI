@@ -949,7 +949,7 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
-        // window.bigData.delRuleId = $(e.target).data('id')
+        window.bigData.editRuleId = $(e.target).data('id')
         let ruleid =  $(e.target).data('id')
         $.ajax({
             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
@@ -959,6 +959,16 @@ $(function(){
                 if(data){
                     let ruleData = data.tableRole.coordinate
                     canvas.open(JSON.parse(ruleData))
+                    window.Topology.isClickAction = []
+                    window.bigData.ruleType = "edit"
+                    data.operatorInterfaceDataModels.map(item=>{
+                        let obj = {
+                            isClick:true,
+                            id:item.algorithmID+"tableAlgorithm"
+                        }
+                        window.Topology.isClickAction.push(obj)
+                    })
+                    
                 }
                
             }

@@ -921,10 +921,58 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
+                            debugger
                             let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
                             let currId = data.id.slice(0,tableAlgorithmIndex);
                             self.isClickAction.map(SS=>{
- 
+                                if( window.bigData.ruleType == "edit"){
+                                    $.ajax({
+                                        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+                                        type:"get",
+                                        data: {Id: window.bigData.editRuleId},
+                                        success(data) {
+                                            if(data){
+                                                let str =``
+                                                 data.operatorInterfaceDataModels.map(item=>{
+                                                     if(item.algorithmID == currId){
+                                                        $.ajax({
+                                                            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                            data:{algthId:currId},
+                                                            success: function(suziData) {
+                                                                item.tableInterfaceparametersList.map(hh=>{
+                                                                    suziData.tableFuncs.map(sz=>{
+                                                                        if(hh.parameterssources == sz.id){
+                                                                            str +=`<div class="actionInfo" data-uuid='${hh.id}' Funcs-id='${sz.id}' data-name='${sz.varname}' data-title='${sz.remark}'>`
+                                                                            if(hh.inorout == 1){
+                                                                                str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                            }else{
+                                                                                str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                                                            }
+                                                                                str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
+                                                                            if(sz.vartype == 1){
+                                                                                str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                            }else if(sz.vartype == 2){
+                                                                                str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                            }  else{
+                                                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                            } 
+                                                                                str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                                </div>`     
+                                                                        }
+
+                                                                        $('.ruleContentDiv').html(str)
+                                                                       
+                                                                    })
+                                                                })
+                                                            }
+                                                        }) 
+                                                     }
+                                                 })                                       
+                                            }
+                                        
+                                        }
+                                    })
+                                } else{
                                     $.ajax({
                                         url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                         data:{algthId:currId},
@@ -934,33 +982,34 @@ var Topology = {
                                             $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
                                             $('.ruleActionMS').text(data.tableAlgorithm.des)
                                             let str =``
-                                            if(SS.isClick || SS.id ==data.tableAlgorithm.id){
+                                            if(SS.isClick || SS.id ==data.tableAlgorithm.id+"tableAlgorithm"){
                                                 SS.isClick = false
                                                 canvas.data.nodes.map(item=>{
                                                     if(item.childStand){
                                                         if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
                                                             let uuid = (item.id).split("_")[2]
-                                                                data.tableFuncs.map(index =>{
-                                                                    if((item.id).split("_")[1] == index.id){
-                                                                        str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                                        if(index.inorout == 1){
-                                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                                        }else{
-                                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
-                                                                        }
-                                                                            str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                                                        if(index.vartype == 1){
-                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                        }else if(index.vartype == 2){
-                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                        }  else{
-                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                        } 
-                                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                                            </div>`                                                           
+                                                            console.log(uuid)
+                                                            data.tableFuncs.map(index =>{
+                                                                if((item.id).split("_")[1] == index.id){
+                                                                    str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                    if(index.inorout == 1){
+                                                                        str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                    }else{
+                                                                        str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                     }
+                                                                        str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                    if(index.vartype == 1){
+                                                                        str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                    }else if(index.vartype == 2){
+                                                                        str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                    }  else{
+                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                    } 
+                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                        </div>`                                                           
+                                                                }
                                                             }) 
-                                                           
+                                                            
                                                         }
                                                     }
                                                 })
@@ -985,6 +1034,7 @@ var Topology = {
                                                 })
                                             }else{
                                                 self.tools.map(item=>{
+                                                    debugger
                                                     if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
                                                         item.children.map((index,t) =>{
                                                             if(index.id){
@@ -1023,10 +1073,10 @@ var Topology = {
                                                                     <button type="button" onclick="reduceButton(event)">x</button>                                               
                                                                 </div>`   
                                                             } 
-                                                           
+                                                            
                                                             $('body').off("change").on('change','.varNameInput1',(e) => {
                                                                 data.tableFuncs.map(item => {
-                                                                   if($(e.target).val()== item.varname){
+                                                                    if($(e.target).val()== item.varname){
                                                                         if(item.vartype == "1"){
                                                                             $(e.target).parent().children('.actionSelected2').val("基本类型")
                                                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
@@ -1046,14 +1096,14 @@ var Topology = {
                                                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                                                             $(e.target).parent().attr("Funcs-id",item.id)
                                                                         }                
-                                                                   }else if($(e.target).val()== "请选择"){
+                                                                    }else if($(e.target).val()== "请选择"){
                                                                         $(e.target).parent().children('.actionSelected2').val("")
                                                                         $(e.target).parent().children('#varTypeInput').val("")
                                                                         $(e.target).parent().children('.varNameInput').val("")
                                                                         $(e.target).parent().attr("")
-                                                                   }
+                                                                    }
                                                                 })
-                                                             })  
+                                                                })  
                                                         }) 
                                                         $('.ruleContentDiv').html(str)
                                                         let lstr1=`<option>请选择</option>`
@@ -1068,7 +1118,7 @@ var Topology = {
                                                                 }, 100);
                                                                 
                                                             }
-                                                         
+                                                            
                                                         })
                                                     }
                                                 })
@@ -1076,6 +1126,8 @@ var Topology = {
                                             
                                         }
                                     })
+                                }
+                               
                             })
                             
                             $('#ruleAct').show();
