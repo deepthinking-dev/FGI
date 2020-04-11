@@ -122,7 +122,7 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        toastr.success('保存成功！');
+                        toastr.success(data.msg);
                         Topology.init();
                         dictionary()
                     }
@@ -176,12 +176,6 @@ $('body').on('change','.MathJaxInput2',(e) => {
         $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:none;");
         $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:none;");
         $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:block;");
-    }
-    if(objS == "其他模块计算结果"){
-
-        $(e.target).parent('.width-select').nextAll('.isShow1').attr("style","display:none;");
-        $(e.target).parent('.width-select').nextAll('.isShow2').attr("style","display:none;");
-        $(e.target).parent('.width-select').nextAll('.isShow3').attr("style","display:block;");
     }
 })
 
@@ -338,85 +332,103 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
-    let algorithmRuleDataList = []
-    let spanId = $('#topo_canvas div span')
-    let coordinate = []
-    console.log(window.Topology)
-    if(spanId.length > 0){
-        for(let i=0;i<spanId.length-1;i++){
-            let  id=spanId.eq(i).attr('id')
-            let str = id.split("_")
-            let obj={
-                algorithmModel:null,
-                algorithmid:str[0].substring(0,str[0].length-2),
-                des:'',
-                id:'',
-                preaAlgorithmModel:null,
-                prealgorithmid:str[2].substring(0,str[2].length-2),
-                remark:null,
-                roleId:null,
-                tableAlgorithmcondition:{
-                    algorithmroleid:'',
-                    id:'',
-                    logicrelation:spanId.eq(i).text(),
-                    logicvalue:'',
-                    remark:''
-                }
-            }
-            algorithmRuleDataList.push(obj)
-        }
+     //动作
+    let algorithmRuleDataList = [] 
+    window.globalActionDatas.map(item=>{
+       let obj ={
+            des:'',
+            id:0,
+            interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+            parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+            preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+            preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
+            remark:"",
+            roleid:0,
+            algorithmconditions:[]
 
-    }
-    let node =window.Topology.saveNode
-    if(node.length ==0){
-        alert('请建立规则')
-        return false;
-    }else{     
-        node.map(item=>{
-            let obj ={
-                id:(item.id).substring(0,(item.id).length-2),
-                x:item.rect.x,
-                y:item.rect.y,
-                width:item.rect.width,
-                height:item.rect.height,
-                ex:item.rect.ex,
-                ey:item.rect.ey,
+       }
+       obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
+      algorithmRuleDataList.push(obj)
+   })
+    //参数借口
+    let operatorInterfaceDataModels = [] 
+    window.Topology.tools.map(item=>{
+        // let bigList = []
+        let objF = {
+            algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
+            id:window.idStoreData[item.id] ,
+            interfaceName:item.name,
+            roleID:0,
+            tableInterfaceparametersList:[]
+        }
+       operatorInterfaceDataModels.push(objF)
+        
+        item.children.map(index=>{
+            let CsObj = {
+                id:index.uuid.slice(0,index.uuid.indexOf("---")),
+                inorout:index.inorout,
+                interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
+                parametersname:index.varname,
+                parameterssources:index.id
             }
-            coordinate.push(obj)
+            objF.tableInterfaceparametersList.push(CsObj)
         })
+        // operatorInterfaceDataModels.push(objF)
+        // operatorInterfaceDataModels.push(bigList)
+    })
+    //规则本身信息
+    let tableRole={   
+        coordinate:JSON.stringify(canvas.data),
+        des:$("#ruleRemark").val(),
+        entrancenote:$("#ruleDes").attr("data")?$("#ruleDes").attr("data"):"",
+        id:0,
+        remark:'',
+        rolename:$("#ruleName").val(),
+        uuserid:0
     }
-    
-    console.log(coordinate)
-     console.log(algorithmRuleDataList)
-     if($("#ruleName").val() == ''){
-         toastr.info('请输入规则名称')
-         return false;
-     }
     let algorithmRuleSaveDataModel ={
-        algorithmRuleDataModelList:algorithmRuleDataList,
-        coordinateinfo:JSON.stringify(coordinate),
-        tableRole:{
-            des:$("#ruleDes").val(),
-            id:'',
-            remark:$("#ruleRemark").val(),
-            rolename:$("#ruleName").val(),
-            tno:''
-        }
-
-    }
-    $.ajax({
-        type:"post",
-        dataType: "json",
-        url:urlConfig.host+'/algorithmRule/saveAlgorithmRule',
-        contentType: "application/json;charset=UTF-8",
-        data:JSON.stringify(algorithmRuleSaveDataModel),
-        success: function(data) {
-            if(data == true){
+        interfaceRoleDataModels :algorithmRuleDataList,
+        operatorInterfaceDataModels:operatorInterfaceDataModels,
+        tableRole:tableRole
+      }
+      console.log(algorithmRuleSaveDataModel)
+    if(window.bigData.ruleType == "edit"){
+        // $.ajax({
+        //     type:"post",
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+        //     contentType: "application/json;charset=UTF-8",
+        //     data:JSON.stringify(operatorInterfaceDataModels),
+        //     success: function(data) {
+        //         $("#sureRule").fadeToggle(500)
+        //         toastr.success('修改成功！');
+        //     }
+        // })
+        // $.ajax({
+        //     type:"post",
+        //     dataType: "json",
+        //     url:urlConfig.host+'/algorithmRule/modAlgorithmRuleBase',
+        //     contentType: "application/json;charset=UTF-8",
+        //     data:JSON.stringify(tableRole),
+        //     success: function(data) {
+        //         $("#sureRule").fadeToggle(500)
+        //         toastr.success('修改成功！');
+        //     }
+        // })
+    }else{
+        $.ajax({
+            type:"post",
+            dataType: "json",
+            url:urlConfig.host+'/algorithmRule/saveAlgorithmRule',
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify(algorithmRuleSaveDataModel),
+            success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 toastr.success('保存成功！');
             }
-        }
-    })
+        })
+    }
+   
 }
 //删除算子
 function ConfirmDelAlgorithm(){
@@ -458,4 +470,443 @@ function ConfirmDelRule(){
 //取消删除规则
 function ruleDelClose(){
     $('#lkrRule').fadeToggle(500)
+}
+
+//动作确定
+function ActionSure(){
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
+    let actionInfoNum = $('.ruleContentDiv .actionInfo')
+   
+    let saveList ={
+        id :data.id,
+        name:data.text,
+        children:[]
+    }
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    if(actionInfoNum.length  > data.data.inNum){
+        for(let i =0;i< actionInfoNum.length ;i++){
+            let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")           
+            if(!uuid){
+
+                let xinguid = guid()
+                $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
+                let widths = 20
+                let heights = 10
+                console.log(data.data,'444444444444',widths,heights) 
+                console.log(num)
+            
+                
+                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                    data.data.inNum ++
+                    num = {
+                        x:-widths,
+                        y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
+                    }
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                    }
+                    window.bigData.isAddInOutType = "in";
+                    test.id = data.id +"IN"+ "_" +xinguid+ "---" +typeIn;
+                    test.text = "in"+ data.data.inNum;
+                    
+                }else{
+                    data.data.outNum ++
+                    num = {
+                        x:data.rect.width,
+                        y:(heights*data.data.outNum)+10*data.data.outNum +10
+                    }
+                    window.bigData.isAddInOutType = "out"
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                    }
+                    test.id = data.id +"OUT"+ "_" +xinguid+"---" +typeIn;
+                    test.text = "out"+data.data.outNum
+                }
+
+                test.rect.x = data.rect.x + num.x
+                test.rect.y = data.rect.y + num.y
+                test.rect.width = widths
+                test.rect.height = heights
+
+                test.rect.ex = data.rect.ex + num.x
+                test.rect.ey = data.rect.ey + num.y
+                test.rect.center.x = data.rect.center.x + num.x
+                test.rect.center.y = data.rect.center.y + num.y
+                test.fullTextRect.x = 0
+                test.fullTextRect.y = 0
+                test.textRect.x = test.rect.x
+                test.textRect.y =  test.rect.y
+                test.textRect.width = 0
+                test.textRect.height = 0
+                test.paddingTopNum = 0
+                test.paddingTop = 0
+                test.fullTextRect.x = data.fullTextRect.x + num.x
+                test.fullTextRect.y = data.fullTextRect.y + num.y
+                test.iconRect.x = data.iconRect.x + num.x
+                test.iconRect.y = data.iconRect.y + num.y
+                test.fullIconRect.x = data.fullIconRect.x + num.x
+                test.fullIconRect.y = data.fullIconRect.y + num.y
+                test.childStand = {
+                    type:data.id+'的弟弟',
+                    wz:num,
+                    bb:{
+                        x:data.rect.x,
+                        y:data.rect.y,
+                        ex:data.rect.ex,
+                        ey:data.rect.ey
+                    }
+                }
+                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                    test.anchors.map((obj,i) => {
+                        obj.x = data.anchors[i].x-185 + num.x
+                        obj.y = data.anchors[i].y-85 + num.y
+                    })
+                    test.rotatedAnchors.map((obj,i) => {
+                        obj.x = data.rotatedAnchors[i].x-185 + num.x
+                        obj.y = data.rotatedAnchors[i].y-85 + num.y
+                    })
+                }else{
+                    test.anchors.map((obj,i) => {
+                        obj.x = data.anchors[i].x+218 + num.x
+                        obj.y = data.anchors[i].y+115 + num.y
+                    })
+                    test.rotatedAnchors.map((obj,i) => {
+                        obj.x = data.rotatedAnchors[i].x+220 + num.x
+                        obj.y = data.rotatedAnchors[i].y-115 + num.y
+                    })
+                }
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                window.bigData.isAddInOut = true;
+
+                let flag = canvas.addNode(test)
+                canvas.lockNodes([test], true)
+                if(flag){
+                    if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                        if(data.data.inNum  > data.data.outNum){
+                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
+                            }
+                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.inNum+1) +10*(data.data.inNum+1)))
+                        }
+                    }else{
+                        if(data.data.outNum > data.data.inNum){
+                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
+                            }
+                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.outNum+1) +10*(data.data.outNum+1)))
+                        }
+                    }
+                }else{
+                    window.bigData.isAddInOut = false
+                }
+
+
+            }
+        }
+
+    }
+    let isFlag = false
+    let lsList = []
+    for(let i =0;i< actionInfoNum.length ;i++){
+        let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+        if(id){
+            id =id
+        }else{
+            id =""
+        }
+        let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+        if(typeIn== "基本类型"){
+            typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+        }
+        let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+        if(varName){
+            varName = varName
+        }else{
+            varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+        }
+        let uuid = ''
+        if(id){
+            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+        }else{
+            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+        }
+        let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+        if(inorout){
+            inorout =inorout
+        }else{
+            inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+        }
+          
+        if(inorout == "输入"){
+            inorout = 0
+        }else{
+            inorout = 1
+        }
+        obj = {
+           id:id,
+           uuid:uuid,
+           algorithmid:currId,
+           varname:varName,
+           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+           valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+           inorout:inorout,
+           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+       }
+       lsList.push(obj)
+   }
+   let UPdataList = []
+   let AddList = []
+   let DelList = []
+    window.Topology.tools.map(isCZdata=>{
+        if(isCZdata.id == data.id){
+            isFlag =true
+            for(let i =0;i< actionInfoNum.length ;i++){
+                let UPFlag = false
+                for(let j=0; j<isCZdata.children.length;j++){
+                    let sy = isCZdata.children[j].uuid.indexOf('---')
+                    let uuID = isCZdata.children[j].uuid.slice(0,sy)
+                    let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    clyId = clyId.split('---')[0]
+                    if(uuID == clyId){
+                        UPdataList.push(isCZdata.children[j])
+                        UPFlag = true
+                        break;
+                    }
+                }
+                if(!UPFlag){
+                    let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    if(id){
+                        id =id
+                    }else{
+                        id =""
+                    }
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                    }
+                    let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+                    if(varName){
+                        varName = varName
+                    }else{
+                        varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+                    }
+                    let uuid = ''
+                    if(id){
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    }else{
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+                    }
+                    let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+                    if(inorout){
+                        inorout =inorout
+                    }else{
+                        inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+                    }
+                      
+                    if(inorout == "输入"){
+                        inorout = 0
+                    }else{
+                        inorout = 1
+                    }
+                    obj = {
+                        id:id,
+                        uuid:uuid,
+                        algorithmid:currId,
+                        varname:varName,
+                        vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+                        valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                        inorout:inorout,
+                        remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+                    }
+                    AddList.push(obj)
+                }
+            }
+
+
+            for(let m=0; m<isCZdata.children.length;m++){
+                let delFlag = false
+                for(let n=0;n<UPdataList.length;n++){
+                    if(isCZdata.children[m].uuid == UPdataList[n].uuid){
+                        delFlag = true
+                        break;    
+                    }
+                }
+                if(!delFlag){
+                    DelList.push(isCZdata.children[m])
+                }
+            }
+            lsList = UPdataList.concat(AddList)
+            isCZdata.children = lsList
+            console.log(UPdataList,"111111111修改")
+            console.log(AddList,"222222222新增")
+            console.log(DelList,"33333333333删除")
+            let DelNodes =[]
+            if(DelList.length > 0){
+                DelList.map(item=>{
+                    let Del1UUid = item.uuid.split('---')[0]
+                    canvas.data.nodes.map(item1 => {
+                        if(item1.childStand){
+                            let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                            if(Del1UUid == Del2UUid){
+                                DelNodes.push(item1)                 
+                            }
+                        }
+                    })
+                })
+            }
+            if(DelNodes.length > 0){
+                console.log(DelNodes,"从node节点删除77777777777777")
+                // canvas.delete(DelNodes)
+            }
+        }
+    })
+    if(!isFlag){
+        saveList.children = lsList
+        window.Topology.tools.push(saveList)
+    }
+    canvas.render();
+    $('#ruleAct').fadeToggle(500)
+}
+
+function guid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = Math.random() * 16 | 0,
+			v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
+//动作取消
+function ActionClose(){
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let actionInfoNum = $('.ruleContentDiv .actionInfo')
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    let saveList ={
+        id :data.id,
+        name:data.text,
+        children:[]
+    }
+    let isFlag = false
+    let lsList = []
+    for(let i =0;i< actionInfoNum.length ;i++){
+        let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+        if(id){
+            id =id
+        }else{
+            id =""
+        }
+        let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+        if(varName){
+            varName = varName
+        }else{
+            varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+        }
+        let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+        if(inorout){
+            inorout =inorout
+        }else{
+            inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+        }
+          
+        if(inorout == "输入"){
+            inorout =0
+        }else{
+            inorout =1
+        }
+        obj = {
+           id:id,
+           uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
+           algorithmid:currId,
+           varname:varName,
+           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+           valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+           inorout:inorout,
+           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+       }
+       lsList.push(obj)
+   }
+    window.Topology.tools.map(isCZdata=>{
+        if(isCZdata.id == data.id){
+            isFlag =true
+            isCZdata.children = lsList
+        }
+    })
+    if(!isFlag){
+        saveList.children = lsList
+        window.Topology.tools.push(saveList)
+    }
+    $('#ruleAct').fadeToggle(500)
+}
+
+//加
+function ruleAddButtonS(){
+    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let currId = data.id.slice(0,tableAlgorithmIndex);
+    $.ajax({
+        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+        data:{algthId:currId},
+        success: function(data) {
+            let str =`<div class="actionInfo">
+                    <select class="actionSelected1">
+                        <option value="1">输出</option>
+                        <option value="0">输入</option>
+                    </select>
+                    <input value="" class="varNameInput" style="display: none;">   
+                    <select class="varNameInput1">
+                    </select>
+                    <input value="" class="actionSelected2" disabled>   
+                    <input value="" id="varTypeInput" disabled>                                                 
+                    <button type="button" onclick="reduceButton(event)">x</button> 
+                    </div>` 
+                    $('.ruleContentDiv').append(str);
+                    let actionInfoNum = $('.ruleContentDiv .actionInfo').length-1
+                    let lstr1=`<option>请选择</option>`
+                    data.tableFuncs.map(item => {
+                       lstr1 += `<option>${item.varname}</option>`
+                    })
+                  $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
+                  $('body').off("change").on('change','.varNameInput1',(e) => {
+                    data.tableFuncs.map(item => {
+                       if($(e.target).val()== item.varname){
+                            if(item.vartype == "1"){
+                                $(e.target).parent().children('.actionSelected2').val("基本类型")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
+                            }
+                            
+                            if(item.vartype == "2"){
+                                $(e.target).parent().children('.actionSelected2').val("常量")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
+                            }
+                            if(item.vartype == "3"){
+                                $(e.target).parent().children('.actionSelected2').val("对象")
+                                $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                                $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
+                            }                
+                       }else if($(e.target).val()== "请选择"){
+                            $(e.target).parent().children('.actionSelected2').val("")
+                            $(e.target).parent().children('#varTypeInput').val("")
+                            $(e.target).parent().children('.varNameInput').val("")
+                            $(e.target).parent().attr("")
+                       }
+                    })
+                 })
+
+        }
+    })
+}
+//减
+function reduceButton(e){
+    $(e.target).parent().remove()
 }

@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableAlgorithm;
-import deepthinking.fgi.domain.TableAlgorithmCriteria.Criteria;
-import deepthinking.fgi.domain.TableAlgorithmCriteria.Criterion;
-import deepthinking.fgi.domain.TableAlgorithmCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableAlgorithm;
+import deepthinking.fgi.domain.TableAlgorithmCriteria;
+import deepthinking.fgi.domain.TableAlgorithmCriteria.Criteria;
+import deepthinking.fgi.domain.TableAlgorithmCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableAlgorithmSqlProvider {
@@ -46,14 +47,6 @@ public class TableAlgorithmSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_algorithm");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
-        }
-        
-        if (record.getModuleid() != null) {
-            sql.VALUES("ModuleID", "#{moduleid,jdbcType=INTEGER}");
-        }
-        
         if (record.getAlgorithmname() != null) {
             sql.VALUES("AlgorithmName", "#{algorithmname,jdbcType=VARCHAR}");
         }
@@ -78,6 +71,10 @@ public class TableAlgorithmSqlProvider {
             sql.VALUES("Des", "#{des,jdbcType=VARCHAR}");
         }
         
+        if (record.getUserid() != null) {
+            sql.VALUES("UserID", "#{userid,jdbcType=INTEGER}");
+        }
+        
         if (record.getRemark() != null) {
             sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
         }
@@ -98,13 +95,13 @@ public class TableAlgorithmSqlProvider {
         } else {
             sql.SELECT("ID");
         }
-        sql.SELECT("ModuleID");
         sql.SELECT("AlgorithmName");
         sql.SELECT("AlgorithmAuthor");
         sql.SELECT("IsPublic");
         sql.SELECT("AlgorithmType");
         sql.SELECT("AlgorithmFun");
         sql.SELECT("Des");
+        sql.SELECT("UserID");
         sql.SELECT("Remark");
         sql.FROM("table_algorithm");
         applyWhere(sql, example, false);
@@ -133,10 +130,6 @@ public class TableAlgorithmSqlProvider {
             sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         }
         
-        if (record.getModuleid() != null) {
-            sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
-        }
-        
         if (record.getAlgorithmname() != null) {
             sql.SET("AlgorithmName = #{record.algorithmname,jdbcType=VARCHAR}");
         }
@@ -161,6 +154,10 @@ public class TableAlgorithmSqlProvider {
             sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         }
         
+        if (record.getUserid() != null) {
+            sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         }
@@ -180,13 +177,13 @@ public class TableAlgorithmSqlProvider {
         sql.UPDATE("table_algorithm");
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
-        sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
         sql.SET("AlgorithmName = #{record.algorithmname,jdbcType=VARCHAR}");
         sql.SET("AlgorithmAuthor = #{record.algorithmauthor,jdbcType=VARCHAR}");
         sql.SET("IsPublic = #{record.ispublic,jdbcType=DECIMAL}");
         sql.SET("AlgorithmType = #{record.algorithmtype,jdbcType=DECIMAL}");
         sql.SET("AlgorithmFun = #{record.algorithmfun,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
+        sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableAlgorithmCriteria example = (TableAlgorithmCriteria) parameter.get("example");
@@ -203,10 +200,6 @@ public class TableAlgorithmSqlProvider {
     public String updateByPrimaryKeySelective(TableAlgorithm record) {
         SQL sql = new SQL();
         sql.UPDATE("table_algorithm");
-        
-        if (record.getModuleid() != null) {
-            sql.SET("ModuleID = #{moduleid,jdbcType=INTEGER}");
-        }
         
         if (record.getAlgorithmname() != null) {
             sql.SET("AlgorithmName = #{algorithmname,jdbcType=VARCHAR}");
@@ -230,6 +223,10 @@ public class TableAlgorithmSqlProvider {
         
         if (record.getDes() != null) {
             sql.SET("Des = #{des,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUserid() != null) {
+            sql.SET("UserID = #{userid,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {

@@ -3,10 +3,12 @@ package deepthinking.fgi.controller;
 import com.alibaba.fastjson.JSONArray;
 import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableRole;
-import deepthinking.fgi.model.AlgorithmRuleDataModel;
+import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
+import deepthinking.fgi.model.OperatorInterfaceDataModel;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUtils;
+import deepthinking.fgi.util.XMLUtil;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,11 +46,10 @@ public class AlgorithmRuleController {
     @ApiImplicitParam(name = "id", value = "规则编号", dataType = "integer", paramType = "query", required = true)
     public void saveAlgorithmRule2File(Integer id, HttpServletResponse response){
         String filename = UUID.randomUUID().toString();
-//        String path = FileUtils.getConTextPath() + "/WEB-INF/" + filename;
         String path = FileUtils.getProjectPath() + "/" + filename;
         System.out.println("path:" + path);
         try {
-            FileUtils.writeFile(path, JSONArray.toJSON(tableRoleService.GetTableExportData(id)).toString().getBytes());
+            XMLUtil.convertToXml(tableRoleService.GetTableExportData(id), path);
             // 以流的形式下载文件。
             InputStream fis = new BufferedInputStream(new FileInputStream(path));
             byte[] buffer = new byte[fis.available()];
@@ -58,7 +59,7 @@ public class AlgorithmRuleController {
             response.reset();
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("算法规则导出.txt", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("算法规则导出.xml", "UTF-8"));
             toClient.write(buffer);
             toClient.flush();
             toClient.close();
@@ -89,27 +90,27 @@ public class AlgorithmRuleController {
     }
 
     @PostMapping("/saveAlgorithmRule")
-    @ApiOperation(value = "04-05 新增算法规则（一起新增）", notes = "返回新增结果", httpMethod = "POST")
-    public boolean saveAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
+    @ApiOperation(value = "04-05 新增算法规则", notes = "返回新增的规则本身信息", httpMethod = "POST")
+    public AlgorithmRuleSaveDataModel saveAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
         return tableRoleService.saveAlgorithmRule(algorithmRuleSaveDataModel);
     }
 
-    @PostMapping("/saveAlgorithmRuleOne")
-    @ApiOperation(value = "04-06 新增算法规则（一步一步新增）", notes = "返回新增结果", httpMethod = "POST")
-    public boolean saveAlgorithmRuleOne(@ApiParam @RequestBody AlgorithmRuleDataModel algorithmRuleDataModel){
-        return tableRoleService.saveAlgorithmRuleOne(algorithmRuleDataModel);
-    }
+//    @PostMapping("/saveOperatorInterfaceData")
+//    @ApiOperation(value = "04-06 新增接口信息(添加一个新增一个)", notes = "返回新增的接口本身信息", httpMethod = "POST")
+//    public AlgorithmRuleSaveDataModel saveOperatorInterfaceData(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
+//        return tableRoleService.saveOperatorInterfaceData(algorithmRuleSaveDataModel);
+//    }
 
-    @PostMapping("/saveAlgorithmRuleBase")
-    @ApiOperation(value = "04-07 只新增规则基本信息", notes = "返回新增结果", httpMethod = "POST")
-    public boolean saveAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole){
-        return tableRoleService.saveAlgorithmRuleBase(tableRole);
+    @PostMapping("/modInterfaceRole")
+    @ApiOperation(value = "04-07 修改接口信息", notes = "返回修改后的接口信息", httpMethod = "POST")
+    public OperatorInterfaceDataModel modInterfaceRole(@ApiParam @RequestBody OperatorInterfaceDataModel operatorInterfaceDataModel){
+        return tableRoleService.modInterfaceRole(operatorInterfaceDataModel);
     }
 
     @PostMapping("/modAlgorithmRule")
-    @ApiOperation(value = "04-08 修改算法规则(修改一个关系保存一次)", notes = "返回修改结果", httpMethod = "POST")
-    public boolean modAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleDataModel algorithmRuleDataModel){
-        return tableRoleService.modAlgorithmRule(algorithmRuleDataModel);
+    @ApiOperation(value = "04-08 修改算法规则某条连线的信息", notes = "返回修改结果", httpMethod = "POST")
+    public boolean modAlgorithmRule(@ApiParam @RequestBody InterfaceRoleDataModel interfaceRoleDataModel){
+        return tableRoleService.modAlgorithmRule(interfaceRoleDataModel);
     }
 
     @PostMapping("/modAlgorithmRuleBase")
@@ -125,11 +126,11 @@ public class AlgorithmRuleController {
         return tableRoleService.delAlgorithmRuleById(id);
     }
 
-    @GetMapping("/delTableAlgorithmrole")
-    @ApiOperation(value = "04-11 根据算法关系ID删除一个关系（一条线）", notes = "返回删除结果", httpMethod = "GET")
-    @ApiImplicitParam(name = "algorithmroleId", value = "算法算子关系ID", dataType = "string", paramType = "query", required = true)
-    public boolean delTableAlgorithmrole(String algorithmroleId){
-        return tableRoleService.delTableAlgorithmrole(algorithmroleId);
+    @GetMapping("/delOneInterfaceRole")
+    @ApiOperation(value = "04-11 根据接口关系ID删除一个关系（一条线）", notes = "返回删除结果", httpMethod = "GET")
+    @ApiImplicitParam(name = "interfaceRoueId", value = "算法接口关系ID", dataType = "string", paramType = "query", required = true)
+    public boolean delOneInterfaceRole(String interfaceRoueId){
+        return tableRoleService.delOneInterfaceRole(interfaceRoueId);
     }
 
     @PostMapping("/saveNewCoordinate")
@@ -146,6 +147,12 @@ public class AlgorithmRuleController {
     @ApiOperation(value = "04-13 保存某个参数的动作信息，传入动作对象集合", notes = "返回保存结果", httpMethod = "POST")
     public boolean saveFunAction(@ApiParam @RequestBody List<TableAlgorithmcondition> algorithmconditions){
         return tableRoleService.saveFunAction(algorithmconditions);
+    }
+    @GetMapping("/delTableOperatorinterface")
+    @ApiOperation(value = "04-14 根据接口ID删除一个接口，连同该接口相关的线一起删除", notes = "返回删除结果", httpMethod = "GET")
+    @ApiImplicitParam(name = "operatorinterfaceId", value = "接口ID", dataType = "string", paramType = "query", required = true)
+    public boolean delTableOperatorinterface(String operatorinterfaceId){
+        return tableRoleService.delTableOperatorinterface(operatorinterfaceId);
     }
 }
 

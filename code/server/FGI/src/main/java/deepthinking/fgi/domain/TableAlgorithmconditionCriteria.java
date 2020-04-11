@@ -254,123 +254,133 @@ public class TableAlgorithmconditionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidIsNull() {
-            addCriterion("AlgorithmRoleID is null");
+        public Criteria andInterfaceroleidIsNull() {
+            addCriterion("InterfaceRoleID is null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidIsNotNull() {
-            addCriterion("AlgorithmRoleID is not null");
+        public Criteria andInterfaceroleidIsNotNull() {
+            addCriterion("InterfaceRoleID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidEqualTo(Integer value) {
-            addCriterion("AlgorithmRoleID =", value, "algorithmroleid");
+        public Criteria andInterfaceroleidEqualTo(Integer value) {
+            addCriterion("InterfaceRoleID =", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidNotEqualTo(Integer value) {
-            addCriterion("AlgorithmRoleID <>", value, "algorithmroleid");
+        public Criteria andInterfaceroleidNotEqualTo(Integer value) {
+            addCriterion("InterfaceRoleID <>", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidGreaterThan(Integer value) {
-            addCriterion("AlgorithmRoleID >", value, "algorithmroleid");
+        public Criteria andInterfaceroleidGreaterThan(Integer value) {
+            addCriterion("InterfaceRoleID >", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("AlgorithmRoleID >=", value, "algorithmroleid");
+        public Criteria andInterfaceroleidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("InterfaceRoleID >=", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidLessThan(Integer value) {
-            addCriterion("AlgorithmRoleID <", value, "algorithmroleid");
+        public Criteria andInterfaceroleidLessThan(Integer value) {
+            addCriterion("InterfaceRoleID <", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidLessThanOrEqualTo(Integer value) {
-            addCriterion("AlgorithmRoleID <=", value, "algorithmroleid");
+        public Criteria andInterfaceroleidLessThanOrEqualTo(Integer value) {
+            addCriterion("InterfaceRoleID <=", value, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidIn(List<Integer> values) {
-            addCriterion("AlgorithmRoleID in", values, "algorithmroleid");
+        public Criteria andInterfaceroleidIn(List<Integer> values) {
+            addCriterion("InterfaceRoleID in", values, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidNotIn(List<Integer> values) {
-            addCriterion("AlgorithmRoleID not in", values, "algorithmroleid");
+        public Criteria andInterfaceroleidNotIn(List<Integer> values) {
+            addCriterion("InterfaceRoleID not in", values, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidBetween(Integer value1, Integer value2) {
-            addCriterion("AlgorithmRoleID between", value1, value2, "algorithmroleid");
+        public Criteria andInterfaceroleidBetween(Integer value1, Integer value2) {
+            addCriterion("InterfaceRoleID between", value1, value2, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andAlgorithmroleidNotBetween(Integer value1, Integer value2) {
-            addCriterion("AlgorithmRoleID not between", value1, value2, "algorithmroleid");
+        public Criteria andInterfaceroleidNotBetween(Integer value1, Integer value2) {
+            addCriterion("InterfaceRoleID not between", value1, value2, "interfaceroleid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidIsNull() {
-            addCriterion("FuncID is null");
+        public Criteria andInterfaceparametersidIsNull() {
+            addCriterion("InterfaceParametersID is null");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidIsNotNull() {
-            addCriterion("FuncID is not null");
+        public Criteria andInterfaceparametersidIsNotNull() {
+            addCriterion("InterfaceParametersID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidEqualTo(Integer value) {
-            addCriterion("FuncID =", value, "funcid");
+        public Criteria andInterfaceparametersidEqualTo(String value) {
+            addCriterion("InterfaceParametersID =", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidNotEqualTo(Integer value) {
-            addCriterion("FuncID <>", value, "funcid");
+        public Criteria andInterfaceparametersidNotEqualTo(String value) {
+            addCriterion("InterfaceParametersID <>", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidGreaterThan(Integer value) {
-            addCriterion("FuncID >", value, "funcid");
+        public Criteria andInterfaceparametersidGreaterThan(String value) {
+            addCriterion("InterfaceParametersID >", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("FuncID >=", value, "funcid");
+        public Criteria andInterfaceparametersidGreaterThanOrEqualTo(String value) {
+            addCriterion("InterfaceParametersID >=", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidLessThan(Integer value) {
-            addCriterion("FuncID <", value, "funcid");
+        public Criteria andInterfaceparametersidLessThan(String value) {
+            addCriterion("InterfaceParametersID <", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidLessThanOrEqualTo(Integer value) {
-            addCriterion("FuncID <=", value, "funcid");
+        public Criteria andInterfaceparametersidLessThanOrEqualTo(String value) {
+            addCriterion("InterfaceParametersID <=", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidIn(List<Integer> values) {
-            addCriterion("FuncID in", values, "funcid");
+        public Criteria andInterfaceparametersidLike(String value) {
+            addCriterion("InterfaceParametersID like", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidNotIn(List<Integer> values) {
-            addCriterion("FuncID not in", values, "funcid");
+        public Criteria andInterfaceparametersidNotLike(String value) {
+            addCriterion("InterfaceParametersID not like", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidBetween(Integer value1, Integer value2) {
-            addCriterion("FuncID between", value1, value2, "funcid");
+        public Criteria andInterfaceparametersidIn(List<String> values) {
+            addCriterion("InterfaceParametersID in", values, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andFuncidNotBetween(Integer value1, Integer value2) {
-            addCriterion("FuncID not between", value1, value2, "funcid");
+        public Criteria andInterfaceparametersidNotIn(List<String> values) {
+            addCriterion("InterfaceParametersID not in", values, "interfaceparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceparametersidBetween(String value1, String value2) {
+            addCriterion("InterfaceParametersID between", value1, value2, "interfaceparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceparametersidNotBetween(String value1, String value2) {
+            addCriterion("InterfaceParametersID not between", value1, value2, "interfaceparametersid");
             return (Criteria) this;
         }
 
@@ -454,52 +464,52 @@ public class TableAlgorithmconditionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesEqualTo(Long value) {
+        public Criteria andValuesourcesEqualTo(Integer value) {
             addCriterion("ValueSources =", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesNotEqualTo(Long value) {
+        public Criteria andValuesourcesNotEqualTo(Integer value) {
             addCriterion("ValueSources <>", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesGreaterThan(Long value) {
+        public Criteria andValuesourcesGreaterThan(Integer value) {
             addCriterion("ValueSources >", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesGreaterThanOrEqualTo(Long value) {
+        public Criteria andValuesourcesGreaterThanOrEqualTo(Integer value) {
             addCriterion("ValueSources >=", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesLessThan(Long value) {
+        public Criteria andValuesourcesLessThan(Integer value) {
             addCriterion("ValueSources <", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesLessThanOrEqualTo(Long value) {
+        public Criteria andValuesourcesLessThanOrEqualTo(Integer value) {
             addCriterion("ValueSources <=", value, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesIn(List<Long> values) {
+        public Criteria andValuesourcesIn(List<Integer> values) {
             addCriterion("ValueSources in", values, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesNotIn(List<Long> values) {
+        public Criteria andValuesourcesNotIn(List<Integer> values) {
             addCriterion("ValueSources not in", values, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesBetween(Long value1, Long value2) {
+        public Criteria andValuesourcesBetween(Integer value1, Integer value2) {
             addCriterion("ValueSources between", value1, value2, "valuesources");
             return (Criteria) this;
         }
 
-        public Criteria andValuesourcesNotBetween(Long value1, Long value2) {
+        public Criteria andValuesourcesNotBetween(Integer value1, Integer value2) {
             addCriterion("ValueSources not between", value1, value2, "valuesources");
             return (Criteria) this;
         }

@@ -4,8 +4,8 @@ import com.github.pagehelper.PageInfo;
 import deepthinking.fgi.Enum.AlgorithmtypeEnum;
 import deepthinking.fgi.Enum.InOrOutType;
 import deepthinking.fgi.dao.mapper.TableAlgorithmMapper;
-import deepthinking.fgi.dao.mapper.TableAlgorithmroleMapper;
 import deepthinking.fgi.dao.mapper.TableFuncMapper;
+import deepthinking.fgi.dao.mapper.TableOperatorinterfaceMapper;
 import deepthinking.fgi.domain.*;
 import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
@@ -36,7 +36,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     @Resource
     private TableFuncMapper tableFuncMapper;
     @Resource
-    private TableAlgorithmroleMapper tableAlgorithmroleMapper;
+    private TableOperatorinterfaceMapper tableOperatorinterfaceMapper;
 
     @Override
     public List<AlgorithmBaseInfo> getAllAlgorithm(String username) {
@@ -134,7 +134,48 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                 return 2;
             }
             List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-            tableFuncs.stream().forEach(fun->tableFuncMapper.updateByPrimaryKeySelective(fun));
+            //查询以前所有的参数
+            TableFuncCriteria tableFuncCriteria=new TableFuncCriteria();
+            tableFuncCriteria.createCriteria().andAlgorithmidEqualTo(algorithmModel.getTableAlgorithm().getId());
+            List<TableFunc> oldData=tableFuncMapper.selectByExample(tableFuncCriteria);
+            List<TableFunc> addData=new ArrayList<>();
+            List<TableFunc> delData=new ArrayList<>();
+            List<TableFunc> updData=new ArrayList<>();
+            if(oldData.size()>0){
+                for(TableFunc func:tableFuncs){
+                    boolean fg=false;
+                    for(TableFunc old:oldData){
+                        if(func.getId()==old.getId()){
+                            updData.add(func);
+                            fg=true;
+                            break;
+                        }
+                    }
+                    if(!fg){
+                        addData.add(func);
+                    }
+                }
+                for(TableFunc old:oldData){
+                    boolean fg=false;
+                    for(TableFunc upd:updData){
+                        if(old.getId()==upd.getId()){
+                            fg=true;
+                            break;
+                        }
+                    }
+                    if(!fg){
+                        delData.add(old);
+                    }
+                }
+                //删除
+                delData.forEach(data->tableFuncMapper.deleteByPrimaryKey(data.getId()));
+                //修改
+                updData.forEach(data->tableFuncMapper.updateByPrimaryKeySelective(data));
+                //新增
+                addData.forEach(data->tableFuncMapper.insert(data));
+            }else {
+                tableFuncs.stream().forEach(fun->tableFuncMapper.insert(fun));
+            }
         }catch (Exception e){
             logger.error(e.getMessage());
             return 0;
@@ -151,11 +192,10 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         查询算子是否已用于其他规则中
          */
     private boolean cheakAlgorithmrole(String algthId){
-        TableAlgorithmroleCriteria tableAlgorithmroleCriteria=new TableAlgorithmroleCriteria();
-        tableAlgorithmroleCriteria.or().andAlgorithmidEqualTo(Integer.parseInt(algthId));
-        tableAlgorithmroleCriteria.or().andPrealgorithmidEqualTo(Integer.parseInt(algthId));
-        List<TableAlgorithmrole> tableAlgorithmroles=tableAlgorithmroleMapper.selectByExample(tableAlgorithmroleCriteria);
-        if(tableAlgorithmroles.size()>0){
+        TableOperatorinterfaceCriteria tableOperatorinterfaceCriteria=new TableOperatorinterfaceCriteria();
+        tableOperatorinterfaceCriteria.createCriteria().andAlgorithmidEqualTo(Integer.parseInt(algthId));
+        List<TableOperatorinterface> tableOperatorinterfaces=tableOperatorinterfaceMapper.selectByExample(tableOperatorinterfaceCriteria);
+        if(tableOperatorinterfaces.size()>0){
             return true;
         }
         return false;

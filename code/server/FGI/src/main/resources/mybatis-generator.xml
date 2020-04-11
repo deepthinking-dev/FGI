@@ -16,7 +16,7 @@
 	</commentGenerator>
 
 	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-		connectionURL="jdbc:mysql://127.0.0.1:3306/fgi" userId="user"
+		connectionURL="jdbc:mysql://127.0.0.1:3306/fgi" userId="root"
 		password="123456">
 	</jdbcConnection>
 
@@ -38,17 +38,22 @@
 		targetProject="src/main/java">
 		<property name="enableSubPackages" value="true" />
 	</javaClientGenerator>
- 	<!--<table tableName="Table_Algorithm" ></table>
-    <table tableName="Table_AlgorithmCondition" ></table>
-    <table tableName="Table_Func" ></table>
-    <table tableName="Table_Module" ></table>
-    <table tableName="Table_ModuleField" ></table>
-    <table tableName="Table_ModuleUserRelation" ></table>-->
-    <!--<table tableName="Table_Role" >
-		<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-	</table>-->
-		<!--<table tableName="Table_AlgorithmRole" >
-			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-		</table>-->
+		<!--<table tableName="Table_Module" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>
+		<table tableName="Table_Algorithm" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>
+		<table tableName="Table_Role" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>
+		<table tableName="Table_AlgorithmCondition" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>-->
+		<!--<table tableName="Table_InterfaceParameters" ></table>-->
+		<!--<table tableName="Table_InterfaceRole" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>-->
+		<!--<table tableName="Table_OperatorInterface" ></table>-->
 	</context>
 </generatorConfiguration>  

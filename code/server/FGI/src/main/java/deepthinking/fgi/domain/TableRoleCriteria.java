@@ -533,6 +533,66 @@ public class TableRoleCriteria {
             addCriterion("EntranceNote not between", value1, value2, "entrancenote");
             return (Criteria) this;
         }
+
+        public Criteria andUuseridIsNull() {
+            addCriterion("UuserID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridIsNotNull() {
+            addCriterion("UuserID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridEqualTo(Integer value) {
+            addCriterion("UuserID =", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridNotEqualTo(Integer value) {
+            addCriterion("UuserID <>", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridGreaterThan(Integer value) {
+            addCriterion("UuserID >", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridGreaterThanOrEqualTo(Integer value) {
+            addCriterion("UuserID >=", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridLessThan(Integer value) {
+            addCriterion("UuserID <", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridLessThanOrEqualTo(Integer value) {
+            addCriterion("UuserID <=", value, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridIn(List<Integer> values) {
+            addCriterion("UuserID in", values, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridNotIn(List<Integer> values) {
+            addCriterion("UuserID not in", values, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridBetween(Integer value1, Integer value2) {
+            addCriterion("UuserID between", value1, value2, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUuseridNotBetween(Integer value1, Integer value2) {
+            addCriterion("UuserID not between", value1, value2, "uuserid");
+            return (Criteria) this;
+        }
     }
 
     /**

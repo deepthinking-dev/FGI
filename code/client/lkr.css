@@ -96,7 +96,7 @@ body{
     height: 6%;
 }
 .mouldFoot>div{
-    width: 50%;
+    width: 100%;
     cursor: pointer;
     color: #ebeef8;
     display: flex;
@@ -466,6 +466,16 @@ body{
     margin:15px 0;
     margin-left: 20px;
     border: none;
+    height: 30px;
+}
+#addSzBuuton{
+    background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin:15px 0;
+    margin-left:20px;
+    border: none;
+    height: 30px;
 }
 #dicDiv{
     position: absolute;
@@ -484,9 +494,9 @@ body{
 #editDic{
     z-index: 10;
     position: absolute;
-    left: 30%;
-    top: 15%;
-    width: 700px;
+    left: 20%;
+    top: 10%;
+    width: 1000px;
     height: 700px;
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
@@ -497,7 +507,7 @@ body{
 #zdcsList{
     height: 300px;
     overflow: auto;
-    width: 93%;
+    width: 98%;
 }
 #editDicYes{
     position: absolute;
@@ -514,7 +524,7 @@ body{
 #dicTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark {
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -535,7 +545,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect  option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -565,7 +575,7 @@ body{
     text-align: center;
 }
 
-#editDic input,#editDic select{
+#zdcsList input,#zdcsList select{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -573,20 +583,33 @@ body{
     border: none;
     outline: none;
     color: #fff;
-    width: 350px;
+    width: 120px;
     height: 39px;
     padding-left: 10px;
 }
+#actionSelectParma,#actionSelectName{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 250px;
+    height: 39px;
+    padding-left: 10px;
+}
+
 #editDic span{
-    text-align: right;
-    font-size: 16px;
+    text-align:  center;
+    font-size: 15px;
     color: #fff;
     display: inline-block;
-    width: 120px;
+    width: 70px;
     height: 40px;
     vertical-align: top;
     line-height: 40px;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 #dicDiv span{
     text-align: right;
@@ -643,4 +666,65 @@ body{
 .delTab{
     background: #f56c6c;
     color: #fff;
+}
+#colorDiv{
+    width: 80px;
+    height: 390px;
+    position: absolute;
+    top:10%;
+    right: 22%;
+}
+#colorDiv ul{
+    padding: 0;
+}
+#colorDiv li{
+    list-style: none;
+    height: 26px;
+    line-height: 26px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+}
+#varTypeInput{
+    width: 220px;
+    height: 39px;
+}
+#actionSelectDiv span{
+    text-align:  center;
+    font-size: 15px;
+    color: #fff;
+    display: inline-block;
+    width: 70px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 10px;
+}
+#rkDiv{
+    position: absolute;
+    height:400px;
+    width: 600px;
+    left: 30%;
+    top: 20%;
+    display: none;
+    background-image: url(./static/mum1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    z-index: 10000000;
+}
+#bzMsg{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    resize:none;
+    width: 500px;
+    height:250px;
+    margin-left: 50px;
+    font-size: 16px;
 }

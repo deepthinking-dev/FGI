@@ -46,16 +46,12 @@ public class TableAlgorithmconditionSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_algorithmcondition");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
+        if (record.getInterfaceroleid() != null) {
+            sql.VALUES("InterfaceRoleID", "#{interfaceroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getAlgorithmroleid() != null) {
-            sql.VALUES("AlgorithmRoleID", "#{algorithmroleid,jdbcType=INTEGER}");
-        }
-        
-        if (record.getFuncid() != null) {
-            sql.VALUES("FuncID", "#{funcid,jdbcType=INTEGER}");
+        if (record.getInterfaceparametersid() != null) {
+            sql.VALUES("InterfaceParametersID", "#{interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {
@@ -63,7 +59,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getValuesources() != null) {
-            sql.VALUES("ValueSources", "#{valuesources,jdbcType=DECIMAL}");
+            sql.VALUES("ValueSources", "#{valuesources,jdbcType=INTEGER}");
         }
         
         if (record.getExpression() != null) {
@@ -90,8 +86,8 @@ public class TableAlgorithmconditionSqlProvider {
         } else {
             sql.SELECT("ID");
         }
-        sql.SELECT("AlgorithmRoleID");
-        sql.SELECT("FuncID");
+        sql.SELECT("InterfaceRoleID");
+        sql.SELECT("InterfaceParametersID");
         sql.SELECT("Behavior");
         sql.SELECT("ValueSources");
         sql.SELECT("expression");
@@ -123,12 +119,12 @@ public class TableAlgorithmconditionSqlProvider {
             sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         }
         
-        if (record.getAlgorithmroleid() != null) {
-            sql.SET("AlgorithmRoleID = #{record.algorithmroleid,jdbcType=INTEGER}");
+        if (record.getInterfaceroleid() != null) {
+            sql.SET("InterfaceRoleID = #{record.interfaceroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getFuncid() != null) {
-            sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
+        if (record.getInterfaceparametersid() != null) {
+            sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {
@@ -136,7 +132,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getValuesources() != null) {
-            sql.SET("ValueSources = #{record.valuesources,jdbcType=DECIMAL}");
+            sql.SET("ValueSources = #{record.valuesources,jdbcType=INTEGER}");
         }
         
         if (record.getExpression() != null) {
@@ -162,10 +158,10 @@ public class TableAlgorithmconditionSqlProvider {
         sql.UPDATE("table_algorithmcondition");
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
-        sql.SET("AlgorithmRoleID = #{record.algorithmroleid,jdbcType=INTEGER}");
-        sql.SET("FuncID = #{record.funcid,jdbcType=INTEGER}");
+        sql.SET("InterfaceRoleID = #{record.interfaceroleid,jdbcType=INTEGER}");
+        sql.SET("InterfaceParametersID = #{record.interfaceparametersid,jdbcType=VARCHAR}");
         sql.SET("Behavior = #{record.behavior,jdbcType=VARCHAR}");
-        sql.SET("ValueSources = #{record.valuesources,jdbcType=DECIMAL}");
+        sql.SET("ValueSources = #{record.valuesources,jdbcType=INTEGER}");
         sql.SET("expression = #{record.expression,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         
@@ -184,12 +180,12 @@ public class TableAlgorithmconditionSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("table_algorithmcondition");
         
-        if (record.getAlgorithmroleid() != null) {
-            sql.SET("AlgorithmRoleID = #{algorithmroleid,jdbcType=INTEGER}");
+        if (record.getInterfaceroleid() != null) {
+            sql.SET("InterfaceRoleID = #{interfaceroleid,jdbcType=INTEGER}");
         }
         
-        if (record.getFuncid() != null) {
-            sql.SET("FuncID = #{funcid,jdbcType=INTEGER}");
+        if (record.getInterfaceparametersid() != null) {
+            sql.SET("InterfaceParametersID = #{interfaceparametersid,jdbcType=VARCHAR}");
         }
         
         if (record.getBehavior() != null) {
@@ -197,7 +193,7 @@ public class TableAlgorithmconditionSqlProvider {
         }
         
         if (record.getValuesources() != null) {
-            sql.SET("ValueSources = #{valuesources,jdbcType=DECIMAL}");
+            sql.SET("ValueSources = #{valuesources,jdbcType=INTEGER}");
         }
         
         if (record.getExpression() != null) {

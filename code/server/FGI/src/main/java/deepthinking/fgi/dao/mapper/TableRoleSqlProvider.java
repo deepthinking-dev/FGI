@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableRole;
-import deepthinking.fgi.domain.TableRoleCriteria.Criteria;
-import deepthinking.fgi.domain.TableRoleCriteria.Criterion;
-import deepthinking.fgi.domain.TableRoleCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableRole;
+import deepthinking.fgi.domain.TableRoleCriteria;
+import deepthinking.fgi.domain.TableRoleCriteria.Criteria;
+import deepthinking.fgi.domain.TableRoleCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableRoleSqlProvider {
@@ -46,10 +47,6 @@ public class TableRoleSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_role");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
-        }
-        
         if (record.getRolename() != null) {
             sql.VALUES("RoleName", "#{rolename,jdbcType=VARCHAR}");
         }
@@ -64,6 +61,10 @@ public class TableRoleSqlProvider {
         
         if (record.getEntrancenote() != null) {
             sql.VALUES("EntranceNote", "#{entrancenote,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUuserid() != null) {
+            sql.VALUES("UuserID", "#{uuserid,jdbcType=INTEGER}");
         }
         
         if (record.getCoordinate() != null) {
@@ -90,6 +91,7 @@ public class TableRoleSqlProvider {
         sql.SELECT("Des");
         sql.SELECT("Remark");
         sql.SELECT("EntranceNote");
+        sql.SELECT("UuserID");
         sql.SELECT("coordinate");
         sql.FROM("table_role");
         applyWhere(sql, example, false);
@@ -118,6 +120,7 @@ public class TableRoleSqlProvider {
         sql.SELECT("Des");
         sql.SELECT("Remark");
         sql.SELECT("EntranceNote");
+        sql.SELECT("UuserID");
         sql.FROM("table_role");
         applyWhere(sql, example, false);
         
@@ -161,6 +164,10 @@ public class TableRoleSqlProvider {
             sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
         }
         
+        if (record.getUuserid() != null) {
+            sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
+        }
+        
         if (record.getCoordinate() != null) {
             sql.SET("coordinate = #{record.coordinate,jdbcType=LONGVARCHAR}");
         }
@@ -184,6 +191,7 @@ public class TableRoleSqlProvider {
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
+        sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
         sql.SET("coordinate = #{record.coordinate,jdbcType=LONGVARCHAR}");
         
         TableRoleCriteria example = (TableRoleCriteria) parameter.get("example");
@@ -206,6 +214,7 @@ public class TableRoleSqlProvider {
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
+        sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
         
         TableRoleCriteria example = (TableRoleCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -236,6 +245,10 @@ public class TableRoleSqlProvider {
         
         if (record.getEntrancenote() != null) {
             sql.SET("EntranceNote = #{entrancenote,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUuserid() != null) {
+            sql.SET("UuserID = #{uuserid,jdbcType=INTEGER}");
         }
         
         if (record.getCoordinate() != null) {

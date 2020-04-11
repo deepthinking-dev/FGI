@@ -2,8 +2,10 @@ package deepthinking.fgi.service;
 
 import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableRole;
-import deepthinking.fgi.model.AlgorithmRuleDataModel;
+import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
+import deepthinking.fgi.model.OperatorInterfaceDataModel;
+import deepthinking.fgi.model.xml.RuleXmlModel;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @author 王若山
      * @return
      */
-    TableRole GetTableExportData(Integer id);
+    RuleXmlModel GetTableExportData(Integer id);
 
     /**
      * 根据用户获取所有算法规则 username暂时不用
@@ -44,30 +46,31 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
     AlgorithmRuleSaveDataModel getAlgorithmRuleById(String Id);
 
     /**
-     * 新增算法规则（一起新增）
+     * 新增接口信息
+     * @param algorithmRuleSaveDataModel
      * @return
      */
-    boolean saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
+//    AlgorithmRuleSaveDataModel saveOperatorInterfaceData(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
 
     /**
-     * 新增算法规则（一步一步新增）
-     * @param algorithmRuleDataModel
+     * 新增算法规则
      * @return
      */
-    boolean saveAlgorithmRuleOne(AlgorithmRuleDataModel algorithmRuleDataModel);
+    AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
 
     /**
-     * 只新增规则基本信息
-     * @param tableRole
+     * 修改接口信息
+     * @param operatorInterfaceDataModel
      * @return
      */
-    boolean saveAlgorithmRuleBase(TableRole tableRole);
+
+    OperatorInterfaceDataModel modInterfaceRole(OperatorInterfaceDataModel operatorInterfaceDataModel);
 
     /**
      * 修改算法规则某条连线的信息
      * @return
      */
-    boolean modAlgorithmRule(AlgorithmRuleDataModel algorithmRuleDataModel);
+    boolean modAlgorithmRule(InterfaceRoleDataModel interfaceRoleDataModel);
 
     /**
      * 只修改规则基本信息
@@ -84,11 +87,18 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
     boolean delAlgorithmRuleById(String Id);
 
     /**
-     * 根据算法关系ID删除一个关系
-     * @param algorithmroleId
+     * 根据接口ID删除一个接口，连同该接口相关的线一起删除
+     * @param operatorinterfaceId
      * @return
      */
-    boolean delTableAlgorithmrole(String algorithmroleId);
+    boolean delTableOperatorinterface(String operatorinterfaceId);
+
+    /**
+     * 根据算法接口关系Id删除一条线
+     * @param interfaceRoueId
+     * @return
+     */
+    boolean delOneInterfaceRole(String interfaceRoueId);
 
     /**
      * 保存最新的规则下算子的坐标

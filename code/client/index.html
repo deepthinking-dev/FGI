@@ -40,7 +40,9 @@
             background-size: 100% 100%;
             background-repeat: no-repeat;
         }
-        
+        i{
+            font-style:normal
+        }
     </style>
      <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -173,6 +175,81 @@
 </script>
 </head>
 <body> 
+       <!-- 关系选择 -->
+    <div id="ruleAct">
+        <div class="ruleInfo">
+            <span class="ActTitle">算法详情</span>
+            <div class="ActContont">
+                <div style="margin: 5px 20px;display:flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">作者：</label>
+                    <span class="ruleActionZZ">111</span>
+                </div>
+                <div style="margin: 5px 20px;display: flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">算法名称：</label>
+                    <span class="ruleActionMC">222</span>
+                </div>
+                <div style="margin: 5px 20px;display: flex;">
+                    <label style="line-height: 20px;width: 70px;text-align: left">算法描述：</label>
+                    <span class="ruleActionMS">333</span>
+                </div>
+            </div>
+        </div>
+        <button class="ruleAddButton" type="button" onclick="ruleAddButtonS()">+</button> 
+        <div class="ruleContentDiv">
+
+        </div>
+
+        <div class="footerAct">
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
+            <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
+        </div>
+
+    </div>
+<!--       动作-->
+       <div id="actionDiv">
+           <div style="text-align: center;margin-top: 20px">
+               <span>动作对象</span>
+               <select id="selectOutIn">
+                   <option value="1">输入端参数</option>
+                   <option value="2">输出端参数</option>
+               </select>
+               <button type="button" id="addActionButton" style="background: #409eff;color: #fff;height: 26px;width: 26px;border: none;margin-left: 10px">+</button>
+           </div>
+           <div style="margin: 20px 30px;height: 350px;overflow: auto;" id="actionInDiv"></div>
+           <div style="margin: 20px 30px;height: 350px;overflow: auto;display: none" id="actionOutDiv"></div>
+           <div style="position: absolute;bottom: 20px;right: 0">
+               <button onclick="closeActionDiv()" class="btn pointer" type="button" style="margin-right: 40px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button id="addAction" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
+       <!-- 动作弹窗选择参数-->
+       <div id="actionSelectDiv">
+           <div style="text-align: center;margin-top: 20px">
+               <p>
+                   <span>对象字段</span>
+                   <select id="actionSelectParma"></select>
+               </p>
+               <p>
+                   <span>来源值</span>
+                   <select id="actionSelectName"></select>
+               </p>
+           </div>
+           <div style="position: absolute;bottom: 20px;right: 0">
+               <button onclick="closeactionSelectDiv()" class="btn pointer" type="button" style="margin-right: 35px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button id="actionSelectButton" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
+<!--       入库备注-->
+       <div id="rkDiv">
+           <div style="text-align: center;margin: 25px 0">
+                <p style="color:#fff;">入库备注</p>
+           </div>
+           <textarea id="bzMsg"></textarea>
+           <div style="position: absolute;bottom: 20px;right: 0">
+               <button class="btn pointer" onclick="closeBz()" type="button" style="margin-right: 35px;background: #f56c6c;color: #fff;float: right">取消</button>
+               <button class="btn pointer" onclick="saveBzMsg()"  type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
+           </div>
+       </div>
     <!-- 保存规则 -->
     <div id="sureRule">
         <div class="title">
@@ -296,7 +373,7 @@
             </div>
         </div>
     <!-- 关系选择 -->
-    <div id="selectRela">
+    <!-- <div id="selectRela">
         <div>
             <span>关系选择</span>
             <select class="selectRelation">
@@ -315,7 +392,7 @@
             <button class="btn pointer" type="button" onclick="RelateClose()" style="margin-right: 35px;">取消</button>
             <button class="btn pointer" type="button" onclick="selectSure()" style="margin-right: 10px;">确定</button>
         </div>
-    </div>
+    </div> -->
     <!-- 上传导入文件框 -->
     <div id="fileupload">
         <div class="title">
@@ -661,7 +738,7 @@
                            </div>
                            <div id="algorithmPage" class='lkr-page' ></div>
                            <div class="mouldFoot">
-                                <div onclick='editAlgorithm()'>编辑算子</div>
+<!--                                <div onclick='editAlgorithm()'>编辑算子</div>-->
                                 <div id='getAllGzgz'>已有规则</div>
                             </div>
 
@@ -671,6 +748,16 @@
                         <div disabled>
                             <a onclick="onTops()" class="menu-a-disabled" disabled>
                                 新增自定义属性
+                            </a>
+                        </div>
+                        <div id="showRk" style="display: none">
+                            <a class="menu-a" onclick="showRk()">
+                                入库备注
+                            </a>
+                        </div>
+                        <div>
+                            <a class="menu-a" id="showAllmag">
+                                查看详情
                             </a>
                         </div>
                         <div disabled>
@@ -738,12 +825,6 @@
                                 <span class="ml50">Ctrl + V</span>
                             </a>
                         </div>
-                        <div>
-                            <a onclick="parsew()" class="menu-a">
-                                xx
-                                <span class="ml50">Ctrl + V</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 </div>
@@ -760,7 +841,8 @@
           <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-              <input type="button" id="addDic" value="新增">
+              <input type="button" id="addDic" value="新增字典">
+              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算子">
               <table id="dicTable">
 
               </table>
@@ -772,30 +854,45 @@
             <span id="editDicTitle">新增字典</span>
             <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
-        <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 30px">
-            <p>
-            <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
-            </p>
-            <div  style="margin: 10px 0">
-                <span> 作 者 </span><input type="text" id="editAuthor">
-            </div>
-            <div  style="margin: 10px 0">
-                <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName">
-            </div>
-            <div>
-                <span>算法描述</span><input type="text" id="editDicDes">
-            </div>
-            <p>
-            <h4 style="color:#fff;margin-left: 30px;color: aqua">参数信息</h4>
-            <button style="background: #409eff;margin-left: 25px;color: #fff" id="addZdcs">新增参数</button>
-            </p>
-            <div id="zdcsList">
+        <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 20px">
 
-            </div>
+            <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
+                <div style="margin-left: 30px">
+                    <div style="margin: 10px 0">
+                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 40px">
+                    </div>
+                    <div  style="margin: 10px 0">
+                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 40px">
+                    </div>
+                    <div>
+                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 40px">
+                    </div>
+                </div>
+            <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
+            <button style="background: #409eff;color: #fff;margin-bottom: 20px" id="addZdcs">新增参数</button>
+            <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
     </div>
-
+    <div id="colorDiv">
+        <ul>
+            <li style="background: #0eff23">常量</li>
+            <li style="background: #ff00e7">对象</li>
+            <li style="background: red">int</li>
+            <li style="background: #ff7749">byte</li>
+            <li style="background: #a4ff59">long</li>
+            <li style="background: #fb61ff">short</li>
+            <li style="background: blue">float</li>
+            <li style="background: green">double</li>
+            <li style="background: aqua">boolean</li>
+            <li style="background: orange">number</li>
+            <li style="background: #7cc6ff">char</li>
+            <li style="background: #ff4286">date</li>
+            <li style="background: #00c1ff">string</li>
+            <li style="background: #6a46ff">blob</li>
+            <li style="background: #ffe964">array</li>
+        </ul>
+    </div>
 
 <script src="config.js"></script>
 <!-- jQuery 3.3.1 -->
@@ -808,6 +905,18 @@
 <script src="topology/MathJax.js"></script>
 
 <script>
+    var globalActionDatas = [];
+    var deleteLineDataId;
+    var currentActionInput;
+    var responseActionDatas;
+    var refreshId;
+    var resCurrentLineData={
+        dataIn:"",
+        dataOut:""
+    };
+    var idStoreData={
+            
+        }
     window.bigData = {
         mouldParam:[],
         actionTab:'基础模块',
@@ -819,12 +928,46 @@
         editAlgorithmId:'',
         editFormula:'',
         formulaType:'add',
-        formulaModuleId:''
+        formulaModuleId:'',
+        isAddInOut:false,
+        isAddInOutType: 'out',
+        editRuleId:'',
+        ruleType:'add'
     }
     window.filed ={
         inputFieldsTarget:'',
         fieldname:''
     }
+    function changeVarType(e){
+        if(e.target.value == "2" || e.target.value == "3"){
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("取值")
+            $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
+        } else {
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("数据项")
+            $(e.target).parent().next().append(`
+                    <select class="zdcsTypeSelect">
+                        <option>int</option>
+                        <option>long</option>
+                        <option>byte</option>
+                        <option>short</option>
+                        <option>float</option>
+                        <option>double</option>
+                        <option>boolean</option>
+                        <option>number</option>
+                        <option>char</option>
+                        <option>date</option>
+                        <option>string</option>
+                        <option>BLOB</option>
+                        <option>boolean</option>
+                        <option>array</option>
+                    </select>`)
+        }
+    }
+
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).data('id')
@@ -1263,9 +1406,11 @@
         $('#dataModulePage').fadeToggle(500)
     }
     function editAlgorithm(){
-        $('#AddAlgorithm').fadeToggle(500);
-        $("#dataModulePage").hide();
-        $("#dicDiv").hide();
+        $(".Frame").fadeToggle(500);
+        // $('#AddAlgorithm').fadeToggle(500);
+        // $("#dataModulePage").hide();
+        // $("#dicDiv").hide();
+        AlgorithmConfirm()
         window.bigData.formulaType = 'add';
     }
     function AlgorithmClose(){
@@ -1449,30 +1594,30 @@
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
-                            <p style="margin-top: 5px">
-                                <span style="color:#fff;margin-right: 20px;">参数名称</span>
+                            <i style="margin-top: 5px">
+                                <span style="color:#fff;">参数名称</span>
                                 <input class="zdcsCsmc" type="text" value="${t.varname}">
-                            </p>
-                            <p>
-                                <span style="color:#fff;margin-right: 20px">类型</span>
-                                <select class="zdcsSelect">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">类型</span>
+                                <select class="zdcsSelect" onchange="changeVarType(event)">
                                     <option value="2">常量</option>
                                     <option value="3">对象</option>
                                     <option value="1">基本类型</option>
                                 </select>
-                            </p>
-                            <p>
-                                <span style="color:#fff;;margin-right: 20px">取值</span>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">取值</span>
                                 <input type="text" value="" class="zdcsText">
-                            </p>
-                            <p>
-                                <span style="color:#fff;margin-right: 20px">输入输出</span>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">输入输出</span>
                                 <select class="zdcsExport">
                                     <option value="0">输入</option>
                                     <option value="1">输出</option>
                                 </select>
-                                <button class="deleteZdcs" style="float: right;margin-right: 20px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
-                            </p>
+                            </i>
+                            <button class="deleteZdcs" style="float: right;margin-right: 30px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
                         </div>
                     `)
                     })
@@ -1485,13 +1630,14 @@
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
                             <select class="zdcsTypeSelect">
-                                <option>byte</option>
-                                <option>short</option>
                                 <option>int</option>
                                 <option>long</option>
+                                <option>byte</option>
+                                <option>short</option>
                                 <option>float</option>
                                 <option>double</option>
                                 <option>boolean</option>
+                                <option>number</option>
                                 <option>char</option>
                                 <option>date</option>
                                 <option>string</option>
@@ -1821,7 +1967,24 @@
             }
         })
     });
-           
+     function closeActionDiv() {
+         $("#actionDiv").hide()
+         $("#actionOutDiv").hide()
+     }
+     function closeactionSelectDiv() {
+         $("#actionSelectDiv").hide()
+     }
+     function showRk() {
+         $("#rkDiv").show()
+     }
+     function closeBz() {
+        $("#rkDiv").hide()
+     }
+     function saveBzMsg() {
+         let val = $('#bzMsg').val();
+         $("#rkDiv").hide();
+         $("#ruleDes").attr("data",val)
+     }
 </script>
 </body>
 </html>

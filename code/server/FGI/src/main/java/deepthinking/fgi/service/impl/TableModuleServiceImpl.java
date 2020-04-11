@@ -179,4 +179,17 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
     public List<Map<String,Object>> findAllFiledByTableName(String tableName) {
         return tableModuleMapper.findAllFiledByTableName(tableName);
     }
+
+    @Override
+    public TableModule findTableModuleByName(String name) {
+        TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
+        tableModuleCriteria.createCriteria().andModulenameEqualTo(name);
+        List<TableModule> data=tableModuleMapper.selectByExample(tableModuleCriteria);
+        if(data.size()>0){
+            TableModule tableModule=getModuleById(data.get(0).getId().toString());
+            return tableModule;
+        }else{
+            return null;
+        }
+    }
 }
