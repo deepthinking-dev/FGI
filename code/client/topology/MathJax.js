@@ -357,46 +357,33 @@ function ruleSure(){
       algorithmRuleDataList.push(algorithmconditions)
    })
    console.log(algorithmRuleDataList)
-    let operatorInterfaceDataModels = [
-        {
-            algorithmID:0,
-            id:0 ,
-            interfaceName:"",
-            roleID:0,
-            tableInterfaceparametersList:[
-                {
-                    id:0,
-                    inorout:0,
-                    interfaceid:0,
-                    parametersname:"",
-                    parameterssources:''
-                }
-            ]
-        }
-    ]
+    let operatorInterfaceDataModels = []
     window.Topology.tools.map(item=>{
+
+        let bigList = []
         let objF = {
             algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
             id:0 ,
-            interfaceName:"",
-            roleID:0,
-            tableInterfaceparametersList:[]
+            interfaceName:item.name,
+            roleID:0
         }
+        bigList.push(objF)
         item.children.map(index=>{
             let CsObj = {
                 id:index.uuid.slice(0,index.uuid.indexOf("---")),
                 inorout:index.inorout,
-                interfaceid:0,
+                interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
                 parametersname:index.varname,
-                parameterssources:''
+                parameterssources:index.id
             }
-            tableInterfaceparametersList.push(CsObj)
+            bigList.push(CsObj)
         })
-        operatorInterfaceDataModels.push(objF)
+        operatorInterfaceDataModels.push(bigList)
     })
+
     console.log(operatorInterfaceDataModels)
     let tableRole={
-        coordinate:'',
+        coordinate:JSON.stringify(canvas.data),
         des:$("#ruleRemark").val(),
         entrancenote:$("#ruleDes").attr("data"),
         id:0,
@@ -473,6 +460,7 @@ function ActionSure(){
    
     let saveList ={
         id :data.id,
+        name:data.text,
         children:[]
     }
     let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
@@ -754,7 +742,7 @@ function ActionSure(){
             }
             if(DelNodes.length > 0){
                 console.log(DelNodes,"从node节点删除77777777777777")
-                canvas.delete(DelNodes)
+                // canvas.delete(DelNodes)
             }
         }
     })
@@ -781,6 +769,7 @@ function ActionClose(){
     let currId = data.id.slice(0,tableAlgorithmIndex);
     let saveList ={
         id :data.id,
+        name:data.text,
         children:[]
     }
     let isFlag = false
@@ -870,22 +859,26 @@ function ruleAddButtonS(){
                                 $(e.target).parent().children('.actionSelected2').val("基本类型")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
                             }
                             
                             if(item.vartype == "2"){
                                 $(e.target).parent().children('.actionSelected2').val("常量")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
                             }
                             if(item.vartype == "3"){
                                 $(e.target).parent().children('.actionSelected2').val("对象")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                                $(e.target).parent().attr("Funcs-id",item.id)
                             }                
                        }else if($(e.target).val()== "请选择"){
                             $(e.target).parent().children('.actionSelected2').val("")
                             $(e.target).parent().children('#varTypeInput').val("")
                             $(e.target).parent().children('.varNameInput').val("")
+                            $(e.target).parent().attr("")
                        }
                     })
                  })
