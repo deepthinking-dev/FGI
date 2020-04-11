@@ -335,10 +335,7 @@ var Topology = {
                             let Index_out = data.to.id.indexOf("tableAlgorithm");
                             let id_in = data.to.id.slice(0,Index_in);//算子id
                             let id_out = data.from.id.slice(0,Index_out);
-
-
                             $('#selectOutIn').val('1')
-
                             let out_big = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
                             let in_big= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
                             let out_small = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
@@ -357,7 +354,6 @@ var Topology = {
                             if(responseActionDatas){//后台返回数据
                                 responseActionDatas.map(t=>{
                                     if((t.preParametersID == out_small) && (t.parametersID == in_small)){
-                                        console.log(t);
                                         responseCurrentData= t;
                                         resBaseOut = [];
                                         resBaseIn = [];
@@ -1587,6 +1583,14 @@ var Topology = {
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
+            }
+        })
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+            type:"get",
+            data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
+            success(data) {
+                toastr.success(data.msg);
             }
         })
     },
