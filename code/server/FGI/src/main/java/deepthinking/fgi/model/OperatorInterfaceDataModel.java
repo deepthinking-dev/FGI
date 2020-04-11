@@ -22,6 +22,14 @@ public class OperatorInterfaceDataModel {
     public OperatorInterfaceDataModel() {
     }
 
+    public OperatorInterfaceDataModel(String id, int roleID, int algorithmID, String interfaceName, List<TableInterfaceparameters> tableInterfaceparametersList) {
+        this.id = id;
+        RoleID = roleID;
+        AlgorithmID = algorithmID;
+        InterfaceName = interfaceName;
+        this.tableInterfaceparametersList = tableInterfaceparametersList;
+    }
+
     public String getId() {
         return id;
     }

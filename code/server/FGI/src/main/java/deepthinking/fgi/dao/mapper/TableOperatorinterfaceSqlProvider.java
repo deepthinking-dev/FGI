@@ -1,12 +1,11 @@
 package deepthinking.fgi.dao.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import deepthinking.fgi.domain.TableOperatorinterface;
-import deepthinking.fgi.domain.TableOperatorinterfaceCriteria;
 import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criteria;
 import deepthinking.fgi.domain.TableOperatorinterfaceCriteria.Criterion;
+import deepthinking.fgi.domain.TableOperatorinterfaceCriteria;
+import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableOperatorinterfaceSqlProvider {
@@ -46,6 +45,10 @@ public class TableOperatorinterfaceSqlProvider {
     public String insertSelective(TableOperatorinterface record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_operatorinterface");
+        
+        if (record.getId() != null) {
+            sql.VALUES("ID", "#{id,jdbcType=VARCHAR}");
+        }
         
         if (record.getRoleid() != null) {
             sql.VALUES("RoleID", "#{roleid,jdbcType=INTEGER}");

@@ -1,9 +1,8 @@
 package deepthinking.fgi.dao.mapper;
 
-import java.util.List;
-
 import deepthinking.fgi.domain.TableOperatorinterface;
 import deepthinking.fgi.domain.TableOperatorinterfaceCriteria;
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -12,7 +11,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -56,12 +54,11 @@ public interface TableOperatorinterfaceMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_operatorinterface (RoleID, AlgorithmID, ",
-        "InterfaceName)",
-        "values (#{roleid,jdbcType=INTEGER}, #{algorithmid,jdbcType=INTEGER}, ",
-        "#{interfacename,jdbcType=VARCHAR})"
+        "insert into table_operatorinterface (ID, RoleID, ",
+        "AlgorithmID, InterfaceName)",
+        "values (#{id,jdbcType=VARCHAR}, #{roleid,jdbcType=INTEGER}, ",
+        "#{algorithmid,jdbcType=INTEGER}, #{interfacename,jdbcType=VARCHAR})"
     })
-    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=String.class)
     int insert(TableOperatorinterface record);
 
     /**
@@ -71,7 +68,6 @@ public interface TableOperatorinterfaceMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableOperatorinterfaceSqlProvider.class, method="insertSelective")
-    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=String.class)
     int insertSelective(TableOperatorinterface record);
 
     /**

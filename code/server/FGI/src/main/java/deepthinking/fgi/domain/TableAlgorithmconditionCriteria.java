@@ -324,52 +324,62 @@ public class TableAlgorithmconditionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidEqualTo(Integer value) {
+        public Criteria andInterfaceparametersidEqualTo(String value) {
             addCriterion("InterfaceParametersID =", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidNotEqualTo(Integer value) {
+        public Criteria andInterfaceparametersidNotEqualTo(String value) {
             addCriterion("InterfaceParametersID <>", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidGreaterThan(Integer value) {
+        public Criteria andInterfaceparametersidGreaterThan(String value) {
             addCriterion("InterfaceParametersID >", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInterfaceparametersidGreaterThanOrEqualTo(String value) {
             addCriterion("InterfaceParametersID >=", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidLessThan(Integer value) {
+        public Criteria andInterfaceparametersidLessThan(String value) {
             addCriterion("InterfaceParametersID <", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidLessThanOrEqualTo(Integer value) {
+        public Criteria andInterfaceparametersidLessThanOrEqualTo(String value) {
             addCriterion("InterfaceParametersID <=", value, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidIn(List<Integer> values) {
+        public Criteria andInterfaceparametersidLike(String value) {
+            addCriterion("InterfaceParametersID like", value, "interfaceparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceparametersidNotLike(String value) {
+            addCriterion("InterfaceParametersID not like", value, "interfaceparametersid");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterfaceparametersidIn(List<String> values) {
             addCriterion("InterfaceParametersID in", values, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidNotIn(List<Integer> values) {
+        public Criteria andInterfaceparametersidNotIn(List<String> values) {
             addCriterion("InterfaceParametersID not in", values, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidBetween(Integer value1, Integer value2) {
+        public Criteria andInterfaceparametersidBetween(String value1, String value2) {
             addCriterion("InterfaceParametersID between", value1, value2, "interfaceparametersid");
             return (Criteria) this;
         }
 
-        public Criteria andInterfaceparametersidNotBetween(Integer value1, Integer value2) {
+        public Criteria andInterfaceparametersidNotBetween(String value1, String value2) {
             addCriterion("InterfaceParametersID not between", value1, value2, "interfaceparametersid");
             return (Criteria) this;
         }
