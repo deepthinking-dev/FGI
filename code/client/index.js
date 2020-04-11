@@ -206,7 +206,7 @@ $(function(){
     $('body').on('click','#addAction',(e) => {
         $("#actionDiv").hide();
         $("#actionOutDiv").hide()
-        debugger
+        // debugger
         if($("#selectOutIn").val() == "1"){//输入
             var dataArr = [];
             $('#actionInDiv div').each(function () {

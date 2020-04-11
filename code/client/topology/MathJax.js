@@ -335,22 +335,15 @@ function ruleSure(){
      //动作
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
-       let totalId = item.id
-       let id = totalId.split("AND")
-       let OutSZId = id[0]
-       let OutSZPr = id[0]
-       let INSZId = id[1].split("_")[0]
-       let INSZPr = id[1].split("_")[1]
-       console.log(id,OutSZId,OutSZPr,INSZId,INSZPr)
        let obj ={
             des:'',
             id:0,
-            interfaceID:INSZId,
-            parametersID:INSZPr,
-            preInterfaceID:OutSZId,
-            preParametersID:OutSZPr,
+            interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+            parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+            preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+            preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
             remark:"",
-            roleid:'',
+            roleid:0,
             algorithmconditions:[]
 
        }
@@ -360,7 +353,7 @@ function ruleSure(){
     //参数借口
     let operatorInterfaceDataModels = [] 
     window.Topology.tools.map(item=>{
-        let bigList = []
+        // let bigList = []
         let objF = {
             algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
             id:window.idStoreData[item.id] ,
@@ -368,7 +361,8 @@ function ruleSure(){
             roleID:0,
             tableInterfaceparametersList:[]
         }
-        bigList.push(objF)
+       operatorInterfaceDataModels.push(objF)
+        
         item.children.map(index=>{
             let CsObj = {
                 id:index.uuid.slice(0,index.uuid.indexOf("---")),
@@ -379,7 +373,8 @@ function ruleSure(){
             }
             objF.tableInterfaceparametersList.push(CsObj)
         })
-        operatorInterfaceDataModels.push(bigList)
+        // operatorInterfaceDataModels.push(objF)
+        // operatorInterfaceDataModels.push(bigList)
     })
     //规则本身信息
     let tableRole={   
