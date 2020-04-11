@@ -1,3 +1,3 @@
 var urlConfig = {
-    host:'http://192.168.0.11:11000'
+    host:'http://localhost:11000'
 }
