@@ -292,17 +292,15 @@ function uploadClose(){
 }
 //确定导入文件按钮
 function uploadSure(){
-    // let filename = 'F:\MyDownloads\FGI\算法规则导出.txt'
+    var formData = new FormData();
+    formData.append("file",$(".inputfile")[0].files[0]);
     $.ajax({
-        type:"post",
-        dataType: "json",
         url:urlConfig.host+'/algorithmRule/readAlgorithmRuleFromFile',
-        contentType: "application/json;charset=UTF-8",
-        
-        data:{
-            file: $(".inputfile")[0].files[0]
-            // filename:filename
-        },
+        type:"POST",
+        data: formData,
+        cache: false,
+　　　　processData: false, 
+　　　　contentType: false,   
         success: function(data) {
             if(data == true){
 
@@ -394,28 +392,18 @@ function ruleSure(){
       }
       console.log(algorithmRuleSaveDataModel)
     if(window.bigData.ruleType == "edit"){
-        // $.ajax({
-        //     type:"post",
-        //     dataType: "json",
-        //     url:urlConfig.host+'/algorithmRule/modInterfaceRole',
-        //     contentType: "application/json;charset=UTF-8",
-        //     data:JSON.stringify(operatorInterfaceDataModels),
-        //     success: function(data) {
-        //         $("#sureRule").fadeToggle(500)
-        //         toastr.success('修改成功！');
-        //     }
-        // })
-        // $.ajax({
-        //     type:"post",
-        //     dataType: "json",
-        //     url:urlConfig.host+'/algorithmRule/modAlgorithmRuleBase',
-        //     contentType: "application/json;charset=UTF-8",
-        //     data:JSON.stringify(tableRole),
-        //     success: function(data) {
-        //         $("#sureRule").fadeToggle(500)
-        //         toastr.success('修改成功！');
-        //     }
-        // })
+        tableRole.id = window.bigData.editRuleId
+        $.ajax({
+            type:"post",
+            dataType: "json",
+            url:urlConfig.host+'/algorithmRule/modAlgorithmRuleBase',
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify(tableRole),
+            success: function(data) {
+                $("#sureRule").fadeToggle(500)
+                toastr.success('修改成功！');
+            }
+        })
     }else{
         $.ajax({
             type:"post",
@@ -665,17 +653,20 @@ function ActionSure(){
    let AddList = []
    let DelList = []
     window.Topology.tools.map(isCZdata=>{
-        debugger
         if(isCZdata.id == data.id){
             isFlag =true
             for(let i =0;i< actionInfoNum.length ;i++){
                 let UPFlag = false
                 for(let j=0; j<isCZdata.children.length;j++){
-                    // let sy = isCZdata.children[j].uuid.indexOf('---')
-                    // let uuID = isCZdata.children[j].uuid.slice(0,sy)
-                      let uuID = isCZdata.children[j].uuid
+                    let uuID  =''
+                    if(isCZdata.children[j].uuid.indexOf('---') == -1){
+                        uuID = isCZdata.children[j].uuid
+                    }else{
+                        let sy = isCZdata.children[j].uuid.indexOf('---')
+                        uuID = isCZdata.children[j].uuid.slice(0,sy)
+                    }                     
                     let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-                    clyId = clyId.split('---')[0]
+                        clyId = clyId.split('---')[0]
                     if(uuID == clyId){
                         UPdataList.push(isCZdata.children[j])
                         UPFlag = true
@@ -753,10 +744,47 @@ function ActionSure(){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
                     canvas.data.nodes.map((item1,i) => {
+                        debugger
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                             if(Del1UUid == Del2UUid){
-                                canvas.data.nodes.splice(i,1);            
+                                canvas.data.nodes.splice(i,1);     
+                                if( window.bigData.ruleType == "edit"){
+                                    if(window.bigData.editRuleId){
+                                        let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
+                                        let operatorInterfaceDataModel ={
+                                            algorithmID:algorithmID,
+                                            id:window.idStoreData[algorithmID+'tableAlgorithm'],
+                                            interfaceName:item1.name,
+                                            roleID:window.bigData.editRuleId,
+                                            tableInterfaceparametersList:[]
+                                        }
+                                        let CsObj = {
+                                            id:Del1UUid,
+                                            inorout:item.inorout,
+                                            interfaceid:window.idStoreData[item.algorithmid+"tableAlgorithm"],
+                                            parametersname:item.varname,
+                                            parameterssources:item.id
+                                        }
+                                        operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
+                                        $.ajax({
+                                            type:"post",
+                                            dataType: "json",
+                                            url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+                                            contentType: "application/json;charset=UTF-8",
+                                            data:{
+                                                operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
+                                            },
+                                            success: function(data) {
+                                                if(data == true){
+                                    
+                                                    toastr.success('删除成功！');
+                                                   
+                                                }
+                                            }
+                                        })
+                                    }
+                                }       
                             }
                         }
                     })
