@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -69,9 +70,8 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      */
     @Override
     @Transactional(readOnly = false)
-    public List<TableRole> leadByTxt(String filePath) {
-        RuleXmlModel rule = (RuleXmlModel) XMLUtil.convertXmlFileToObject(RuleXmlModel.class, "D:\\user2.xml");
-
+    public List<TableRole> leadByTxt(File file) {
+        RuleXmlModel rule = (RuleXmlModel) XMLUtil.convertXmlFileToObject(RuleXmlModel.class, file);
         //算法规则表Table_Role
         TableRole tableRole = new TableRole();
         tableRole.setRolename(rule.getName() + "-副本" + String.valueOf(System.currentTimeMillis()));

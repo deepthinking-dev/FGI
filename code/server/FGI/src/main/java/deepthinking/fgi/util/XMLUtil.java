@@ -1,11 +1,6 @@
 package deepthinking.fgi.util;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -104,6 +99,24 @@ public class XMLUtil {
             FileReader fr = null;
             try {
                 fr = new FileReader(xmlPath);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            xmlObject = unmarshaller.unmarshal(fr);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xmlObject;
+    }
+
+    public static Object convertXmlFileToObject(Class clazz, File file) {
+        Object xmlObject = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            FileReader fr = null;
+            try {
+                fr = new FileReader(file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
