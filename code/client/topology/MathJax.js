@@ -579,7 +579,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val();
                 window.bigData.isAddInOut = true;
 
                 let flag = canvas.addNode(test)
