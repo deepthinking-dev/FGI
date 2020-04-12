@@ -1044,6 +1044,8 @@ $(function(){
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
+                    $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
+                    $('#ruleRemark').val(data.tableRole.des)
                     canvas.open(JSON.parse(ruleData))
                     window.Topology.isClickAction = []
                     window.Topology.tools = []
