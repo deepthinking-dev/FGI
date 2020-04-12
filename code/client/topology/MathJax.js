@@ -294,12 +294,13 @@ function uploadClose(){
 function uploadSure(){
     // let filename = 'F:\MyDownloads\FGI\算法规则导出.txt'
     $.ajax({
-        type:"get",
+        type:"post",
         dataType: "json",
         url:urlConfig.host+'/algorithmRule/readAlgorithmRuleFromFile',
         contentType: "application/json;charset=UTF-8",
+        
         data:{
-            file: $(".inputfile")[0].files[0].name
+            file: $(".inputfile")[0].files[0]
             // filename:filename
         },
         success: function(data) {
@@ -664,13 +665,15 @@ function ActionSure(){
    let AddList = []
    let DelList = []
     window.Topology.tools.map(isCZdata=>{
+        debugger
         if(isCZdata.id == data.id){
             isFlag =true
             for(let i =0;i< actionInfoNum.length ;i++){
                 let UPFlag = false
                 for(let j=0; j<isCZdata.children.length;j++){
-                    let sy = isCZdata.children[j].uuid.indexOf('---')
-                    let uuID = isCZdata.children[j].uuid.slice(0,sy)
+                    // let sy = isCZdata.children[j].uuid.indexOf('---')
+                    // let uuID = isCZdata.children[j].uuid.slice(0,sy)
+                      let uuID = isCZdata.children[j].uuid
                     let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
                     clyId = clyId.split('---')[0]
                     if(uuID == clyId){
@@ -746,27 +749,19 @@ function ActionSure(){
             console.log(UPdataList,"111111111修改")
             console.log(AddList,"222222222新增")
             console.log(DelList,"33333333333删除")
-            let DelNodes =[]
             if(DelList.length > 0){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
-                    canvas.data.nodes.map(item1 => {
+                    canvas.data.nodes.map((item1,i) => {
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                             if(Del1UUid == Del2UUid){
-                                DelNodes.push(item1)                 
+                                canvas.data.nodes.splice(i,1);            
                             }
                         }
                     })
                 })
             }
-            // if(DelNodes.length > 0){
-            //     DelNodes.map(item=>{
-            //         console.log(item,"从node节点删除77777777777777")
-            //         canvas.delete([item])
-            //     })
-               
-            // }
         }
     })
     if(!isFlag){

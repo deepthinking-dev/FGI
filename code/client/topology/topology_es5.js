@@ -1005,7 +1005,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                        debugger
+                        console.log(data)
                         if(data.nodes.length < 1){
                             data.nodes.map(UU =>{
                                 if(UU.childStand){
@@ -1022,22 +1022,12 @@ var Topology = {
                                         }
                                     })
                                     
-                                }else{
-                                   debugger
-                                    canvas.data.nodes.map(item => {
-                                        if(item.childStand){
-                                            if(item.childStand.type == data[0].id+'的弟弟'){
-    
-                                            }
-                                        }
-                                    })
-                                    return false;
                                 }
                             })
                         }
                        
                         
-                            console.log(data)
+                            
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
                             break;
