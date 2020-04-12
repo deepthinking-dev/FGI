@@ -748,7 +748,7 @@ function ActionSure(){
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                             if(Del1UUid == Del2UUid){
-                                canvas.data.nodes.splice(i,1);     
+                                  
                                 if( window.bigData.ruleType == "edit"){
                                     if(window.bigData.editRuleId){
                                         let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
@@ -776,6 +776,7 @@ function ActionSure(){
                                                 operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
                                             },
                                             success: function(data) {
+                                                canvas.data.nodes.splice(i,1);  
                                                 if(data == true){
                                     
                                                     toastr.success('删除成功！');
