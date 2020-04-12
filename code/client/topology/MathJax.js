@@ -760,10 +760,13 @@ function ActionSure(){
                     })
                 })
             }
-            // if(DelNodes.length > 0){
-            //     console.log(DelNodes,"从node节点删除77777777777777")
-            //     canvas.delete([DelNodes])
-            // }
+            if(DelNodes.length > 0){
+                DelNodes.map(item=>{
+                    console.log(item,"从node节点删除77777777777777")
+                    canvas.delete([item])
+                })
+               
+            }
         }
     })
     if(!isFlag){
