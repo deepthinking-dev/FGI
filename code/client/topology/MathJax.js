@@ -775,12 +775,9 @@ function ActionSure(){
                                                 operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
                                             },
                                             success: function(data) {
-                                                debugger
                                                 canvas.data.nodes.splice(i,1);  
                                                 if(data == true){
-                                    
                                                     toastr.success('删除成功！');
-                                                   
                                                 }
                                             }
                                         })

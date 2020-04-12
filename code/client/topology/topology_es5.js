@@ -331,7 +331,6 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                            debugger
                             let Index_in = data.from.id.indexOf("tableAlgorithm");
                             let Index_out = data.to.id.indexOf("tableAlgorithm");
                             let id_in = data.to.id.slice(0,Index_in);//算子id
@@ -692,7 +691,6 @@ var Topology = {
                             locked = data.locked;
                             self.initNode(); 
 
-                            // debugger
                             let data1 = JSON.parse(JSON.stringify(data)) 
                             if(data1.childStand){                              
                                 return
@@ -1675,21 +1673,22 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
+
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
             }
         })
-        if(resCurrentLineData.dataIn.interfaceRoleDataModels.id){
+        try{
             $.ajax({
                 url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
                 type:"get",
                 data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
-                success(data) {
-                    toastr.success(data.msg);
-                }
+                success(data) {}
             })
+        }catch (e) {
+            console.log(e);
         }
     },
     // 撤销
