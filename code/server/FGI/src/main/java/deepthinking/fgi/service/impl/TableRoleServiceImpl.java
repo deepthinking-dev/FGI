@@ -70,7 +70,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      */
     @Override
     @Transactional(readOnly = false)
-    public List<TableRole> leadByTxt(File file) {
+    public RuleXmlModel leadByTxt(File file) {
         RuleXmlModel rule = (RuleXmlModel) XMLUtil.convertXmlFileToObject(RuleXmlModel.class, file);
         //算法规则表Table_Role
         TableRole tableRole = new TableRole();
@@ -147,8 +147,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableAlgorithmconditionList.forEach(tableAlgorithmcondition -> {
             algorithmconditionMapper.insert(tableAlgorithmcondition);
         });
-        System.out.println();
-        return null;
+        return rule;
     }
 
     private void SetBehaviorIRData(List<TableAlgorithmcondition> tableAlgorithmconditionList,

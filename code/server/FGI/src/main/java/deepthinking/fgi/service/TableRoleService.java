@@ -23,7 +23,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @Author 王若山
      * @return
      */
-    List<TableRole> leadByTxt(File file);
+    RuleXmlModel leadByTxt(File file);
 
     /**
      * 拼装算法导出实体

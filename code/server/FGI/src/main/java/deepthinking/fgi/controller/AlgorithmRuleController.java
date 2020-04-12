@@ -6,6 +6,7 @@ import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
+import deepthinking.fgi.model.xml.RuleXmlModel;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUploadUtil;
 import deepthinking.fgi.util.FileUtils;
@@ -38,8 +39,8 @@ public class AlgorithmRuleController {
 
     @PostMapping("/readAlgorithmRuleFromFile")
     @ApiOperation(value = "04-01 导入算法规则", notes = "导入算法规则", httpMethod = "POST")
-//    @ApiImplicitParam(name = "filename", value = "文件路径", dataType = "string", paramType = "query", required = true)
-    public List<TableRole> readAlgorithmRuleFromFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
+    @ApiImplicitParam(name = "file", value = "文件", dataType = "stream", paramType = "query", required = true)
+    public RuleXmlModel readAlgorithmRuleFromFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
         return tableRoleService.leadByTxt(FileUploadUtil.multipartFileToFile(file));
     }
 
