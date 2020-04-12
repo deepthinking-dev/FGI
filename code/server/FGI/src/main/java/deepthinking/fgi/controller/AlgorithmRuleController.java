@@ -6,11 +6,14 @@ import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
+import deepthinking.fgi.model.xml.RuleXmlModel;
 import deepthinking.fgi.service.TableRoleService;
+import deepthinking.fgi.util.FileUploadUtil;
 import deepthinking.fgi.util.FileUtils;
 import deepthinking.fgi.util.XMLUtil;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -34,11 +37,11 @@ public class AlgorithmRuleController {
     TableRoleService tableRoleService;
 
 
-    @GetMapping("/readAlgorithmRuleFromFile")
-    @ApiOperation(value = "04-01 导入算法规则", notes = "导入算法规则", httpMethod = "GET")
-    @ApiImplicitParam(name = "filename", value = "文件路径", dataType = "string", paramType = "query", required = true)
-    public List<TableRole> readAlgorithmRuleFromFile(String filename){
-        return tableRoleService.leadByTxt(filename);
+    @PostMapping("/readAlgorithmRuleFromFile")
+    @ApiOperation(value = "04-01 导入算法规则", notes = "导入算法规则", httpMethod = "POST")
+    @ApiImplicitParam(name = "file", value = "文件", dataType = "stream", paramType = "query", required = true)
+    public RuleXmlModel readAlgorithmRuleFromFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
+        return tableRoleService.leadByTxt(FileUploadUtil.multipartFileToFile(file));
     }
 
     @GetMapping("/saveAlgorithmRule2File")

@@ -1,11 +1,8 @@
 package deepthinking.fgi.util;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler;
+
+import java.io.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -60,6 +57,14 @@ public class XMLUtil {
             // 格式化xml输出的格式
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     Boolean.TRUE);
+            marshaller.setProperty("com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler",
+                    new CharacterEscapeHandler() {
+                        @Override
+                        public void escape(char[] ch, int start, int length, boolean isAttVal, Writer writer)
+                                throws IOException {
+                            writer.write(ch, start, length);
+                        }
+                    });
             // 将对象转换成输出流形式的xml
             // 创建输出流
             FileWriter fw = null;
@@ -104,6 +109,24 @@ public class XMLUtil {
             FileReader fr = null;
             try {
                 fr = new FileReader(xmlPath);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            xmlObject = unmarshaller.unmarshal(fr);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return xmlObject;
+    }
+
+    public static Object convertXmlFileToObject(Class clazz, File file) {
+        Object xmlObject = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            FileReader fr = null;
+            try {
+                fr = new FileReader(file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

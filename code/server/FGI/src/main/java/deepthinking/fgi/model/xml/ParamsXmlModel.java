@@ -14,7 +14,6 @@ import java.util.List;
  **/
 @XmlAccessorType(XmlAccessType.FIELD)
 // XML文件中的根标识
-@XmlRootElement(name = "rule")
 public class ParamsXmlModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
