@@ -981,6 +981,38 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                        debugger
+                        if(data.nodes.length < 1){
+                            data.nodes.map(UU =>{
+                                if(UU.childStand){
+                                    window.Topology.tools.map(item=>{
+                                        if(item.id+"的弟弟" == UU.childStand.type){
+                                            item.children.map((index,i)=>{
+                                               let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
+                                               let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
+                                               if(Indexuuid == UUId){
+                                                item.children.splice(i,1);
+                                                canvas.render();
+                                               }
+                                            })
+                                        }
+                                    })
+                                    
+                                }else{
+                                   debugger
+                                    canvas.data.nodes.map(item => {
+                                        if(item.childStand){
+                                            if(item.childStand.type == data[0].id+'的弟弟'){
+    
+                                            }
+                                        }
+                                    })
+                                    return false;
+                                }
+                            })
+                        }
+                       
+                        
                             console.log(data)
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
@@ -1002,7 +1034,7 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-                            debugger
+
                             let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
                             let currId = data.id.slice(0,tableAlgorithmIndex);
                             self.isClickAction.map(SS=>{
@@ -1063,7 +1095,7 @@ var Topology = {
                                             $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
                                             $('.ruleActionMS').text(data.tableAlgorithm.des)
                                             let str =``
-                                            if(SS.isClick || SS.id ==data.tableAlgorithm.id+"tableAlgorithm"){
+                                            if(SS.isClick && SS.id ==data.tableAlgorithm.id+"tableAlgorithm"){
                                                 SS.isClick = false
                                                 canvas.data.nodes.map(item=>{
                                                     if(item.childStand){
@@ -1115,10 +1147,9 @@ var Topology = {
                                                 })
                                             }else{
                                                 self.tools.map(item=>{
-                                                    debugger
                                                     if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
                                                         item.children.map((index,t) =>{
-                                                            if(index.id){
+                                                            if(index.remark != "xin"){
                                                                 str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
                                                                 if(index.inorout == 1){
                                                                     str+=`<input value="输出" class="actionSelected1" disabled>  `
@@ -1192,7 +1223,7 @@ var Topology = {
                                                             lstr1 += `<option value="${item.varname}">${item.varname}</option>`
                                                         })
                                                         item.children.map((index,t)=>{
-                                                            if(!index.id){
+                                                            if(index.remark == "xin"){
                                                                 $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                                                 setTimeout(function () {
                                                                     $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
@@ -1632,20 +1663,21 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
+        debugger
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
             }
         })
-        $.ajax({
-            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-            type:"get",
-            data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
-            success(data) {
-                toastr.success(data.msg);
-            }
-        })
+        // $.ajax({
+        //     url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+        //     type:"get",
+        //     data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
+        //     success(data) {
+        //         toastr.success(data.msg);
+        //     }
+        // })
     },
     // 撤销
     undo: function () {

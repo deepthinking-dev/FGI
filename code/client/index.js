@@ -1008,21 +1008,6 @@ $(function(){
    $('body').on('click','#Import',(e) => {
         $("#fileupload").show();
     })
-    // 上传选择文件
-    $('input.inputfile').on('change',function(){
-        // console.log(e)
-        console.log($(this).val());
-        var file = this.files[0];
-        if (window.FileReader) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            //监听文件读取结束后事件
-            reader.onloadend = function (e) {
-                console.log(e.target.result)
-            };
-         }
-
-    })
     $('body').on('click','.ruleCheckbox',(e) => {
         if($(e.target).parent('.left-list').parent('#ruleMde').children('.left-list').children("input[class='ruleCheckbox']:checked").length  > 1){
             let str = $(e.target).parent('.left-list').parent('#ruleMde').children('.left-list')
@@ -1040,18 +1025,6 @@ $(function(){
        }
        let id = $('input:checkbox:checked').attr("data-id");
        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id
-
-        // $.ajax({
-        //     type:"get",
-        //     dataType: "json",
-        //     url:urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id,
-        //     contentType: "application/json;charset=UTF-8",
-        //     success: function(data) {
-        //         if(data == true){
-
-        //         }
-        //     }
-        // })
     })
        // 点击删除规则
     $('body').on('click','.lkr-list-delRule',(e) => {
@@ -1079,7 +1052,9 @@ $(function(){
                             isClick:true,
                             id:item.algorithmID+"tableAlgorithm"
                         }
+                        idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                         window.Topology.isClickAction.push(obj)
+                        
                     })
                     
                     responseActionDatas = data.interfaceRoleDataModels

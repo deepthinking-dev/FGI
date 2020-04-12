@@ -399,17 +399,9 @@
             <span>上传文件</span>
             <span onclick="uploadClose()" style="cursor: pointer;">X</span>
         </div>
-        <!-- <div id="fileUploadContent" class="fileUploadContent"></div> -->
-
         <form class="uploadForm" name="uploadForm">
-            <input class="inputfile" name="inputfile" type="file" multiple="multiple" onchange="getvl(this)"
+            <input class="inputfile" name="inputfile" type="file" multiple="multiple" 
             accept="application/json,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/xml, application/xml"/>
-            <!-- <div class="formContent" >
-                <span>文件名称</span>
-                <span>xxx.txt</span>
-                <button>删除</button>
-            </div>
-            -->
         </form>
         <button class="btn btn-primary mr10 btn-sm pointer" type="button" onclick="uploadSure()">确定</button>
     </div>

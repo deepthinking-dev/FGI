@@ -299,7 +299,7 @@ function uploadSure(){
         url:urlConfig.host+'/algorithmRule/readAlgorithmRuleFromFile',
         contentType: "application/json;charset=UTF-8",
         data:{
-           filename: $(".inputfile")[0].files[0].name
+            file: $(".inputfile")[0].files[0].name
             // filename:filename
         },
         success: function(data) {
@@ -630,11 +630,11 @@ function ActionSure(){
         }else{
             varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
         }
-        let uuid = ''
-        if(id){
-            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-        }else{
+        let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+        if(uuid.indexOf('---') == -1){
             uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+        }else{
+           
         }
         let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
         if(inorout){
@@ -760,10 +760,10 @@ function ActionSure(){
                     })
                 })
             }
-            if(DelNodes.length > 0){
-                console.log(DelNodes,"从node节点删除77777777777777")
-                // canvas.delete(DelNodes)
-            }
+            // if(DelNodes.length > 0){
+            //     console.log(DelNodes,"从node节点删除77777777777777")
+            //     canvas.delete([DelNodes])
+            // }
         }
     })
     if(!isFlag){
@@ -801,11 +801,23 @@ function ActionClose(){
         }else{
             id =""
         }
+        let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+        if(typeIn== "基本类型"){
+            typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+        }
         let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
         if(varName){
             varName = varName
         }else{
             varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+        }
+        let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+        if(uuid){
+            if(uuid.indexOf('---') == -1){
+                uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+            }         
+        }else{
+           break;
         }
         let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
         if(inorout){
@@ -815,13 +827,13 @@ function ActionClose(){
         }
           
         if(inorout == "输入"){
-            inorout =0
+            inorout = 0
         }else{
-            inorout =1
+            inorout = 1
         }
         obj = {
            id:id,
-           uuid:$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid"),
+           uuid:uuid,
            algorithmid:currId,
            varname:varName,
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
@@ -831,10 +843,115 @@ function ActionClose(){
        }
        lsList.push(obj)
    }
+   let UPdataList = []
+   let AddList = []
+   let DelList = []
     window.Topology.tools.map(isCZdata=>{
         if(isCZdata.id == data.id){
             isFlag =true
+            for(let i =0;i< actionInfoNum.length ;i++){
+                let UPFlag = false
+                for(let j=0; j<isCZdata.children.length;j++){
+                    let sy = isCZdata.children[j].uuid.indexOf('---')
+                    let uuID = isCZdata.children[j].uuid.slice(0,sy)
+                    let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    if(clyId){
+                        clyId = clyId.split('---')[0]
+                    }else{
+                        break;
+                    }
+                
+                    if(uuID == clyId){
+                        UPdataList.push(isCZdata.children[j])
+                        UPFlag = true
+                        break;
+                    }
+                }
+                if(!UPFlag){
+                    let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    if(id){
+                        id =id
+                    }else{
+                        id =""
+                    }
+                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    if(typeIn== "基本类型"){
+                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                    }
+                    let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+                    if(varName){
+                        varName = varName
+                    }else{
+                        varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+                    }
+                    let uuid = ''
+                    if(id){
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                    }else{
+                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+                    }
+                    let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+                    if(inorout){
+                        inorout =inorout
+                    }else{
+                        inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+                    }
+                      
+                    if(inorout == "输入"){
+                        inorout = 0
+                    }else{
+                        inorout = 1
+                    }
+                    obj = {
+                        id:id,
+                        uuid:uuid,
+                        algorithmid:currId,
+                        varname:varName,
+                        vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+                        valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                        inorout:inorout,
+                        remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+                    }
+                    AddList.push(obj)
+                }
+            }
+
+
+            for(let m=0; m<isCZdata.children.length;m++){
+                let delFlag = false
+                for(let n=0;n<UPdataList.length;n++){
+                    if(isCZdata.children[m].uuid == UPdataList[n].uuid){
+                        delFlag = true
+                        break;    
+                    }
+                }
+                if(!delFlag){
+                    DelList.push(isCZdata.children[m])
+                }
+            }
+            lsList = UPdataList.concat(DelList)
             isCZdata.children = lsList
+            console.log(UPdataList,"111111111修改")
+            console.log(AddList,"222222222新增")
+            console.log(DelList,"33333333333删除")
+            let DelNodes =[]
+            if(DelList.length > 0){
+                DelList.map(item=>{
+                    let Del1UUid = item.uuid.split('---')[0]
+                    canvas.data.nodes.map(item1 => {
+                        if(item1.childStand){
+                            let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                            if(Del1UUid == Del2UUid){
+                                DelNodes.push(item1)                 
+                            }
+                        }
+                    })
+                })
+            }
+            // if(DelNodes.length > 0){
+            //     console.log(DelNodes,"从node节点删除77777777777777")
+            //     canvas.delete([DelNodes])
+            // }
         }
     })
     if(!isFlag){
@@ -853,7 +970,7 @@ function ruleAddButtonS(){
         url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
         data:{algthId:currId},
         success: function(data) {
-            let str =`<div class="actionInfo">
+            let str =`<div class="actionInfo" data-title="xin">
                     <select class="actionSelected1">
                         <option value="1">输出</option>
                         <option value="0">输入</option>
