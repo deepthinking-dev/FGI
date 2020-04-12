@@ -681,7 +681,11 @@ var Topology = {
                                 }
                                 
                             }
-
+                            let saveList ={
+                                id :data.id,
+                                name:data.text,
+                                children:[]
+                            }
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
@@ -704,6 +708,7 @@ var Topology = {
                                 idStoreData[data.id] = guid()
                             }
                             if(data.data.inNum > 0){
+                                
                                 let data2 = JSON.parse(JSON.stringify(data1)) 
                                 function guid() {
                                     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -721,6 +726,7 @@ var Topology = {
                                         success: function(data) {
                                             data.tableFuncs.map((item,index) =>{
                                                 if(i == index){
+                                                    
                                                     let widths = 20
                                                     let heights = 10
                                                     let num = {
@@ -737,7 +743,8 @@ var Topology = {
                                                     if(item.vartype == 3){
                                                         type ="对象"
                                                     }
-                                                    data2.id = data1.id+"IN_" +item.id+"_"+ guid()+"---"+type;
+                                                    let UUid =  guid()
+                                                    data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
                                                     data2.rect.width = widths
                                                     data2.rect.height = heights
                                                     data2.text = item.varname;
@@ -775,15 +782,32 @@ var Topology = {
                                                     }) 
                                                     canvas.addNode(data2)
                                                     canvas.lockNodes([data2],true) 
+
+
+
+                                                    obj = {
+                                                        id:item.id,
+                                                        uuid:UUid,
+                                                        algorithmid:currId,
+                                                        varname:item.varname,
+                                                        vartype:item.vartype,
+                                                        valvalue:item.valvalue,
+                                                        inorout:item.inorout,
+                                                        remark:item.remark
+                                                    }
+                                                    saveList.children.push(obj)
                                                 }
+                                            
+
                                             })
                                         }
                                     })
+                                 
                                     // let widths = data1.rect.width/10
                                     // let heights = data1.rect.height/10
                                                                        
                                 }
-                               
+                                self.tools.push(saveList)
                                 canvas.render();
                             }
                             break;
