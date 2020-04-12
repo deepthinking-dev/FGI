@@ -1005,28 +1005,25 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                        console.log(data)
-                        if(data.nodes.length < 1){
+                            console.log(data)
                             data.nodes.map(UU =>{
                                 if(UU.childStand){
                                     window.Topology.tools.map(item=>{
                                         if(item.id+"的弟弟" == UU.childStand.type){
                                             item.children.map((index,i)=>{
-                                               let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
-                                               let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
-                                               if(Indexuuid == UUId){
+                                            let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
+                                            let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
+                                            if(Indexuuid == UUId){
                                                 item.children.splice(i,1);
                                                 canvas.render();
-                                               }
+                                            }
                                             })
                                         }
                                     })
                                     
                                 }
                             })
-                        }
-                       
-                        
+                            
                             
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
@@ -1083,7 +1080,8 @@ var Topology = {
                                                                             }  else{
                                                                                 str+=`<input value="对象" class="actionSelected2" disabled>`
                                                                             } 
-                                                                                str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                                str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>   
+                                                                                <button type="button" onclick="reduceButton(event)">x</button>                                                    
                                                                                 </div>`     
                                                                         }
 

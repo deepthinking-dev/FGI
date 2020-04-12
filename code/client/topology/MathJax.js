@@ -744,11 +744,10 @@ function ActionSure(){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
                     canvas.data.nodes.map((item1,i) => {
-                        debugger
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
-                            if(Del1UUid == Del2UUid){
-                                  
+                            
+                            if(Del1UUid == Del2UUid){                             
                                 if( window.bigData.ruleType == "edit"){
                                     if(window.bigData.editRuleId){
                                         let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
@@ -776,6 +775,7 @@ function ActionSure(){
                                                 operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
                                             },
                                             success: function(data) {
+                                                debugger
                                                 canvas.data.nodes.splice(i,1);  
                                                 if(data == true){
                                     

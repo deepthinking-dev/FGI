@@ -1046,15 +1046,35 @@ $(function(){
                     let ruleData = data.tableRole.coordinate
                     canvas.open(JSON.parse(ruleData))
                     window.Topology.isClickAction = []
+                    window.Topology.tools = []
                     window.bigData.ruleType = "edit"
+                    window.bigData.editRuleId = data.tableRole.id
                     data.operatorInterfaceDataModels.map(item=>{
                         let obj = {
                             isClick:true,
                             id:item.algorithmID+"tableAlgorithm"
                         }
+                        let saveList ={
+                            id :item.algorithmID+"tableAlgorithm",
+                            name:item.interfaceName,
+                            children:[]
+                        }
+                        item.tableInterfaceparametersList.map(index=>{
+                            let hx ={
+                                id:index.parameterssources,
+                                uuid:index.id,
+                                algorithmid:item.algorithmID,
+                                varname:index.parametersname,
+                                vartype:"",
+                                valvalue:"",
+                                inorout:index.inorout,
+                                remark:""
+                            }
+                            saveList.children.push(hx)
+                        })
                         idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                         window.Topology.isClickAction.push(obj)
-                        
+                        window.Topology.tools.push(saveList)
                     })
                     
                     responseActionDatas = data.interfaceRoleDataModels
