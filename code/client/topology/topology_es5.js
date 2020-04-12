@@ -1677,21 +1677,22 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
-        debugger
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
             }
         })
-        // $.ajax({
-        //     url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-        //     type:"get",
-        //     data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
-        //     success(data) {
-        //         toastr.success(data.msg);
-        //     }
-        // })
+        if(resCurrentLineData.dataIn.interfaceRoleDataModels.id){
+            $.ajax({
+                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                type:"get",
+                data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
+                success(data) {
+                    toastr.success(data.msg);
+                }
+            })
+        }
     },
     // 撤销
     undo: function () {
