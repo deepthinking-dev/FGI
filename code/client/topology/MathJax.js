@@ -38,7 +38,6 @@
                 url:urlConfig.host+'/module/getModuleColumns',
                 data:{moduleId:11},
                 success: function(data) {
-                   console.log(data)
                    let str =``
                     data.map(item=>{
                         str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
@@ -111,7 +110,6 @@
             tableFuncs:tableF,
             tableModuleuserrelation:tableModule
         }
-        console.log(param)
         if(window.bigData.formulaType == 'add'){
             $.ajax({
                 type:"post",
@@ -312,7 +310,6 @@ function uploadSure(){
 //选择关系确定按钮
 function selectSure(){
     let str = $('.selectRelation option:selected').text();
-    console.log(str)
     $('#'+window.currentId).text(str)
     $("#selectRela").hide();
 
@@ -332,6 +329,7 @@ function RuleClose(){
 //保存规则（一起新增）
 function ruleSure(){
      //动作
+     debugger
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
@@ -363,8 +361,14 @@ function ruleSure(){
        operatorInterfaceDataModels.push(objF)
         
         item.children.map(index=>{
+            let id =""
+            if(index.uuid.indexOf("---") == -1){
+                id= index.uuid
+            }else{
+                index.uuid.slice(0,index.uuid.indexOf("---"))
+            }
             let CsObj = {
-                id:index.uuid.slice(0,index.uuid.indexOf("---")),
+                id:id,
                 inorout:index.inorout,
                 interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
                 parametersname:index.varname,
@@ -476,17 +480,14 @@ function ActionSure(){
     let currId = data.id.slice(0,tableAlgorithmIndex);
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){
-            let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")           
+            let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
+              
             if(!uuid){
 
                 let xinguid = guid()
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
-                let heights = 10
-                console.log(data.data,'444444444444',widths,heights) 
-                console.log(num)
-            
-                
+                let heights = 10               
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     data.data.inNum ++
                     num = {
@@ -737,16 +738,12 @@ function ActionSure(){
             }
             lsList = UPdataList.concat(AddList)
             isCZdata.children = lsList
-            console.log(UPdataList,"111111111修改")
-            console.log(AddList,"222222222新增")
-            console.log(DelList,"33333333333删除")
             if(DelList.length > 0){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
                     canvas.data.nodes.map((item1,i) => {
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
-                            
                             if(Del1UUid == Del2UUid){                             
                                 if( window.bigData.ruleType == "edit"){
                                     if(window.bigData.editRuleId){
@@ -782,6 +779,9 @@ function ActionSure(){
                                             }
                                         })
                                     }
+                                }else{
+                                    canvas.data.nodes.splice(i,1); 
+                                    toastr.success('删除成功！');
                                 }       
                             }
                         }

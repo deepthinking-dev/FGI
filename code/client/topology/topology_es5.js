@@ -1110,8 +1110,7 @@ var Topology = {
                                                 canvas.data.nodes.map(item=>{
                                                     if(item.childStand){
                                                         if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
-                                                            let uuid = (item.id).split("_")[2]
-                                                            console.log(uuid)
+                                                            let uuid = item.id.substr((item.id.indexOf('---')-36),36)
                                                             data.tableFuncs.map(index =>{
                                                                 if((item.id).split("_")[1] == index.id){
                                                                     str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`

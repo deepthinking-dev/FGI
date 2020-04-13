@@ -456,7 +456,6 @@ $(function(){
         })
         dataAll.tableFuncs = tables;
         if(!flag) return false;
-        console.log(dataAll);
         if( $("#editDicTitle").text() == "新增字典"){
             $.ajax({
                 url:urlConfig.host + "/operatorMaintenance/addAlgorithm",
@@ -465,7 +464,6 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    console.log(data);
                     toastr.success('保存成功！');
                     $("#editDic").hide()
                     dictionary();
@@ -493,7 +491,6 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    console.log(data);
                     $("#editDic").hide()
                 }
             })
@@ -504,7 +501,6 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    console.log(data);
                     if(data.status == 1){
                         dictionary()
                         Topology.init();
@@ -659,7 +655,6 @@ $(function(){
                 algthId:window.bigData.editAlgorithmId
             },
             success: function(data) {
-                console.log(data)
                 if(algorithmtype==2){
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun
@@ -975,7 +970,6 @@ $(function(){
                 username:null
             },
             success: function(data) {
-               console.log(data)
                let str =``
                if(data.length>0){
                     data.map(item=>{
@@ -1099,7 +1093,6 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                console.log(data);
                 $("#editDicTitle").text("字典详情")
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
