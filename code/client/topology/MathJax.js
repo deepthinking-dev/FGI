@@ -330,6 +330,8 @@ function RuleClose(){
 function ruleSure(){
      //动作
     editGzType = false;
+    $("#currentGzName").text($("#ruleName").val());
+    $("#currentGzDes").text($("#ruleRemark").val());
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={

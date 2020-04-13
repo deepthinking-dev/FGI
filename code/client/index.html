@@ -200,8 +200,8 @@
         </div>
 
         <div class="footerAct">
-            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
             <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
         </div>
 
     </div>
@@ -705,7 +705,9 @@
             <section class="content" id="content">
                 <div class="panel panel-default" style="background: rgba(0,0,0,0);border: none;">
                     <div class="panel-body">
-                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;">
+                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;text-align: center">
+                            <span style="color:#4cb1ff;">规则名称：</span><span id="currentGzName">&nbsp;</span>
+                            <span style="color:#4cb1ff;">规则描述：</span><span id="currentGzDes">&nbsp;</span>
                             <ul class="nav nav-pills">
                                 <!-- <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
                                 <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li> -->
