@@ -1185,6 +1185,18 @@
                         }
                     })
                     $('#lkrFrame').fadeToggle(500)
+                    $.ajax({
+                        url:urlConfig.host+'/module/GetModuleGroup',
+                        data:'',
+                        success: function(datas) {
+                            let str = '<option>全部</option>'
+                            datas.map(item => {
+                                str += `<option>${item}</option>`
+
+                            })
+                            $("#selectedModlue").html(str)
+                        }
+                    })
                 }
 
             })
@@ -1342,6 +1354,18 @@
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
                                             </div>
                                         </div>`)
+                                })
+                                $.ajax({
+                                    url:urlConfig.host+'/module/GetModuleGroup',
+                                    data:'',
+                                    success: function(datas) {
+                                        let str = '<option>全部</option>'
+                                        datas.map(item => {
+                                            str += `<option>${item}</option>`
+
+                                        })
+                                        $("#selectedModlue").html(str)
+                                    }
                                 })
                             }
                         }
