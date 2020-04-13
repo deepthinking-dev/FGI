@@ -374,6 +374,7 @@ function ruleSure(){
                 parametersname:index.varname,
                 parameterssources:index.id
             }
+            console.log(CsObj,"333333333333333333333333333333")
             objF.tableInterfaceparametersList.push(CsObj)
         })
         // operatorInterfaceDataModels.push(objF)
@@ -618,7 +619,7 @@ function ActionSure(){
         if(varName){
             varName = varName
         }else{
-            varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+            varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
         let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
         if(uuid.indexOf('---') == -1){
@@ -649,6 +650,7 @@ function ActionSure(){
            remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
        }
        lsList.push(obj)
+       console.log(obj,"1111111111111111111111111111")
    }
    let UPdataList = []
    let AddList = []
@@ -689,7 +691,7 @@ function ActionSure(){
                     if(varName){
                         varName = varName
                     }else{
-                        varName = $('.ruleContentDiv .actionInfo').find('.varNameInput option:selected').val()
+                        varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
                     }
                     let uuid = ''
                     if(id){
@@ -720,6 +722,7 @@ function ActionSure(){
                         remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
                     }
                     AddList.push(obj)
+                    console.log(obj,"222222222222222222222222222")
                 }
             }
 
@@ -747,29 +750,30 @@ function ActionSure(){
                             if(Del1UUid == Del2UUid){                             
                                 if( window.bigData.ruleType == "edit"){
                                     if(window.bigData.editRuleId){
-                                        let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
-                                        let operatorInterfaceDataModel ={
-                                            algorithmID:algorithmID,
-                                            id:window.idStoreData[algorithmID+'tableAlgorithm'],
-                                            interfaceName:item1.name,
-                                            roleID:window.bigData.editRuleId,
-                                            tableInterfaceparametersList:[]
-                                        }
-                                        let CsObj = {
-                                            id:Del1UUid,
-                                            inorout:item.inorout,
-                                            interfaceid:window.idStoreData[item.algorithmid+"tableAlgorithm"],
-                                            parametersname:item.varname,
-                                            parameterssources:item.id
-                                        }
-                                        operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
+
+                                        // let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
+                                        // let operatorInterfaceDataModel ={
+                                        //     algorithmID:algorithmID,
+                                        //     id:window.idStoreData[algorithmID+'tableAlgorithm'],
+                                        //     interfaceName:item1.name,
+                                        //     roleID:window.bigData.editRuleId,
+                                        //     tableInterfaceparametersList:[]
+                                        // }
+                                        // let CsObj = {
+                                        //     id:Del1UUid,
+                                        //     inorout:item.inorout,
+                                        //     interfaceid:window.idStoreData[item.algorithmid+"tableAlgorithm"],
+                                        //     parametersname:item.varname,
+                                        //     parameterssources:item.id
+                                        // }
+                                        // operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
                                         $.ajax({
-                                            type:"post",
+                                            type:"get",
                                             dataType: "json",
-                                            url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+                                            url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
                                             contentType: "application/json;charset=UTF-8",
                                             data:{
-                                                operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
+                                                operatorinterfaceId:Del1UUid
                                             },
                                             success: function(data) {
                                                 canvas.data.nodes.splice(i,1);  

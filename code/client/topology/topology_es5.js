@@ -1003,7 +1003,9 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            debugger
                             console.log(data)
+                            let zuidaID = data.nodes[0].id
                             data.nodes.map(UU =>{
                                 if(UU.childStand){
                                     window.Topology.tools.map(item=>{
@@ -1013,6 +1015,7 @@ var Topology = {
                                             let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
                                             if(Indexuuid == UUId){
                                                 item.children.splice(i,1);
+                                                data.nodes.splice(i,1);
                                                 canvas.render();
                                             }
                                             })
@@ -1021,7 +1024,51 @@ var Topology = {
                                     
                                 }
                             })
-                            
+                            data.nodes.map(index=>{
+                                let length=canvas.data.nodes.length;
+                                for(let i =0;i < length; i++){
+                                    if(canvas.data.nodes[0].childStand){
+                                        debugger
+                                        if(index.id+"的弟弟" == canvas.data.nodes[0].childStand.type) {                                       
+                                            canvas.data.nodes.splice(0,1);
+                                            canvas.render();
+                                        }
+                                    }
+                                }
+                                if(!index.childStand){
+                                    window.responseActionDatas.map(xian =>{
+                                        debugger
+                                        if(xian.interfaceID ==window.idStoreData[zuidaID] ||xian.preInterfaceID == window.idStoreData[zuidaID]){
+                                            $.ajax({
+                                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                                type:"get",
+                                                data: {interfaceRoueId :xian.id},
+                                                success(data) {
+                                                    if(data == true){
+                                                        toastr.success('删除成功！');
+                                                        canvas.render();
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    })
+                                    $.ajax({
+                                        type:"get",
+                                        dataType: "json",
+                                        url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
+                                        contentType: "application/json;charset=UTF-8",
+                                        data:{
+                                            operatorinterfaceId:window.idStoreData[index.id]
+                                        },
+                                        success: function(data) {
+                                            if(data == true){
+                                                toastr.success('删除成功！');
+                                                canvas.render();
+                                            }
+                                        }
+                                    })
+                                }
+                            })
                             
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");
