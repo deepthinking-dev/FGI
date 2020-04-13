@@ -1002,15 +1002,6 @@ $(function(){
    $('body').on('click','#Import',(e) => {
         $("#fileupload").show();
     })
-    $('body').on('click','.ruleCheckbox',(e) => {
-        if($(e.target).parent('.left-list').parent('#ruleMde').children('.left-list').children("input[class='ruleCheckbox']:checked").length  > 1){
-            let str = $(e.target).parent('.left-list').parent('#ruleMde').children('.left-list')
-            for(let i=0;i<str.length;i++){
-                $(str[i]).children("input[class='ruleCheckbox']").prop("checked",false);
-            }
-            $(e.target).prop('checked', true);
-        }
-    })
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
