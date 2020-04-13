@@ -329,7 +329,7 @@ function RuleClose(){
 //保存规则（一起新增）
 function ruleSure(){
      //动作
-     debugger
+    editGzType = false;
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
