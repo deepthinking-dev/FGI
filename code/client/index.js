@@ -1028,6 +1028,12 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
+        if(editGzType == false){
+            editGzType = true;
+        } else {
+            toastr.info('当前编辑的规则需进行保存！')
+            return false;
+        }
         window.bigData.editRuleId = $(e.target).data('id')
         let ruleid =  $(e.target).data('id')
         refreshId = $(e.target).data('id');
