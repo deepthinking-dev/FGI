@@ -1037,8 +1037,8 @@ $(function(){
                     let ruleData = data.tableRole.coordinate
                     $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
                     $('#ruleRemark').val(data.tableRole.des)
-                    $("#currentGzName").text(data.tableRole.des);
-                    $("#currentGzDes").text($("#ruleRemark").val());
+                    $("#currentGzName").text(data.tableRole.rolename);
+                    $("#currentGzDes").text(data.tableRole.des);
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     canvas.open(JSON.parse(ruleData))
