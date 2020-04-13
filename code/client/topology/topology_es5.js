@@ -1015,7 +1015,7 @@ var Topology = {
                                             let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
                                             if(Indexuuid == UUId){
                                                 item.children.splice(i,1);
-                                                data.nodes.splice(i,1);
+                                                // data.nodes.splice(i,1);
                                                 canvas.render();
                                             }
                                             })
@@ -1028,7 +1028,6 @@ var Topology = {
                                 let length=canvas.data.nodes.length;
                                 for(let i =0;i < length; i++){
                                     if(canvas.data.nodes[0].childStand){
-                                        debugger
                                         if(index.id+"的弟弟" == canvas.data.nodes[0].childStand.type) {                                       
                                             canvas.data.nodes.splice(0,1);
                                             canvas.render();
@@ -1037,7 +1036,6 @@ var Topology = {
                                 }
                                 if(!index.childStand){
                                     window.responseActionDatas.map(xian =>{
-                                        debugger
                                         if(xian.interfaceID ==window.idStoreData[zuidaID] ||xian.preInterfaceID == window.idStoreData[zuidaID]){
                                             $.ajax({
                                                 url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
