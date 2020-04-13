@@ -205,8 +205,8 @@ var Topology = {
         }
         if(option.type== "规则"){
             $("#rulePage").append(`<div class="left-list">
-                    <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
-                    <div class="left-list-tilte">${option.data.text}</div>
+                    <input type="radio" name="exportGz" value=${option.id} class="ruleCheckbox" data-id='${option.id}'>
+                    <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
                     <div class="left-list-event">
                     <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>
                     <div class='lkr-list-delRule lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除规则</div>
@@ -220,7 +220,7 @@ var Topology = {
     addModel(option){
         
         $(".moduleContent").append(`<div class="left-list"  >
-                                <div class="left-list-tilte">${option.data.text}</div>
+                                <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模型</div>
                                     <div class='lkr-list-del lkr-del' data-id='${option.data.id}' >删除模型</div>
@@ -656,7 +656,7 @@ var Topology = {
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
                                             arr.splice(j,1);                                           
                                             j--;
-                                            alert('同一个规则算子不能重复！')
+                                            toastr.info('同一个规则算子不能重复！')
                                         }
                                     }
                                 }

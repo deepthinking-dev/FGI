@@ -205,7 +205,7 @@ $(function(){
             })
         }
     })
-    $('body').on('dblclick','.bds_out',(e) => {
+    $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
                 toastr.info('行为值来源为对象才能赋值！')
@@ -1017,7 +1017,7 @@ $(function(){
             toastr.info("至少勾选一个规则！");
             return false;
        }
-       let id = $('input:checkbox:checked').attr("data-id");
+       let id = $("input[name='exportGz']:checked").val();
        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id
     })
        // 点击删除规则
@@ -1046,6 +1046,10 @@ $(function(){
                     let ruleData = data.tableRole.coordinate
                     $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
                     $('#ruleRemark').val(data.tableRole.des)
+                    $("#currentGzName").text(data.tableRole.des);
+                    $("#currentGzDes").text($("#ruleRemark").val());
+                    $("#bzMsg").val(data.tableRole.entrancenote);
+                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     canvas.open(JSON.parse(ruleData))
                     window.Topology.isClickAction = []
                     window.Topology.tools = []

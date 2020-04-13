@@ -200,8 +200,8 @@
         </div>
 
         <div class="footerAct">
-            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
             <button class="btn pointer" type="button" onclick="ActionSure(event)" style="margin-right: 10px;background: #409eff;color: #fff">确定</button>
+            <button class="btn pointer" type="button" onclick="ActionClose()" style="margin-right: 10px;background: #f56c6c;color: #fff">取消</button>
         </div>
 
     </div>
@@ -258,9 +258,9 @@
         </div>
         <div class="ruleContent"> 
             <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
-            <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li>
+            <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px">规则描述：</div><textarea id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
             <li style="display:none;"><span>备注：</span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
-            <button id="saveRule" onclick="ruleSure()">确定</button>
+            <button onclick="ruleSure()">确定</button>
         </div>
     </div>
      <!-- fgi模型表 -->
@@ -705,7 +705,9 @@
             <section class="content" id="content">
                 <div class="panel panel-default" style="background: rgba(0,0,0,0);border: none;">
                     <div class="panel-body">
-                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;">
+                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;text-align: center">
+                            <span style="color:#4cb1ff;">规则名称：</span><span id="currentGzName">&nbsp;</span>
+                            <span style="color:#4cb1ff;">规则描述：</span><span id="currentGzDes">&nbsp;</span>
                             <ul class="nav nav-pills">
                                 <!-- <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
                                 <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li> -->
@@ -766,16 +768,16 @@
                                 查看详情
                             </a>
                         </div>
-                        <div disabled>
-                            <a onclick="onTop()" class="menu-a-disabled" id="menu_top" disabled>
-                                置顶
-                            </a>
-                        </div>
-                        <div>
-                            <a onclick="onBottom()" class="menu-a-disabled" id="menu_bottom" disabled>
-                                置底
-                            </a>
-                        </div>
+<!--                        <div disabled>-->
+<!--                            <a onclick="onTop()" class="menu-a-disabled" id="menu_top" disabled>-->
+<!--                                置顶-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <a onclick="onBottom()" class="menu-a-disabled" id="menu_bottom" disabled>-->
+<!--                                置底-->
+<!--                            </a>-->
+<!--                        </div>-->
                         <div class="line"></div>
                         <div>
                             <a onclick="onCombine()" class="menu-a-disabled" id="menu_combine" disabled>
@@ -813,24 +815,24 @@
                             </a>
                         </div>
                         <div class="line"></div>
-                        <div>
-                            <a onclick="cut()" class="menu-a">
-                                剪切
-                                <span class="ml50">Ctrl + X</span>
-                            </a>
-                        </div>
-                        <div>
-                            <a onclick="copy()" class="menu-a">
-                                复制
-                                <span class="ml50">Ctrl + C</span>
-                            </a>
-                        </div>
-                        <div>
-                            <a onclick="parse()" class="menu-a">
-                                粘贴
-                                <span class="ml50">Ctrl + V</span>
-                            </a>
-                        </div>
+<!--                        <div>-->
+<!--                            <a onclick="cut()" class="menu-a">-->
+<!--                                剪切-->
+<!--                                <span class="ml50">Ctrl + X</span>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <a onclick="copy()" class="menu-a">-->
+<!--                                复制-->
+<!--                                <span class="ml50">Ctrl + C</span>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <a onclick="parse()" class="menu-a">-->
+<!--                                粘贴-->
+<!--                                <span class="ml50">Ctrl + V</span>-->
+<!--                            </a>-->
+<!--                        </div>-->
                     </div>
                 </div>
                 </div>
