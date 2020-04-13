@@ -429,10 +429,13 @@ function ConfirmDelAlgorithm(){
         url:urlConfig.host+'/operatorMaintenance/delAlgorithmById',
         data:{algthId:window.bigData.delAlgorithmId},
         success: function(data) {
-            if(data){
+            if(data.status == 1){
                 window.bigData.delAlgorithmId = ''
                 $('#lkrAlgorithm').fadeToggle(500)
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+            }
+            if(data.status == 2){
+                toastr.info(data.msg);
             }
         }
     })
