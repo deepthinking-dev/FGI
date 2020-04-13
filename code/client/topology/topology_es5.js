@@ -205,7 +205,7 @@ var Topology = {
         }
         if(option.type== "规则"){
             $("#rulePage").append(`<div class="left-list">
-                    <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
+                    <input type="radio" name="exportGz" value=${option.id} class="ruleCheckbox" data-id='${option.id}'>
                     <div class="left-list-tilte">${option.data.text}</div>
                     <div class="left-list-event">
                     <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>

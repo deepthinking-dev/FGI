@@ -728,3 +728,13 @@ body{
     margin-left: 50px;
     font-size: 16px;
 }
+#ruleRemark{
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    resize:none;
+    width: 320px;
+    height:120px;
+}
