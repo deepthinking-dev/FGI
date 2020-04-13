@@ -590,6 +590,20 @@
             </div>
         </div>
     </div>
+<!--       字典确定删除框-->
+       <div class="lkr-frame" id='deleteZdDiv'>
+           <div class="lkr-frame-div" style="height: 150px;">
+               <div class="lkr-frame-content">
+                   <h3>
+                       确认删除?
+                   </h3>
+               </div>
+               <div class="lkr-frame-foot">
+                   <div class="lkr-button" onclick='deleteZdYes()' id="deleteZdButton" style="margin-right: 10px;">确定</div>
+                   <div class="lkr-button" onclick='closeDeleteZdDiv()'>取消</div>
+               </div>
+           </div>
+       </div>
     <div class="lkr-frame" id='lkrFrame'>
         <div class="lkr-frame-div">
             <div class="lkr-frame-tilte">
@@ -1567,21 +1581,8 @@
     }
     //删除字典信息
     function deleteZd(s) {
-        $.ajax({
-            url:urlConfig.host + "/operatorMaintenance/delAlgorithmById",
-            data:{algthId:s} ,
-            type:"get",
-            success(data) {
-                if(data.status == 1){
-                    dictionary()
-                    toastr.success('删除成功！');
-                    Topology.init();
-                }
-                if(data.status == 2){
-                    toastr.info(data.msg);
-                }
-            }
-        })
+        $("#deleteZdButton").attr("deleteId",s)
+        $('#deleteZdDiv').fadeToggle(500)
     }
 
     //修改字典信息
@@ -2000,6 +2001,27 @@
          let val = $('#bzMsg').val();
          $("#rkDiv").hide();
          $("#ruleDes").attr("data",val)
+     }
+     function closeDeleteZdDiv() {
+         $('#deleteZdDiv').fadeToggle(500)
+     }
+     function deleteZdYes() {
+        $.ajax({
+            url:urlConfig.host + "/operatorMaintenance/delAlgorithmById",
+            data:{algthId:$("#deleteZdButton").attr("deleteId")} ,
+            type:"get",
+            success(data) {
+                if(data.status == 1){
+                    dictionary()
+                    toastr.success('删除成功！');
+                    Topology.init();
+                    $('#deleteZdDiv').fadeToggle(500)
+                }
+                if(data.status == 2){
+                    toastr.info(data.msg);
+                }
+            }
+        })
      }
 </script>
 </body>
