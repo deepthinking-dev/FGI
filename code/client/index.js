@@ -550,7 +550,7 @@ $(function(){
     $('body').on('click','#getAllSz',(e) => {
         $("#ruleMde").hide();
         $("#algorithmPage").show();
-        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
     })
     $('body').on('click','#getAllGzgz',(e) => {
         getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
@@ -563,7 +563,7 @@ $(function(){
             data:param,
             success: function(data) {
                 $(".left-list").remove()
-                if(type=="算子"){
+                if(type=="tableAlgorithm"){
                     data.map(item => {
                         window.addAlgorithm({
                             name: 'rectangle',

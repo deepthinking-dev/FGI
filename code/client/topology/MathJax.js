@@ -433,7 +433,7 @@ function ConfirmDelAlgorithm(){
             if(data.status == 1){
                 window.bigData.delAlgorithmId = ''
                 $('#lkrAlgorithm').fadeToggle(500)
-                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
                 toastr.info(data.msg);
