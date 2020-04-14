@@ -328,8 +328,8 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                            let Index_in = data.from.id.indexOf("tableAlgorithm");
-                            let Index_out = data.to.id.indexOf("tableAlgorithm");
+                            let Index_in = data.to.id.indexOf("tableAlgorithm");
+                            let Index_out = data.from.id.indexOf("tableAlgorithm");
                             let id_in = data.to.id.slice(0,Index_in);//算子id
                             let id_out = data.from.id.slice(0,Index_out);
                             $('#selectOutIn').val('1')
