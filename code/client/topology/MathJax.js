@@ -399,6 +399,8 @@ function ruleSure(){
       }
       console.log(algorithmRuleSaveDataModel)
     if(window.bigData.ruleType == "edit"){
+        console.log(canvas.data)
+        debugger
         tableRole.id = window.bigData.editRuleId
         $.ajax({
             type:"post",
@@ -835,16 +837,12 @@ function ActionSure(){
                 }              
 
             })
-
-            console.log(operatorInterfaceDataModel)
             $.ajax({
                 type:"post",
                 dataType: "json",
                 url:urlConfig.host+'/algorithmRule/modInterfaceRole',
                 contentType: "application/json;charset=UTF-8",
-                data:{
-                    operatorInterfaceDataModel:JSON.stringify(operatorInterfaceDataModel)
-                },
+                data:JSON.stringify(operatorInterfaceDataModel),
                 success: function(data) {
                     if(data == true){
                         toastr.success('修改成功！');
