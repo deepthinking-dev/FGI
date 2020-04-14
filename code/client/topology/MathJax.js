@@ -595,7 +595,6 @@ function ActionSure(){
                                 window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
                                 window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
                             }
-                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.inNum+1) +10*(data.data.inNum+1)))
                         }
                     }else{
                         if(data.data.outNum > data.data.inNum){
@@ -603,7 +602,6 @@ function ActionSure(){
                                 window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
                                 window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
                             }
-                            console.log( window.Topology.dblclickNode.rect.height , (heights*(data.data.outNum+1) +10*(data.data.outNum+1)))
                         }
                     }
                 }else{
@@ -773,9 +771,17 @@ function ActionSure(){
                                             },
                                             success: function(data) {
                                                 if(item.inorout == 0){
-                                                    window.Topology.dblclickNode.data.inNum --                                                      
+                                                    window.Topology.dblclickNode.data.inNum --   
+                                                    if( window.Topology.dblclickNode.rect.height > 100){
+                                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
+                                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                                    }                                                   
                                                 }else{
                                                     window.Topology.dblclickNode.data.outNum --
+                                                    if( window.Topology.dblclickNode.rect.height > 100){
+                                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
+                                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                                    }
                                                 }
                                                 canvas.data.nodes.splice(i,1);  
                                                 if(data == true){
@@ -786,9 +792,37 @@ function ActionSure(){
                                     }
                                 }else{
                                     if(item.inorout == 0){
-                                        window.Topology.dblclickNode.data.inNum --                                                      
+                                        window.Topology.dblclickNode.data.inNum --     
+                                        if( window.Topology.dblclickNode.rect.height > 100){
+                                           
+                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                        }                                                 
                                     }else{
                                         window.Topology.dblclickNode.data.outNum --
+                                        if( window.Topology.dblclickNode.rect.height > 100){
+                                            canvas.data.nodes.map((test,j)=>{
+                                                if(test.childStand && window.Topology.dblclickNode.data.outNum > 4){
+                                                   if(test.id.indexOf("OUT") !=-1){
+                                                        test.rect.y = test.rect.y -10                           
+                                                        test.rect.ey = test.rect.ey -10
+                                                        test.rect.center.y = test.rect.center.y -10
+                                                        test.fullTextRect.y = test.fullTextRect.y -10
+                                                        test.iconRect.y = test.iconRect.y -10
+                                                        test.fullIconRect.y = test.fullIconRect.y -10
+                                                        test.anchors.map((obj,i) => {
+                                                            obj.y = test.anchors[i].y+115 -10
+                                                        })
+                                                        test.rotatedAnchors.map((obj,i) => {
+                                                            obj.y = test.rotatedAnchors[i].y-115 -10
+                                                        })
+                                                   }
+                                                    
+                                                }
+                                            })
+                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
+                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -15
+                                        }
                                     }
                                     canvas.data.nodes.splice(i,1); 
                                     toastr.success('删除成功！');

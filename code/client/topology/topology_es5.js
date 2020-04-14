@@ -31,6 +31,8 @@ var Topology = {
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
     tools: [],
     saveNode:[],
+    addInlist:[],
+    banAdd:true,
     dblclickNode:{},
     isClickAction:[],
     // 对象的最初入口
@@ -685,6 +687,8 @@ var Topology = {
                                 name:data.text,
                                 children:[]
                             }
+                            let tableAlgorithmIndex1 = data.id.indexOf("tableAlgorithm");
+                            let currId1 = data.id.slice(0,tableAlgorithmIndex1);
                             //存储编辑区数据
                             unique(canvas.data.nodes)
                             self.saveNode = unique(canvas.data.nodes)
@@ -703,110 +707,101 @@ var Topology = {
                                         return v.toString(16);
                                     });
                                 }
-                                idStoreData[data.id] = guid()
-                            }
-                            if(data.data.inNum > 0){
-                                
-                                let data2 = JSON.parse(JSON.stringify(data1)) 
-                                function guid() {
-                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                                        var r = Math.random() * 16 | 0,
-                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
-                                        return v.toString(16);
-                                    }); 
-                                }
-                                for(let i= 0;i<data.data.inNum; i++){
-                                    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
-                                    let currId = data.id.slice(0,tableAlgorithmIndex);
-                                    $.ajax({
-                                        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                        data:{algthId:currId},
-                                        success: function(data) {
-                                            data.tableFuncs.map((item,index) =>{
-                                                if(i == index){
-                                                    
-                                                    let widths = 20
-                                                    let heights = 10
-                                                    let num = {
-                                                            x:-widths,
-                                                            y:(heights*i) + 10*i+10
-                                                        }
-                                                    let type ="";
-                                                    if(item.vartype == 1){
-                                                        type = item.valvalue
+                                if(data.data.inNum > 0){
+                                    
+                                    let data2 = JSON.parse(JSON.stringify(data1)) 
+                                    function guid() {
+                                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                            var r = Math.random() * 16 | 0,
+                                                v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                            return v.toString(16);
+                                        }); 
+                                    }
+                                    for(let i= 0;i<data.data.inNum; i++){                                   
+                                        self.addInlist.map((item,index) =>{
+                                            if(i == index){
+                                                
+                                                let widths = 20
+                                                let heights = 10
+                                                let num = {
+                                                        x:-widths,
+                                                        y:(heights*i) + 10*i+10
                                                     }
-                                                    if(item.vartype == 2){
-                                                        type = "常量"
-                                                    }
-                                                    if(item.vartype == 3){
-                                                        type ="对象"
-                                                    }
-                                                    let UUid =  guid()
-                                                    data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
-                                                    data2.rect.width = widths
-                                                    data2.rect.height = heights
-                                                    data2.text = item.varname;
-                                                    // data2.text = ""   
-                                                    
-                                                    data2.rect.ex = data1.rect.x + num.x;
-                                                    data2.rect.ey = data1.rect.y + num.y;
-                                                    data2.rect.x = data1.rect.x + num.x;
-                                                    data2.rect.y = data1.rect.y+ num.y;
-                                                    data2.textRect.x = data2.rect.x - widths/2;
-                                                    data2.textRect.y = data2.rect.y -heights*2;
-                                                    data2.textRect.width = 18;
-                                                    data2.textRect.height = 5;
-                                                    data2.paddingTopNum = -3
-                                                    data2.paddingTop = -3
-                                                    // data2.textRect.ex = data2.rect.x + data2.textRect.width;
-                                                    // data2.textRect.ey = data2.rect.y +data2.textRect.height;
-                                                    data2.childStand = {
-                                                        type:data1.id+'的弟弟',
-                                                        wz:num,
-                                                        bb:{
-                                                            x:data1.rect.x,
-                                                            y:data1.rect.y,
-                                                            ex:data1.rect.ex,
-                                                            ey:data1.rect.ey
-                                                        }
-                                                    }
-                                                    data2.anchors.map((obj,i) => {
-                                                        obj.x = data1.anchors[i].x-185 + num.x
-                                                        obj.y = data1.anchors[i].y-85 + num.y
-                                                    })
-                                                    data2.rotatedAnchors.map((obj,i) => {
-                                                        obj.x = data1.rotatedAnchors[i].x-185 + num.x
-                                                        obj.y = data1.rotatedAnchors[i].y-85 + num.y
-                                                    }) 
-                                                    canvas.addNode(data2)
-                                                    canvas.lockNodes([data2],true) 
-
-
-
-                                                    obj = {
-                                                        id:item.id,
-                                                        uuid:UUid,
-                                                        algorithmid:currId,
-                                                        varname:item.varname,
-                                                        vartype:item.vartype,
-                                                        valvalue:item.valvalue,
-                                                        inorout:item.inorout,
-                                                        remark:item.remark
-                                                    }
-                                                    saveList.children.push(obj)
+                                                let type ="";
+                                                if(item.vartype == 1){
+                                                    type = item.valvalue
                                                 }
-                                            
+                                                if(item.vartype == 2){
+                                                    type = "常量"
+                                                }
+                                                if(item.vartype == 3){
+                                                    type ="对象"
+                                                }
+                                                let UUid =  guid()
+                                                data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
+                                                data2.rect.width = widths
+                                                data2.rect.height = heights
+                                                data2.text = item.varname;
+                                                // data2.text = ""   
+                                                
+                                                data2.rect.ex = data1.rect.x + num.x;
+                                                data2.rect.ey = data1.rect.y + num.y;
+                                                data2.rect.x = data1.rect.x + num.x;
+                                                data2.rect.y = data1.rect.y+ num.y;
+                                                data2.textRect.x = data2.rect.x - widths/2;
+                                                data2.textRect.y = data2.rect.y -heights*2;
+                                                data2.textRect.width = 10;
+                                                data2.textRect.height = 5;
+                                                data2.paddingTopNum = -4
+                                                data2.paddingTop = -4
+                                                data2.textRect.ex = data2.textRect.x + data2.textRect.width;
+                                                data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.childStand = {
+                                                    type:data1.id+'的弟弟',
+                                                    wz:num,
+                                                    bb:{
+                                                        x:data1.rect.x,
+                                                        y:data1.rect.y,
+                                                        ex:data1.rect.ex,
+                                                        ey:data1.rect.ey
+                                                    }
+                                                }
+                                                data2.anchors.map((obj,i) => {
+                                                    obj.x = data1.anchors[i].x-185 + num.x
+                                                    obj.y = data1.anchors[i].y-85 + num.y
+                                                })
+                                                data2.rotatedAnchors.map((obj,i) => {
+                                                    obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                                                    obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                                                }) 
+                                                canvas.addNode(data2)
+                                                canvas.lockNodes([data2],true)   
 
-                                            })
-                                        }
-                                    })
-                                 
-                                    // let widths = data1.rect.width/10
-                                    // let heights = data1.rect.height/10
-                                                                       
-                                }
-                                self.tools.push(saveList)
-                                canvas.render();
+
+
+                                                obj = {
+                                                    id:item.id,
+                                                    uuid:UUid,
+                                                    algorithmid:currId1,
+                                                    varname:item.varname,
+                                                    vartype:item.vartype,
+                                                    valvalue:item.valvalue,
+                                                    inorout:item.inorout,
+                                                    remark:item.remark
+                                                }
+                                                saveList.children.push(obj)
+                                            }
+                                        
+
+                                        })
+                                    
+                                        // let widths = data1.rect.width/10
+                                        // let heights = data1.rect.height/10
+                                                                        
+                                    }
+                                    self.tools.push(saveList)
+                                    canvas.render();
+                                } 
                             }
                             break;
                         case 'resizeNodes':
@@ -1003,8 +998,6 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            debugger
-                            console.log(data)
                             let zuidaID  = ''
                             if(window.idStoreData[data.nodes.id]){
                                 zuidaID = data.nodes[0].id
@@ -1084,6 +1077,21 @@ var Topology = {
                                             canvas.data.nodes.splice(i,1);
                                             canvas.render();
                                         }
+                                    })
+                                    window.Topology.tools.map((item,k)=>{
+                                        if(index.slice(0,index.indexOf('tableAlgorithm'))+"tableAlgorithm" == item.id){
+                                            item.children.map((child,i)=>{
+                                                let UUId = index.substr((index.indexOf('---')-36),36)
+                                                if(UUId == child.uuid){
+                                                    item.children.splice(i,1) 
+                                                }
+                                            })
+                                        }
+                                        if(item.children.length == 0){
+                                            window.Topology.tools.splice(k,1)
+                                        }
+                                      
+                                       
                                     })
                                 })
                                 if(window.bigData.ruleType == "edit"){
@@ -1726,6 +1734,19 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
+        Topology.addInlist = []
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+            data:{algthId:node.id},
+            success: function(data) {
+                data.tableFuncs.map((item) =>{
+                    if(item.inorout == 0){
+                        Topology.addInlist.push(item)
+                    }
+
+                })
+            }
+        })
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
