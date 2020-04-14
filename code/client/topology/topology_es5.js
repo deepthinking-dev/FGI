@@ -635,6 +635,9 @@ var Topology = {
                             break    
                         case 'moveOutNode':
                             console.log(data)
+                            if(editGzType == false){
+                                editGzType = true;
+                            }
                             break   
                         case 'moveInNode':   
                             if(data.name == "combine"){

@@ -1013,9 +1013,7 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
-        if(editGzType == false){
-            editGzType = true;
-        } else {
+        if(editGzType) {
             toastr.info('当前编辑的规则需进行保存！')
             return false;
         }
