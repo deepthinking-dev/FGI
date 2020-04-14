@@ -506,7 +506,13 @@ var Topology = {
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
-                            canvas.data.nodes.map(item => {
+                            let nowList =[]
+                            canvas.data.nodes.map(now=>{
+                                if(now.id.includes(data[0].id)){
+                                    nowList.push(now)
+                                }
+                            })
+                            nowList.map((item,i) => {
                                 if(item.childStand){
                                     if(item.childStand.type == data[0].id+'的弟弟'){
                                         if(item.id.includes('IN')){
@@ -557,67 +563,251 @@ var Topology = {
                                             item.rotatedAnchors[3].x = 0
                                             item.rotatedAnchors[3].y = 0
                                         }else{
-                                            let nums = item.childStand.wz
-                                            item.rect.x = data[0].rect.x +data[0].rect.width
-                                            item.rect.y = data[0].rect.y + nums.y
+                                            i = i-(data[0].data.inNum+1)
+                                            // let nums = item.childStand.wz
+                                            // item.rect.x = data[0].rect.x +data[0].rect.width
+                                            // item.rect.y = data[0].rect.y + nums.y
 
-                                            item.rect.width = widthsa/10
-                                            item.rect.height = heightsa/10
+                                            // item.rect.width = widthsa/10
+                                            // item.rect.height = heightsa/10
 
-                                            item.rect.ex = data[0].rect.ex  + item.rect.width 
-                                            item.rect.ey = data[0].rect.y + nums.y + heightsa/10
-                                            item.rect.center.x = data[0].rect.center.x + nums.x
-                                            item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.x =  item.rect.x +10
-                                            item.textRect.y =  item.rect.y +10
-                                            item.textRect.width = 18
+                                            // item.rect.ex = data[0].rect.ex  + item.rect.width 
+                                            // item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                                            // item.rect.center.x = data[0].rect.center.x + nums.x
+                                            // item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                                            // item.textRect.x =  item.rect.x +10
+                                            // item.textRect.y =  item.rect.y +10
+                                            // item.textRect.width = 18
+                                            // item.textRect.height = 5
+                                            // item.paddingTopNum = -10
+                                            // item.paddingTop = -10
+                                            // item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                                            // item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                                            // item.iconRect.x = data[0].iconRect.x + nums.x
+                                            // item.iconRect.y = data[0].iconRect.y + nums.y
+                                            // item.fullIconRect.x = data[0].fullIconRect.x+ nums.x
+                                            // item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                                            // item.anchors[0].x = 0
+                                            // item.anchors[0].y = 0
+
+                                            // item.anchors[1].x = 0
+                                            // item.anchors[1].y = 0
+
+                                            // item.anchors[2].x = item.rect.ex
+                                            // item.anchors[2].y = item.rect.center.y
+
+                                            // item.anchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                                            // item.anchors[3].y = item.rect.ey -item.rect.height/2
+
+                                            // item.rotatedAnchors[0].x = 0
+                                            // item.rotatedAnchors[0].y = 0
+
+                                            // item.rotatedAnchors[1].x = 0
+                                            // item.rotatedAnchors[1].y = 0
+
+                                            // item.rotatedAnchors[2].x = 0
+                                            // item.rotatedAnchors[2].y = 0
+
+                                            // item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                                            // item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
+
+                                            item.rect.x = data[0].rect.ex 
+                                            item.rect.y = data[0].rect.y + i*20 + 10
+                                            item.rect.width = 20
+                                            item.rect.height = 10                                
+                                            item.rect.ex = item.rect.x  + item.rect.width
+                                            item.rect.ey = item.rect.y + item.rect.height
+                                            item.rect.center.x = item.rect.x+ item.rect.width/2
+                                            item.rect.center.y =item.rect.y  + item.rect.height/2
+
+
+                                            item.textRect.x = item.rect.x
+                                            item.textRect.y =  item.rect.y
+                                            item.textRect.width = 10
                                             item.textRect.height = 5
-                                            item.paddingTopNum = -10
-                                            item.paddingTop = -10
-                                            item.fullTextRect.x = data[0].fullTextRect.x + nums.x
-                                            item.fullTextRect.y = data[0].fullTextRect.y + nums.y
-                                            item.iconRect.x = data[0].iconRect.x + nums.x
-                                            item.iconRect.y = data[0].iconRect.y + nums.y
-                                            item.fullIconRect.x = data[0].fullIconRect.x+ nums.x
-                                            item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                                            item.paddingTopNum = 0
+                                            item.paddingTop = 0
+                                            item.fullIconRect.height = 4
+                                            item.fullTextRect.x = item.rect.ex - item.textRect.height
+                                            item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
+                                            item.iconRect.x = item.rect.ex - item.textRect.height
+                                            item.iconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height
+                                            item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.anchors[0].x = 0
-                                            item.anchors[0].y = 0
-
-                                            item.anchors[1].x = 0
-                                            item.anchors[1].y = 0
-
+                                            item.anchors[0].y =0
+                                            item.anchors[1].x =0
+                                            item.anchors[1].y = 0   
                                             item.anchors[2].x = item.rect.ex
-                                            item.anchors[2].y = item.rect.center.y
-
-                                            item.anchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
-                                            item.anchors[3].y = item.rect.ey -item.rect.height/2
-
+                                            item.anchors[2].y = item.rect.center.y                                                                                            
+                                            item.anchors[3].x =0
+                                            item.anchors[3].y = 0
                                             item.rotatedAnchors[0].x = 0
-                                            item.rotatedAnchors[0].y = 0
-
+                                            item.rotatedAnchors[0].y =0
                                             item.rotatedAnchors[1].x = 0
-                                            item.rotatedAnchors[1].y = 0
-
-                                            item.rotatedAnchors[2].x = 0
-                                            item.rotatedAnchors[2].y = 0
-
-                                            item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
-                                            item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
+                                            item.rotatedAnchors[1].y =0
+                                            item.rotatedAnchors[2].x = item.rect.ex
+                                            item.rotatedAnchors[2].y = item.rect.center.y
+                                            item.rotatedAnchors[3].x =0
+                                            item.rotatedAnchors[3].y =0
                                         }
                                         canvas.render()                                       
                                     }
                                 }
                             })
+                            // canvas.data.nodes.map((item,i) => {
+                            //     if(item.childStand){
+                            //         if(item.childStand.type == data[0].id+'的弟弟'){
+                            //             if(item.id.includes('IN')){
+                            //                 let nums = item.childStand.wz
+                            //                 item.rect.x = data[0].rect.x + nums.x
+                            //                 item.rect.y = data[0].rect.y + nums.y
+
+                            //                 item.rect.width = widthsa/10
+                            //                 item.rect.height = heightsa/10
+
+                            //                 item.rect.ex = data[0].rect.ex - widthsa
+                            //                 item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                            //                 item.rect.center.x = data[0].rect.center.x + nums.x
+                            //                 item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                            //                 item.textRect.x =  item.rect.x 
+                            //                 item.textRect.y =  item.rect.y
+                            //                 item.textRect.width = 18
+                            //                 item.textRect.height = 5
+                            //                 item.paddingTopNum = -3
+                            //                 item.paddingTop = -3
+                            //                 item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                            //                 item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                            //                 item.iconRect.x = data[0].iconRect.x + nums.x
+                            //                 item.iconRect.y = data[0].iconRect.y + nums.y
+                            //                 item.fullIconRect.x = data[0].fullIconRect.x + nums.x
+                            //                 item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                            //                 item.anchors[0].x = item.rect.x
+                            //                 item.anchors[0].y = item.rect.center.y
+
+                            //                 item.anchors[1].x = 0
+                            //                 item.anchors[1].y = 0
+
+                            //                 item.anchors[2].x = 0
+                            //                 item.anchors[2].y = 0
+
+                            //                 item.anchors[3].x = 0
+                            //                 item.anchors[3].y = 0
+
+                            //                 item.rotatedAnchors[0].x = item.rect.x
+                            //                 item.rotatedAnchors[0].y = item.rect.center.y - heightsa/2
+
+                            //                 item.rotatedAnchors[1].x = 0
+                            //                 item.rotatedAnchors[1].y = 0
+
+                            //                 item.rotatedAnchors[2].x = 0
+                            //                 item.rotatedAnchors[2].y = 0
+
+                            //                 item.rotatedAnchors[3].x = 0
+                            //                 item.rotatedAnchors[3].y = 0
+                            //             }else{
+                            //                 // i = i-(data[0].data.inNum+1)
+                            //                 let nums = item.childStand.wz
+                            //                 item.rect.x = data[0].rect.x +data[0].rect.width
+                            //                 item.rect.y = data[0].rect.y + nums.y
+
+                            //                 item.rect.width = widthsa/10
+                            //                 item.rect.height = heightsa/10
+
+                            //                 item.rect.ex = data[0].rect.ex  + item.rect.width 
+                            //                 item.rect.ey = data[0].rect.y + nums.y + heightsa/10
+                            //                 item.rect.center.x = data[0].rect.center.x + nums.x
+                            //                 item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
+                            //                 item.textRect.x =  item.rect.x +10
+                            //                 item.textRect.y =  item.rect.y +10
+                            //                 item.textRect.width = 18
+                            //                 item.textRect.height = 5
+                            //                 item.paddingTopNum = -10
+                            //                 item.paddingTop = -10
+                            //                 item.fullTextRect.x = data[0].fullTextRect.x + nums.x
+                            //                 item.fullTextRect.y = data[0].fullTextRect.y + nums.y
+                            //                 item.iconRect.x = data[0].iconRect.x + nums.x
+                            //                 item.iconRect.y = data[0].iconRect.y + nums.y
+                            //                 item.fullIconRect.x = data[0].fullIconRect.x+ nums.x
+                            //                 item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                            //                 item.anchors[0].x = 0
+                            //                 item.anchors[0].y = 0
+
+                            //                 item.anchors[1].x = 0
+                            //                 item.anchors[1].y = 0
+
+                            //                 item.anchors[2].x = item.rect.ex
+                            //                 item.anchors[2].y = item.rect.center.y
+
+                            //                 item.anchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                            //                 item.anchors[3].y = item.rect.ey -item.rect.height/2
+
+                            //                 item.rotatedAnchors[0].x = 0
+                            //                 item.rotatedAnchors[0].y = 0
+
+                            //                 item.rotatedAnchors[1].x = 0
+                            //                 item.rotatedAnchors[1].y = 0
+
+                            //                 item.rotatedAnchors[2].x = 0
+                            //                 item.rotatedAnchors[2].y = 0
+
+                            //                 item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
+                            //                 item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
+
+                            //                 // item.rect.x = data[0].rect.ex 
+                            //                 // item.rect.y = data[0].rect.y + i*20 + 10
+                            //                 // item.rect.width = 20
+                            //                 // item.rect.height = 10                                
+                            //                 // item.rect.ex = item.rect.x  + item.rect.width
+                            //                 // item.rect.ey = item.rect.y + item.rect.height
+                            //                 // item.rect.center.x = item.rect.x+ item.rect.width/2
+                            //                 // item.rect.center.y =item.rect.y  + item.rect.height/2
+
+
+                            //                 // item.textRect.x = item.rect.x
+                            //                 // item.textRect.y =  item.rect.y
+                            //                 // item.textRect.width = 10
+                            //                 // item.textRect.height = 5
+                            //                 // item.paddingTopNum = 0
+                            //                 // item.paddingTop = 0
+                            //                 // item.fullIconRect.height = 4
+                            //                 // item.fullTextRect.x = item.rect.ex - item.textRect.height
+                            //                 // item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
+                            //                 // item.iconRect.x = item.rect.ex - item.textRect.height
+                            //                 // item.iconRect.y = item.rect.y  -item.fullIconRect.height
+                            //                 // item.fullIconRect.x =  item.rect.ex - item.textRect.height
+                            //                 // item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
+                            //                 // item.anchors[0].x = 0
+                            //                 // item.anchors[0].y =0
+                            //                 // item.anchors[1].x =0
+                            //                 // item.anchors[1].y = 0   
+                            //                 // item.anchors[2].x = item.rect.ex
+                            //                 // item.anchors[2].y = item.rect.center.y                                                                                            
+                            //                 // item.anchors[3].x =0
+                            //                 // item.anchors[3].y = 0
+                            //                 // item.rotatedAnchors[0].x = 0
+                            //                 // item.rotatedAnchors[0].y =0
+                            //                 // item.rotatedAnchors[1].x = 0
+                            //                 // item.rotatedAnchors[1].y =0
+                            //                 // item.rotatedAnchors[2].x = item.rect.ex
+                            //                 // item.rotatedAnchors[2].y = item.rect.center.y
+                            //                 // item.rotatedAnchors[3].x =0
+                            //                 // item.rotatedAnchors[3].y =0
+                            //             }
+                            //             canvas.render()                                       
+                            //         }
+                            //     }
+                            // })
 
                             canvas.data.lines.map(item => {
-                          
                                 if(item.from.id.indexOf(data[0].id) != -1){
-                                   
+                                   console.log(item.from.id)
                                     let nodesa = canvas.data.nodes.filter(obj => {
+                                        console.log(obj.id)
                                         if(item.from.id == obj.id) return obj
                                     })[0]
-                                    item.from.x = nodesa.rotatedAnchors[3].x
-                                    item.from.y = nodesa.rotatedAnchors[3].y
+                                    item.from.x = nodesa.rotatedAnchors[2].x
+                                    item.from.y = nodesa.rotatedAnchors[2].y
                                 }
                                 if(item.to.id.indexOf(data[0].id) != -1){
                                     let nodesa = canvas.data.nodes.filter(obj => {
