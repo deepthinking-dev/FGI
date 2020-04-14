@@ -618,12 +618,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
                         //接口参数+动作
                         InterfaceParamsXmlModel interfaceParamsXmlModel = new InterfaceParamsXmlModel();
+                        //所有接口参数
                         allInterfaceParametersList.forEach(tableInterfaceparameters -> {
                             if(tableInterfaceparameters.getInterfaceid().equals(interfaceXmlModel.getId())){
                                 boolean flag = true;
-                                if(tableInterfaceparameters.getInorout().intValue() == 1){  //输入
+                                if(tableInterfaceparameters.getInorout().intValue() == 0){  //输入
                                     if(!tableInterfaceparameters.getId().equals(tableInterfacerole.getParametersid())){
-                                        flag = false;
+//                                        flag = false;
                                     }
                                 }
                                 if(flag){
@@ -643,7 +644,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                             behavioursXmlModel.getAction().add(behaviourXmlModel);
 
                                             AtomicBoolean aflag = new AtomicBoolean(false);
-                                            if(tmp.getIotype() == 0){    //输出
+                                            if(tmp.getIotype() == 1){    //输出
                                                 allInterfaceRelevanceList.forEach(relevance ->{
                                                     if(relevance.getPreparametersid().equals(tmp.getId())){
                                                         aflag.set(true);
@@ -651,10 +652,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                                 });
                                             }
                                             if(aflag.get()){
-                                                setInterfaceData(allInterfaceRelevanceList, tmp, allInterfaceList, allAlgorithmList, allFuncList,
-                                                        allInterfaceParametersList, allInterfaceParamIdList, allConditionList);
+
                                             }
                                         }
+                                        setInterfaceData(allInterfaceRelevanceList, tmp, allInterfaceList, allAlgorithmList, allFuncList,
+                                                allInterfaceParametersList, allInterfaceParamIdList, allConditionList);
                                     });
                                     tmp.setActions(behavioursXmlModel);
                                     interfaceParamsXmlModel.getParam().add(tmp);

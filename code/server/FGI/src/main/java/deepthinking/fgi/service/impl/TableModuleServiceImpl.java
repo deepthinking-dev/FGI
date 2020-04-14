@@ -107,31 +107,40 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
                 List<TableModulefield> add_data=new ArrayList<>();
                 //删除字段集合
                 List<TableModulefield> del_data=new ArrayList<>();
+                List<TableModulefield> up_data=new ArrayList<>();
                 if(old_data.size()>0){
-                    Iterator<TableModulefield> iterator=list.iterator();
-                    while (iterator.hasNext()){
-                        TableModulefield field=iterator.next();
-                        if(field.getId()==null||field.getId()==0){//没有ID，新增
-                            add_data.add(field);
-                            iterator.remove();
-                        }
-                    }
-                    for(TableModulefield old_field:old_data){
-                        boolean falg=true;
-                        while (iterator.hasNext()){
-                            TableModulefield field=iterator.next();
-                            if(old_field.getId()==field.getId()){
-                                falg=false;
-                                continue;
+                    for(TableModulefield field:list){
+                        boolean flag=false;
+                        for(TableModulefield old:old_data){
+                            if(field.getId()==old.getId()){
+                                up_data.add(field);
+                                flag=true;
+                                break;
                             }
                         }
-                        if(falg){
-                            del_data.add(old_field);
+                        if(!flag){
+                            add_data.add(field);
                         }
                     }
+
+                    for(TableModulefield old:old_data){
+                        boolean flag=false;
+                        for(TableModulefield up:up_data){
+                            if(up.getId()==old.getId()){
+                                flag=true;
+                                break;
+                            }
+                        }
+                        if(!flag){
+                            del_data.add(old);
+                        }
+                    }
+
+
                 }else{
                     add_data=list;
                 }
+
                 if(add_data.size()>0){//新增
                     add_data.stream().forEach(field->tableModulefieldMapper.insert(field));
                 }
