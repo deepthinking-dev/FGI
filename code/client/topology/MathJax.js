@@ -468,7 +468,11 @@ function ConfirmDelRule(){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
                 toastr.success('删除成功！');
-                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
+                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null});
+                canvas.data.nodes = [];
+                canvas.data.lines = [];
+                canvas.render();
+                window.bigData.ruleType = "add"
             }
         }
     })
