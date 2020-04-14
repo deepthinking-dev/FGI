@@ -118,7 +118,7 @@ public class AlgorithmRuleController {
 
     @PostMapping("/modAlgorithmRuleBase")
     @ApiOperation(value = "04-09 只修改规则基本信息", notes = "返回修改结果", httpMethod = "POST")
-    public boolean modAlgorithmRuleBase(TableRole tableRole){
+    public boolean modAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole){
         return tableRoleService.modAlgorithmRuleBase(tableRole);
     }
 

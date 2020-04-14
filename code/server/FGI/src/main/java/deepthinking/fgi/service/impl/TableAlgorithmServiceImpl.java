@@ -44,7 +44,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         List<AlgorithmBaseInfo> result=new ArrayList<>();
         List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo();
         if(tableAlgorithms.size()>0){
-            tableAlgorithms.stream().forEach(data->{
+            tableAlgorithms.forEach(data->{
                 AlgorithmBaseInfo algorithmBaseInfo=new AlgorithmBaseInfo();
                 algorithmBaseInfo.setTableAlgorithm(data);
                 int alfgorithmId=Integer.parseInt(data.get("id").toString());

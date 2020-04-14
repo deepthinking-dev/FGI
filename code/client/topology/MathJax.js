@@ -424,7 +424,14 @@ function ruleSure(){
             }
         })
     }
-   
+    $.ajax({
+        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+        type:"get",
+        data: {Id:window.bigData.editRuleId},
+        success(data) {
+            responseActionDatas = data.interfaceRoleDataModels
+        }
+    })
 }
 //删除算子
 function ConfirmDelAlgorithm(){
