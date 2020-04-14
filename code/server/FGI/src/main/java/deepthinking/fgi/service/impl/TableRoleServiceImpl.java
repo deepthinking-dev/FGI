@@ -64,7 +64,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
     /**
      * 文件导入
-     * @param filePath 文件地址
+     * @param file 文件地址
      * @Author 王若山
      * @return
      */
@@ -888,7 +888,19 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                 //修改
                 updataPara.forEach(data->interfaceparametersMapper.updateByPrimaryKeySelective(data));
                 //删除
-                deletedataPara.forEach(data->interfaceparametersMapper.deleteByPrimaryKey(data.getId()));
+                deletedataPara.forEach(data->{
+                    //还需删除该接口参数的连线
+                    TableInterfaceroleCriteria tableInterfaceroleCriteria=new TableInterfaceroleCriteria();
+                    tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
+                    tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
+                    List<TableInterfacerole> interfaceroles=interfaceroleMapper.selectByExample(tableInterfaceroleCriteria);
+                    if(interfaceroles.size()>0){
+                        interfaceroles.forEach(interfacerole->{
+                            delOneInterfaceRole(interfacerole.getId().toString());
+                        });
+                    }
+                    interfaceparametersMapper.deleteByPrimaryKey(data.getId());
+                });
                 //新增
                 addPara.forEach(data->interfaceparametersMapper.insert(data));
             }else{
@@ -905,7 +917,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
     @Override
     public boolean modAlgorithmRuleBase(TableRole tableRole) {
-        return updateByPrimaryKeySelective(tableRole)==1;
+        try{
+            return updateByPrimaryKey(tableRole)==1;
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return false;
+        }
     }
 
     @Override
