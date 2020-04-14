@@ -32,7 +32,7 @@ $(function(){
                                    <option value="!=">!=</option>
                                    <option value="assignment">赋值</option>
                                </select>
-                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
                               </div>
                          `)
@@ -59,7 +59,7 @@ $(function(){
                                            <option value="!=">!=</option>
                                            <option value="assignment">赋值</option>
                                        </select>
-                                           <span>表达式</span><input type="text" value=${t.expression} class="bds_in">
+                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
                                            <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
                                       </div>
                                     `)
@@ -100,7 +100,7 @@ $(function(){
                                                <option value="!=">!=</option>
                                                <option value="assignment">赋值</option>
                                            </select>
-                                               <span>表达式</span><input type="text" value=${t.expression} class="bds_out">
+                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
                                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
                                           </div>
                                  `)
@@ -138,7 +138,7 @@ $(function(){
                                                    <option value="!=">!=</option>
                                                    <option value="assignment">赋值</option>
                                                </select>
-                                                   <span>表达式</span><input type="text" value=${t.expression} class="bds_out">
+                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
