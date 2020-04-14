@@ -424,7 +424,14 @@ function ruleSure(){
             }
         })
     }
-   
+    $.ajax({
+        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+        type:"get",
+        data: {Id:window.bigData.editRuleId},
+        success(data) {
+            responseActionDatas = data.interfaceRoleDataModels
+        }
+    })
 }
 //删除算子
 function ConfirmDelAlgorithm(){
@@ -474,6 +481,7 @@ function ruleDelClose(){
 //动作确定
 function ActionSure(){
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    debugger
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
     let actionInfoNum = $('.ruleContentDiv .actionInfo')
    
