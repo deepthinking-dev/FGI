@@ -905,8 +905,8 @@ function ActionSure(){
                                         })
                                         if( window.Topology.dblclickNode.rect.height > 100){
                                             
-                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
-                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -15
+                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
+                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
                                         }else{
                                             window.Topology.dblclickNode.rect.height = 100
                                         }

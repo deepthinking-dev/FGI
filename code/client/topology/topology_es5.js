@@ -844,7 +844,8 @@ var Topology = {
                                 for(var i=0; i<arr.length; i++){
                                     for(var j=i+1; j<arr.length; j++){
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
-                                            arr.splice(j,1);                                           
+                                            arr.splice(j,1);  
+                                            self.banAdd = false                                         
                                             j--;
                                             toastr.info('同一个规则算子不能重复！')
                                         }
@@ -870,6 +871,7 @@ var Topology = {
                                 }
                                 
                             }
+                            self.banAdd = true
                             let saveList ={
                                 id :data.id,
                                 name:data.text,
@@ -884,116 +886,118 @@ var Topology = {
                             self.initNode(); 
 
                             let data1 = JSON.parse(JSON.stringify(data)) 
-                            if(data1.childStand){                              
-                                return
-                            }else{
-                             
-                                self.isClickAction.push({isClick:true,id:data.id})
-                                function guid() {
-                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                                        var r = Math.random() * 16 | 0,
-                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
-                                        return v.toString(16);
-                                    });
-                                }
-                                window.idStoreData[data.id] = guid()
+                            if(self.banAdd){
+                                if(data1.childStand){                              
+                                    return
+                                }else{
                                 
-                            }
-
-                            if(data.data.inNum > 0){                                
-                                let data2 = JSON.parse(JSON.stringify(data1)) 
-                                function guid() {
-                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                                        var r = Math.random() * 16 | 0,
-                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
-                                        return v.toString(16);
-                                    }); 
-                                }
-                                for(let i= 0;i<data.data.inNum; i++){                                   
-                                    self.addInlist.map((item,index) =>{
-                                        if(i == index){
-                                            
-                                            let widths = 20
-                                            let heights = 10
-                                            let num = {
-                                                    x:-widths,
-                                                    y:(heights*i) + 10*i+10
-                                                }
-                                            let type ="";
-                                            if(item.vartype == 1){
-                                                type = item.valvalue
-                                            }
-                                            if(item.vartype == 2){
-                                                type = "常量"
-                                            }
-                                            if(item.vartype == 3){
-                                                type ="对象"
-                                            }
-                                            let UUid =  guid()
-                                            data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
-                                            data2.rect.width = widths
-                                            data2.rect.height = heights
-                                            data2.text = item.varname;
-                                            // data2.text = ""   
-                                            
-                                            data2.rect.ex = data1.rect.x + num.x;
-                                            data2.rect.ey = data1.rect.y + num.y;
-                                            data2.rect.x = data1.rect.x + num.x;
-                                            data2.rect.y = data1.rect.y+ num.y;
-                                            data2.textRect.x = data2.rect.x - widths/2;
-                                            data2.textRect.y = data2.rect.y -heights*2;
-                                            data2.textRect.width = 10;
-                                            data2.textRect.height = 5;
-                                            data2.paddingTopNum = -4
-                                            data2.paddingTop = -4
-                                            data2.textRect.ex = data2.textRect.x + data2.textRect.width;
-                                            data2.textRect.ey = data2.textRect.y +data2.textRect.height;
-                                            data2.childStand = {
-                                                type:data1.id+'的弟弟',
-                                                wz:num,
-                                                bb:{
-                                                    x:data1.rect.x,
-                                                    y:data1.rect.y,
-                                                    ex:data1.rect.ex,
-                                                    ey:data1.rect.ey
-                                                }
-                                            }
-                                            data2.anchors.map((obj,i) => {
-                                                obj.x = data1.anchors[i].x-185 + num.x
-                                                obj.y = data1.anchors[i].y-85 + num.y
-                                            })
-                                            data2.rotatedAnchors.map((obj,i) => {
-                                                obj.x = data1.rotatedAnchors[i].x-185 + num.x
-                                                obj.y = data1.rotatedAnchors[i].y-85 + num.y
-                                            }) 
-                                            canvas.addNode(data2)
-                                            canvas.lockNodes([data2],true)   
-
-
-
-                                            obj = {
-                                                id:item.id,
-                                                uuid:UUid,
-                                                algorithmid:currId1,
-                                                varname:item.varname,
-                                                vartype:item.vartype,
-                                                valvalue:item.valvalue,
-                                                inorout:item.inorout,
-                                                remark:item.remark
-                                            }
-                                            saveList.children.push(obj)
-                                        }
+                                    self.isClickAction.push({isClick:true,id:data.id})
+                                    function guid() {
+                                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                            var r = Math.random() * 16 | 0,
+                                                v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                            return v.toString(16);
+                                        });
+                                    }
+                                    window.idStoreData[data.id] = guid()
                                     
-
-                                    })
-                                
-                                    // let widths = data1.rect.width/10
-                                    // let heights = data1.rect.height/10
-                                                                    
                                 }
-                                self.tools.push(saveList)
-                                canvas.render();
-                            } 
+
+                                if(data.data.inNum > 0){                                
+                                    let data2 = JSON.parse(JSON.stringify(data1)) 
+                                    function guid() {
+                                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                            var r = Math.random() * 16 | 0,
+                                                v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                            return v.toString(16);
+                                        }); 
+                                    }
+                                    for(let i= 0;i<data.data.inNum; i++){                                   
+                                        self.addInlist.map((item,index) =>{
+                                            if(i == index){
+                                                
+                                                let widths = 20
+                                                let heights = 10
+                                                let num = {
+                                                        x:-widths,
+                                                        y:(heights*i) + 10*i+10
+                                                    }
+                                                let type ="";
+                                                if(item.vartype == 1){
+                                                    type = item.valvalue
+                                                }
+                                                if(item.vartype == 2){
+                                                    type = "常量"
+                                                }
+                                                if(item.vartype == 3){
+                                                    type ="对象"
+                                                }
+                                                let UUid =  guid()
+                                                data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
+                                                data2.rect.width = widths
+                                                data2.rect.height = heights
+                                                data2.text = item.varname;
+                                                // data2.text = ""   
+                                                
+                                                data2.rect.ex = data1.rect.x + num.x;
+                                                data2.rect.ey = data1.rect.y + num.y;
+                                                data2.rect.x = data1.rect.x + num.x;
+                                                data2.rect.y = data1.rect.y+ num.y;
+                                                data2.textRect.x = data2.rect.x - widths/2;
+                                                data2.textRect.y = data2.rect.y -heights*2;
+                                                data2.textRect.width = 10;
+                                                data2.textRect.height = 5;
+                                                data2.paddingTopNum = -4
+                                                data2.paddingTop = -4
+                                                data2.textRect.ex = data2.textRect.x + data2.textRect.width;
+                                                data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.childStand = {
+                                                    type:data1.id+'的弟弟',
+                                                    wz:num,
+                                                    bb:{
+                                                        x:data1.rect.x,
+                                                        y:data1.rect.y,
+                                                        ex:data1.rect.ex,
+                                                        ey:data1.rect.ey
+                                                    }
+                                                }
+                                                data2.anchors.map((obj,i) => {
+                                                    obj.x = data1.anchors[i].x-185 + num.x
+                                                    obj.y = data1.anchors[i].y-85 + num.y
+                                                })
+                                                data2.rotatedAnchors.map((obj,i) => {
+                                                    obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                                                    obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                                                }) 
+                                                canvas.addNode(data2)
+                                                canvas.lockNodes([data2],true)   
+
+
+
+                                                obj = {
+                                                    id:item.id,
+                                                    uuid:UUid,
+                                                    algorithmid:currId1,
+                                                    varname:item.varname,
+                                                    vartype:item.vartype,
+                                                    valvalue:item.valvalue,
+                                                    inorout:item.inorout,
+                                                    remark:item.remark
+                                                }
+                                                saveList.children.push(obj)
+                                            }
+                                        
+
+                                        })
+                                    
+                                        // let widths = data1.rect.width/10
+                                        // let heights = data1.rect.height/10
+                                                                        
+                                    }
+                                    self.tools.push(saveList)
+                                    canvas.render();
+                                } 
+                            }
                             break;
                         case 'resizeNodes':
                             var child = []     
