@@ -502,6 +502,11 @@ function ActionSure(){
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
                 let heights = 10               
+                let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+                if(varName =="请选择"){
+                    toastr.success('请选择变量名称！');
+                    return false;
+                }
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     data.data.inNum ++
                     num = {
@@ -520,7 +525,7 @@ function ActionSure(){
                     data.data.outNum ++
                     num = {
                         x:data.rect.width,
-                        y:(heights*data.data.outNum)+10*data.data.outNum +10
+                        y:(heights*data.data.outNum)+10*(data.data.outNum-1)
                     }
                     window.bigData.isAddInOutType = "out"
                     let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
@@ -800,32 +805,35 @@ function ActionSure(){
                                         }                                                 
                                     }else{
                                         window.Topology.dblclickNode.data.outNum --
+                                        canvas.data.nodes.splice(i,1); 
+                                        toastr.success('删除成功！');
+
+                                        canvas.data.nodes.map((test,k)=>{
+                                            if(test.childStand){
+                                               if(test.id.indexOf("OUT") !=-1){
+                                                test.rect.x = data.rect.ex 
+                                                test.rect.y = data.rect.y + k*10 + 10
+                                                test.rect.width = 20
+                                                test.rect.height = 10
+                                
+                                                test.rect.ex = test.rect.x  + test.rect.width
+                                                test.rect.ey = test.rect.y + test.rect.height
+                                                test.rect.center.x = test.rect.x+ test.rect.height
+                                                test.rect.center.y =test.rect.y  + test.rect.height/2
+                                                console.log( test.rect.x,test.rect.y,k)
+                                               }
+                                                
+                                            }
+                                        })
                                         if( window.Topology.dblclickNode.rect.height > 100){
-                                            canvas.data.nodes.map((test,j)=>{
-                                                if(test.childStand && window.Topology.dblclickNode.data.outNum > 4){
-                                                   if(test.id.indexOf("OUT") !=-1){
-                                                        test.rect.y = test.rect.y -10                           
-                                                        test.rect.ey = test.rect.ey -10
-                                                        test.rect.center.y = test.rect.center.y -10
-                                                        test.fullTextRect.y = test.fullTextRect.y -10
-                                                        test.iconRect.y = test.iconRect.y -10
-                                                        test.fullIconRect.y = test.fullIconRect.y -10
-                                                        test.anchors.map((obj,i) => {
-                                                            obj.y = test.anchors[i].y+115 -10
-                                                        })
-                                                        test.rotatedAnchors.map((obj,i) => {
-                                                            obj.y = test.rotatedAnchors[i].y-115 -10
-                                                        })
-                                                   }
-                                                    
-                                                }
-                                            })
+                                            
                                             window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
                                             window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -15
+                                        }else{
+                                            window.Topology.dblclickNode.rect.height = 100
                                         }
                                     }
-                                    canvas.data.nodes.splice(i,1); 
-                                    toastr.success('删除成功！');
+                                    
                                 }       
                             }
                         }
