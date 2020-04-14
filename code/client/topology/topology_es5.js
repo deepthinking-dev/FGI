@@ -524,12 +524,15 @@ var Topology = {
                                             item.rect.ey = data[0].rect.y + nums.y + heightsa/10
                                             item.rect.center.x = data[0].rect.center.x + nums.x
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.x =  item.rect.x 
-                                            item.textRect.y =  item.rect.y
-                                            item.textRect.width = 18
+                                            item.textRect.width = 10
                                             item.textRect.height = 5
-                                            item.paddingTopNum = -3
-                                            item.paddingTop = -3
+                                            item.paddingTopNum = -4
+                                            item.paddingTop = -4
+                                            item.textRect.x =  item.rect.x -item.textRect.width
+                                            item.textRect.y =  item.rect.y
+                                            
+                                            item.textRect.ex = item.textRect.x;
+                                            item.textRect.ey = item.textRect.y+1;
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -573,10 +576,12 @@ var Topology = {
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
                                             item.textRect.x =  item.rect.x 
                                             item.textRect.y =  item.rect.y
-                                            item.textRect.width = 18
+                                            item.textRect.width = 10
                                             item.textRect.height = 5
-                                            item.paddingTopNum = -10
-                                            item.paddingTop = -10
+                                            item.paddingTopNum = -4
+                                            item.paddingTop = -4
+                                            item.textRect.ex = item.textRect.x + item.textRect.width;
+                                            item.textRect.ey = item.textRect.y +item.textRect.height;
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -754,12 +759,12 @@ var Topology = {
                                                     data2.rect.y = data1.rect.y+ num.y;
                                                     data2.textRect.x = data2.rect.x - widths/2;
                                                     data2.textRect.y = data2.rect.y -heights*2;
-                                                    data2.textRect.width = 18;
+                                                    data2.textRect.width = 10;
                                                     data2.textRect.height = 5;
-                                                    data2.paddingTopNum = -3
-                                                    data2.paddingTop = -3
-                                                    // data2.textRect.ex = data2.rect.x + data2.textRect.width;
-                                                    // data2.textRect.ey = data2.rect.y +data2.textRect.height;
+                                                    data2.paddingTopNum = -4
+                                                    data2.paddingTop = -4
+                                                    data2.textRect.ex = data2.textRect.x + data2.textRect.width;
+                                                    data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                     data2.childStand = {
                                                         type:data1.id+'的弟弟',
                                                         wz:num,
@@ -1003,7 +1008,6 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            debugger
                             console.log(data)
                             let zuidaID  = ''
                             if(window.idStoreData[data.nodes.id]){
@@ -1015,11 +1019,16 @@ var Topology = {
                                     window.Topology.tools.map(item=>{
                                         if(item.id+"的弟弟" == UU.childStand.type){
                                             item.children.map((index,i)=>{
-                                            let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
+                                            let Indexuuid =''
+                                            if(index.uuid.indexOf("---") ==-1){
+                                                Indexuuid = index.uuid
+                                            }else{
+                                                Indexuuid = index.uuid.slice(0,index.uuid.indexOf("---"))
+                                            }
+                                          
                                             let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
                                             if(Indexuuid == UUId){
                                                 item.children.splice(i,1);
-                                                // data.nodes.splice(i,1);
                                                 canvas.render();
                                             }
                                             })
@@ -1051,6 +1060,7 @@ var Topology = {
                                         }
                                     })
                                 }
+                                
                                 deleteLine.map(_lineId=>{
                                     canvas.data.lines.map((lineDelId,k)=>{
                                         if(_lineId == lineDelId.id){
@@ -1084,6 +1094,22 @@ var Topology = {
                                             canvas.data.nodes.splice(i,1);
                                             canvas.render();
                                         }
+                                    })
+                                    window.Topology.tools.map((item,k)=>{
+                                        if(index.slice(0,index.indexOf('tableAlgorithm'))+"tableAlgorithm" == item.id){
+                                            item.children.map((child,i)=>{
+                                                debugger
+                                                let UUId = index.substr((index.indexOf('---')-36),36)
+                                                if(UUId == child.uuid){
+                                                    item.children.splice(i,1) 
+                                                }
+                                            })
+                                        }
+                                        if(item.children.length == 0){
+                                            window.Topology.tools.splice(k,1)
+                                        }
+                                      
+                                       
                                     })
                                 })
                                 if(window.bigData.ruleType == "edit"){
