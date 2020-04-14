@@ -318,7 +318,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -326,11 +325,6 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
-                            if(data.childStand){
-                                $(".menu-a-delete").css("display", "none");
-                            }else{
-                                $(".menu-a-delete").css("display", "block");
-                            }
                             // if(data.id.includes("in") || data.id.includes("out")){
                             //     locked = true;
                             // }else{
@@ -532,15 +526,12 @@ var Topology = {
                                             item.rect.ey = data[0].rect.y + nums.y + heightsa/10
                                             item.rect.center.x = data[0].rect.center.x + nums.x
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.width = 10
-                                            item.textRect.height = 5
-                                            item.paddingTopNum = -4
-                                            item.paddingTop = -4
-                                            item.textRect.x =  item.rect.x -item.textRect.width
+                                            item.textRect.x =  item.rect.x 
                                             item.textRect.y =  item.rect.y
-                                            
-                                            item.textRect.ex = item.textRect.x;
-                                            item.textRect.ey = item.textRect.y+1;
+                                            item.textRect.width = 18
+                                            item.textRect.height = 5
+                                            item.paddingTopNum = -3
+                                            item.paddingTop = -3
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -584,12 +575,10 @@ var Topology = {
                                             item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
                                             item.textRect.x =  item.rect.x 
                                             item.textRect.y =  item.rect.y
-                                            item.textRect.width = 10
+                                            item.textRect.width = 18
                                             item.textRect.height = 5
-                                            item.paddingTopNum = -4
-                                            item.paddingTop = -4
-                                            item.textRect.ex = item.textRect.x + item.textRect.width;
-                                            item.textRect.ey = item.textRect.y +item.textRect.height;
+                                            item.paddingTopNum = -10
+                                            item.paddingTop = -10
                                             item.fullTextRect.x = data[0].fullTextRect.x + nums.x
                                             item.fullTextRect.y = data[0].fullTextRect.y + nums.y
                                             item.iconRect.x = data[0].iconRect.x + nums.x
@@ -645,7 +634,7 @@ var Topology = {
                             })
                             break    
                         case 'moveOutNode':
-  
+                            console.log(data)
                             break   
                         case 'moveInNode':   
                             if(data.name == "combine"){
@@ -663,13 +652,12 @@ var Topology = {
                             this.workspace.nativeElement.scrollTop += 10;
                          
                             //去掉重复id的node（一个算子在一套规则中只能出现一次）
-                            function unique(arr ,banAdd){     
+                            function unique(arr){         
                                 for(var i=0; i<arr.length; i++){
                                     for(var j=i+1; j<arr.length; j++){
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
                                             arr.splice(j,1);                                           
                                             j--;
-                                            self.banAdd = false
                                             toastr.info('同一个规则算子不能重复！')
                                         }
                                     }
@@ -679,6 +667,7 @@ var Topology = {
                             unique(canvas.data.nodes)
                             break;
                         case 'addNode':
+                            
                             selNodes = [data];
                             selected = {
                                 "type": event,
@@ -693,7 +682,6 @@ var Topology = {
                                 }
                                 
                             }
-                            self.banAdd = true
                             let saveList ={
                                 id :data.id,
                                 name:data.text,
@@ -708,19 +696,16 @@ var Topology = {
                             self.initNode(); 
 
                             let data1 = JSON.parse(JSON.stringify(data)) 
-                            if( self.banAdd){
-                               if(data1.childStand){                              
-                                    return
-                                }else{
-                                    self.isClickAction.push({isClick:true,id:data.id})
-                                    function guid() {
-                                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                                            var r = Math.random() * 16 | 0,
-                                                v = c == 'x' ? r : (r & 0x3 | 0x8);
-                                            return v.toString(16);
-                                        });
-                                    }
-                                    idStoreData[data.id] = guid()
+                            if(data1.childStand){                              
+                                return
+                            }else{
+                                self.isClickAction.push({isClick:true,id:data.id})
+                                function guid() {
+                                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                                        var r = Math.random() * 16 | 0,
+                                            v = c == 'x' ? r : (r & 0x3 | 0x8);
+                                        return v.toString(16);
+                                    });
                                 }
                                 if(data.data.inNum > 0){
                                     
@@ -818,7 +803,6 @@ var Topology = {
                                     canvas.render();
                                 } 
                             }
-                            
                             break;
                         case 'resizeNodes':
                             var child = []     
@@ -1014,7 +998,6 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            console.log(data)
                             let zuidaID  = ''
                             if(window.idStoreData[data.nodes.id]){
                                 zuidaID = data.nodes[0].id
@@ -1025,16 +1008,11 @@ var Topology = {
                                     window.Topology.tools.map(item=>{
                                         if(item.id+"的弟弟" == UU.childStand.type){
                                             item.children.map((index,i)=>{
-                                            let Indexuuid =''
-                                            if(index.uuid.indexOf("---") ==-1){
-                                                Indexuuid = index.uuid
-                                            }else{
-                                                Indexuuid = index.uuid.slice(0,index.uuid.indexOf("---"))
-                                            }
-                                          
+                                            let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
                                             let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
                                             if(Indexuuid == UUId){
                                                 item.children.splice(i,1);
+                                                // data.nodes.splice(i,1);
                                                 canvas.render();
                                             }
                                             })
@@ -1066,7 +1044,6 @@ var Topology = {
                                         }
                                     })
                                 }
-                                
                                 deleteLine.map(_lineId=>{
                                     canvas.data.lines.map((lineDelId,k)=>{
                                         if(_lineId == lineDelId.id){
@@ -1119,26 +1096,21 @@ var Topology = {
                                 })
                                 if(window.bigData.ruleType == "edit"){
                                     //从数据库删除大方块的数据
-                                    data.nodes.map(UU =>{
-                                        if(!UU.childStand){
-                                            $.ajax({
-                                                type:"get",
-                                                dataType: "json",
-                                                url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
-                                                contentType: "application/json;charset=UTF-8",
-                                                data:{
-                                                    operatorinterfaceId:window.idStoreData[index.id]
-                                                },
-                                                success: function(data) {
-                                                    if(data == true){
-                                                        toastr.success('删除成功！');
-                                                        canvas.render();
-                                                    }
-                                                }
-                                            })
+                                    $.ajax({
+                                        type:"get",
+                                        dataType: "json",
+                                        url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
+                                        contentType: "application/json;charset=UTF-8",
+                                        data:{
+                                            operatorinterfaceId:window.idStoreData[index.id]
+                                        },
+                                        success: function(data) {
+                                            if(data == true){
+                                                toastr.success('删除成功！');
+                                                canvas.render();
+                                            }
                                         }
                                     })
-
                                 }                          
                             })
                             

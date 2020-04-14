@@ -918,7 +918,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     @Override
     public boolean modAlgorithmRuleBase(TableRole tableRole) {
         try{
-            return updateByPrimaryKey(tableRole)==1;
+            return updateByPrimaryKeySelective(tableRole)==1;
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());

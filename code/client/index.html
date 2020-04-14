@@ -797,7 +797,7 @@
                         </div>
                         <div class="line"></div>
                         <div>
-                            <a onclick="onDelete()" class="menu-a menu-a-delete">
+                            <a onclick="onDelete()" class="menu-a">
                                 删除
                             </a>
                         </div>
@@ -851,9 +851,9 @@
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
               <input type="button" id="addDic" value="新增字典">
               <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算子">
-              <table id="dicTable">
-
-              </table>
+              <div style="height: 500px;overflow: auto">
+                  <table id="dicTable"></table>
+              </div>
           </div>
     </div>
     <!-- 字典新增修改弹窗 -->

@@ -14,13 +14,12 @@ $(function(){
         // dictionary()
     })
     $("#selectOutIn").change(()=> {
-        // $("#actionInDiv").empty();
-        // $("#actionOutDiv").empty();
+        $("#actionInDiv").empty();
+        $("#actionOutDiv").empty();
         if ($("#selectOutIn").val() == "1") {
             $("#actionInDiv").show();
             $("#actionOutDiv").hide();
                 if ($("#addActionButton").attr("resData")) {//后台返回数据
-                    $("#actionInDiv").empty();
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map(t => {
                         $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
@@ -46,7 +45,6 @@ $(function(){
                     globalActionDatas.map(s => {
                         if (s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")) {
                             try {
-                                $("#actionInDiv").empty();
                                 var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                                 lineDatas.map(t => {
                                     $("#actionInDiv").append(`
@@ -88,7 +86,6 @@ $(function(){
                                 res.tableFuncs.map(s => {
                                     optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                                 })
-                                $("#actionOutDiv").empty();
                                 resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map(t=>{
                                     $("#actionOutDiv").append(`
                                           <div style="margin: 10px 0">
@@ -122,7 +119,6 @@ $(function(){
                         res.tableFuncs.map(s=>{
                             optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                         })
-                        $("#actionOutDiv").empty();
                         globalActionDatas.map(s=>{
                             if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
                                 try {
@@ -271,53 +267,59 @@ $(function(){
         $("#actionDiv").hide();
         $("#actionOutDiv").hide()
         if($("#addActionButton").attr("resdata")){//修改动作
-            var sendDataIn = [];
-            var sendDataOut = [];
-            $('#actionInDiv div').each(function (i,v) {
-                let obj = {
-                    "behavior": $(this).find(".xwSelect_in").val(),
-                    "expression": $(this).find(".bds_in").val(),
-                    "id":$(v).attr("actionId"),
-                    "interfaceparametersid":$("#addActionButton").attr("in_small"),
-                    "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
-                    "remark": "",
-                    "valuesources": 0
-                };
-                sendDataIn.push(obj)
-            })
-            $('#actionOutDiv div').each(function (i,v) {
-                let obj = {
-                    "behavior": $(this).find(".xwSelect_out").val(),
-                    "expression": $(this).find(".bds_out").val(),
-                    "id":$(v).attr("actionId"),
-                    "interfaceparametersid":$("#addActionButton").attr("out_small"),
-                    "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
-                    "remark": "",
-                    "valuesources":Number($(this).find(".xwzly_out").val())
-                };
-                sendDataOut.push(obj)
-            })
+            var sendData = [];
+            if($("#selectOutIn").val() == "1"){//修改输入
+                $('#actionInDiv div').each(function (i,v) {
+                    let obj = {
+                        "behavior": $(this).find(".xwSelect_in").val(),
+                        "expression": $(this).find(".bds_in").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("in_small"),
+                        "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources": 0
+                    };
+                    sendData.push(obj)
+                })
+            } else {//修改输出
+                $('#actionOutDiv div').each(function (i,v) {
+                    let obj = {
+                        "behavior": $(this).find(".xwSelect_out").val(),
+                        "expression": $(this).find(".bds_out").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("out_small"),
+                        "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources":Number($(this).find(".xwzly_out").val())
+                    };
+                    sendData.push(obj)
+                })
+            }
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
-                data:JSON.stringify(sendDataIn),
+                data:JSON.stringify(sendData),
                 type:"POST",
                 dataType: "json",
                 contentType:"application/json",
                 success(res) {
                     $.ajax({
-                        url:urlConfig.host+'/algorithmRule/saveFunAction',
-                        data:JSON.stringify(sendDataOut),
-                        type:"POST",
-                        dataType: "json",
-                        contentType:"application/json",
-                        success(res) {
+                        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+                        type:"get",
+                        data: {Id:refreshId},
+                        success(data) {
+                            if(data){
+                                let ruleData = data.tableRole.coordinate
+                                canvas.open(JSON.parse(ruleData))
+                                responseActionDatas = data.interfaceRoleDataModels
+                            }
 
                         }
                     })
                 }
             })
         } else{//新增动作
-                var dataArrIn = [];
+            if($("#selectOutIn").val() == "1"){//输入
+                var dataArr = [];
                 $('#actionInDiv div').each(function () {
                     let obj = {
                         "behavior": $(this).find(".xwSelect_in").val(),
@@ -328,14 +330,15 @@ $(function(){
                         "remark": "",
                         "valuesources": 0
                     };
-                    dataArrIn.push(obj)
+                    dataArr.push(obj)
                 })
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
-                        s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArrIn;
+                        s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArr;
                     }
                 })
-                var dataArrOut = [];
+            } else {
+                var arrOut = [];
                 $('#actionOutDiv div').each(function () {
                     let obj = {
                         "behavior": $(this).find(".xwSelect_out").val(),
@@ -346,14 +349,14 @@ $(function(){
                         "remark": "",
                         "valuesources":Number($(this).find(".xwzly_out").val())
                     };
-                    dataArrOut.push(obj)
+                    arrOut.push(obj)
                 })
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
-                        s.dataOut.interfaceRoleDataModels.algorithmconditions = dataArrOut;
+                        s.dataOut.interfaceRoleDataModels.algorithmconditions = arrOut;
                     }
                 })
-
+            }
         }
     })
     $('body').on('click','.addDicClose',(e) => {
@@ -1024,7 +1027,7 @@ $(function(){
         }
         window.bigData.editRuleId = $(e.target).data('id')
         let ruleid =  $(e.target).data('id')
-        refreshId = $(e.target).data('addActionid');
+        refreshId = $(e.target).data('id');
         $.ajax({
             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
             type:"get",

@@ -399,8 +399,6 @@ function ruleSure(){
       }
       console.log(algorithmRuleSaveDataModel)
     if(window.bigData.ruleType == "edit"){
-        console.log(canvas.data)
-        debugger
         tableRole.id = window.bigData.editRuleId
         $.ajax({
             type:"post",
@@ -426,14 +424,7 @@ function ruleSure(){
             }
         })
     }
-    $.ajax({
-        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
-        type:"get",
-        data: {Id:window.bigData.editRuleId},
-        success(data) {
-            responseActionDatas = data.interfaceRoleDataModels
-        }
-    })
+   
 }
 //删除算子
 function ConfirmDelAlgorithm(){
@@ -662,11 +653,11 @@ function ActionSure(){
            remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
        }
        lsList.push(obj)
+       console.log(obj,"1111111111111111111111111111")
    }
    let UPdataList = []
    let AddList = []
    let DelList = []
-
     window.Topology.tools.map(isCZdata=>{
         if(isCZdata.id == data.id){
             isFlag =true
@@ -752,6 +743,7 @@ function ActionSure(){
             }
             lsList = UPdataList.concat(AddList)
             isCZdata.children = lsList
+            console.log(DelList)
             if(DelList.length > 0){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
@@ -834,60 +826,6 @@ function ActionSure(){
             }
         }
     })
- 
-    console.log(UPdataList)
-    console.log(AddList)
-    if(UPdataList.length > 0 || AddList > 0){
-        let algorithmID =window.Topology.dblclickNode.id
-            algorithmID=algorithmID.slice(0,algorithmID.indexOf('tableAlgorithm'))
-        if(window.bigData.ruleType == "edit"){
-            let operatorInterfaceDataModel ={
-                algorithmID:algorithmID,
-                id:window.idStoreData[window.Topology.dblclickNode.id] ,
-                interfaceName:window.Topology.dblclickNode.text,
-                roleID:window.bigData.editRuleId,
-                tableInterfaceparametersList:[]
-            }
-
-            window.Topology.tools.map(item=>{
-                debugger
-                if(item.id == window.Topology.dblclickNode.id) {
-                    item.children.map(index=>{
-                        let id =""
-                        if(index.uuid.indexOf("---") == -1){
-                            id= index.uuid
-                        }else{
-                            index.uuid.slice(0,index.uuid.indexOf("---"))
-                        }
-                        let CsObj = {
-                            id:id,
-                            inorout:index.inorout,
-                            interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
-                            parametersname:index.varname,
-                            parameterssources:index.id
-                        }
-                        operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
-                    })
-                }              
-
-            })
-            $.ajax({
-                type:"post",
-                dataType: "json",
-                url:urlConfig.host+'/algorithmRule/modInterfaceRole',
-                contentType: "application/json;charset=UTF-8",
-                data:JSON.stringify(operatorInterfaceDataModel),
-                success: function(data) {
-                    if(data == true){
-                        toastr.success('修改成功！');
-                      
-                    }
-                }
-            })
-        }
-    }
-
-
     if(!isFlag){
         saveList.children = lsList
         window.Topology.tools.push(saveList)
