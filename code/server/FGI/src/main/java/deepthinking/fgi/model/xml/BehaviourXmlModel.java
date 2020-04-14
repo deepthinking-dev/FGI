@@ -15,6 +15,8 @@ public class BehaviourXmlModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String id;
+
     private String behave;  //行为
 
     private String expression;  //表达式
@@ -22,6 +24,10 @@ public class BehaviourXmlModel implements Serializable {
     private Integer origin;      //条件值来源
 
     private String remark;      //备注
+
+    private String paramId;     //参数ID
+
+
 
     public BehaviourXmlModel() {
     }
@@ -56,5 +62,21 @@ public class BehaviourXmlModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getParamId() {
+        return paramId;
+    }
+
+    public void setParamId(String paramId) {
+        this.paramId = paramId;
     }
 }

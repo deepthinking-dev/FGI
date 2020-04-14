@@ -57,14 +57,14 @@ public class XMLUtil {
             // 格式化xml输出的格式
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     Boolean.TRUE);
-            marshaller.setProperty("com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler",
-                    new CharacterEscapeHandler() {
-                        @Override
-                        public void escape(char[] ch, int start, int length, boolean isAttVal, Writer writer)
-                                throws IOException {
-                            writer.write(ch, start, length);
-                        }
-                    });
+//            marshaller.setProperty("com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler",
+//                    new CharacterEscapeHandler() {
+//                        @Override
+//                        public void escape(char[] ch, int start, int length, boolean isAttVal, Writer writer)
+//                                throws IOException {
+//                            writer.write(ch, start, length);
+//                        }
+//                    });
             // 将对象转换成输出流形式的xml
             // 创建输出流
             FileWriter fw = null;
