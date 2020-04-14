@@ -183,7 +183,7 @@ alter table Table_OperatorInterface comment '算子接口表';
 create table Table_Role
 (
    ID                   int not null auto_increment comment '主键ID',
-   RoleName             varchar(20) comment '规则名称',
+   RoleName             varchar(200) comment '规则名称',
    Des                  varchar(500) comment '规则描述',
    Remark               varchar(500) comment '备注',
    EntranceNote         varchar(500) comment '入口备注',

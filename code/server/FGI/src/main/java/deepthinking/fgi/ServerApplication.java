@@ -20,5 +20,6 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class);
+		System.out.println("系统启动成功");
 	}
 }
