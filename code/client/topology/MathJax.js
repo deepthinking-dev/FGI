@@ -330,6 +330,8 @@ function RuleClose(){
 function ruleSure(){
      //动作
     editGzType = false;
+    $("#currentGzName").text($("#ruleName").val());
+    $("#currentGzDes").text($("#ruleRemark").val());
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
@@ -433,7 +435,7 @@ function ConfirmDelAlgorithm(){
             if(data.status == 1){
                 window.bigData.delAlgorithmId = ''
                 $('#lkrAlgorithm').fadeToggle(500)
-                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+                window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
                 toastr.info(data.msg);
@@ -725,7 +727,6 @@ function ActionSure(){
                         remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
                     }
                     AddList.push(obj)
-                    console.log(obj,"222222222222222222222222222")
                 }
             }
 
@@ -744,6 +745,7 @@ function ActionSure(){
             }
             lsList = UPdataList.concat(AddList)
             isCZdata.children = lsList
+            console.log(DelList)
             if(DelList.length > 0){
                 DelList.map(item=>{
                     let Del1UUid = item.uuid.split('---')[0]
@@ -753,23 +755,6 @@ function ActionSure(){
                             if(Del1UUid == Del2UUid){                             
                                 if( window.bigData.ruleType == "edit"){
                                     if(window.bigData.editRuleId){
-
-                                        // let algorithmID = item1.id.slice(0,item1.id.indexOf("tableAlgorithm"))
-                                        // let operatorInterfaceDataModel ={
-                                        //     algorithmID:algorithmID,
-                                        //     id:window.idStoreData[algorithmID+'tableAlgorithm'],
-                                        //     interfaceName:item1.name,
-                                        //     roleID:window.bigData.editRuleId,
-                                        //     tableInterfaceparametersList:[]
-                                        // }
-                                        // let CsObj = {
-                                        //     id:Del1UUid,
-                                        //     inorout:item.inorout,
-                                        //     interfaceid:window.idStoreData[item.algorithmid+"tableAlgorithm"],
-                                        //     parametersname:item.varname,
-                                        //     parameterssources:item.id
-                                        // }
-                                        // operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
                                         $.ajax({
                                             type:"get",
                                             dataType: "json",
@@ -779,6 +764,11 @@ function ActionSure(){
                                                 operatorinterfaceId:Del1UUid
                                             },
                                             success: function(data) {
+                                                if(item.inorout == 0){
+                                                    window.Topology.dblclickNode.data.inNum --                                                      
+                                                }else{
+                                                    window.Topology.dblclickNode.data.outNum --
+                                                }
                                                 canvas.data.nodes.splice(i,1);  
                                                 if(data == true){
                                                     toastr.success('删除成功！');
@@ -787,6 +777,11 @@ function ActionSure(){
                                         })
                                     }
                                 }else{
+                                    if(item.inorout == 0){
+                                        window.Topology.dblclickNode.data.inNum --                                                      
+                                    }else{
+                                        window.Topology.dblclickNode.data.outNum --
+                                    }
                                     canvas.data.nodes.splice(i,1); 
                                     toastr.success('删除成功！');
                                 }       

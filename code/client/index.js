@@ -205,7 +205,7 @@ $(function(){
             })
         }
     })
-    $('body').on('dblclick','.bds_out',(e) => {
+    $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
                 toastr.info('行为值来源为对象才能赋值！')
@@ -550,7 +550,7 @@ $(function(){
     $('body').on('click','#getAllSz',(e) => {
         $("#ruleMde").hide();
         $("#algorithmPage").show();
-        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'算子',{username:null})
+        getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
     })
     $('body').on('click','#getAllGzgz',(e) => {
         getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
@@ -563,7 +563,7 @@ $(function(){
             data:param,
             success: function(data) {
                 $(".left-list").remove()
-                if(type=="算子"){
+                if(type=="tableAlgorithm"){
                     data.map(item => {
                         window.addAlgorithm({
                             name: 'rectangle',
@@ -1002,22 +1002,13 @@ $(function(){
    $('body').on('click','#Import',(e) => {
         $("#fileupload").show();
     })
-    $('body').on('click','.ruleCheckbox',(e) => {
-        if($(e.target).parent('.left-list').parent('#ruleMde').children('.left-list').children("input[class='ruleCheckbox']:checked").length  > 1){
-            let str = $(e.target).parent('.left-list').parent('#ruleMde').children('.left-list')
-            for(let i=0;i<str.length;i++){
-                $(str[i]).children("input[class='ruleCheckbox']").prop("checked",false);
-            }
-            $(e.target).prop('checked', true);
-        }
-    })
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
             toastr.info("至少勾选一个规则！");
             return false;
        }
-       let id = $('input:checkbox:checked').attr("data-id");
+       let id = $("input[name='exportGz']:checked").val();
        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + id
     })
        // 点击删除规则
@@ -1046,6 +1037,10 @@ $(function(){
                     let ruleData = data.tableRole.coordinate
                     $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
                     $('#ruleRemark').val(data.tableRole.des)
+                    $("#currentGzName").text(data.tableRole.rolename);
+                    $("#currentGzDes").text(data.tableRole.des);
+                    $("#bzMsg").val(data.tableRole.entrancenote);
+                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     canvas.open(JSON.parse(ruleData))
                     window.Topology.isClickAction = []
                     window.Topology.tools = []

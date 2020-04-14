@@ -769,7 +769,7 @@ body .form-input{
     list-style: none;
     font-size: 14px;
     color: #fff;
-   
+   margin: 20px 0;
 }
 #sureRule  .ruleContent li span{
     display: inline-block;

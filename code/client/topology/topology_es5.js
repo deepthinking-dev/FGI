@@ -198,15 +198,15 @@ var Topology = {
     },
 
     addAlgorithm(option){
-        if(option.type == "算子"){
+        if(option.type == "tableAlgorithm"){
             $("#algorithmPage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
         }
         if(option.type== "规则"){
             $("#rulePage").append(`<div class="left-list">
-                    <input type="checkbox" class="ruleCheckbox" data-id='${option.id}'>
-                    <div class="left-list-tilte">${option.data.text}</div>
+                    <input type="radio" name="exportGz" value=${option.id} class="ruleCheckbox" data-id='${option.id}'>
+                    <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
                     <div class="left-list-event">
                     <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>
                     <div class='lkr-list-delRule lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除规则</div>
@@ -220,7 +220,7 @@ var Topology = {
     addModel(option){
         
         $(".moduleContent").append(`<div class="left-list"  >
-                                <div class="left-list-tilte">${option.data.text}</div>
+                                <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
                                 <div class="left-list-event">
                                     <div class='lkr-list-edit lkr-edit' data-id='${option.data.id}' >编辑模型</div>
                                     <div class='lkr-list-del lkr-del' data-id='${option.data.id}' >删除模型</div>
@@ -242,7 +242,7 @@ var Topology = {
                         name: 'rectangle',
                         icon: 'icon-rectangle',
                         id:item.tableAlgorithm.id,
-                        type:"算子",
+                        type:"tableAlgorithm",
                         data: {
                             id:item.tableAlgorithm.id+"tableAlgorithm",
                             text: item.tableAlgorithm.algorithmname,
@@ -656,7 +656,7 @@ var Topology = {
                                         if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
                                             arr.splice(j,1);                                           
                                             j--;
-                                            alert('同一个规则算子不能重复！')
+                                            toastr.info('同一个规则算子不能重复！')
                                         }
                                     }
                                 }
@@ -1005,7 +1005,11 @@ var Topology = {
                         case 'delete':
                             debugger
                             console.log(data)
-                            let zuidaID = data.nodes[0].id
+                            let zuidaID  = ''
+                            if(window.idStoreData[data.nodes.id]){
+                                zuidaID = data.nodes[0].id
+                            }
+                            //删除小方块接口参数数据
                             data.nodes.map(UU =>{
                                 if(UU.childStand){
                                     window.Topology.tools.map(item=>{
@@ -1026,30 +1030,64 @@ var Topology = {
                             })
                             data.nodes.map(index=>{
                                 let length=canvas.data.nodes.length;
+                                let deletedata =[];
+                                let deleteLine = []
+                                //删除大方块同时删除大方块的子元素（小方块）
                                 for(let i =0;i < length; i++){
-                                    if(canvas.data.nodes[0].childStand){
-                                        if(index.id+"的弟弟" == canvas.data.nodes[0].childStand.type) {                                       
-                                            canvas.data.nodes.splice(0,1);
-                                            canvas.render();
+                                    if(canvas.data.nodes[i].childStand){
+                                        if(index.id+"的弟弟" == canvas.data.nodes[i].childStand.type) {    
+                                            deletedata.push(canvas.data.nodes[i].id)  
+                                                                             
+                                            // canvas.data.nodes.splice(0,1);
+                                            // canvas.render();
                                         }
                                     }
                                 }
-                                if(!index.childStand){
-                                    window.responseActionDatas.map(xian =>{
-                                        if(xian.interfaceID ==window.idStoreData[zuidaID] ||xian.preInterfaceID == window.idStoreData[zuidaID]){
-                                            $.ajax({
-                                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-                                                type:"get",
-                                                data: {interfaceRoueId :xian.id},
-                                                success(data) {
-                                                    if(data == true){
-                                                        toastr.success('删除成功！');
-                                                        canvas.render();
-                                                    }
-                                                }
-                                            })
+                                  //删除大方块同时删除与大方块的子元素有关的线
+                                for(let j=0;j<canvas.data.lines.length;j++){
+                                    deletedata.map(lineId=>{
+                                        if(canvas.data.lines[j].from.id == lineId || canvas.data.lines[j].to.id == lineId ){
+                                            deleteLine.push(canvas.data.lines[j].id)
                                         }
                                     })
+                                }
+                                deleteLine.map(_lineId=>{
+                                    canvas.data.lines.map((lineDelId,k)=>{
+                                        if(_lineId == lineDelId.id){
+                                            if(window.bigData.ruleType == "edit"){
+                                                window.responseActionDatas.map(xian =>{
+                                                    let formId = lineDelId.from.id.substr((lineDelId.from.id.indexOf('---')-36),36)
+                                                    let toId = lineDelId.to.id.substr((lineDelId.to.id.indexOf('---')-36),36)
+                                                    if(xian.parametersID ==toId && xian.preParametersID == formId){                                                      
+                                                        $.ajax({
+                                                            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                                            type:"get",
+                                                            data: {interfaceRoueId :xian.id},
+                                                            success(data) {
+                                                                if(data == true){
+                                                                    toastr.success('删除成功！');
+                                                                    canvas.render();
+                                                                }
+                                                            }
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                            canvas.data.lines.splice(k,1); 
+                                            canvas.render();
+                                        }
+                                    })
+                                })
+                                deletedata.map(index=>{
+                                    canvas.data.nodes.map((_iddel,i)=>{
+                                        if(index==_iddel.id){
+                                            canvas.data.nodes.splice(i,1);
+                                            canvas.render();
+                                        }
+                                    })
+                                })
+                                if(window.bigData.ruleType == "edit"){
+                                    //从数据库删除大方块的数据
                                     $.ajax({
                                         type:"get",
                                         dataType: "json",
@@ -1065,7 +1103,7 @@ var Topology = {
                                             }
                                         }
                                     })
-                                }
+                                }                          
                             })
                             
                             $("#flex_props_home").removeClass("hidden");
@@ -1106,32 +1144,79 @@ var Topology = {
                                                             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                                             data:{algthId:currId},
                                                             success: function(suziData) {
-                                                                item.tableInterfaceparametersList.map(hh=>{
-                                                                    suziData.tableFuncs.map(sz=>{
-                                                                        if(hh.parameterssources == sz.id){
-                                                                            str +=`<div class="actionInfo" data-uuid='${hh.id}' Funcs-id='${sz.id}' data-name='${sz.varname}' data-title='${sz.remark}'>`
-                                                                            if(hh.inorout == 1){
-                                                                                str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                                            }else{
-                                                                                str+= `<input value="输入" class="actionSelected1" disabled>  `
-                                                                            }
-                                                                                str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
-                                                                            if(sz.vartype == 1){
-                                                                                str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                            }else if(sz.vartype == 2){
-                                                                                str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                            }  else{
-                                                                                str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                            } 
-                                                                                str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>   
-                                                                                <button type="button" onclick="reduceButton(event)">x</button>                                                    
-                                                                                </div>`     
+                                                                self.tools.map(_sz =>{
+                                                                    if(_sz.id == item.algorithmID+"tableAlgorithm"){
+                                                                        
+                                                                        if(item.tableInterfaceparametersList.length == _sz.children.length){
+                                                                            item.tableInterfaceparametersList.map(hh=>{
+                                                                                suziData.tableFuncs.map(sz=>{
+                                                                                    if(hh.parameterssources == sz.id){
+                                                                                        str +=`<div class="actionInfo" data-uuid='${hh.id}' Funcs-id='${sz.id}' data-name='${sz.varname}' data-title='${sz.remark}'>`
+                                                                                        if(hh.inorout == 1){
+                                                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                                        }else{
+                                                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                                                                        }
+                                                                                            str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
+                                                                                        if(sz.vartype == 1){
+                                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                                        }else if(sz.vartype == 2){
+                                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                                        }  else{
+                                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                                        } 
+                                                                                            str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>   
+                                                                                            <button type="button" onclick="reduceButton(event)">x</button>                                                    
+                                                                                            </div>`     
+                                                                                    }
+            
+                                                                                    $('.ruleContentDiv').html(str)
+                                                                                   
+                                                                                })
+                                                                            })
+                                                                        }else{
+                                                                            _sz.children.map((index,t) =>{
+                                                                                if(index.remark != "xin"){
+                                                                                    str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                                    if(index.inorout == 1){
+                                                                                        str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                                                    }else{
+                                                                                        str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                                                                                    }
+                                                                                        str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                                    if(index.vartype == "基本类型"){
+                                                                                        str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                                    }else if(index.vartype == "常量"){
+                                                                                        str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                                    } else{
+                                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                                    } 
+                                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                                        </div>`   
+                                                                                }else{
+                                                                                    str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                                                                                            <select class="actionSelected1">
+                                                                                                <option value="1">输出</option>
+                                                                                                <option value="0">输入</option>
+                                                                                            </select>
+                                                                                            <select class="varNameInput1">
+                                                                                            </select>`
+                                                                                        if(index.vartype == "基本类型"){
+                                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                                                        }else if(index.vartype == "常量"){
+                                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                                                        } else{
+                                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                                        } 
+                                                                                        str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                                                        <button type="button" onclick="reduceButton(event)">x</button>                                               
+                                                                                    </div>`   
+                                                                                }  
+                                                                            }) 
+                                                                           
                                                                         }
-
-                                                                        $('.ruleContentDiv').html(str)
-                                                                       
-                                                                    })
-                                                                })
+                                                                    }
+                                                                })                                                               
                                                             }
                                                         }) 
                                                      }
