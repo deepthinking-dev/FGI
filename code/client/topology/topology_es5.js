@@ -325,6 +325,11 @@ var Topology = {
                                 "type": event,
                                 "data": data
                             };
+                            if(data.childStand){
+                                $(".menu-a-delete").css("display", "none");
+                            }else{
+                                $(".menu-a-delete").css("display", "block");
+                            }
                             self.initNode();
                             break;
                         case 'line':
