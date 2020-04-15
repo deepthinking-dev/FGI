@@ -512,33 +512,38 @@ var Topology = {
                                     nowList.push(now)
                                 }
                             })
+                            let in_num = -1
+                            let out_num = -1
                             nowList.map((item,i) => {
+                               console.log(in_num,out_num)
                                 if(item.childStand){
                                     if(item.childStand.type == data[0].id+'的弟弟'){
                                         if(item.id.includes('IN')){
-                                            let nums = item.childStand.wz
-                                            item.rect.x = data[0].rect.x + nums.x
-                                            item.rect.y = data[0].rect.y + nums.y
+                                            in_num++
+                                            // i = i-(data[0].data.outNum+1)
+                                            item.rect.width = 20
+                                            item.rect.height = 10 
+                                            item.rect.x = data[0].rect.x- item.rect.width
+                                            item.rect.y = data[0].rect.y + in_num*20 + 10
+                                                                          
+                                            item.rect.ex = item.rect.x  + item.rect.width
+                                            item.rect.ey = item.rect.y + item.rect.height
+                                            item.rect.center.x = item.rect.x+ item.rect.width/2
+                                            item.rect.center.y =item.rect.y  + item.rect.height/2
 
-                                            item.rect.width = widthsa/10
-                                            item.rect.height = heightsa/10
-
-                                            item.rect.ex = data[0].rect.ex - widthsa
-                                            item.rect.ey = data[0].rect.y + nums.y + heightsa/10
-                                            item.rect.center.x = data[0].rect.center.x + nums.x
-                                            item.rect.center.y = data[0].rect.center.y + nums.y + item.rect.height/2
-                                            item.textRect.x =  item.rect.x 
+                                            item.textRect.x = item.rect.x - 5
                                             item.textRect.y =  item.rect.y
-                                            item.textRect.width = 18
+                                            item.textRect.width = 10
                                             item.textRect.height = 5
-                                            item.paddingTopNum = -3
-                                            item.paddingTop = -3
-                                            item.fullTextRect.x = data[0].fullTextRect.x + nums.x
-                                            item.fullTextRect.y = data[0].fullTextRect.y + nums.y
-                                            item.iconRect.x = data[0].iconRect.x + nums.x
-                                            item.iconRect.y = data[0].iconRect.y + nums.y
-                                            item.fullIconRect.x = data[0].fullIconRect.x + nums.x
-                                            item.fullIconRect.y = data[0].fullIconRect.y + nums.y
+                                            item.paddingTopNum = 0
+                                            item.paddingTop = 0
+                                            item.fullIconRect.height = 4
+                                            item.fullTextRect.x = item.rect.ex - item.textRect.height -5
+                                            item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
+                                            item.iconRect.x = item.rect.ex - item.textRect.height -5
+                                            item.iconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
+                                            item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.anchors[0].x = item.rect.x
                                             item.anchors[0].y = item.rect.center.y
 
@@ -563,7 +568,8 @@ var Topology = {
                                             item.rotatedAnchors[3].x = 0
                                             item.rotatedAnchors[3].y = 0
                                         }else{
-                                            i = i-(data[0].data.inNum+1)
+                                            // i = i-(data[0].data.inNum+1)
+                                            out_num ++
                                             // let nums = item.childStand.wz
                                             // item.rect.x = data[0].rect.x +data[0].rect.width
                                             // item.rect.y = data[0].rect.y + nums.y
@@ -612,7 +618,7 @@ var Topology = {
                                             // item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
 
                                             item.rect.x = data[0].rect.ex 
-                                            item.rect.y = data[0].rect.y + i*20 + 10
+                                            item.rect.y = data[0].rect.y + out_num*20 + 10
                                             item.rect.width = 20
                                             item.rect.height = 10                                
                                             item.rect.ex = item.rect.x  + item.rect.width
@@ -621,18 +627,18 @@ var Topology = {
                                             item.rect.center.y =item.rect.y  + item.rect.height/2
 
 
-                                            item.textRect.x = item.rect.x
+                                            item.textRect.x = item.rect.x -5
                                             item.textRect.y =  item.rect.y
                                             item.textRect.width = 10
                                             item.textRect.height = 5
                                             item.paddingTopNum = 0
                                             item.paddingTop = 0
                                             item.fullIconRect.height = 4
-                                            item.fullTextRect.x = item.rect.ex - item.textRect.height
+                                            item.fullTextRect.x = item.rect.ex - item.textRect.height -5
                                             item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
-                                            item.iconRect.x = item.rect.ex - item.textRect.height
+                                            item.iconRect.x = item.rect.ex - item.textRect.height -5 
                                             item.iconRect.y = item.rect.y  -item.fullIconRect.height
-                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height
+                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
                                             item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.anchors[0].x = 0
                                             item.anchors[0].y =0
