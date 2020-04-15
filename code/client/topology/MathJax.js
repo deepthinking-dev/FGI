@@ -474,6 +474,10 @@ function ConfirmDelRule(){
                 canvas.data.lines = [];
                 canvas.render();
                 window.bigData.ruleType = "add"
+                window.Topology.tools = []
+                window.idStoreData ={}
+                $("#currentGzName").text("").attr({title:""})
+                $("#currentGzDes").text("").attr({title:""})
             }
         }
     })
