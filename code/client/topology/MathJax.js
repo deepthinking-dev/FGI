@@ -521,7 +521,7 @@ function ActionSure(){
                     data.data.inNum ++
                     num = {
                         x:-widths,
-                        y:(heights*data.data.inNum)+10*(data.data.inNum + 1)
+                        y:(heights*data.data.inNum)+10*(data.data.inNum + 1)  
                     }
                     let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
@@ -796,33 +796,26 @@ function ActionSure(){
                     canvas.data.nodes.map((item1,i) => {
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                            let in_num = -1
+                            let out_num = -1
                             if(Del1UUid == Del2UUid){                             
                                 if(item.inorout == 0){
-                                    window.Topology.dblclickNode.data.inNum --     
-                                    if( window.Topology.dblclickNode.rect.height > 100){
-                                       
-                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                    }                                                 
-                                }else{
-                                    window.Topology.dblclickNode.data.outNum --
                                     canvas.data.nodes.splice(i,1); 
                                     toastr.success('删除成功！');
-
+                                    window.Topology.dblclickNode.data.inNum --    
+                                    
                                     nowList.map((test,R)=>{
-                                        R = R-(data.data.inNum+1)
+                                        in_num ++
                                         if(test.childStand){
-                                           if(test.id.indexOf("OUT") !=-1){
-                                            test.rect.x = data.rect.ex 
-                                            test.rect.y = data.rect.y + R*20 + 5
+                                           if(test.id.indexOf("IN") !=-1){                                          
                                             test.rect.width = 20
-                                            test.rect.height = 10                                
+                                            test.rect.height = 10  
+                                            test.rect.x = data.rect.x-test.rect.width
+                                            test.rect.y = data.rect.y + in_num*20 + 5                             
                                             test.rect.ex = test.rect.x  + test.rect.width
                                             test.rect.ey = test.rect.y + test.rect.height
                                             test.rect.center.x = test.rect.x+ test.rect.width/2
                                             test.rect.center.y =test.rect.y  + test.rect.height/2
-
-
                                             test.textRect.x = test.rect.x
                                             test.textRect.y =  test.rect.y
                                             test.textRect.width = 10
@@ -836,17 +829,61 @@ function ActionSure(){
                                             test.iconRect.y = test.rect.y  -test.fullIconRect.height
                                             test.fullIconRect.x =  test.rect.ex - test.textRect.height
                                             test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                            test.anchors[0].x = test.rect.x
+                                            test.anchors[0].y =test.rect.center.y
+                                            test.anchors[1].x =0
+                                            test.anchors[1].y = 0   
+                                            test.anchors[2].x = 0
+                                            test.anchors[2].y = 0                                                                                           
+                                            test.anchors[3].x =0
+                                            test.anchors[3].y = 0
+                                            test.rotatedAnchors[0].x = test.rect.x
+                                            test.rotatedAnchors[0].y =test.rect.center.y
+                                            test.rotatedAnchors[1].x = 0
+                                            test.rotatedAnchors[1].y =0
+                                            test.rotatedAnchors[2].x = 0
+                                            test.rotatedAnchors[2].y = 0
+                                            test.rotatedAnchors[3].x =0
+                                            test.rotatedAnchors[3].y =0
+                                           }
+                                            
+                                        }
+                                    })
+                                    if( window.Topology.dblclickNode.rect.height > 100){
+                                       
+                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                    }                                                 
+                                }else{
+                                    window.Topology.dblclickNode.data.outNum --
+                                    canvas.data.nodes.splice(i,1); 
+                                    toastr.success('删除成功！');
 
-                                            // test.anchors.map((obj,i) => {
-                                            //     obj.x = data.anchors[i].x
-                                            //     obj.y = data.anchors[i].y
-                                            // })
-
-                                            // test.anchors[0].x = test.rect.x
-                                            // test.anchors[0].y =test.rect.ey -test.rect.height/2
-
-                                            // test.anchors[1].x = test.rect.ex -test.rect.height
-                                            // test.anchors[1].y = test.rect.y
+                                    nowList.map((test,R)=>{
+                                        out_num ++
+                                        if(test.childStand){
+                                           if(test.id.indexOf("OUT") !=-1){
+                                            test.rect.x = data.rect.ex 
+                                            test.rect.y = data.rect.y + out_num*20 + 5
+                                            test.rect.width = 20
+                                            test.rect.height = 10                                
+                                            test.rect.ex = test.rect.x  + test.rect.width
+                                            test.rect.ey = test.rect.y + test.rect.height
+                                            test.rect.center.x = test.rect.x+ test.rect.width/2
+                                            test.rect.center.y =test.rect.y  + test.rect.height/2
+                                            test.textRect.x = test.rect.x
+                                            test.textRect.y =  test.rect.y
+                                            test.textRect.width = 10
+                                            test.textRect.height = 5
+                                            test.paddingTopNum = 0
+                                            test.paddingTop = 0
+                                            test.fullIconRect.height = 4
+                                            test.fullTextRect.x = test.rect.ex - test.textRect.height
+                                            test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                            test.iconRect.x = test.rect.ex - test.textRect.height
+                                            test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                            test.fullIconRect.x =  test.rect.ex - test.textRect.height
+                                            test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
                                             test.anchors[0].x = 0
                                             test.anchors[0].y =0
                                             test.anchors[1].x =0
@@ -855,14 +892,6 @@ function ActionSure(){
                                             test.anchors[2].y = test.rect.center.y                                                                                            
                                             test.anchors[3].x =0
                                             test.anchors[3].y = 0
-                                            // test.anchors[3].x = test.rect.center.x -test.rect.height
-                                            // test.anchors[3].y = test.rect.ey
-                                            // test.rotatedAnchors[0].x = test.rect.x
-                                            // test.rotatedAnchors[0].y =test.rect.ey -test.rect.height/2
-                                            // test.rotatedAnchors[1].x = test.rect.ex -test.rect.height
-                                            // test.rotatedAnchors[1].y = test.rect.y
-
-
                                             test.rotatedAnchors[0].x = 0
                                             test.rotatedAnchors[0].y =0
 
@@ -874,14 +903,6 @@ function ActionSure(){
 
                                             test.rotatedAnchors[3].x =0
                                             test.rotatedAnchors[3].y =0
-
-                                            // test.rotatedAnchors[3].x = test.rect.center.x -test.rect.height
-                                            // test.rotatedAnchors[3].y = test.rect.ey
-                                            // test.rotatedAnchors.map((obj,i) => {
-                                            //     obj.x = data.rotatedAnchors[i].x
-                                            //     obj.y = data.rotatedAnchors[i].y
-                                            // })
-                                            console.log( test.rect.x,test.rect.y,R)
                                            }
                                             
                                         }
