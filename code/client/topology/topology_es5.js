@@ -545,28 +545,21 @@ var Topology = {
                                             item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
                                             item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.anchors[0].x = item.rect.x
-                                            item.anchors[0].y = item.rect.center.y
-
-                                            item.anchors[1].x = 0
-                                            item.anchors[1].y = 0
-
+                                            item.anchors[0].y =item.rect.center.y 
+                                            item.anchors[1].x =0
+                                            item.anchors[1].y = 0   
                                             item.anchors[2].x = 0
-                                            item.anchors[2].y = 0
-
-                                            item.anchors[3].x = 0
+                                            item.anchors[2].y = 0                                                                                          
+                                            item.anchors[3].x =0
                                             item.anchors[3].y = 0
-
                                             item.rotatedAnchors[0].x = item.rect.x
-                                            item.rotatedAnchors[0].y = item.rect.center.y - heightsa/2
-
+                                            item.rotatedAnchors[0].y =item.rect.center.y 
                                             item.rotatedAnchors[1].x = 0
-                                            item.rotatedAnchors[1].y = 0
-
+                                            item.rotatedAnchors[1].y =0
                                             item.rotatedAnchors[2].x = 0
                                             item.rotatedAnchors[2].y = 0
-
-                                            item.rotatedAnchors[3].x = 0
-                                            item.rotatedAnchors[3].y = 0
+                                            item.rotatedAnchors[3].x =0
+                                            item.rotatedAnchors[3].y =0
                                         }else{
                                             // i = i-(data[0].data.inNum+1)
                                             out_num ++
@@ -1495,7 +1488,7 @@ var Topology = {
                                                         item.children.map((index,t) =>{
                                                             if(index.remark != "xin"){
                                                                 str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                                if(index.inorout == 1){
+                                                                if(index.inorout == 1 || index.inorout =="输出"){
                                                                     str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                                 }else{
                                                                     str+=  ` <input value="输入" class="actionSelected1" disabled>  `
@@ -1576,6 +1569,7 @@ var Topology = {
                                                             if(index.remark == "xin"){
                                                                 $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                                                 setTimeout(function () {
+                                                                    $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
                                                                     $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
                                                                 }, 100);
                                                                 
@@ -1593,10 +1587,10 @@ var Topology = {
                             })
                             
                             $('#ruleAct').show();
-                            $(`#ruleAct`).css({
-                                top:(data.rect.y + 80)+"px",
-                                left:(data.rect.x + 240)+"px"
-                            })
+                            // $(`#ruleAct`).css({
+                            //     top:(data.rect.y + 80)+"px",
+                            //     left:(data.rect.x + 240)+"px"
+                            // })
                            self.dblclickNode = data
                         break;
                     }

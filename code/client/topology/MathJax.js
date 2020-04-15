@@ -496,6 +496,11 @@ function ActionSure(){
     let currId = data.id.slice(0,tableAlgorithmIndex);
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){
+            let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+            if(varName =="请选择"){
+                toastr.success('请选择变量名称！');
+                return false;
+            }
             //有uuid说明这个小接口已存在
             let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
               //没得uuid，说明要新增小接口
@@ -505,11 +510,7 @@ function ActionSure(){
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
                 let heights = 10               
-                let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
-                if(varName =="请选择"){
-                    toastr.success('请选择变量名称！');
-                    return false;
-                }
+               
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     data.data.inNum ++
                     num = {
@@ -626,6 +627,7 @@ function ActionSure(){
     let lsList = []
     //数据处理成需要的格式
     for(let i =0;i< actionInfoNum.length ;i++){
+        debugger
         let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
         if(id){
             id =id
@@ -648,7 +650,7 @@ function ActionSure(){
         if(uuid.indexOf('---') == -1){
             uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
         }else{
-           
+            uuid = uuid
         }
         let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
         if(inorout){
@@ -657,7 +659,7 @@ function ActionSure(){
             inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
         }
           
-        if(inorout == "输入"){
+        if(inorout == "输入" || inorout== "0"){
             inorout = 0
         }else{
             inorout = 1
