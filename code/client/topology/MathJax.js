@@ -629,7 +629,6 @@ function ActionSure(){
     let lsList = []
     //数据处理成需要的格式
     for(let i =0;i< actionInfoNum.length ;i++){
-        debugger
         let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
         if(id){
             id =id
