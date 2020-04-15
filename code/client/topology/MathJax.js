@@ -620,7 +620,8 @@ function ActionSure(){
         }
 
     }
-    let isFlag = false
+    // let isFlag = false
+    let nowNodesList =[]
     let lsList = []
     for(let i =0;i< actionInfoNum.length ;i++){
         let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
@@ -639,6 +640,8 @@ function ActionSure(){
         }else{
             varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
+        test.text =varName
+        canvas.render();
         let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
         if(uuid.indexOf('---') == -1){
             uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
@@ -669,12 +672,13 @@ function ActionSure(){
        }
        lsList.push(obj)
    }
+   nowNodesList = lsList
    let UPdataList = []
    let AddList = []
    let DelList = []
     window.Topology.tools.map(isCZdata=>{
         if(isCZdata.id == data.id){
-            isFlag =true
+            // isFlag =true
             for(let i =0;i< actionInfoNum.length ;i++){
                 let UPFlag = false
                 for(let j=0; j<isCZdata.children.length;j++){
@@ -922,10 +926,12 @@ function ActionSure(){
             }
         }
     })
-    if(!isFlag){
-        saveList.children = lsList
-        window.Topology.tools.push(saveList)
-    }
+    console.log(saveList.children,"8888888888888")
+    window.Topology.tools.map(item=>{
+        if(item.id == data.id){
+            item.children = nowNodesList
+        }
+    })
     canvas.render();
     $('#ruleAct').fadeToggle(500)
 }
