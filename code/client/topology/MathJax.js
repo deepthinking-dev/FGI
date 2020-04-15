@@ -483,21 +483,22 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(){
+    //双击的大模块数据
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    //拷贝大模块数据变成小接口数据
     let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
+    //接口参数的个数
     let actionInfoNum = $('.ruleContentDiv .actionInfo')
-   
-    let saveList ={
-        id :data.id,
-        name:data.text,
-        children:[]
-    }
+    //当前大模块的小接口节点数据
+    let nowList =[]
+
     let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
     let currId = data.id.slice(0,tableAlgorithmIndex);
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){
+            //有uuid说明这个小接口已存在
             let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
-              
+              //没得uuid，说明要新增小接口
             if(!uuid){
 
                 let xinguid = guid()
@@ -623,6 +624,7 @@ function ActionSure(){
     // let isFlag = false
     let nowNodesList =[]
     let lsList = []
+    //数据处理成需要的格式
     for(let i =0;i< actionInfoNum.length ;i++){
         let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
         if(id){
@@ -676,6 +678,7 @@ function ActionSure(){
    let UPdataList = []
    let AddList = []
    let DelList = []
+   //判断修改，新增，删除数据
     window.Topology.tools.map(isCZdata=>{
         if(isCZdata.id == data.id){
             // isFlag =true
@@ -761,7 +764,7 @@ function ActionSure(){
             }
 
 
-            let nowList =[]
+
             canvas.data.nodes.map(now=>{
                 if(now.id.includes(data.id)){
                     nowList.push(now)
@@ -891,11 +894,28 @@ function ActionSure(){
             }
         }
     })
+    //修改本地缓存数据
     window.Topology.tools.map(item=>{
         if(item.id == data.id){
             item.children = nowNodesList
         }
     })
+    console.log(nowNodesList)
+    //修改小接口显示的内容
+    nowList.map(item =>{
+        if(item.childStand){
+            let update_UUid = item.id.substr((item.id.indexOf('---')-36),36)
+            nowNodesList.map(index=>{
+                let index_UUid = index.uuid.substr((index.uuid.indexOf('---')-36),36)
+                if(update_UUid == index_UUid){
+                    item.text = index.varname
+                    canvas.render();
+                }
+            })
+        }
+        
+    })
+    //修改接口参数，从数据库修改删除
     if(UPdataList.length > 0 || AddList > 0){
         let algorithmID =window.Topology.dblclickNode.id
         algorithmID=algorithmID.slice(0,algorithmID.indexOf('tableAlgorithm'))
