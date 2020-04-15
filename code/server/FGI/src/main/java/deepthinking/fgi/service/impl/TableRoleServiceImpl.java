@@ -162,9 +162,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                    List<TableInterfacerole> tableInterfaceroleList){
         tableAlgorithmconditionList.forEach(tableAlgorithmcondition -> {
             tableInterfaceroleList.forEach(tableInterfacerole -> {
-                if(tableInterfacerole.getParametersid().equals(tableAlgorithmcondition.getInterfaceparametersid())
-                        || tableInterfacerole.getPreparametersid().equals(tableAlgorithmcondition.getInterfaceparametersid())){
-                    tableAlgorithmcondition.setInterfaceroleid(tableInterfacerole.getId());
+                if(tableInterfacerole.getParametersid()!=null){
+                    if(tableInterfacerole.getParametersid().equals(tableAlgorithmcondition.getInterfaceparametersid())
+                            || tableInterfacerole.getPreparametersid().equals(tableAlgorithmcondition.getInterfaceparametersid())){
+                        tableAlgorithmcondition.setInterfaceroleid(tableInterfacerole.getId());
+                    }
                 }
             });
         });
@@ -177,7 +179,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
     /**
      * 构造动作表
-     * @param interfaceXmlModel
      * @param tableAlgorithmconditionList
      */
     private void GetBehaviorFromModel(List<TableInterfacerole> tableInterfaceroleList,
@@ -392,7 +393,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      *  构造算法接口关系表
      * @param interfaceXmlModel
      * @param tableInterfaceroleList  接口关系列表
-     * @param transTableInterfacerole
      */
     private void GetAllInterfaceRoleFromModel(InterfaceXmlModel interfaceXmlModel,
                                               List<TableInterfacerole> tableInterfaceroleList){
@@ -933,29 +933,33 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                 List<TableInterfaceparameters> addPara=new ArrayList<>();
                 List<TableInterfaceparameters> updataPara=new ArrayList<>();
                 List<TableInterfaceparameters> deletedataPara=new ArrayList<>();
-                for(TableInterfaceparameters para:interfaceparameters){
-                    boolean flag=false;
+                if(interfaceparameters.size()==0){
+                    deletedataPara=oldData;
+                }else{
+                    for(TableInterfaceparameters para:interfaceparameters){
+                        boolean flag=false;
+                        for(TableInterfaceparameters old:oldData){
+                            if(para.getId().equals(old.getId())){//修改
+                                updataPara.add(para);
+                                flag=true;
+                                break;
+                            }
+                        }
+                        if(!flag){
+                            addPara.add(para);
+                        }
+                    }
                     for(TableInterfaceparameters old:oldData){
-                        if(para.getId().equals(old.getId())){//修改
-                            updataPara.add(para);
-                            flag=true;
-                            break;
+                        boolean flag=false;
+                        for(TableInterfaceparameters updte:updataPara){
+                            if(old.getId().equals(updte.getId())){
+                                flag=true;
+                                break;
+                            }
                         }
-                    }
-                    if(!flag){
-                        addPara.add(para);
-                    }
-                }
-                for(TableInterfaceparameters old:oldData){
-                    boolean flag=false;
-                    for(TableInterfaceparameters updte:updataPara){
-                        if(old.getId().equals(updte.getId())){
-                            flag=true;
-                            break;
+                        if(!flag){
+                            deletedataPara.add(old);
                         }
-                    }
-                    if(!flag){
-                        deletedataPara.add(old);
                     }
                 }
                 //修改
@@ -1103,19 +1107,18 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     }
 
     @Override
-    public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions) {
+    public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId) {
         try {
-            if(algorithmconditions!=null&&algorithmconditions.size()>0){
-                //删除以前的
-                int interfaceRoleId=algorithmconditions.get(0).getInterfaceroleid();
-                String interfaceParametersID=algorithmconditions.get(0).getInterfaceparametersid();
-                TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
-                tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfaceRoleId).andInterfaceparametersidEqualTo(interfaceParametersID);
-                List<TableAlgorithmcondition> old=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
-                if(old.size()>0){
-                    List<TableAlgorithmcondition> add=new ArrayList<>();
-                    List<TableAlgorithmcondition> delete=new ArrayList<>();
-                    List<TableAlgorithmcondition> uopdate=new ArrayList<>();
+            TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
+            tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfaceRoleId).andInterfaceparametersidEqualTo(interfaceParametersID);
+            List<TableAlgorithmcondition> old=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
+            if(old.size()>0){
+                List<TableAlgorithmcondition> add=new ArrayList<>();
+                List<TableAlgorithmcondition> delete=new ArrayList<>();
+                List<TableAlgorithmcondition> uopdate=new ArrayList<>();
+                if(algorithmconditions.size()==0){
+                    delete=old;
+                }else {
                     for(TableAlgorithmcondition _new:algorithmconditions){
                         boolean flag=false;
                         for(TableAlgorithmcondition _old:old){
@@ -1141,24 +1144,18 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                             delete.add(_old);
                         }
                     }
-                    add.forEach(data->{
-                        data.setInterfaceroleid(interfaceRoleId);
-                        algorithmconditionMapper.insert(data);
-                    });
-                    delete.forEach(data->algorithmconditionMapper.deleteByPrimaryKey(data.getId()));
-                    uopdate.forEach(data->algorithmconditionMapper.updateByPrimaryKeySelective(data));
-                }else{
-                    algorithmconditions.forEach(data->{
-                        data.setInterfaceroleid(interfaceRoleId);
-                        algorithmconditionMapper.insert(data);
-                    });
                 }
-//                algorithmconditionMapper.deleteByExample(tableAlgorithmconditionCriteria);
-//                //新增
-//                algorithmconditions.forEach(data->{
-//                    data.setInterfaceroleid(interfaceRoleId);
-//                    algorithmconditionMapper.insert(data);
-//                });
+                add.forEach(data->{
+                    data.setInterfaceroleid(interfaceRoleId);
+                    algorithmconditionMapper.insert(data);
+                });
+                delete.forEach(data->algorithmconditionMapper.deleteByPrimaryKey(data.getId()));
+                uopdate.forEach(data->algorithmconditionMapper.updateByPrimaryKeySelective(data));
+            }else{
+                algorithmconditions.forEach(data->{
+                    data.setInterfaceroleid(interfaceRoleId);
+                    algorithmconditionMapper.insert(data);
+                });
             }
         }catch (Exception e){
             logger.error(e.getMessage());
