@@ -297,12 +297,14 @@ function uploadSure(){
         type:"POST",
         data: formData,
         cache: false,
-　　　　processData: false, 
-　　　　contentType: false,   
-        success: function(data) {
-            if(data == true){
-
-            }
+　　　　 processData: false,
+　　　　 contentType: false,
+        success(data) {
+            $("#fileupload").hide();
+            toastr.success("导入成功")
+        },
+        error(data){
+            toastr.info("导入失败")
         }
     })
 }
