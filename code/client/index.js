@@ -1030,7 +1030,9 @@ $(function(){
                     $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
+                    $("#currentGzName").attr("title",data.tableRole.rolename)
                     $("#currentGzDes").text(data.tableRole.des);
+                    $("#currentGzDes").attr("title",data.tableRole.des);
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     canvas.open(JSON.parse(ruleData))

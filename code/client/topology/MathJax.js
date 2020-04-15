@@ -333,7 +333,9 @@ function ruleSure(){
      //动作
     editGzType = false;
     $("#currentGzName").text($("#ruleName").val());
+    $("#currentGzName").attr("title",$("#ruleName").val())
     $("#currentGzDes").text($("#ruleRemark").val());
+    $("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
