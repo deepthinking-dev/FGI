@@ -1,11 +1,10 @@
 package deepthinking.fgi.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import deepthinking.fgi.domain.TableAlgorithmcondition;
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.model.InterfaceRoleDataModel;
 import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
+import deepthinking.fgi.model.FuncSaveData;
 import deepthinking.fgi.model.xml.RuleXmlModel;
 import deepthinking.fgi.service.TableRoleService;
 import deepthinking.fgi.util.FileUploadUtil;
@@ -148,8 +147,8 @@ public class AlgorithmRuleController {
     }
     @PostMapping("/saveFunAction")
     @ApiOperation(value = "04-13 保存某个参数的动作信息，传入动作对象集合", notes = "返回保存结果", httpMethod = "POST")
-    public boolean saveFunAction(@ApiParam @RequestBody List<TableAlgorithmcondition> algorithmconditions){
-        return tableRoleService.saveFunAction(algorithmconditions);
+    public boolean saveFunAction(@ApiParam @RequestBody FuncSaveData funcSaveData){
+        return tableRoleService.saveFunAction(funcSaveData.getAlgorithmconditions(),funcSaveData.getInterfaceParametersID(),funcSaveData.getInterfaceRoleId());
     }
     @GetMapping("/delTableOperatorinterface")
     @ApiOperation(value = "04-14 根据接口ID删除一个接口，连同该接口相关的线一起删除", notes = "返回删除结果", httpMethod = "GET")

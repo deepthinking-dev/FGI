@@ -112,5 +112,5 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * 修改某个参数的动作
      * @return
      */
-    boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions);
+    boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId);
 }
