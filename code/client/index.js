@@ -283,6 +283,19 @@ $(function(){
                 };
                 sendDataIn.push(obj)
             })
+            var sendDataAll = {
+                algorithmconditions:sendDataIn,
+                interfaceParametersID:$("#addActionButton").attr("in_small"),
+                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id
+            }
+            $.ajax({
+                url:urlConfig.host+'/algorithmRule/saveFunAction',
+                data:JSON.stringify(sendDataAll),
+                type:"POST",
+                dataType: "json",
+                contentType:"application/json",
+                success(res) {}
+            })
             $('#actionOutDiv div').each(function (i,v) {
                 let obj = {
                     "behavior": $(this).find(".xwSelect_out").val(),
@@ -295,24 +308,18 @@ $(function(){
                 };
                 sendDataOut.push(obj)
             })
+            var sendDataAllOut = {
+                algorithmconditions:sendDataOut,
+                interfaceParametersID:$("#addActionButton").attr("out_small"),
+                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id
+            }
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
-                data:JSON.stringify(sendDataIn),
+                data:JSON.stringify(sendDataAllOut),
                 type:"POST",
                 dataType: "json",
                 contentType:"application/json",
-                success(res) {
-                    $.ajax({
-                        url:urlConfig.host+'/algorithmRule/saveFunAction',
-                            data:JSON.stringify(sendDataOut),
-                            type:"POST",
-                            dataType: "json",
-                            contentType:"application/json",
-                            success(res) {
-
-                        }
-                    })
-                }
+                success(res) {}
             })
         } else{//新增动作
                 var dataArrIn = [];
