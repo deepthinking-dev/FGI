@@ -520,7 +520,6 @@ var Topology = {
                             let in_num = -1
                             let out_num = -1
                             nowList.map((item,i) => {
-                               console.log(in_num,out_num)
                                 if(item.childStand){
                                     if(item.childStand.type == data[0].id+'的弟弟'){
                                         if(item.id.includes('IN')){
