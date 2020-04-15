@@ -1360,9 +1360,9 @@ var Topology = {
                                                                                             str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                                         }
                                                                                             str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
-                                                                                        if(sz.vartype == 1 || index.vartype == "基本类型"){
+                                                                                        if(sz.vartype == 1 || sz.vartype == "基本类型"){
                                                                                             str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                                        }else if(sz.vartype == 2 || index.vartype == "常量"){
+                                                                                        }else if(sz.vartype == 2 || sz.vartype == "常量"){
                                                                                             str+=`<input value="常量" class="actionSelected2" disabled>`
                                                                                         }  else{
                                                                                             str+=`<input value="对象" class="actionSelected2" disabled>`

@@ -367,7 +367,7 @@ function ruleSure(){
             if(index.uuid.indexOf("---") == -1){
                 id= index.uuid
             }else{
-                index.uuid.slice(0,index.uuid.indexOf("---"))
+                id =index.uuid.slice(0,index.uuid.indexOf("---"))
             }
             let CsObj = {
                 id:id,
@@ -780,143 +780,108 @@ function ActionSure(){
                             nowList.splice(p,1);
                         }
                     })
-
-                    
+                   
                     canvas.data.nodes.map((item1,i) => {
                         if(item1.childStand){
                             let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                             if(Del1UUid == Del2UUid){                             
-                                if( window.bigData.ruleType == "edit"){
-                                    if(window.bigData.editRuleId){
-                                        $.ajax({
-                                            type:"get",
-                                            dataType: "json",
-                                            url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
-                                            contentType: "application/json;charset=UTF-8",
-                                            data:{
-                                                operatorinterfaceId:Del1UUid
-                                            },
-                                            success: function(data) {
-                                                if(item.inorout == 0){
-                                                    window.Topology.dblclickNode.data.inNum --   
-                                                    if( window.Topology.dblclickNode.rect.height > 100){
-                                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
-                                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                                    }                                                   
-                                                }else{
-                                                    window.Topology.dblclickNode.data.outNum --
-                                                    if( window.Topology.dblclickNode.rect.height > 100){
-                                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 15
-                                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                                    }
-                                                }
-                                                canvas.data.nodes.splice(i,1);  
-                                                if(data == true){
-                                                    toastr.success('删除成功！');
-                                                }
-                                            }
-                                        })
-                                    }
+                                if(item.inorout == 0){
+                                    window.Topology.dblclickNode.data.inNum --     
+                                    if( window.Topology.dblclickNode.rect.height > 100){
+                                       
+                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                    }                                                 
                                 }else{
-                                    if(item.inorout == 0){
-                                        window.Topology.dblclickNode.data.inNum --     
-                                        if( window.Topology.dblclickNode.rect.height > 100){
-                                           
-                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                        }                                                 
-                                    }else{
-                                        window.Topology.dblclickNode.data.outNum --
-                                        canvas.data.nodes.splice(i,1); 
-                                        toastr.success('删除成功！');
+                                    window.Topology.dblclickNode.data.outNum --
+                                    canvas.data.nodes.splice(i,1); 
+                                    toastr.success('删除成功！');
 
-                                        nowList.map((test,R)=>{
-                                            R = R-(data.data.inNum+1)
-                                            if(test.childStand){
-                                               if(test.id.indexOf("OUT") !=-1){
-                                                test.rect.x = data.rect.ex 
-                                                test.rect.y = data.rect.y + R*20 + 5
-                                                test.rect.width = 20
-                                                test.rect.height = 10                                
-                                                test.rect.ex = test.rect.x  + test.rect.width
-                                                test.rect.ey = test.rect.y + test.rect.height
-                                                test.rect.center.x = test.rect.x+ test.rect.width/2
-                                                test.rect.center.y =test.rect.y  + test.rect.height/2
+                                    nowList.map((test,R)=>{
+                                        R = R-(data.data.inNum+1)
+                                        if(test.childStand){
+                                           if(test.id.indexOf("OUT") !=-1){
+                                            test.rect.x = data.rect.ex 
+                                            test.rect.y = data.rect.y + R*20 + 5
+                                            test.rect.width = 20
+                                            test.rect.height = 10                                
+                                            test.rect.ex = test.rect.x  + test.rect.width
+                                            test.rect.ey = test.rect.y + test.rect.height
+                                            test.rect.center.x = test.rect.x+ test.rect.width/2
+                                            test.rect.center.y =test.rect.y  + test.rect.height/2
 
 
-                                                test.textRect.x = test.rect.x
-                                                test.textRect.y =  test.rect.y
-                                                test.textRect.width = 10
-                                                test.textRect.height = 5
-                                                test.paddingTopNum = 0
-                                                test.paddingTop = 0
-                                                test.fullIconRect.height = 4
-                                                test.fullTextRect.x = test.rect.ex - test.textRect.height
-                                                test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
-                                                test.iconRect.x = test.rect.ex - test.textRect.height
-                                                test.iconRect.y = test.rect.y  -test.fullIconRect.height
-                                                test.fullIconRect.x =  test.rect.ex - test.textRect.height
-                                                test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                            test.textRect.x = test.rect.x
+                                            test.textRect.y =  test.rect.y
+                                            test.textRect.width = 10
+                                            test.textRect.height = 5
+                                            test.paddingTopNum = 0
+                                            test.paddingTop = 0
+                                            test.fullIconRect.height = 4
+                                            test.fullTextRect.x = test.rect.ex - test.textRect.height
+                                            test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                            test.iconRect.x = test.rect.ex - test.textRect.height
+                                            test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                            test.fullIconRect.x =  test.rect.ex - test.textRect.height
+                                            test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
 
-                                                // test.anchors.map((obj,i) => {
-                                                //     obj.x = data.anchors[i].x
-                                                //     obj.y = data.anchors[i].y
-                                                // })
+                                            // test.anchors.map((obj,i) => {
+                                            //     obj.x = data.anchors[i].x
+                                            //     obj.y = data.anchors[i].y
+                                            // })
 
-                                                // test.anchors[0].x = test.rect.x
-                                                // test.anchors[0].y =test.rect.ey -test.rect.height/2
-    
-                                                // test.anchors[1].x = test.rect.ex -test.rect.height
-                                                // test.anchors[1].y = test.rect.y
-                                                test.anchors[0].x = 0
-                                                test.anchors[0].y =0
-                                                test.anchors[1].x =0
-                                                test.anchors[1].y = 0   
-                                                test.anchors[2].x = test.rect.ex
-                                                test.anchors[2].y = test.rect.center.y                                                                                            
-                                                test.anchors[3].x =0
-                                                test.anchors[3].y = 0
-                                                // test.anchors[3].x = test.rect.center.x -test.rect.height
-                                                // test.anchors[3].y = test.rect.ey
-                                                // test.rotatedAnchors[0].x = test.rect.x
-                                                // test.rotatedAnchors[0].y =test.rect.ey -test.rect.height/2
-                                                // test.rotatedAnchors[1].x = test.rect.ex -test.rect.height
-                                                // test.rotatedAnchors[1].y = test.rect.y
+                                            // test.anchors[0].x = test.rect.x
+                                            // test.anchors[0].y =test.rect.ey -test.rect.height/2
+
+                                            // test.anchors[1].x = test.rect.ex -test.rect.height
+                                            // test.anchors[1].y = test.rect.y
+                                            test.anchors[0].x = 0
+                                            test.anchors[0].y =0
+                                            test.anchors[1].x =0
+                                            test.anchors[1].y = 0   
+                                            test.anchors[2].x = test.rect.ex
+                                            test.anchors[2].y = test.rect.center.y                                                                                            
+                                            test.anchors[3].x =0
+                                            test.anchors[3].y = 0
+                                            // test.anchors[3].x = test.rect.center.x -test.rect.height
+                                            // test.anchors[3].y = test.rect.ey
+                                            // test.rotatedAnchors[0].x = test.rect.x
+                                            // test.rotatedAnchors[0].y =test.rect.ey -test.rect.height/2
+                                            // test.rotatedAnchors[1].x = test.rect.ex -test.rect.height
+                                            // test.rotatedAnchors[1].y = test.rect.y
 
 
-                                                test.rotatedAnchors[0].x = 0
-                                                test.rotatedAnchors[0].y =0
-    
-                                                test.rotatedAnchors[1].x = 0
-                                                test.rotatedAnchors[1].y =0
-    
-                                                test.rotatedAnchors[2].x = test.rect.ex
-                                                test.rotatedAnchors[2].y = test.rect.center.y
+                                            test.rotatedAnchors[0].x = 0
+                                            test.rotatedAnchors[0].y =0
 
-                                                test.rotatedAnchors[3].x =0
-                                                test.rotatedAnchors[3].y =0
-    
-                                                // test.rotatedAnchors[3].x = test.rect.center.x -test.rect.height
-                                                // test.rotatedAnchors[3].y = test.rect.ey
-                                                // test.rotatedAnchors.map((obj,i) => {
-                                                //     obj.x = data.rotatedAnchors[i].x
-                                                //     obj.y = data.rotatedAnchors[i].y
-                                                // })
-                                                console.log( test.rect.x,test.rect.y,R)
-                                               }
-                                                
-                                            }
-                                        })
-                                        if( window.Topology.dblclickNode.rect.height > 100){
+                                            test.rotatedAnchors[1].x = 0
+                                            test.rotatedAnchors[1].y =0
+
+                                            test.rotatedAnchors[2].x = test.rect.ex
+                                            test.rotatedAnchors[2].y = test.rect.center.y
+
+                                            test.rotatedAnchors[3].x =0
+                                            test.rotatedAnchors[3].y =0
+
+                                            // test.rotatedAnchors[3].x = test.rect.center.x -test.rect.height
+                                            // test.rotatedAnchors[3].y = test.rect.ey
+                                            // test.rotatedAnchors.map((obj,i) => {
+                                            //     obj.x = data.rotatedAnchors[i].x
+                                            //     obj.y = data.rotatedAnchors[i].y
+                                            // })
+                                            console.log( test.rect.x,test.rect.y,R)
+                                           }
                                             
-                                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
-                                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
-                                        }else{
-                                            window.Topology.dblclickNode.rect.height = 100
                                         }
+                                    })
+                                    if( window.Topology.dblclickNode.rect.height > 100){
+                                        
+                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
+                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
+                                    }else{
+                                        window.Topology.dblclickNode.rect.height = 100
                                     }
-                                    
-                                }       
+                                }      
                             }
                         }
                     })
@@ -924,12 +889,61 @@ function ActionSure(){
             }
         }
     })
-    console.log(saveList.children,"8888888888888")
     window.Topology.tools.map(item=>{
         if(item.id == data.id){
             item.children = nowNodesList
         }
     })
+    if(UPdataList.length > 0 || AddList > 0){
+        let algorithmID =window.Topology.dblclickNode.id
+        algorithmID=algorithmID.slice(0,algorithmID.indexOf('tableAlgorithm'))
+        if(window.bigData.ruleType == "edit"){
+            let operatorInterfaceDataModel ={
+                algorithmID:algorithmID,
+                id:window.idStoreData[window.Topology.dblclickNode.id] ,
+                interfaceName:window.Topology.dblclickNode.text,
+                roleID:window.bigData.editRuleId,
+                tableInterfaceparametersList:[]
+            }
+            window.Topology.tools.map(item=>{
+                if(item.id == window.Topology.dblclickNode.id) {
+                    item.children.map(index=>{
+                        let id =""
+                        if(index.uuid.indexOf("---") == -1){
+                            id= index.uuid
+                        }else{
+                            id = index.uuid.slice(0,index.uuid.indexOf("---"))
+                        }
+                        let CsObj = {
+                            id:id,
+                            inorout:index.inorout,
+                            interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
+                            parametersname:index.varname,
+                            parameterssources:index.id
+                        }
+                        operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
+                    })
+                }              
+
+            })
+
+            console.log(operatorInterfaceDataModel)
+            $.ajax({
+                type:"post",
+                dataType: "json",
+                url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+                contentType: "application/json;charset=UTF-8",
+                data:JSON.stringify(operatorInterfaceDataModel),
+                success: function(data) {
+                    if(data == true){
+                        toastr.success('修改成功！');
+                      
+                    }
+                }
+            })
+        }
+    }
+
     canvas.render();
     $('#ruleAct').fadeToggle(500)
 }
