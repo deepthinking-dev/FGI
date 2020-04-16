@@ -1565,9 +1565,9 @@
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
-                                <input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 5px;border: none">
-                                <input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;margin-right: 5px">
-                                <input type="button" value="发布" style="height: 30px;line-height: 30px;background: #409eff;border: none">
+                                <img src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
                        `)
@@ -2061,11 +2061,12 @@
             url:urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
             data:{username:null},
             success(data) {
+                if(!data.length) return;
                 $("#gzTable").append(`<thead>
                     <th style="width: 150px">规则名称</th>
                     <th style="width: 150px">规则描述</th>
                     <th style="width: 150px">备注</th>
-                    <th style="width: 200px">操作</th>
+                    <th style="width: 150px">操作</th>
                     </thead>`)
                 data.map(s=>{
                     $("#gzTable").append(
@@ -2073,11 +2074,11 @@
                             <td style="width: 150px">${s.rolename}</td>
                             <td style="width: 150px">${s.des}</td>
                             <td style="width: 150px">${s.remark}</td>
-                            <td style="width: 200px">
-                                <input type="button" onclick="modifyGz(${s.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 5px;border: none">
-                                <input type="button" onclick="deleteGz(${s.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;margin-right: 5px;">
-                                <input type="button" onclick="exportGz(${s.id})" value="导出" style="height: 30px;line-height: 30px;background: #409eff;border: none;margin-right: 5px;">
-                                <input type="button" value="发布" style="height: 30px;line-height: 30px;background: #409eff;border: none">
+                            <td style="width: 150px">
+                               <img src="static/edit.png" onclick="modifyGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                               <img src="static/delete.png" onclick="deleteGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                               <img src="static/download.png" onclick="exportGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                               <img src="static/fabu.png" onclick="exportGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
                        `)
@@ -2175,6 +2176,9 @@
     }
     function uploadShow() {
         $("#fileupload").show()
+    }
+    function publish(s) {
+
     }
 </script>
 </body>

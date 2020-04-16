@@ -1,10 +1,9 @@
 (function () {
-    let escType =true 
+    let escType =true
     var fullscreen ;
     let btn = document.getElementById('btn');
     let fullarea = document.getElementById('topo_canvas')
-    btn.addEventListener('click',function(){  
-        
+    btn.addEventListener('click',function(){
         if (fullarea.requestFullscreen) {
             fullarea.requestFullscreen();
           } else if (fullarea.webkitRequestFullScreen) {
