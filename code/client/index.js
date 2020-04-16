@@ -371,7 +371,7 @@ $(function(){
     $('body').on('click','#addDic',(e) => {
         $("#editDic").show();
         $("#editDicYes").show();
-        $("#editDicTitle").text("新增字典");
+        $("#editDicTitle").text("新增算法");
         $("#zdcsList").html(``)
         $("#editDicYes").attr("editId","")
         $("#editDicName").val("");
@@ -385,7 +385,7 @@ $(function(){
         $("#editDicDes").attr("disabled",false);
     })
     $('body').on('click','.dicEdit',(e) => {
-        $("#editDicTitle").text("修改字典")
+        $("#editDicTitle").text("修改算法")
     })
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
@@ -457,7 +457,7 @@ $(function(){
         })
         dataAll.tableFuncs = tables;
         if(!flag) return false;
-        if( $("#editDicTitle").text() == "新增字典"){
+        if( $("#editDicTitle").text() == "新增算法"){
             $.ajax({
                 url:urlConfig.host + "/operatorMaintenance/addAlgorithm",
                 data:JSON.stringify(dataAll),
@@ -518,8 +518,12 @@ $(function(){
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
-                  <span style="color:#fff;">参数名称</span>
+                    <span style="color:#fff;">参数名</span>
                     <input class="zdcsCsmc" type="text" value=""> 
+                </i>
+                <i>
+                    <span style="color:#fff;">变量</span>
+                    <input class="variable" type="text" value=""> 
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
@@ -540,7 +544,7 @@ $(function(){
                         <option value="1">输出</option>
                     </select>
                 </i>  
-                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
+                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:5px;">删除</button>
             </div>
         `)
     })
@@ -557,13 +561,14 @@ $(function(){
         getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
         $("#algorithmPage").hide();
         $("#ruleMde").show();
+        $("#modelPageDiv").hide();
     })
     function getAllData(url,datas,type,param){
         $.ajax({
             url:urlConfig.host+url,
             data:param,
             success: function(data) {
-                $(".left-list").remove()
+                $("#rulePage .left-list").remove();
                 if(type=="tableAlgorithm"){
                     data.map(item => {
                         window.addAlgorithm({
@@ -1096,7 +1101,7 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                $("#editDicTitle").text("字典详情")
+                $("#editDicTitle").text("算法详情")
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
@@ -1109,8 +1114,12 @@ $(function(){
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名称</span>
+                                <span style="color:#fff;">参数名</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">变量</span>
+                                <input class="variable" type="text" value="">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
