@@ -857,17 +857,22 @@
             <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
         <div style="position: relative;top: 70px;margin: 0 auto;">
-
             <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
                 <div style="margin-left: 30px">
-                    <div style="margin: 10px 0">
-                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 40px">
+                    <div style="margin: 8px 0">
+                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 30px">
                     </div>
-                    <div  style="margin: 10px 0">
-                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 40px">
+                    <div style="margin: 8px 0">
+                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 30px">
+                    </div>
+                    <div style="margin: 8px 0">
+                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px">
+                    </div>
+                    <div style="margin: 8px 0">
+                        <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
                     </div>
                     <div>
-                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 40px">
+                        <span>分组</span><input type="text" id="group" style="width: 350px;height: 30px">
                     </div>
                 </div>
             <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
@@ -1566,7 +1571,7 @@
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
                                 <img src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
                                 <img src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
