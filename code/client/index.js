@@ -371,7 +371,7 @@ $(function(){
     $('body').on('click','#addDic',(e) => {
         $("#editDic").show();
         $("#editDicYes").show();
-        $("#editDicTitle").text("新增字典");
+        $("#editDicTitle").text("新增算法");
         $("#zdcsList").html(``)
         $("#editDicYes").attr("editId","")
         $("#editDicName").val("");
@@ -385,7 +385,7 @@ $(function(){
         $("#editDicDes").attr("disabled",false);
     })
     $('body').on('click','.dicEdit',(e) => {
-        $("#editDicTitle").text("修改字典")
+        $("#editDicTitle").text("修改算法")
     })
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
@@ -457,7 +457,7 @@ $(function(){
         })
         dataAll.tableFuncs = tables;
         if(!flag) return false;
-        if( $("#editDicTitle").text() == "新增字典"){
+        if( $("#editDicTitle").text() == "新增算法"){
             $.ajax({
                 url:urlConfig.host + "/operatorMaintenance/addAlgorithm",
                 data:JSON.stringify(dataAll),
@@ -557,13 +557,14 @@ $(function(){
         getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null})
         $("#algorithmPage").hide();
         $("#ruleMde").show();
+        $("#modelPageDiv").hide();
     })
     function getAllData(url,datas,type,param){
         $.ajax({
             url:urlConfig.host+url,
             data:param,
             success: function(data) {
-                $(".left-list").remove()
+                $("#rulePage .left-list").remove();
                 if(type=="tableAlgorithm"){
                     data.map(item => {
                         window.addAlgorithm({
@@ -1096,7 +1097,7 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                $("#editDicTitle").text("字典详情")
+                $("#editDicTitle").text("算法详情")
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});

@@ -61,6 +61,7 @@ body{
     display: inline-block;
     top: 2px;
     position: relative;
+    margin-right: 3px;
 }
 .title-page li span .DicI{
     background-image: url(./static/dictory.png);
@@ -71,6 +72,7 @@ body{
     display: inline-block;
     top: 2px;
     position: relative;
+    margin-right: 3px;
 }
 .Search{
     position: relative;
@@ -95,11 +97,11 @@ body{
     bottom: 0px;
     height: 6%;
 }
-.mouldFoot>div{
+.mouldFoot div{
     width: 100%;
     cursor: pointer;
     color: #ebeef8;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     border: 1px solid #00beff;
@@ -491,6 +493,17 @@ body{
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
+#gzDiv{
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    width: 700px;
+    height: 700px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
 #dicTable{
     margin: 0 20px
 }
@@ -525,6 +538,12 @@ body{
     border: 1px solid #77CDFE;
 }
 #dicTable th{
+    text-align: center;
+}
+#gzTable td,th{
+    border: 1px solid #77CDFE;
+}
+#gzTable th{
     text-align: center;
 }
 #editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1{
@@ -625,6 +644,17 @@ body{
     line-height: 40px;
     margin-right: 20px;
 }
+#gzDiv span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
 #editDic .title{
     position: absolute;
     width: 100%;
@@ -646,6 +676,14 @@ body{
     height: 40px;
 }
 #dicDiv .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    text-align: center;
+}
+#gzDiv .title span{
     position: relative;
     font-size: 16px;
     color: #fff;
@@ -746,9 +784,9 @@ body{
     height: 30px;
     color: #fff;
     display: inline-block;
-    width: 150px;
-    font-size: 16px;
+    font-size: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-left: 10px;
 }

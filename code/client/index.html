@@ -43,6 +43,9 @@
         i{
             font-style:normal
         }
+        .liactive{
+            color: #4cb1ff!important;
+        }
     </style>
      <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -705,17 +708,15 @@
             <section class="content" id="content">
                 <div class="panel panel-default" style="background: rgba(0,0,0,0);border: none;">
                     <div class="panel-body">
-                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;text-align: center">
-                            <span style="color:#4cb1ff;">规则名称：</span><span id="currentGzName">&nbsp;</span>
-                            <span style="color:#4cb1ff;">规则描述：</span><span id="currentGzDes">&nbsp;</span>
-                            <ul class="nav nav-pills">
-                                <!-- <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
-                                <li><span>规则描述：</span><input id="ruleRemark" type="text" placeholder="请输入规则描述"></li> -->
-                                <li><button id="saveRule" onclick="ruleOpen()">保存规则</button></li>
-                                <li><button id="Import">导入</button></li>
-                                <li><button id="export">导出</button></li>
-
-                            </ul>
+                        <nav class="navbar navbar-default" style="padding: 0 10px;background-color: rgba(0,0,0,0);border: none;width: 80%;text-align: left">
+                            <span style="color:#4cb1ff;">通用信号分析算法规则编排系统</span>
+<!--                            <span style="color:#4cb1ff;">规则名称：</span><span id="currentGzName">&nbsp;</span>-->
+<!--                            <span style="color:#4cb1ff;">规则描述：</span><span id="currentGzDes">&nbsp;</span>-->
+<!--                            <ul class="nav nav-pills">-->
+<!--                                <li><button id="saveRule" onclick="ruleOpen()">保存规则</button></li>-->
+<!--                                <li><button id="Import">导入</button></li>-->
+<!--                                <li><button id="export">导出</button></li>-->
+<!--                            </ul>-->
                         </nav>
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
@@ -730,8 +731,9 @@
 
                         <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
                             <div class="title-page">
-                                <li><span onclick="dataModlue()"><i class="dataMod"></i> 数据模型</span></li>
-                                <li><span onclick="dictionaryShow()"><i class="DicI"></i> 算法字典</span></li>
+                                <li><span onclick="dataModlue()"><i class="dataMod"></i>模型库</span></li>
+                                <li><span onclick="dictionaryShow()"><i class="DicI"></i>算法库</span></li>
+                                <li><span id='getAllGzgz'><i class="DicI"></i>规则库</span></li>
                             </div>
                             <div class='Search'>
                                 <i class="icon-search"></i>
@@ -739,15 +741,18 @@
 
                             </input>
                             </div>
+                            <!-- 模型库页-->
+                            <div id="modelPageDiv" class='lkr-page'></div>
+                            <!-- 规则库页-->
                            <div id="ruleMde" class='lkr-page' style="display: none;">
-                                <button id="getAllSz" class="backAlgorithmPage">返回</button>
-                                <div id="rulePage" style="margin-top: 70px;"></div>
-
+<!--                                <button id="getAllSz" class="backAlgorithmPage">返回</button>-->
+                                <div id="rulePage" style="margin-top: 20px;"></div>
                            </div>
-                           <div id="algorithmPage" class='lkr-page' ></div>
+                            <!--算法库页-->
+                           <div id="algorithmPage" class='lkr-page' style="display: none"></div>
                            <div class="mouldFoot">
-<!--                                <div onclick='editAlgorithm()'>编辑算子</div>-->
-                                <div id='getAllGzgz'>已有规则</div>
+                                <div onclick="dataModify()">数据管理</div>
+                                <div>分组维护</div>
                             </div>
 
                         </div>
@@ -842,16 +847,36 @@
         <!-- /.content-wrapper -->
 
     </div>
+       <!-- 规则详情信息弹窗 -->
+       <div id="gzDiv">
+           <div class="title">
+               <span>规则信息</span>
+               <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;">X</span>
+           </div>
+           <div style="position: relative;top:30px;margin: 0 auto;margin-left: 30px">
+               <h4 style="color: #409eff">上传文件</h4>
+               <form class="uploadForm" name="uploadForm">
+                   <input class="inputfile" name="inputfile" type="file" multiple="multiple" style="color: #fff"
+                          accept="application/json,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/xml, application/xml"/>
+               </form>
+               <button class="btn btn-primary mr10 btn-sm pointer" type="button" onclick="uploadSure()">确定</button>
+           </div>
+           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
+               <div style="height: 430px;overflow: auto">
+                   <table id="gzTable"></table>
+               </div>
+           </div>
+       </div>
       <!-- 字典信息弹窗 -->
       <div id="dicDiv">
       <div class="title">
-          <span>字典信息</span>
+          <span>算法信息</span>
           <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
       </div>
           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-              <input type="button" id="addDic" value="新增字典">
-              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算子">
-              <div style="height: 500px;overflow: auto">
+              <input type="button" id="addDic" value="新增算法">
+              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
+              <div style="height: 520px;overflow: auto">
                   <table id="dicTable"></table>
               </div>
           </div>
@@ -859,7 +884,7 @@
     <!-- 字典新增修改弹窗 -->
     <div id="editDic">
         <div class="title">
-            <span id="editDicTitle">新增字典</span>
+            <span id="editDicTitle">新增算法</span>
             <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
         <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 20px">
@@ -1393,23 +1418,19 @@
     }
 
     function dataModlue(){
-        $("#dicDiv").hide();
-        $("#AddAlgorithm").hide();
+        $("#modelPageDiv").show();
+        $("#ruleMde").hide();
+        $("#algorithmPage").hide();
         $.ajax({
             url:urlConfig.host+'/module/GetAllModule',
             data:'',
             success: function(data) {
                 if(data){
-                    $(".moduleContentList").html('')
+                    $("#modelPageDiv").html('')
                     let str=``
                     data.map(item=>{
-                        $(".moduleContentList").append(`<div class="left-list">
-                                <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
-                                <div class="left-list-event">
-                                    <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                    <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
-                                </div>
-                            </div>`)
+                        $("#modelPageDiv").append(`<div class="left-list"><div class="left-list-tilte" style="height:50px;">${item.modulename}</div></div>
+                                                 `)
                     })
                 }
             }
@@ -1424,11 +1445,8 @@
  
                 })              
                 $("#selectedModlue").html(str)
-                
-
             }
         })
-        $('#dataModulePage').fadeToggle(500)
     }
     $("#selectedModlue").change((e)=>{
       
@@ -1568,8 +1586,9 @@
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
-                                <input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 15px;border: none">
-                                <input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none">
+                                <input type="button" onclick="editZd(${s.tableAlgorithm.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 5px;border: none">
+                                <input type="button" onclick="deleteZd(${s.tableAlgorithm.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;margin-right: 5px">
+                                <input type="button" value="发布" style="height: 30px;line-height: 30px;background: #409eff;border: none">
                             </td>
                         </tr>
                        `)
@@ -1577,9 +1596,12 @@
             }
         })
     }
+    //算法库维护
     function dictionaryShow(){
-        $("#dicDiv").show()
-        dictionary()
+        $("#modelPageDiv").hide();
+        $("#ruleMde").hide();
+        $("#algorithmPage").show();
+        //dictionary()
     }
     //删除字典信息
     function deleteZd(s) {
@@ -2025,6 +2047,140 @@
             }
         })
      }
+    $('#flex_tools span').click((e)=>{
+        $('#flex_tools span').removeClass("liactive")
+        $(e.target).addClass("liactive")
+        if($(".mouldFoot div").css('display') == "none"){
+            $(".mouldFoot div").css('display',"flex")
+        }
+    })
+    $('body').on('click','#modelPageDiv .left-list-tilte',(e) => {
+        $('#modelPageDiv .left-list-tilte').removeClass("liactive")
+        $(e.target).addClass("liactive")
+    })
+    $('body').on('click','#algorithmPage .left-list-tilte',(e) => {
+        $('#algorithmPage .left-list-tilte').removeClass("liactive")
+        $(e.target).addClass("liactive")
+    })
+    //获取规则详情
+    function getGzList() {
+        $("#gzTable").empty();
+        $.ajax({
+            url:urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+            data:{username:null},
+            success(data) {
+                $("#gzTable").append(`<thead>
+                    <th style="width: 150px">规则名称</th>
+                    <th style="width: 150px">规则描述</th>
+                    <th style="width: 150px">备注</th>
+                    <th style="width: 200px">操作</th>
+                    </thead>`)
+                data.map(s=>{
+                    $("#gzTable").append(
+                        `<tr>
+                            <td style="width: 150px">${s.rolename}</td>
+                            <td style="width: 150px">${s.des}</td>
+                            <td style="width: 150px">${s.remark}</td>
+                            <td style="width: 200px">
+                                <input type="button" onclick="modifyGz(${s.id})" class="dicEdit" value="修改" style="height: 30px;line-height: 30px;background: #409eff;margin-right: 5px;border: none">
+                                <input type="button" onclick="deleteGz(${s.id})" value="删除" style="height: 30px;line-height: 30px;background: #f56c6c;border: none;margin-right: 5px;">
+                                <input type="button" onclick="exportGz(${s.id})" value="导出" style="height: 30px;line-height: 30px;background: #409eff;border: none;margin-right: 5px;">
+                                <input type="button" value="发布" style="height: 30px;line-height: 30px;background: #409eff;border: none">
+                            </td>
+                        </tr>
+                       `)
+                })
+            }
+        })
+    }
+    function dataModify() {
+        if($('#flex_tools .liactive').text() == "模型库"){
+            $('#dataModulePage').fadeToggle(500)
+        }
+        if($('#flex_tools .liactive').text() == "算法库"){
+            $('#dicDiv').fadeToggle(500)
+            dictionary()
+        }
+        if($('#flex_tools .liactive').text() == "规则库"){
+            $('#gzDiv').fadeToggle(500)
+            getGzList()
+        }
+    }
+    //编辑规则
+    function modifyGz(s) {
+        if(editGzType) {
+            toastr.info('当前编辑的规则需进行保存！')
+            return false;
+        }
+        $("#gzDiv").hide();
+        window.bigData.editRuleId = s;
+        let ruleid =  s;
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+            type:"get",
+            data: {Id:ruleid},
+            success(data) {
+                if(data){
+                    let ruleData = data.tableRole.coordinate
+                    $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
+                    $('#ruleRemark').val(data.tableRole.des)
+                    $("#currentGzName").text(data.tableRole.rolename);
+                    $("#currentGzName").attr("title",data.tableRole.rolename)
+                    $("#currentGzDes").text(data.tableRole.des);
+                    $("#currentGzDes").attr("title",data.tableRole.des);
+                    $("#bzMsg").val(data.tableRole.entrancenote);
+                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
+                    canvas.open(JSON.parse(ruleData))
+                    window.Topology.isClickAction = []
+                    window.Topology.tools = []
+                    window.bigData.ruleType = "edit"
+                    window.bigData.editRuleId = data.tableRole.id;
+                    responseActionDatas = data.interfaceRoleDataModels
+                    if(data.operatorInterfaceDataModels){
+                        data.operatorInterfaceDataModels.map(item=>{
+                            let obj = {
+                                isClick:true,
+                                id:item.algorithmID+"tableAlgorithm"
+                            }
+                            let saveList ={
+                                id :item.algorithmID+"tableAlgorithm",
+                                name:item.interfaceName,
+                                children:[]
+                            }
+                            item.tableInterfaceparametersList.map(index=>{
+                                let hx ={
+                                    id:index.parameterssources,
+                                    uuid:index.id,
+                                    algorithmid:item.algorithmID,
+                                    varname:index.parametersname,
+                                    vartype:"",
+                                    valvalue:"",
+                                    inorout:index.inorout,
+                                    remark:""
+                                }
+                                saveList.children.push(hx)
+                            })
+                            idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
+                            window.Topology.isClickAction.push(obj)
+                            window.Topology.tools.push(saveList)
+                        })
+                    }
+                }
+
+            }
+        })
+    }
+    //删除规则
+    function deleteGz(s) {
+        window.bigData.delRuleId = s;
+        $('#lkrRule').fadeToggle(500)
+    }
+    $(".closeGzDiv").click(()=>{
+        $("#gzDiv").hide()
+    })
+    function exportGz(s) {
+        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + s
+    }
 </script>
 </body>
 </html>
