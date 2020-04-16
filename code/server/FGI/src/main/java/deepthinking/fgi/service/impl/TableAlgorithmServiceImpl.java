@@ -39,10 +39,9 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     private TableOperatorinterfaceMapper tableOperatorinterfaceMapper;
 
     @Override
-    public List<AlgorithmBaseInfo> getAllAlgorithm(String username) {
-        //username 暂不使用 
+    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName) {
         List<AlgorithmBaseInfo> result=new ArrayList<>();
-        List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo();
+        List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo(groupName);
         if(tableAlgorithms.size()>0){
             tableAlgorithms.forEach(data->{
                 AlgorithmBaseInfo algorithmBaseInfo=new AlgorithmBaseInfo();

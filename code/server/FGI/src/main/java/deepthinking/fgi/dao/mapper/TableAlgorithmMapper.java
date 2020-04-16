@@ -60,11 +60,15 @@ public interface TableAlgorithmMapper {
         "insert into table_algorithm (AlgorithmName, AlgorithmAuthor, ",
         "IsPublic, AlgorithmType, ",
         "AlgorithmFun, Des, ",
-        "UserID, Remark)",
+        "UserID, AlgorithmGroup, ",
+        "Remark, Status, ",
+        "Remark2)",
         "values (#{algorithmname,jdbcType=VARCHAR}, #{algorithmauthor,jdbcType=VARCHAR}, ",
         "#{ispublic,jdbcType=DECIMAL}, #{algorithmtype,jdbcType=DECIMAL}, ",
         "#{algorithmfun,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
-        "#{userid,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})"
+        "#{userid,jdbcType=INTEGER}, #{algorithmgroup,jdbcType=VARCHAR}, ",
+        "#{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, ",
+        "#{remark2,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableAlgorithm record);
@@ -95,7 +99,10 @@ public interface TableAlgorithmMapper {
         @Result(column="AlgorithmFun", property="algorithmfun", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="AlgorithmGroup", property="algorithmgroup", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR)
     })
     List<TableAlgorithm> selectByExample(TableAlgorithmCriteria example);
 
@@ -108,7 +115,7 @@ public interface TableAlgorithmMapper {
     @Select({
         "select",
         "ID, AlgorithmName, AlgorithmAuthor, IsPublic, AlgorithmType, AlgorithmFun, Des, ",
-        "UserID, Remark",
+        "UserID, AlgorithmGroup, Remark, Status, Remark2",
         "from table_algorithm",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -121,7 +128,10 @@ public interface TableAlgorithmMapper {
         @Result(column="AlgorithmFun", property="algorithmfun", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="AlgorithmGroup", property="algorithmgroup", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR)
     })
     TableAlgorithm selectByPrimaryKey(Integer id);
 
@@ -167,21 +177,23 @@ public interface TableAlgorithmMapper {
           "AlgorithmFun = #{algorithmfun,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
           "UserID = #{userid,jdbcType=INTEGER},",
-          "Remark = #{remark,jdbcType=VARCHAR}",
+          "AlgorithmGroup = #{algorithmgroup,jdbcType=VARCHAR},",
+          "Remark = #{remark,jdbcType=VARCHAR},",
+          "Status = #{status,jdbcType=VARCHAR},",
+          "Remark2 = #{remark2,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableAlgorithm record);
-
     @Select({
-            "select",
-            "ID, AlgorithmName, AlgorithmAuthor,Des",
-            "from table_algorithm"
-    })
-    @Results({
-            @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-            @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
-            @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
-            @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-    })
-    List<Map<String,Object>> selectBaseInfo();
+                "select",
+                "ID, AlgorithmName, AlgorithmAuthor,Des",
+                "from table_algorithm where AlgorithmGroup = #{groupName}"
+        })
+        @Results({
+                @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+                @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
+                @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
+                @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
+        })
+        List<Map<String,Object>> selectBaseInfo(String groupName);
 }

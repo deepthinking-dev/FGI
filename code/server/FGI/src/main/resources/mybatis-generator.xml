@@ -38,7 +38,7 @@
 		targetProject="src/main/java">
 		<property name="enableSubPackages" value="true" />
 	</javaClientGenerator>
-		<!--<table tableName="Table_Module" >
+		<table tableName="Table_Module" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>
 		<table tableName="Table_Algorithm" >
@@ -47,13 +47,19 @@
 		<table tableName="Table_Role" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>
-		<table tableName="Table_AlgorithmCondition" >
+		<table tableName="Table_Func" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>
+		<table tableName="Table_GroupData" >
+               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+           </table>
+		<!--<table tableName="Table_AlgorithmCondition" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>-->
 		<!--<table tableName="Table_InterfaceParameters" ></table>-->
-		<!--<table tableName="Table_InterfaceRole" >
+		<table tableName="Table_InterfaceRole" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>-->
+           </table>
 		<!--<table tableName="Table_OperatorInterface" ></table>-->
 	</context>
 </generatorConfiguration>  

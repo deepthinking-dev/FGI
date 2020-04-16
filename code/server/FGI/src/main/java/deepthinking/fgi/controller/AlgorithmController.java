@@ -30,10 +30,10 @@ public class AlgorithmController {
 
 
     @GetMapping("/getAllAlgorithm")
-    @ApiOperation(value = "03-01 获取公共的和个人的所有算子,仅返回算子基本信息", notes = "返回算子基本信息", httpMethod = "GET")
-    @ApiImplicitParam(name = "username", value = "用户名（暂时传入null）", dataType = "string", paramType = "query", required = false)
-    public List<AlgorithmBaseInfo> getAllAlgorithm(String username){
-        return tableAlgorithmService.getAllAlgorithm(username);
+    @ApiOperation(value = "03-01 根据分组获取所有算子,仅返回算子基本信息", notes = "返回算子基本信息", httpMethod = "GET")
+    @ApiImplicitParam(name = "groupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
+    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName){
+        return tableAlgorithmService.getAllAlgorithm(groupName);
     }
 
     @PostMapping("/addAlgorithm")

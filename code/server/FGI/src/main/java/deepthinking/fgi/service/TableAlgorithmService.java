@@ -14,10 +14,10 @@ import java.util.List;
 public interface TableAlgorithmService extends BaseService<TableAlgorithm,Integer>{
     /**
      * 获取公共的和个人的所有算子,仅返回算子基本信息
-     * @param username
+     * @param groupName
      * @return
      */
-    List<AlgorithmBaseInfo> getAllAlgorithm(String username);
+    List<AlgorithmBaseInfo> getAllAlgorithm(String groupName);
 
     /**
      * 记录算子之间的逻辑关系（当算子有前序算子时，定义前序算子需要满足的逻辑条件，以执行后续算子）

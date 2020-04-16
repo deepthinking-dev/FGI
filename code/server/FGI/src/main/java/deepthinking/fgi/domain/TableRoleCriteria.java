@@ -394,76 +394,6 @@ public class TableRoleCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andRemarkIsNull() {
-            addCriterion("Remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNotNull() {
-            addCriterion("Remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkEqualTo(String value) {
-            addCriterion("Remark =", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("Remark <>", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("Remark >", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("Remark >=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThan(String value) {
-            addCriterion("Remark <", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("Remark <=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLike(String value) {
-            addCriterion("Remark like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotLike(String value) {
-            addCriterion("Remark not like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIn(List<String> values) {
-            addCriterion("Remark in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("Remark not in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("Remark between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("Remark not between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
         public Criteria andEntrancenoteIsNull() {
             addCriterion("EntranceNote is null");
             return (Criteria) this;
@@ -591,6 +521,356 @@ public class TableRoleCriteria {
 
         public Criteria andUuseridNotBetween(Integer value1, Integer value2) {
             addCriterion("UuserID not between", value1, value2, "uuserid");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupIsNull() {
+            addCriterion("RoleGroup is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupIsNotNull() {
+            addCriterion("RoleGroup is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupEqualTo(String value) {
+            addCriterion("RoleGroup =", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupNotEqualTo(String value) {
+            addCriterion("RoleGroup <>", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupGreaterThan(String value) {
+            addCriterion("RoleGroup >", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupGreaterThanOrEqualTo(String value) {
+            addCriterion("RoleGroup >=", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupLessThan(String value) {
+            addCriterion("RoleGroup <", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupLessThanOrEqualTo(String value) {
+            addCriterion("RoleGroup <=", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupLike(String value) {
+            addCriterion("RoleGroup like", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupNotLike(String value) {
+            addCriterion("RoleGroup not like", value, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupIn(List<String> values) {
+            addCriterion("RoleGroup in", values, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupNotIn(List<String> values) {
+            addCriterion("RoleGroup not in", values, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupBetween(String value1, String value2) {
+            addCriterion("RoleGroup between", value1, value2, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andRolegroupNotBetween(String value1, String value2) {
+            addCriterion("RoleGroup not between", value1, value2, "rolegroup");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("Status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("Status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("Status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("Status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("Status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("Status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("Status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("Status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLike(String value) {
+            addCriterion("Status like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("Status not like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("Status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("Status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("Status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("Status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("Remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("Remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("Remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("Remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("Remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("Remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("Remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("Remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("Remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("Remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("Remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("Remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("Remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("Remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2IsNull() {
+            addCriterion("Remark2 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2IsNotNull() {
+            addCriterion("Remark2 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2EqualTo(String value) {
+            addCriterion("Remark2 =", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2NotEqualTo(String value) {
+            addCriterion("Remark2 <>", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2GreaterThan(String value) {
+            addCriterion("Remark2 >", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2GreaterThanOrEqualTo(String value) {
+            addCriterion("Remark2 >=", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2LessThan(String value) {
+            addCriterion("Remark2 <", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2LessThanOrEqualTo(String value) {
+            addCriterion("Remark2 <=", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2Like(String value) {
+            addCriterion("Remark2 like", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2NotLike(String value) {
+            addCriterion("Remark2 not like", value, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2In(List<String> values) {
+            addCriterion("Remark2 in", values, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2NotIn(List<String> values) {
+            addCriterion("Remark2 not in", values, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2Between(String value1, String value2) {
+            addCriterion("Remark2 between", value1, value2, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark2NotBetween(String value1, String value2) {
+            addCriterion("Remark2 not between", value1, value2, "remark2");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3IsNull() {
+            addCriterion("Remark3 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3IsNotNull() {
+            addCriterion("Remark3 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3EqualTo(String value) {
+            addCriterion("Remark3 =", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3NotEqualTo(String value) {
+            addCriterion("Remark3 <>", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3GreaterThan(String value) {
+            addCriterion("Remark3 >", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3GreaterThanOrEqualTo(String value) {
+            addCriterion("Remark3 >=", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3LessThan(String value) {
+            addCriterion("Remark3 <", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3LessThanOrEqualTo(String value) {
+            addCriterion("Remark3 <=", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3Like(String value) {
+            addCriterion("Remark3 like", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3NotLike(String value) {
+            addCriterion("Remark3 not like", value, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3In(List<String> values) {
+            addCriterion("Remark3 in", values, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3NotIn(List<String> values) {
+            addCriterion("Remark3 not in", values, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3Between(String value1, String value2) {
+            addCriterion("Remark3 between", value1, value2, "remark3");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemark3NotBetween(String value1, String value2) {
+            addCriterion("Remark3 not between", value1, value2, "remark3");
             return (Criteria) this;
         }
     }

@@ -19,7 +19,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
 
     /**
      * 文件导入
-     * @param filePath 文件地址
+     * @param file 文件地址
      * @Author 王若山
      * @return
      */
@@ -35,10 +35,10 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
 
     /**
      * 根据用户获取所有算法规则 username暂时不用
-     * @param username
+     * @param groupName
      * @return
      */
-    List<TableRole> GetAllAlgorithmRule(String username );
+    List<TableRole> GetAllAlgorithmRule(String groupName );
 
     /**
      * 根据规则编号获取算法规则(规则具体信息)

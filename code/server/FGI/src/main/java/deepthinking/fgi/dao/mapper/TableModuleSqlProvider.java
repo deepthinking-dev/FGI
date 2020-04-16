@@ -5,8 +5,8 @@ import java.util.Map;
 
 import deepthinking.fgi.domain.TableModule;
 import deepthinking.fgi.domain.TableModuleCriteria;
-import deepthinking.fgi.domain.TableModuleCriteria.Criteria;
 import deepthinking.fgi.domain.TableModuleCriteria.Criterion;
+import deepthinking.fgi.domain.TableModuleCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableModuleSqlProvider {
@@ -67,8 +67,16 @@ public class TableModuleSqlProvider {
             sql.VALUES("UserID", "#{userid,jdbcType=INTEGER}");
         }
         
+        if (record.getStatus() != null) {
+            sql.VALUES("Status", "#{status,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.VALUES("Remark2", "#{remark2,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -92,7 +100,9 @@ public class TableModuleSqlProvider {
         sql.SELECT("ModuleGroup");
         sql.SELECT("Des");
         sql.SELECT("UserID");
+        sql.SELECT("Status");
         sql.SELECT("Remark");
+        sql.SELECT("Remark2");
         sql.FROM("table_module");
         applyWhere(sql, example, false);
         
@@ -140,8 +150,16 @@ public class TableModuleSqlProvider {
             sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
         }
         
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -164,7 +182,9 @@ public class TableModuleSqlProvider {
         sql.SET("ModuleGroup = #{record.modulegroup,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
+        sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
         
         TableModuleCriteria example = (TableModuleCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -201,8 +221,16 @@ public class TableModuleSqlProvider {
             sql.SET("UserID = #{userid,jdbcType=INTEGER}");
         }
         
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{status,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{remark2,jdbcType=VARCHAR}");
         }
         
         sql.WHERE("ID = #{id,jdbcType=INTEGER}");

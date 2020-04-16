@@ -5,8 +5,8 @@ import java.util.Map;
 
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.domain.TableRoleCriteria;
-import deepthinking.fgi.domain.TableRoleCriteria.Criteria;
 import deepthinking.fgi.domain.TableRoleCriteria.Criterion;
+import deepthinking.fgi.domain.TableRoleCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableRoleSqlProvider {
@@ -55,16 +55,32 @@ public class TableRoleSqlProvider {
             sql.VALUES("Des", "#{des,jdbcType=VARCHAR}");
         }
         
-        if (record.getRemark() != null) {
-            sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
-        }
-        
         if (record.getEntrancenote() != null) {
             sql.VALUES("EntranceNote", "#{entrancenote,jdbcType=VARCHAR}");
         }
         
         if (record.getUuserid() != null) {
             sql.VALUES("UuserID", "#{uuserid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRolegroup() != null) {
+            sql.VALUES("RoleGroup", "#{rolegroup,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.VALUES("Status", "#{status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.VALUES("Remark2", "#{remark2,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark3() != null) {
+            sql.VALUES("Remark3", "#{remark3,jdbcType=VARCHAR}");
         }
         
         if (record.getCoordinate() != null) {
@@ -89,9 +105,13 @@ public class TableRoleSqlProvider {
         }
         sql.SELECT("RoleName");
         sql.SELECT("Des");
-        sql.SELECT("Remark");
         sql.SELECT("EntranceNote");
         sql.SELECT("UuserID");
+        sql.SELECT("RoleGroup");
+        sql.SELECT("Status");
+        sql.SELECT("Remark");
+        sql.SELECT("Remark2");
+        sql.SELECT("Remark3");
         sql.SELECT("coordinate");
         sql.FROM("table_role");
         applyWhere(sql, example, false);
@@ -118,9 +138,13 @@ public class TableRoleSqlProvider {
         }
         sql.SELECT("RoleName");
         sql.SELECT("Des");
-        sql.SELECT("Remark");
         sql.SELECT("EntranceNote");
         sql.SELECT("UuserID");
+        sql.SELECT("RoleGroup");
+        sql.SELECT("Status");
+        sql.SELECT("Remark");
+        sql.SELECT("Remark2");
+        sql.SELECT("Remark3");
         sql.FROM("table_role");
         applyWhere(sql, example, false);
         
@@ -156,16 +180,32 @@ public class TableRoleSqlProvider {
             sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         }
         
-        if (record.getRemark() != null) {
-            sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
-        }
-        
         if (record.getEntrancenote() != null) {
             sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
         }
         
         if (record.getUuserid() != null) {
             sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRolegroup() != null) {
+            sql.SET("RoleGroup = #{record.rolegroup,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark3() != null) {
+            sql.SET("Remark3 = #{record.remark3,jdbcType=VARCHAR}");
         }
         
         if (record.getCoordinate() != null) {
@@ -189,9 +229,13 @@ public class TableRoleSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("RoleName = #{record.rolename,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
-        sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
         sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
+        sql.SET("RoleGroup = #{record.rolegroup,jdbcType=VARCHAR}");
+        sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
+        sql.SET("Remark3 = #{record.remark3,jdbcType=VARCHAR}");
         sql.SET("coordinate = #{record.coordinate,jdbcType=LONGVARCHAR}");
         
         TableRoleCriteria example = (TableRoleCriteria) parameter.get("example");
@@ -212,9 +256,13 @@ public class TableRoleSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("RoleName = #{record.rolename,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
-        sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
         sql.SET("EntranceNote = #{record.entrancenote,jdbcType=VARCHAR}");
         sql.SET("UuserID = #{record.uuserid,jdbcType=INTEGER}");
+        sql.SET("RoleGroup = #{record.rolegroup,jdbcType=VARCHAR}");
+        sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
+        sql.SET("Remark3 = #{record.remark3,jdbcType=VARCHAR}");
         
         TableRoleCriteria example = (TableRoleCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -239,16 +287,32 @@ public class TableRoleSqlProvider {
             sql.SET("Des = #{des,jdbcType=VARCHAR}");
         }
         
-        if (record.getRemark() != null) {
-            sql.SET("Remark = #{remark,jdbcType=VARCHAR}");
-        }
-        
         if (record.getEntrancenote() != null) {
             sql.SET("EntranceNote = #{entrancenote,jdbcType=VARCHAR}");
         }
         
         if (record.getUuserid() != null) {
             sql.SET("UuserID = #{uuserid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRolegroup() != null) {
+            sql.SET("RoleGroup = #{rolegroup,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("Remark = #{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{remark2,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark3() != null) {
+            sql.SET("Remark3 = #{remark3,jdbcType=VARCHAR}");
         }
         
         if (record.getCoordinate() != null) {
