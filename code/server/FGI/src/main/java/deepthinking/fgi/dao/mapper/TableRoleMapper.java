@@ -4,7 +4,18 @@ import java.util.List;
 
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.domain.TableRoleCriteria;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TableRoleMapper {
@@ -46,11 +57,15 @@ public interface TableRoleMapper {
      */
     @Insert({
         "insert into table_role (RoleName, Des, ",
-        "Remark, EntranceNote, ",
-        "UuserID, coordinate)",
+        "EntranceNote, UuserID, ",
+        "RoleGroup, Status, ",
+        "Remark, Remark2, ",
+        "Remark3, coordinate)",
         "values (#{rolename,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
-        "#{remark,jdbcType=VARCHAR}, #{entrancenote,jdbcType=VARCHAR}, ",
-        "#{uuserid,jdbcType=INTEGER}, #{coordinate,jdbcType=LONGVARCHAR})"
+        "#{entrancenote,jdbcType=VARCHAR}, #{uuserid,jdbcType=INTEGER}, ",
+        "#{rolegroup,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, ",
+        "#{remark,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, ",
+        "#{remark3,jdbcType=VARCHAR}, #{coordinate,jdbcType=LONGVARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableRole record);
@@ -76,9 +91,13 @@ public interface TableRoleMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="RoleName", property="rolename", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
         @Result(column="EntranceNote", property="entrancenote", jdbcType=JdbcType.VARCHAR),
         @Result(column="UuserID", property="uuserid", jdbcType=JdbcType.INTEGER),
+        @Result(column="RoleGroup", property="rolegroup", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark3", property="remark3", jdbcType=JdbcType.VARCHAR),
         @Result(column="coordinate", property="coordinate", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<TableRole> selectByExampleWithBLOBs(TableRoleCriteria example);
@@ -94,9 +113,13 @@ public interface TableRoleMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="RoleName", property="rolename", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
         @Result(column="EntranceNote", property="entrancenote", jdbcType=JdbcType.VARCHAR),
-        @Result(column="UuserID", property="uuserid", jdbcType=JdbcType.INTEGER)
+        @Result(column="UuserID", property="uuserid", jdbcType=JdbcType.INTEGER),
+        @Result(column="RoleGroup", property="rolegroup", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark3", property="remark3", jdbcType=JdbcType.VARCHAR)
     })
     List<TableRole> selectByExample(TableRoleCriteria example);
 
@@ -108,7 +131,8 @@ public interface TableRoleMapper {
      */
     @Select({
         "select",
-        "ID, RoleName, Des, Remark, EntranceNote, UuserID, coordinate",
+        "ID, RoleName, Des, EntranceNote, UuserID, RoleGroup, Status, Remark, Remark2, ",
+        "Remark3, coordinate",
         "from table_role",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -116,9 +140,13 @@ public interface TableRoleMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="RoleName", property="rolename", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
         @Result(column="EntranceNote", property="entrancenote", jdbcType=JdbcType.VARCHAR),
         @Result(column="UuserID", property="uuserid", jdbcType=JdbcType.INTEGER),
+        @Result(column="RoleGroup", property="rolegroup", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark3", property="remark3", jdbcType=JdbcType.VARCHAR),
         @Result(column="coordinate", property="coordinate", jdbcType=JdbcType.LONGVARCHAR)
     })
     TableRole selectByPrimaryKey(Integer id);
@@ -169,9 +197,13 @@ public interface TableRoleMapper {
         "update table_role",
         "set RoleName = #{rolename,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
-          "Remark = #{remark,jdbcType=VARCHAR},",
           "EntranceNote = #{entrancenote,jdbcType=VARCHAR},",
           "UuserID = #{uuserid,jdbcType=INTEGER},",
+          "RoleGroup = #{rolegroup,jdbcType=VARCHAR},",
+          "Status = #{status,jdbcType=VARCHAR},",
+          "Remark = #{remark,jdbcType=VARCHAR},",
+          "Remark2 = #{remark2,jdbcType=VARCHAR},",
+          "Remark3 = #{remark3,jdbcType=VARCHAR},",
           "coordinate = #{coordinate,jdbcType=LONGVARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -187,9 +219,13 @@ public interface TableRoleMapper {
         "update table_role",
         "set RoleName = #{rolename,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
-          "Remark = #{remark,jdbcType=VARCHAR},",
           "EntranceNote = #{entrancenote,jdbcType=VARCHAR},",
-          "UuserID = #{uuserid,jdbcType=INTEGER}",
+          "UuserID = #{uuserid,jdbcType=INTEGER},",
+          "RoleGroup = #{rolegroup,jdbcType=VARCHAR},",
+          "Status = #{status,jdbcType=VARCHAR},",
+          "Remark = #{remark,jdbcType=VARCHAR},",
+          "Remark2 = #{remark2,jdbcType=VARCHAR},",
+          "Remark3 = #{remark3,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableRole record);

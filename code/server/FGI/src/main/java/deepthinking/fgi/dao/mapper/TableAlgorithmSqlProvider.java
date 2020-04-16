@@ -5,8 +5,8 @@ import java.util.Map;
 
 import deepthinking.fgi.domain.TableAlgorithm;
 import deepthinking.fgi.domain.TableAlgorithmCriteria;
-import deepthinking.fgi.domain.TableAlgorithmCriteria.Criteria;
 import deepthinking.fgi.domain.TableAlgorithmCriteria.Criterion;
+import deepthinking.fgi.domain.TableAlgorithmCriteria.Criteria;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableAlgorithmSqlProvider {
@@ -75,8 +75,20 @@ public class TableAlgorithmSqlProvider {
             sql.VALUES("UserID", "#{userid,jdbcType=INTEGER}");
         }
         
+        if (record.getAlgorithmgroup() != null) {
+            sql.VALUES("AlgorithmGroup", "#{algorithmgroup,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.VALUES("Remark", "#{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.VALUES("Status", "#{status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.VALUES("Remark2", "#{remark2,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -102,7 +114,10 @@ public class TableAlgorithmSqlProvider {
         sql.SELECT("AlgorithmFun");
         sql.SELECT("Des");
         sql.SELECT("UserID");
+        sql.SELECT("AlgorithmGroup");
         sql.SELECT("Remark");
+        sql.SELECT("Status");
+        sql.SELECT("Remark2");
         sql.FROM("table_algorithm");
         applyWhere(sql, example, false);
         
@@ -158,8 +173,20 @@ public class TableAlgorithmSqlProvider {
             sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
         }
         
+        if (record.getAlgorithmgroup() != null) {
+            sql.SET("AlgorithmGroup = #{record.algorithmgroup,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -184,7 +211,10 @@ public class TableAlgorithmSqlProvider {
         sql.SET("AlgorithmFun = #{record.algorithmfun,jdbcType=VARCHAR}");
         sql.SET("Des = #{record.des,jdbcType=VARCHAR}");
         sql.SET("UserID = #{record.userid,jdbcType=INTEGER}");
+        sql.SET("AlgorithmGroup = #{record.algorithmgroup,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("Status = #{record.status,jdbcType=VARCHAR}");
+        sql.SET("Remark2 = #{record.remark2,jdbcType=VARCHAR}");
         
         TableAlgorithmCriteria example = (TableAlgorithmCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -229,8 +259,20 @@ public class TableAlgorithmSqlProvider {
             sql.SET("UserID = #{userid,jdbcType=INTEGER}");
         }
         
+        if (record.getAlgorithmgroup() != null) {
+            sql.SET("AlgorithmGroup = #{algorithmgroup,jdbcType=VARCHAR}");
+        }
+        
         if (record.getRemark() != null) {
             sql.SET("Remark = #{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("Status = #{status,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark2() != null) {
+            sql.SET("Remark2 = #{remark2,jdbcType=VARCHAR}");
         }
         
         sql.WHERE("ID = #{id,jdbcType=INTEGER}");

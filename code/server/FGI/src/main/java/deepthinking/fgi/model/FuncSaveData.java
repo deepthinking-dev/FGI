@@ -1,12 +1,17 @@
 package deepthinking.fgi.model;
 
 import deepthinking.fgi.domain.TableAlgorithmcondition;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
-
+@ApiModel(value = "参数动作保存数据模型")
 public class FuncSaveData {
+    @ApiModelProperty(value = "动作集合")
     private List<TableAlgorithmcondition> algorithmconditions;
+    @ApiModelProperty(value = "动作所在参数ID")
     private String interfaceParametersID;
+    @ApiModelProperty(value = "动作所在线的ID")
     private int interfaceRoleId;
 
     public FuncSaveData() {

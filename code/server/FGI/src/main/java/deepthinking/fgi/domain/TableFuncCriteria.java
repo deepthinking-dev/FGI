@@ -254,6 +254,76 @@ public class TableFuncCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andParameternameIsNull() {
+            addCriterion("ParameterName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameIsNotNull() {
+            addCriterion("ParameterName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameEqualTo(String value) {
+            addCriterion("ParameterName =", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameNotEqualTo(String value) {
+            addCriterion("ParameterName <>", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameGreaterThan(String value) {
+            addCriterion("ParameterName >", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameGreaterThanOrEqualTo(String value) {
+            addCriterion("ParameterName >=", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameLessThan(String value) {
+            addCriterion("ParameterName <", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameLessThanOrEqualTo(String value) {
+            addCriterion("ParameterName <=", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameLike(String value) {
+            addCriterion("ParameterName like", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameNotLike(String value) {
+            addCriterion("ParameterName not like", value, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameIn(List<String> values) {
+            addCriterion("ParameterName in", values, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameNotIn(List<String> values) {
+            addCriterion("ParameterName not in", values, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameBetween(String value1, String value2) {
+            addCriterion("ParameterName between", value1, value2, "parametername");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameternameNotBetween(String value1, String value2) {
+            addCriterion("ParameterName not between", value1, value2, "parametername");
+            return (Criteria) this;
+        }
+
         public Criteria andAlgorithmidIsNull() {
             addCriterion("AlgorithmID is null");
             return (Criteria) this;

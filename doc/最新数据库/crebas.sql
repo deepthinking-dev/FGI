@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/4/6 21:38:44                            */
+/* Created on:     2020/4/16 15:53:10                           */
 /*==============================================================*/
 
 
@@ -9,6 +9,8 @@ drop table if exists Table_Algorithm;
 drop table if exists Table_AlgorithmCondition;
 
 drop table if exists Table_Func;
+
+drop table if exists Table_GroupData;
 
 drop table if exists Table_InterfaceParameters;
 
@@ -37,7 +39,10 @@ create table Table_Algorithm
    AlgorithmFun         varchar(500) comment '公式',
    Des                  varchar(500) comment '描述',
    UserID               int comment '用户ID',
+   AlgorithmGroup       varchar(100) comment '所属组',
    Remark               varchar(500) comment '备注',
+   Status               varchar(50) comment '状态',
+   Remark2              varchar(500) comment '备注2',
    primary key (ID)
 );
 
@@ -66,23 +71,37 @@ alter table Table_AlgorithmCondition comment '输出输入动作';
 create table Table_Func
 (
    ID                   int not null auto_increment comment '主键ID',
+   ParameterName        varchar(50) comment '参数名称',
    AlgorithmID          int comment '模块ID',
    VarName              varchar(20) comment '变量名称',
    VarType              varchar(20) comment '变量类型：
             常量
-            数据项
-            其他模块计算结果',
+            对象
+            基本类型',
    ValValue             varchar(20) comment '变量值：
             变量类型为常量时，此处为具体数值
-            类型为数据项时，此处模块中字段名称
-            类型为其他计算结果时，此处为其他模块的ID。
+            类型为对象时，此处为对象ID
+            类型为基本类型时，此处为基本类型名称
             ',
    InOrOut              numeric comment '输入输出',
    Remark               varchar(500) comment '备注',
    primary key (ID)
 );
 
-alter table Table_Func comment '算子参数定义';
+alter table Table_Func comment '算法参数定义';
+
+/*==============================================================*/
+/* Table: Table_GroupData                                       */
+/*==============================================================*/
+create table Table_GroupData
+(
+   id                   int not null auto_increment comment 'ID',
+   groupName            varchar(100) comment '组名称同类型下不能重复',
+   groupType            int comment '类型:模型，算法，规则',
+   primary key (id)
+);
+
+alter table Table_GroupData comment '分组数据';
 
 /*==============================================================*/
 /* Table: Table_InterfaceParameters                             */
@@ -93,7 +112,7 @@ create table Table_InterfaceParameters
    InterfaceID          varchar(64) comment '接口ID',
    ParametersSources    varchar(50) comment '参数来源',
    ParametersName       varchar(50) comment '参数名称',
-   inOrOut              numeric comment '输入输出',
+   inOrOut              int comment '输入输出',
    primary key (ID)
 );
 
@@ -106,16 +125,18 @@ create table Table_InterfaceRole
 (
    ID                   int not null auto_increment comment '主键ID',
    RoleID               int comment '规则ID',
-   InterfaceID          varchar(64) comment '接口ID',
+   InterfaceID          varchar(64),
    ParametersID         varchar(64) comment '接口参数ID',
    PreInterfaceID       varchar(64) comment '前序接口ID',
    PreParametersID      varchar(64) comment '前序接口参数ID',
    Des                  varchar(500) comment '描述',
    Remark               varchar(500) comment '备注',
+   ActionRelation       varchar(500) comment '动作关系式',
+   PreActionRelation    varchar(500) comment '前序动作关系式',
    primary key (ID)
 );
 
-alter table Table_InterfaceRole comment '算法接口关系';
+alter table Table_InterfaceRole comment '算法算子关系';
 
 /*==============================================================*/
 /* Table: Table_Module                                          */
@@ -125,10 +146,12 @@ create table Table_Module
    ID                   int not null auto_increment comment '主键ID',
    ModuleName           varchar(50) comment '模型名称',
    SqlUrl               varchar(200) comment '数据库连接',
-   ModuleGroup          varchar(20) comment '模型组',
+   ModuleGroup          varchar(100) comment '模型组',
    Des                  varchar(500) comment '模型描述',
    UserID               int comment '用户ID',
+   Status               varchar(100) comment '状态',
    Remark               varchar(500) comment '备注',
+   Remark2              varchar(500) comment '备注2',
    primary key (ID)
 );
 
@@ -185,10 +208,14 @@ create table Table_Role
    ID                   int not null auto_increment comment '主键ID',
    RoleName             varchar(200) comment '规则名称',
    Des                  varchar(500) comment '规则描述',
-   Remark               varchar(500) comment '备注',
    EntranceNote         varchar(500) comment '入口备注',
    coordinate           text comment '坐标',
    UuserID              int comment '用户ID',
+   RoleGroup            varchar(100) comment '所属组',
+   Status               varchar(100) comment '状态',
+   Remark               varchar(500) comment '备注',
+   Remark2              varchar(500) comment '备注2',
+   Remark3              varchar(500) comment '备注3',
    primary key (ID)
 );
 

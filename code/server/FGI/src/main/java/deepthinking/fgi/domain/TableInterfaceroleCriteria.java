@@ -733,6 +733,146 @@ public class TableInterfaceroleCriteria {
             addCriterion("Remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andActionrelationIsNull() {
+            addCriterion("ActionRelation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationIsNotNull() {
+            addCriterion("ActionRelation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationEqualTo(String value) {
+            addCriterion("ActionRelation =", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationNotEqualTo(String value) {
+            addCriterion("ActionRelation <>", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationGreaterThan(String value) {
+            addCriterion("ActionRelation >", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationGreaterThanOrEqualTo(String value) {
+            addCriterion("ActionRelation >=", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationLessThan(String value) {
+            addCriterion("ActionRelation <", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationLessThanOrEqualTo(String value) {
+            addCriterion("ActionRelation <=", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationLike(String value) {
+            addCriterion("ActionRelation like", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationNotLike(String value) {
+            addCriterion("ActionRelation not like", value, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationIn(List<String> values) {
+            addCriterion("ActionRelation in", values, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationNotIn(List<String> values) {
+            addCriterion("ActionRelation not in", values, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationBetween(String value1, String value2) {
+            addCriterion("ActionRelation between", value1, value2, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionrelationNotBetween(String value1, String value2) {
+            addCriterion("ActionRelation not between", value1, value2, "actionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationIsNull() {
+            addCriterion("PreActionRelation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationIsNotNull() {
+            addCriterion("PreActionRelation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationEqualTo(String value) {
+            addCriterion("PreActionRelation =", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationNotEqualTo(String value) {
+            addCriterion("PreActionRelation <>", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationGreaterThan(String value) {
+            addCriterion("PreActionRelation >", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationGreaterThanOrEqualTo(String value) {
+            addCriterion("PreActionRelation >=", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationLessThan(String value) {
+            addCriterion("PreActionRelation <", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationLessThanOrEqualTo(String value) {
+            addCriterion("PreActionRelation <=", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationLike(String value) {
+            addCriterion("PreActionRelation like", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationNotLike(String value) {
+            addCriterion("PreActionRelation not like", value, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationIn(List<String> values) {
+            addCriterion("PreActionRelation in", values, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationNotIn(List<String> values) {
+            addCriterion("PreActionRelation not in", values, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationBetween(String value1, String value2) {
+            addCriterion("PreActionRelation between", value1, value2, "preactionrelation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreactionrelationNotBetween(String value1, String value2) {
+            addCriterion("PreActionRelation not between", value1, value2, "preactionrelation");
+            return (Criteria) this;
+        }
     }
 
     /**
