@@ -46,6 +46,9 @@
         .liactive{
             color: #4cb1ff!important;
         }
+        .divactive{
+            color: #4cb1ff!important;
+        }
     </style>
      <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -853,13 +856,8 @@
                <span>规则信息</span>
                <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;">X</span>
            </div>
-           <div style="position: relative;top:30px;margin: 0 auto;margin-left: 30px">
-               <h4 style="color: #409eff">上传文件</h4>
-               <form class="uploadForm" name="uploadForm">
-                   <input class="inputfile" name="inputfile" type="file" multiple="multiple" style="color: #fff"
-                          accept="application/json,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/xml, application/xml"/>
-               </form>
-               <button class="btn btn-primary mr10 btn-sm pointer" type="button" onclick="uploadSure()">确定</button>
+           <div style="position: relative;top:40px;margin: 0 auto;margin-left: 30px">
+               <input type="button" value="上传文件" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
            </div>
            <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
                <div style="height: 430px;overflow: auto">
@@ -887,7 +885,7 @@
             <span id="editDicTitle">新增算法</span>
             <span id="dictordySpan" class="editDicClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
-        <div style="position: relative;top: 70px;margin: 0 auto;margin-left: 20px">
+        <div style="position: relative;top: 70px;margin: 0 auto;">
 
             <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
                 <div style="margin-left: 30px">
@@ -902,7 +900,7 @@
                     </div>
                 </div>
             <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
-            <button style="background: #409eff;color: #fff;margin-bottom: 20px" id="addZdcs">新增参数</button>
+            <button style="background: #409eff;color: #fff;margin-bottom: 20px;margin-left: 20px" id="addZdcs">新增参数</button>
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
@@ -1636,8 +1634,12 @@
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名称</span>
+                                <span style="color:#fff;">参数名</span>
                                 <input class="zdcsCsmc" type="text" value="${t.varname}">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">变量</span>
+                                <input class="variable" type="text" value="">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
@@ -1658,7 +1660,7 @@
                                     <option value="1">输出</option>
                                 </select>
                             </i>
-                            <button class="deleteZdcs" style="float: right;margin-right: 30px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
+                            <button class="deleteZdcs" style="float: right;margin-right:5px;background: #f56c6c;border: none;color: #fff;height: 30px;line-height: 30px">删除</button>
                         </div>
                     `)
                     })
@@ -2049,18 +2051,27 @@
      }
     $('#flex_tools span').click((e)=>{
         $('#flex_tools span').removeClass("liactive")
-        $(e.target).addClass("liactive")
+        if(e.target.localName == "i"){
+            $(e.target).parent().addClass("liactive")
+        } else {
+            $(e.target).addClass("liactive")
+        }
+        $('#algorithmPage .left-list-tilte').removeClass("divactive")
         if($(".mouldFoot div").css('display') == "none"){
             $(".mouldFoot div").css('display',"flex")
         }
     })
     $('body').on('click','#modelPageDiv .left-list-tilte',(e) => {
-        $('#modelPageDiv .left-list-tilte').removeClass("liactive")
-        $(e.target).addClass("liactive")
+        $('#modelPageDiv .left-list-tilte').removeClass("divactive")
+        $(e.target).addClass("divactive")
     })
     $('body').on('click','#algorithmPage .left-list-tilte',(e) => {
-        $('#algorithmPage .left-list-tilte').removeClass("liactive")
-        $(e.target).addClass("liactive")
+        $('#algorithmPage .left-list-tilte').removeClass("divactive")
+        $(e.target).addClass("divactive")
+    })
+    $('body').on('click','#rulePage .left-list-tilte',(e) => {
+        $('#rulePage .left-list-tilte').removeClass("divactive")
+        $(e.target).addClass("divactive")
     })
     //获取规则详情
     function getGzList() {
@@ -2180,6 +2191,9 @@
     })
     function exportGz(s) {
         location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + s
+    }
+    function uploadShow() {
+        $("#fileupload").show()
     }
 </script>
 </body>

@@ -518,8 +518,12 @@ $(function(){
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
-                  <span style="color:#fff;">参数名称</span>
+                    <span style="color:#fff;">参数名</span>
                     <input class="zdcsCsmc" type="text" value=""> 
+                </i>
+                <i>
+                    <span style="color:#fff;">变量</span>
+                    <input class="variable" type="text" value=""> 
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
@@ -540,7 +544,7 @@ $(function(){
                         <option value="1">输出</option>
                     </select>
                 </i>  
-                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:30px;margin-top: 5px">删除</button>
+                <button class="deleteZdcs" style="height: 30px;background: #f56c6c;border: none;color: #fff;float: right;margin-right:5px;">删除</button>
             </div>
         `)
     })
@@ -1110,8 +1114,12 @@ $(function(){
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名称</span>
+                                <span style="color:#fff;">参数名</span>
                                 <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">变量</span>
+                                <input class="variable" type="text" value="">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
