@@ -52,7 +52,7 @@
     </style>
      <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-            showProcessingMessages: false,
+            showProcessingMessages: false, 
             tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
         });
     </script>
@@ -61,6 +61,8 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./topology/formula.js"></script>
     <script src="./toastr.js"></script>
+    <script src="./lib/template-web.js"></script>
+    <script src="./template/algorithm.js"></script>
     <script>
         $(function() {
             var content = "";
@@ -179,8 +181,16 @@
         });
     });
 </script>
+
+<script id="algorithm" type="text/html">
+    <h1>{{title}}</h1>
+</script>
+<script>
+    
+</script>
 </head>
 <body> 
+    <div id="algorithm"></div>
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="ruleInfo">
@@ -378,27 +388,7 @@
                 </div>
             </div>
         </div>
-    <!-- 关系选择 -->
-    <!-- <div id="selectRela">
-        <div>
-            <span>关系选择</span>
-            <select class="selectRelation">
-                    <option value="">与</option>
-                    <option value="">或</option>
-                    <option value="">非</option>
-                    <option value="">大于 </option>
-                    <option value="">大于等于</option>
-                    <option value="">小于 </option>
-                    <option value="">小于等于</option>
-                    <option value="">等于</option>
-                    <option value="">不等于</option>
-            </select>
-            <span>规则描述</span>
-            <textarea cols="21" rows="5"></textarea>
-            <button class="btn pointer" type="button" onclick="RelateClose()" style="margin-right: 35px;">取消</button>
-            <button class="btn pointer" type="button" onclick="selectSure()" style="margin-right: 10px;">确定</button>
-        </div>
-    </div> -->
+ 
     <!-- 上传导入文件框 -->
     <div id="fileupload">
         <div class="title">
@@ -461,19 +451,6 @@
             <div class="button" onclick='ConfirmFields()'>确定</div>
         </div>
     </div>
-    <!-- 选择算子类型 -->
-    <!-- <div id="suanfaType">
-        <div class="suanzi">
-            <select placeholder="选择算子类型" id="formulaType">
-                <option value="" >请选择算子类型</option>
-                <option value="1" >算法公式</option>
-                <option value="2">逻辑运算</option>
-            </select>
-            <div>
-                <button onclick="selectFormula()">确定</button>
-            </div>
-        </div>
-    </div> -->
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
@@ -723,7 +700,11 @@
                         </nav>
                         <div class="flex lkr-flex" id="main_canvas" >
                             <!-- <div onclick="addFrame()" style="cursor: pointer;">新增</div> -->
-
+                            <div class="yjl_tools">
+                                <div class="colorTpye">类型</div>
+                                <button id="btn">全屏</button>
+                                <!-- <div type="button" class="fullScreen">全屏</div> -->
+                            </div>
                             <div class="lkr-bg-canvas">
                                 <div id="flex_canvas">
                                     <div class="canvas" id="topo_canvas"></div>
@@ -731,7 +712,24 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="props" id="flex_props">
+                            <div class="pv5">
+                                <div id="flex_props_home">
+                                    <div>
+                                        <div class="sub-title">
+                                            小提示
+                                        </div>
+                                        <ul>
+                                            <li>输出结果1</li>
+                                            <li>输出结果2</li>
+                                            <li>输出结果3</li>
+                                            <li>输出结果4</li>
+                                            <li>输出结果5</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tools" id="flex_tools" style="position: absolute;right: 30px;border: 1px solid #19386f;border-radius: 7px;">
                             <div class="title-page">
                                 <li><span onclick="dataModlue()"><i class="dataMod"></i>模型库</span></li>
@@ -759,6 +757,7 @@
                             </div>
 
                         </div>
+
                     <!--右键菜单定义-->
                     <div class="context-menus" id="canvas_menus" style="display: none">
                         <div disabled>
@@ -776,16 +775,6 @@
                                 查看详情
                             </a>
                         </div>
-<!--                        <div disabled>-->
-<!--                            <a onclick="onTop()" class="menu-a-disabled" id="menu_top" disabled>-->
-<!--                                置顶-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <a onclick="onBottom()" class="menu-a-disabled" id="menu_bottom" disabled>-->
-<!--                                置底-->
-<!--                            </a>-->
-<!--                        </div>-->
                         <div class="line"></div>
                         <div>
                             <a onclick="onCombine()" class="menu-a-disabled" id="menu_combine" disabled>
@@ -823,24 +812,6 @@
                             </a>
                         </div>
                         <div class="line"></div>
-<!--                        <div>-->
-<!--                            <a onclick="cut()" class="menu-a">-->
-<!--                                剪切-->
-<!--                                <span class="ml50">Ctrl + X</span>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <a onclick="copy()" class="menu-a">-->
-<!--                                复制-->
-<!--                                <span class="ml50">Ctrl + C</span>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <a onclick="parse()" class="menu-a">-->
-<!--                                粘贴-->
-<!--                                <span class="ml50">Ctrl + V</span>-->
-<!--                            </a>-->
-<!--                        </div>-->
                     </div>
                 </div>
                 </div>
@@ -933,6 +904,8 @@
 <script src='index.js'></script>
 <script src="topology/topology_es5.js"></script>
 <script src="topology/MathJax.js"></script>
+<script src="base.js"></script>
+<link rel="stylesheet" href="base.css">
 
 <script>
     var editGzType = false;
@@ -969,6 +942,14 @@
         inputFieldsTarget:'',
         fieldname:''
     }
+
+    $('body').on('click','.colorTpye',(e) =>{
+        $("#colorDiv").fadeToggle(500)
+    })
+    $('body').on('click','#btn',(e) =>{
+        canvas.lock(2)
+        canvas.scale(1)
+    })
     function changeVarType(e){
         if(e.target.value == "2" || e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
