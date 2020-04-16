@@ -8,6 +8,34 @@ body{
 #ligature{
     display: none;
 }
+.yjl_tools{
+    width: 30px;
+    /* display: flex; */
+    position: absolute;
+    top: 80px;
+    color: #fff;
+    height: 40px;
+    border: 1px solid #45a1e9;
+    z-index: 99999;
+}
+.yjl_tools >div{
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 30px;
+    height: 15px;
+    clear: both;
+    margin: 2px 2px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.yjl_tools > button{
+    margin: 2px 2px;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 12px;
+}
 .algorithmFoot{
     width: 100%;
     display: flex;
@@ -676,6 +704,7 @@ body{
     position: absolute;
     top:10%;
     right: 22%;
+    display: none;
 }
 #colorDiv ul{
     padding: 0;

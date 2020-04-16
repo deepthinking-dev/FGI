@@ -318,6 +318,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
+                  console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
