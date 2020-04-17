@@ -9,10 +9,10 @@ body{
     display: none;
 }
 .yjl_tools{
-    width: 30px;
+    width: 35px;
     /* display: flex; */
     position: absolute;
-    top: 80px;
+    top: 65px;
     color: #fff;
     height: 60px;
     border: 1px solid #45a1e9;
@@ -28,6 +28,7 @@ body{
     margin: 2px 2px;
     cursor: pointer;
     font-size: 12px;
+    text-align: center;
 }
 .yjl_tools > button{
     margin: 2px 2px;
@@ -35,6 +36,9 @@ body{
     background: none;
     border: none;
     font-size: 12px;
+    text-align: center;
+    width: 30px;
+
 }
 .algorithmFoot{
     width: 100%;
