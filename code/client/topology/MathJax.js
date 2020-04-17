@@ -323,6 +323,16 @@ function RelateClose(){
 //规则弹框
 function ruleOpen(){
     $("#sureRule").fadeToggle(500);
+    $.ajax({
+        url:urlConfig.host+ '/group/findAllGroupMessagesByType',
+        data:{type:3},
+        success(res) {
+            $("#gzGroupName").empty()
+            res.map(s=>{
+                $("#gzGroupName").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+            })
+        }
+    })
 }
 //关闭规则弹框
 function RuleClose(){
@@ -391,7 +401,10 @@ function ruleSure(){
         id:0,
         remark:'',
         rolename:$("#ruleName").val(),
-        uuserid:0
+        uuserid:0,
+        remark2:'',
+        remark3:'',
+        status:"",
     }
     let algorithmRuleSaveDataModel ={
         interfaceRoleDataModels :algorithmRuleDataList,

@@ -671,7 +671,7 @@ $(function(){
     window.getAllData = getAllData
     //点击删除模型
     $('body').on('click','.lkr-list-del',(e) => {
-        window.bigData.delmoduleId = $(e.target).data('id')
+        window.bigData.delmoduleId = $(e.target).attr('moduleId')
         $('#lkrFrameDel').fadeToggle(500)
     })
   

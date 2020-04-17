@@ -764,12 +764,11 @@ body .form-input{
 }
 #sureRule  .ruleContent li{
     position: relative;
-    height: 50px;
     line-height: 50px;
     list-style: none;
     font-size: 14px;
     color: #fff;
-   margin: 20px 0;
+    margin-top: 20px;
 }
 #sureRule  .ruleContent li span{
     display: inline-block;

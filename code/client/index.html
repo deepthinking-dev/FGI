@@ -269,6 +269,7 @@
         <div class="ruleContent"> 
             <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
             <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px">规则描述：</div><textarea id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
+            <li style="margin: 0"><span>分组名称：</span><select id="gzGroupName" type="text" placeholder="请输入规则名称"></select></li>
             <li style="display:none;"><span>备注：</span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
             <button onclick="ruleSure()">确定</button>
         </div>
@@ -350,21 +351,18 @@
         
     </div>
     <!-- 数据模型 -->
-    <div id="dataModulePage" class="modulePage">
+    <div id="dataModulePage">
         <div class="title">
             <span>数据模型</span>
-            <span onclick="ModuleClose()" style="cursor: pointer;">X</span>
-
+            <span onclick="ModuleClose()" style="cursor: pointer;float: right">X</span>
         </div>
-        <div class="addButtonModlue">
+        <div class="addButtonModlue" style="position: relative;top:70px;margin:0 15px">
             <button class="addModlue" onclick="addModule()">新增</button>
-            <span style="color: #409eff;height: 30px;line-height: 30px;margin: 0 10px">模型组</span>
-            <select id="selectedModlue">
-                <option value=""></option>
-            </select>
-        </div>
+            <div style="height: 520px;overflow: auto">
+                <div class="panel-group" id="moduleGruopList" role="moduleGruopList" aria-multiselectable="true">
 
-        <div class="moduleContentList">
+                </div>
+            </div>
         </div>
     </div>
     <!-- 算子确认删除框 -->
@@ -744,7 +742,7 @@
                             <div class="title-page">
                                 <li><span onclick="dataModlue()"><i class="dataMod"></i>模型库</span></li>
                                 <li><span onclick="dictionaryShow()"><i class="DicI"></i>算法库</span></li>
-                                <li><span id='getAllGzgz'><i class="DicI"></i>规则库</span></li>
+                                <li><span onclick="ruleGroupShow()"><i class="DicI"></i>规则库</span></li>
                             </div>
                             <div class='Search'>
                                 <i class="icon-search"></i>
@@ -760,8 +758,9 @@
                             </div>
                             <!-- 规则库页-->
                            <div id="ruleMde" class='lkr-page' style="display: none;">
-<!--                                <button id="getAllSz" class="backAlgorithmPage">返回</button>-->
-                                <div id="rulePage" style="margin-top: 20px;"></div>
+                               <div class="panel-group" id="ruleListRight" role="ruleListRight" aria-multiselectable="true">
+
+                               </div>
                            </div>
                             <!--算法库页-->
                            <div id="algorithmPage" class='lkr-page' style="display: none">
@@ -1078,7 +1077,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
-        window.bigData.editmoduleId = $(e.target).data('id')
+        window.bigData.editmoduleId = $(e.target).attr('moduleId')
+        $("#dataModulePage").hide()
         $('#lkrFrame').fadeToggle(500)
         $('.addsjyth').show();
         $("#lkrFrame .lkr-button").show();
@@ -1342,20 +1342,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                     $('#lkrFrame').fadeToggle(500)
-                    $.ajax({
-                        url:urlConfig.host+'/module/GetModuleGroup',
-                        data:'',
-                        success: function(datas) {
-                            let str = '<option>全部</option>'
-                            datas.map(item => {
-                                str += `<option>${item}</option>`
-
-                            })
-                            $("#selectedModlue").html(str)
-                        }
-                    })
+                    getModuleList()
                 }
-
                }) 
             }
           
@@ -1508,37 +1496,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data){
                     window.bigData.delmoduleId = ''
                     $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
-                    $.ajax({
-                        url:urlConfig.host+'/module/GetAllModule',
-                        data:'',
-                        success: function(data) {
-                            if(data){
-                                $(".moduleContentList").html('')
-                                let str=``
-                                data.map(item=>{
-                                    $(".moduleContentList").append(`<div class="left-list">
-                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
-                                            <div class="left-list-event">
-                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
-                                            </div>
-                                        </div>`)
-                                })
-                                $.ajax({
-                                    url:urlConfig.host+'/module/GetModuleGroup',
-                                    data:'',
-                                    success: function(datas) {
-                                        let str = '<option>全部</option>'
-                                        datas.map(item => {
-                                            str += `<option>${item}</option>`
-
-                                        })
-                                        $("#selectedModlue").html(str)
-                                    }
-                                })
-                            }
-                        }
-                    })
+                    getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
                 }
             }
@@ -1724,6 +1682,32 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
+    //模型列表刷新
+    function getModuleList(){
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:1},
+            success(data) {
+                $("#moduleGruopList").empty()
+                data.map((s,index)=>{
+                    $("#moduleGruopList").append(` <div class="panel panel-default">
+                              <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruop${index}" aria-expanded="true">${s.groupname}</a>
+                                  </h4>
+                              </div>
+                              <div id="moduleGruop${index}" class="panel-collapse collapse" groupname="${s.groupname}">
+                                  <div class="panel-body">
+                                      <table class="sfGruopTable"></table>
+                                  </div>
+                              </div>
+                          </div>
+                          `)
+                })
+            }
+        })
+    }
     //算法库维护
     function dictionaryShow(){
         $("#modelPageDiv").hide();
@@ -1754,6 +1738,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
         $(".dataManage").text("算法管理")
     }
+
     //删除字典信息
     function deleteZd(s) {
         $("#deleteZdButton").attr("deleteId",s)
@@ -2286,28 +2271,39 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
+    //规则右侧列表
+    function ruleGroupShow() {
+        $("#modelPageDiv").hide();
+        $("#ruleMde").show();
+        $("#algorithmPage").hide();
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:3},
+            success(data) {
+                $("#ruleListRight").empty()
+                data.map((s,index)=>{
+                    $("#ruleListRight").append(`<div class="panel panel-default">
+                              <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ruleRight${index}" aria-expanded="true">${s.groupname}</a>
+                                  </h4>
+                              </div>
+                              <div id="ruleRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
+                                  <div class="panel-body">
+
+                                  </div>
+                              </div>
+                          </div>
+                          `)
+                })
+            }
+        })
+    }
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
             $('#dataModulePage').fadeToggle(500)
-            $.ajax({
-                url:urlConfig.host+'/module/GetAllModule',
-                data:'',
-                success: function(data) {
-                    if(data){
-                        $(".moduleContentList").html('')
-                        let str=``
-                        data.map(item=>{
-                            $(".moduleContentList").append(`<div class="left-list">
-                                    <div class="left-list-tilte dbclickModule"  data-id='${item.id}'>${item.modulename}</div>
-                                    <div class="left-list-event">
-                                        <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                        <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
-                                    </div>
-                                </div>`)
-                        })
-                    }
-                }
-            })
+            getModuleList()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').fadeToggle(500)
@@ -2609,6 +2605,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     })
+    //模型右侧手风琴展开
     $('#modelListRight').on('show.bs.collapse', function (e) {
         $.ajax({
             url: urlConfig.host + '/module/GetModuleByGroupName',
@@ -2625,7 +2622,40 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     })
-    //手风琴点击标签页
+    //模型弹窗手风琴展开
+    $('#moduleGruopList').on('show.bs.collapse', function (e) {
+        $.ajax({
+            url: urlConfig.host + '/module/GetModuleByGroupName',
+            type:"get",
+            data: {moduleGroupName :$(e.target).attr("groupname")},
+            success(data) {
+                if(data.length){
+                    var table = $(e.target).children().children();
+                    table.empty()
+                    table.append(`<thead>
+                    <th style="width: 150px">模型名称</th>
+                    <th style="width: 150px">描述</th>
+                    <th style="width: 200px">操作</th>
+                    </thead>`)
+                    data.map(s=>{
+                        table.append(
+                            `<tr>
+                            <td style="width: 150px">${s.modulename}</td>
+                            <td style="width: 150px">${s.des}</td>
+                            <td style="width: 150px">
+                                <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="发布" src="static/fabu.png" onclick="publish(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                    })
+                }
+            }
+        })
+    })
+
+    //算法手风琴点击标签页
     function accordion(e) {
         $.ajax({
             url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
