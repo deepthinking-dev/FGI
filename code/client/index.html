@@ -388,7 +388,21 @@
                 </div>
             </div>
         </div>
- 
+    <!-- 规则确认删除框 -->
+    <div class="lkr-frame" id='ruleDeleteDiv'>
+        <div class="lkr-frame-div" style="height: 150px;">
+            <div class="lkr-frame-content">
+                <h3>
+                    确认删除此规则?
+                </h3>
+
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
+            </div>
+        </div>
+    </div>
     <!-- 上传导入文件框 -->
     <div id="fileupload">
         <div class="title">
@@ -760,8 +774,8 @@
                             <!--算法库页-->
                            <div id="algorithmPage" class='lkr-page' style="display: none"></div>
                            <div class="mouldFoot">
-                                <div onclick="dataModify()">数据管理</div>
-                                <div>分组维护</div>
+                                <div class="activeTypeName" onclick="dataModify()">数据管理</div>
+                                <div onclick="gruopEdit()">分组维护</div>
                             </div>
 
                         </div>
@@ -846,17 +860,43 @@
        </div>
       <!-- 字典信息弹窗 -->
       <div id="dicDiv">
-      <div class="title">
-          <span>算法信息</span>
-          <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
-      </div>
-          <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-              <input type="button" id="addDic" value="新增算法">
-              <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
-              <div style="height: 520px;overflow: auto">
-                  <table id="dicTable"></table>
+              <div class="title">
+                  <span>算法信息</span>
+                  <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
               </div>
-          </div>
+              <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
+                  <input type="button" id="addDic" value="新增算法">
+                  <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
+                  <div style="height: 520px;overflow: auto">
+                      <table id="dicTable"></table>
+                  </div>
+              </div>
+      </div>
+    <!-- 分组信息弹窗 -->
+    <div id="groupDiv">
+        <div class="title">
+            <span>分组信息</span>
+            <span class="groupDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
+        </div>
+        <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
+            <input type="button" id="addGroup" value="新增分组">
+            <div style="height: 520px;overflow: auto">
+                <table id="groupTable"></table>
+            </div>
+        </div>
+    </div>
+    <!-- 分组信息新增修改弹窗 -->
+    <div id="groupEditDiv">
+        <div class="title">
+            <span class="groupTitle">新增分组</span>
+            <span class="closeGroupEditDiv" style="float: right;cursor: pointer">X</span>
+        </div>
+        <div class="groupMain">
+            <span style="width: 120px">分组名称</span>
+            <input type="text" value="" id="groupInputName">
+        </div>
+        <input type="button" id="addGroupYes" value="确定">
+        <input type="button" class="cancelGroup" value="取消">
     </div>
     <!-- 字典新增修改弹窗 -->
     <div id="editDic">
@@ -1578,9 +1618,9 @@
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
-                                <img src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="发布" src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
                        `)
@@ -2045,10 +2085,22 @@
      }
     $('#flex_tools span').click((e)=>{
         $('#flex_tools span').removeClass("liactive")
+        var activeName;
         if(e.target.localName == "i"){
             $(e.target).parent().addClass("liactive")
+            activeName = $(e.target).parent().text()
         } else {
             $(e.target).addClass("liactive")
+            activeName = $(e.target).text()
+        }
+        if(activeName == "模型库"){
+            $(".activeTypeName").text("模型管理")
+        }
+        if(activeName == "算法库"){
+            $(".activeTypeName").text("算法管理")
+        }
+        if(activeName == "规则库"){
+            $(".activeTypeName").text("规则管理")
         }
         $('#algorithmPage .left-list-tilte').removeClass("divactive")
         if($(".mouldFoot div").css('display') == "none"){
@@ -2193,6 +2245,162 @@
     function publish(s) {
 
     }
+    function gruopEdit() {
+        var type;
+        if($('#flex_tools .liactive').text() == "模型库"){
+            type=1
+        }
+        if($('#flex_tools .liactive').text() == "算法库"){
+            type=2
+        }
+        if($('#flex_tools .liactive').text() == "规则库"){
+            type=3
+        }
+        $("#groupDiv").show();
+        $("#groupInputName").attr("type",type)
+        $("#groupTable").empty();
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type :type},
+            success(data) {
+                if(data.length){
+                   $("#groupTable").append(`<thead>
+                    <th style="width: 220px">分组名称</th>
+                    <th style="width: 220px">操作</th>
+                    `)
+                    data.map(s=>{
+                        $("#groupTable").append(
+                            `<tr>
+                            <td style="width: 220px">${s.groupname}</td>
+                            <td style="width: 220px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                    })
+                }
+            }
+        })
+    }
+    $(".closeGroupEditDiv").click(()=>{
+        $("#groupEditDiv").hide()
+    })
+    $(".cancelGroup").click(()=>{
+        $("#groupEditDiv").hide()
+    })
+    $("#addGroup").click(()=>{
+        $("#groupEditDiv").show();
+        $(".groupTitle").text("新增分组")
+        $("#groupInputName").attr("modifyId","")
+    })
+    $("#addGroupYes").click(()=>{
+        var tableGroupdata = {
+            "groupname": $("#groupInputName").val(),
+            "grouptype":Number($("#groupInputName").attr("type")),
+            "id": 0
+        }
+        if($(".groupTitle").text() == "新增分组"){
+            $.ajax({
+                url: urlConfig.host + '/group/saveTableGroupMessage',
+                type:"POST",
+                data:JSON.stringify(tableGroupdata),
+                contentType:"application/json",
+                success(data) {
+                    if(data == "分组名称重复"){
+                        toastr.error(data)
+                    } else {
+                        toastr.success(data)
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type :$("#groupInputName").attr("type")},
+                            success(data) {
+                                $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
+                                if(data.length){
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                                    data.map(s=>{
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
+                                    })
+                                }
+                            }
+                        })
+                    }
+                },
+                error(data){
+                    toastr.error(data)
+                }
+            })
+        } else {
+            tableGroupdata.id = $("#groupInputName").attr("modifyId")
+            $.ajax({
+                url: urlConfig.host + '/group/updtaTableGroupMessage',
+                type:"POST",
+                data:JSON.stringify(tableGroupdata),
+                dataType: "json",
+                contentType:"application/json",
+                success(data) {
+                    if(data){
+                        toastr.success('修改成功！')
+                        $("#groupEditDiv").hide();
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type :$("#groupInputName").attr("type")},
+                            success(data) {
+                                $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
+                                if(data.length){
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                                    data.map(s=>{
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    })
+    function modifyGroupShow(td,s) {
+        var tableGroupdata = {
+            "groupname": $("#groupInputName").val(),
+            "grouptype":Number($("#groupInputName").attr("type")),
+            "id": s
+        }
+        $("#groupEditDiv").show()
+        $(".groupTitle").text("修改分组")
+        $("#groupInputName").attr("modifyId",s)
+        $("#groupInputName").val(td.parent().prev().text())
+    }
+    $(".groupDivClose").click(()=>{
+        $("#groupDiv").hide()
+    })
 </script>
 </body>
 </html>
