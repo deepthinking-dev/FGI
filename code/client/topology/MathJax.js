@@ -355,7 +355,7 @@ function ruleSure(){
    })
     //参数借口
     let operatorInterfaceDataModels = [] 
-    window.Topology.tools.map(item=>{
+    Object.values(window.Topology.tools).map(item=>{
         // let bigList = []
         let objF = {
             algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
@@ -408,7 +408,8 @@ function ruleSure(){
             data:JSON.stringify(tableRole),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                toastr.success('修改成功！');
+                // toastr.success('修改成功！');
+                $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
             }
         })
     }else{
@@ -420,7 +421,8 @@ function ruleSure(){
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                toastr.success('保存成功！');
+                // toastr.success('保存成功！');
+                $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
             }
         })
     }
@@ -445,7 +447,8 @@ function ConfirmDelAlgorithm(){
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
-                toastr.info(data.msg);
+                // toastr.info(data.msg);
+                $('.noticeList').append(`<li>${timeDay}${data.msg} </li>`)
             }
         }
     })
@@ -467,7 +470,8 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
-                toastr.success('删除成功！');
+                // toastr.success('删除成功！');
+                $('.noticeList').append(`<li>${timeDay}删除成功 </li>`)
                 window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null});
                 canvas.data.nodes = [];
                 canvas.data.lines = [];
@@ -503,7 +507,8 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                toastr.success('请选择变量名称！');
+                // toastr.success('请选择变量名称！');
+                $('.noticeList').append(`<li>${timeDay}请选择变量名称！ </li>`)
                 return false;
             }
             //有uuid说明这个小接口已存在
@@ -684,249 +689,242 @@ function ActionSure(){
    let UPdataList = []
    let AddList = []
    let DelList = []
-   //判断修改，新增，删除数据
-    window.Topology.tools.map(isCZdata=>{
-        if(isCZdata.id == data.id){
-            // isFlag =true
-            for(let i =0;i< actionInfoNum.length ;i++){
-                let UPFlag = false
-                for(let j=0; j<isCZdata.children.length;j++){
-                    let uuID  =''
-                    if(isCZdata.children[j].uuid.indexOf('---') == -1){
-                        uuID = isCZdata.children[j].uuid
-                    }else{
-                        let sy = isCZdata.children[j].uuid.indexOf('---')
-                        uuID = isCZdata.children[j].uuid.slice(0,sy)
-                    }                     
-                    let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-                        clyId = clyId.split('---')[0]
-                    if(uuID == clyId){
-                        UPdataList.push(isCZdata.children[j])
-                        UPFlag = true
-                        break;
-                    }
-                }
-                if(!UPFlag){
-                    let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
-                    if(id){
-                        id =id
-                    }else{
-                        id =""
-                    }
-                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
-                    if(typeIn== "基本类型"){
-                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
-                    }
-                    let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
-                    if(varName){
-                        varName = varName
-                    }else{
-                        varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
-                    }
-                    let uuid = ''
-                    if(id){
-                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-                    }else{
-                        uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
-                    }
-                    let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
-                    if(inorout){
-                        inorout =inorout
-                    }else{
-                        inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
-                    }
-                      
-                    if(inorout == "输入"){
-                        inorout = 0
-                    }else{
-                        inorout = 1
-                    }
-                    obj = {
-                        id:id,
-                        uuid:uuid,
-                        algorithmid:currId,
-                        varname:varName,
-                        vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
-                        valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
-                        inorout:inorout,
-                        remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
-                    }
-                    AddList.push(obj)
+
+    //判断修改，新增，删除数据
+    for(let i =0;i< actionInfoNum.length ;i++){
+        let UPFlag = false
+        let childList =window.Topology.tools[data.id].children
+        for(var c = 0;c<childList.length;c++){
+        
+            let uuID  =''
+            if(childList[c].uuid.indexOf('---') == -1){
+                uuID = childList[c].uuid
+            }else{
+                let sy = childList[c].uuid.indexOf('---')
+                uuID = childList[c].uuid.slice(0,sy)
+            } 
+            let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                clyId = clyId.split('---')[0]
+            if(uuID == clyId){
+                UPdataList.push(childList[c])
+                UPFlag = true
+                break;
+            }
+        
+            
+        }
+        if(!UPFlag){
+            let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+            if(id){
+                id =id
+            }else{
+                id =""
+            }
+            let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+            if(typeIn== "基本类型"){
+                typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+            }
+            let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+            if(varName){
+                varName = varName
+            }else{
+                varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+            }
+            let uuid = ''
+            if(id){
+                uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+            }else{
+                uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+            }
+            let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+            if(inorout){
+                inorout =inorout
+            }else{
+                inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+            }
+            
+            if(inorout == "输入"){
+                inorout = 0
+            }else{
+                inorout = 1
+            }
+            obj = {
+                id:id,
+                uuid:uuid,
+                algorithmid:currId,
+                varname:varName,
+                vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+                valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                inorout:inorout,
+                remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+            }
+            AddList.push(obj)
+        }
+    }
+    let childList =window.Topology.tools[data.id].children
+    for(let m=0;m<childList.length;m++){
+        let delFlag = false
+        for(let n=0;n<UPdataList.length;n++){
+      
+            if(childList[m].uuid == UPdataList[n].uuid){
+                delFlag = true
+                break;    
+            }
+            
+        }
+        if(!delFlag){
+            DelList.push(childList[m])
+        }
+        
+    }
+    canvas.data.nodes.map(now=>{
+        if(now.id.includes(data.id)){
+            nowList.push(now)
+        }
+    })
+
+    lsList = UPdataList.concat(AddList)
+    if(DelList.length > 0){
+        DelList.map(item=>{
+            let Del1UUid = item.uuid.split('---')[0]
+            for(let i = nowList.length - 1;i >=0 ;i--){
+                let nowUUid =nowList[i].id.substr((nowList[i].id.indexOf('---')-36),36)
+                if(nowUUid ==Del1UUid){
+                    nowList.splice(i,1);
                 }
             }
+            canvas.data.nodes.map((item1,i) => {
+                if(item1.childStand){
+                    let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                    let in_num = -1 
+                    let out_num = -1 
+                    if(Del1UUid == Del2UUid){                       
+                        if(item.inorout == 0){
+                            canvas.data.nodes.splice(i,1); 
+                            $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                            window.Topology.dblclickNode.data.inNum --    
+                            
+                            nowList.map((test,R)=>{
+                                
+                                if(test.childStand){
+                                    if(test.id.indexOf("IN") !=-1){   
+                                    in_num ++                                       
+                                    test.rect.width = 20
+                                    test.rect.height = 10  
+                                    test.rect.x = data.rect.x-test.rect.width
+                                    test.rect.y = data.rect.y + in_num*20 + 10                            
+                                    test.rect.ex = test.rect.x  + test.rect.width
+                                    test.rect.ey = test.rect.y + test.rect.height
+                                    test.rect.center.x = test.rect.x+ test.rect.width/2
+                                    test.rect.center.y =test.rect.y  + test.rect.height/2
+                                    test.textRect.x = test.rect.x - 5
+                                    test.textRect.y =  test.rect.y
+                                    test.textRect.width = 10
+                                    test.textRect.height = 5
+                                    test.paddingTopNum = 0
+                                    test.paddingTop = 0
+                                    test.fullIconRect.height = 4
+                                    test.fullTextRect.x = test.rect.ex - test.textRect.height - 5
+                                    test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                    test.iconRect.x = test.rect.ex - test.textRect.height- 5
+                                    test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
+                                    test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.anchors[0].x = test.rect.x
+                                    test.anchors[0].y =test.rect.center.y
+                                    test.anchors[1].x =0
+                                    test.anchors[1].y = 0   
+                                    test.anchors[2].x = 0
+                                    test.anchors[2].y = 0                                                                                           
+                                    test.anchors[3].x =0
+                                    test.anchors[3].y = 0
+                                    test.rotatedAnchors[0].x = test.rect.x
+                                    test.rotatedAnchors[0].y =test.rect.center.y
+                                    test.rotatedAnchors[1].x = 0
+                                    test.rotatedAnchors[1].y =0
+                                    test.rotatedAnchors[2].x = 0
+                                    test.rotatedAnchors[2].y = 0
+                                    test.rotatedAnchors[3].x =0
+                                    test.rotatedAnchors[3].y =0
+                                    }
+                                    
+                                }
+                            })
+                            if( window.Topology.dblclickNode.rect.height > 100){
+                                
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                            }                                                 
+                        }else{
+                            window.Topology.dblclickNode.data.outNum --
+                            canvas.data.nodes.splice(i,1); 
+                            // toastr.success('删除成功！');
+                            $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
 
+                            nowList.map((test,R)=>{
+                                
+                                if(test.childStand){
+                                    if(test.id.indexOf("OUT") !=-1){
+                                    out_num ++
+                                    test.rect.x = data.rect.ex 
+                                    test.rect.y = data.rect.y + out_num*20 + 10
+                                    test.rect.width = 20
+                                    test.rect.height = 10                                
+                                    test.rect.ex = test.rect.x  + test.rect.width
+                                    test.rect.ey = test.rect.y + test.rect.height
+                                    test.rect.center.x = test.rect.x+ test.rect.width/2
+                                    test.rect.center.y =test.rect.y  + test.rect.height/2
+                                    test.textRect.x = test.rect.x- 5
+                                    test.textRect.y =  test.rect.y
+                                    test.textRect.width = 10
+                                    test.textRect.height = 5
+                                    test.paddingTopNum = 0
+                                    test.paddingTop = 0
+                                    test.fullIconRect.height = 4
+                                    test.fullTextRect.x = test.rect.ex - test.textRect.height- 5
+                                    test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                    test.iconRect.x = test.rect.ex - test.textRect.height- 5
+                                    test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
+                                    test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.anchors[0].x = 0
+                                    test.anchors[0].y =0
+                                    test.anchors[1].x =0
+                                    test.anchors[1].y = 0   
+                                    test.anchors[2].x = test.rect.ex
+                                    test.anchors[2].y = test.rect.center.y                                                                                            
+                                    test.anchors[3].x =0
+                                    test.anchors[3].y = 0
+                                    test.rotatedAnchors[0].x = 0
+                                    test.rotatedAnchors[0].y =0
 
-            for(let m=0; m<isCZdata.children.length;m++){
-                let delFlag = false
-                for(let n=0;n<UPdataList.length;n++){
-                    if(isCZdata.children[m].uuid == UPdataList[n].uuid){
-                        delFlag = true
-                        break;    
+                                    test.rotatedAnchors[1].x = 0
+                                    test.rotatedAnchors[1].y =0
+
+                                    test.rotatedAnchors[2].x = test.rect.ex
+                                    test.rotatedAnchors[2].y = test.rect.center.y
+
+                                    test.rotatedAnchors[3].x =0
+                                    test.rotatedAnchors[3].y =0
+                                    }
+                                }
+                                
+                            })
+                            if( window.Topology.dblclickNode.rect.height > 100){
+                                
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
+                            }else{
+                                window.Topology.dblclickNode.rect.height = 100
+                            }
+                        }     
                     }
-                }
-                if(!delFlag){
-                    DelList.push(isCZdata.children[m])
-                }
-            }
-
-
-
-            canvas.data.nodes.map(now=>{
-                if(now.id.includes(data.id)){
-                    nowList.push(now)
                 }
             })
-
-            lsList = UPdataList.concat(AddList)
-            isCZdata.children = lsList
-            if(DelList.length > 0){
-                DelList.map(item=>{
-                    let Del1UUid = item.uuid.split('---')[0]
-                    nowList.map((nowId,p) =>{
-
-                        let nowUUid =nowId.id.substr((nowId.id.indexOf('---')-36),36)
-                        if(nowUUid ==Del1UUid){
-                            nowList.splice(p,1);
-                        }
-                    })
-                   
-                    canvas.data.nodes.map((item1,i) => {
-                        if(item1.childStand){
-                            let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
-                            let in_num = -1 
-                            let out_num = -1 
-                            if(Del1UUid == Del2UUid){                       
-                                if(item.inorout == 0){
-                                    canvas.data.nodes.splice(i,1); 
-                                    toastr.success('删除成功！');
-                                    window.Topology.dblclickNode.data.inNum --    
-                                  
-                                    nowList.map((test,R)=>{
-                                     
-                                        if(test.childStand){
-                                           if(test.id.indexOf("IN") !=-1){   
-                                            in_num ++                                       
-                                            test.rect.width = 20
-                                            test.rect.height = 10  
-                                            test.rect.x = data.rect.x-test.rect.width
-                                            test.rect.y = data.rect.y + in_num*20 + 10                            
-                                            test.rect.ex = test.rect.x  + test.rect.width
-                                            test.rect.ey = test.rect.y + test.rect.height
-                                            test.rect.center.x = test.rect.x+ test.rect.width/2
-                                            test.rect.center.y =test.rect.y  + test.rect.height/2
-                                            test.textRect.x = test.rect.x - 5
-                                            test.textRect.y =  test.rect.y
-                                            test.textRect.width = 10
-                                            test.textRect.height = 5
-                                            test.paddingTopNum = 0
-                                            test.paddingTop = 0
-                                            test.fullIconRect.height = 4
-                                            test.fullTextRect.x = test.rect.ex - test.textRect.height - 5
-                                            test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
-                                            test.iconRect.x = test.rect.ex - test.textRect.height- 5
-                                            test.iconRect.y = test.rect.y  -test.fullIconRect.height
-                                            test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
-                                            test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
-                                            test.anchors[0].x = test.rect.x
-                                            test.anchors[0].y =test.rect.center.y
-                                            test.anchors[1].x =0
-                                            test.anchors[1].y = 0   
-                                            test.anchors[2].x = 0
-                                            test.anchors[2].y = 0                                                                                           
-                                            test.anchors[3].x =0
-                                            test.anchors[3].y = 0
-                                            test.rotatedAnchors[0].x = test.rect.x
-                                            test.rotatedAnchors[0].y =test.rect.center.y
-                                            test.rotatedAnchors[1].x = 0
-                                            test.rotatedAnchors[1].y =0
-                                            test.rotatedAnchors[2].x = 0
-                                            test.rotatedAnchors[2].y = 0
-                                            test.rotatedAnchors[3].x =0
-                                            test.rotatedAnchors[3].y =0
-                                           }
-                                            
-                                        }
-                                    })
-                                    if( window.Topology.dblclickNode.rect.height > 100){
-                                       
-                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                    }                                                 
-                                }else{
-                                    window.Topology.dblclickNode.data.outNum --
-                                    canvas.data.nodes.splice(i,1); 
-                                    toastr.success('删除成功！');
-
-                                    nowList.map((test,R)=>{
-                                     
-                                        if(test.childStand){
-                                           if(test.id.indexOf("OUT") !=-1){
-                                            out_num ++
-                                            test.rect.x = data.rect.ex 
-                                            test.rect.y = data.rect.y + out_num*20 + 10
-                                            test.rect.width = 20
-                                            test.rect.height = 10                                
-                                            test.rect.ex = test.rect.x  + test.rect.width
-                                            test.rect.ey = test.rect.y + test.rect.height
-                                            test.rect.center.x = test.rect.x+ test.rect.width/2
-                                            test.rect.center.y =test.rect.y  + test.rect.height/2
-                                            test.textRect.x = test.rect.x- 5
-                                            test.textRect.y =  test.rect.y
-                                            test.textRect.width = 10
-                                            test.textRect.height = 5
-                                            test.paddingTopNum = 0
-                                            test.paddingTop = 0
-                                            test.fullIconRect.height = 4
-                                            test.fullTextRect.x = test.rect.ex - test.textRect.height- 5
-                                            test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
-                                            test.iconRect.x = test.rect.ex - test.textRect.height- 5
-                                            test.iconRect.y = test.rect.y  -test.fullIconRect.height
-                                            test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
-                                            test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
-                                            test.anchors[0].x = 0
-                                            test.anchors[0].y =0
-                                            test.anchors[1].x =0
-                                            test.anchors[1].y = 0   
-                                            test.anchors[2].x = test.rect.ex
-                                            test.anchors[2].y = test.rect.center.y                                                                                            
-                                            test.anchors[3].x =0
-                                            test.anchors[3].y = 0
-                                            test.rotatedAnchors[0].x = 0
-                                            test.rotatedAnchors[0].y =0
-
-                                            test.rotatedAnchors[1].x = 0
-                                            test.rotatedAnchors[1].y =0
-
-                                            test.rotatedAnchors[2].x = test.rect.ex
-                                            test.rotatedAnchors[2].y = test.rect.center.y
-
-                                            test.rotatedAnchors[3].x =0
-                                            test.rotatedAnchors[3].y =0
-                                           }
-                                        }
-                                        
-                                    })
-                                    if( window.Topology.dblclickNode.rect.height > 100){
-                                        
-                                        window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
-                                        window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
-                                    }else{
-                                        window.Topology.dblclickNode.rect.height = 100
-                                    }
-                                }     
-                            }
-                        }
-                    })
-                })
-            }
-        }
-    })
+        })
+    }
     //修改本地缓存数据
-    window.Topology.tools.map(item=>{
-        if(item.id == data.id){
-            item.children = nowNodesList
-        }
-    })
+    window.Topology.tools[data.id].children =nowNodesList
     //修改小接口显示的内容
     nowList.map(item =>{
         if(item.childStand){
@@ -953,26 +951,21 @@ function ActionSure(){
                 roleID:window.bigData.editRuleId,
                 tableInterfaceparametersList:[]
             }
-            window.Topology.tools.map(item=>{
-                if(item.id == window.Topology.dblclickNode.id) {
-                    item.children.map(index=>{
-                        let id =""
-                        if(index.uuid.indexOf("---") == -1){
-                            id= index.uuid
-                        }else{
-                            id = index.uuid.slice(0,index.uuid.indexOf("---"))
-                        }
-                        let CsObj = {
-                            id:id,
-                            inorout:index.inorout,
-                            interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
-                            parametersname:index.varname,
-                            parameterssources:index.id
-                        }
-                        operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
-                    })
-                }              
-
+           window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
+                let id =""
+                if(index.uuid.indexOf("---") == -1){
+                    id= index.uuid
+                }else{
+                    id = index.uuid.slice(0,index.uuid.indexOf("---"))
+                }
+                let CsObj = {
+                    id:id,
+                    inorout:index.inorout,
+                    interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
+                    parametersname:index.varname,
+                    parameterssources:index.id
+                }
+                operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)                  
             })
             $.ajax({
                 type:"post",
@@ -981,10 +974,7 @@ function ActionSure(){
                 contentType: "application/json;charset=UTF-8",
                 data:JSON.stringify(operatorInterfaceDataModel),
                 success: function(data) {
-                    if(data == true){
-                        toastr.success('修改成功！');
-                      
-                    }
+                    $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                 }
             })
         }
