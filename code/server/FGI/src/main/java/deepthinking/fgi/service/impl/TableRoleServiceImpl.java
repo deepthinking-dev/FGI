@@ -744,8 +744,9 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
 
     @Override
-    public List<TableRole> GetAllAlgorithmRule(String username) {
+    public List<TableRole> GetAllAlgorithmRule(String groupName) {
         TableRoleCriteria tableRoleCriteria=new TableRoleCriteria();
+        tableRoleCriteria.createCriteria().andRolegroupEqualTo(groupName);
         return roleMapper.selectByExample(tableRoleCriteria);
     }
 

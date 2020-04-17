@@ -78,10 +78,10 @@ public class AlgorithmRuleController {
 
 
     @GetMapping("/getAllAlgorithmRule")
-    @ApiOperation(value = "04-03 根据用户获取所有算法规则 username暂时不用", notes = "返回算法规则基本信息列表", httpMethod = "GET")
-    @ApiImplicitParam(name = "username", value = "用户名（暂时不用传）", dataType = "string", paramType = "query", required = false)
-    public List<TableRole> getAllAlgorithmRule(String username ){
-        return tableRoleService.GetAllAlgorithmRule(username);
+    @ApiOperation(value = "04-03 根据分组获取该分组下的所有规则信息", notes = "返回算法规则基本信息列表", httpMethod = "GET")
+    @ApiImplicitParam(name = "groupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
+    public List<TableRole> getAllAlgorithmRule(String groupName){
+        return tableRoleService.GetAllAlgorithmRule(groupName);
     }
 
     @GetMapping("/getAlgorithmRuleById")

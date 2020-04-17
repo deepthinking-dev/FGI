@@ -32,6 +32,10 @@ public class InterfaceRoleDataModel {
     private String des;
     @ApiModelProperty(value = "备注")
     private String remark;
+    @ApiModelProperty(value = "动作关系式")
+    private String ActionRelation;
+    @ApiModelProperty(value = "前序动作关系式")
+    private String PreActionRelation;
 
     public TableInterfacerole getTable_InterfaceRole(){
         TableInterfacerole tableInterfacerole=new TableInterfacerole();
@@ -43,19 +47,21 @@ public class InterfaceRoleDataModel {
         tableInterfacerole.setDes(des);
         tableInterfacerole.setRemark("");
         tableInterfacerole.setRoleid(roleid);
+        tableInterfacerole.setActionrelation(ActionRelation);
+        tableInterfacerole.setPreactionrelation(PreActionRelation);
         return tableInterfacerole;
     }
 
     public InterfaceRoleDataModel getInterfaceRoleDataModelFromTableInterfacerole(TableInterfacerole tableInterfacerole){
         return new InterfaceRoleDataModel(tableInterfacerole.getId(),tableInterfacerole.getRoleid(),tableInterfacerole.getInterfaceid(),tableInterfacerole.getParametersid(),tableInterfacerole.getPreinterfaceid(),
-                tableInterfacerole.getPreparametersid(),null,tableInterfacerole.getDes(),tableInterfacerole.getRemark());
+                tableInterfacerole.getPreparametersid(),null,tableInterfacerole.getDes(),tableInterfacerole.getRemark(),tableInterfacerole.getActionrelation(),tableInterfacerole.getPreactionrelation());
     }
 
     public InterfaceRoleDataModel() {
     }
 
-    public InterfaceRoleDataModel(Integer id, Integer roleid, String interfaceID, String parametersID,
-                                  String preInterfaceID, String preParametersID, List<TableAlgorithmcondition> algorithmconditions, String des, String remark) {
+    public InterfaceRoleDataModel(Integer id, Integer roleid, String interfaceID, String parametersID, String preInterfaceID,
+                                  String preParametersID, List<TableAlgorithmcondition> algorithmconditions, String des, String remark, String actionRelation, String preActionRelation) {
         this.id = id;
         this.roleid = roleid;
         InterfaceID = interfaceID;
@@ -65,6 +71,8 @@ public class InterfaceRoleDataModel {
         this.algorithmconditions = algorithmconditions;
         this.des = des;
         this.remark = remark;
+        ActionRelation = actionRelation;
+        PreActionRelation = preActionRelation;
     }
 
     public Integer getId() {
@@ -137,5 +145,21 @@ public class InterfaceRoleDataModel {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getActionRelation() {
+        return ActionRelation;
+    }
+
+    public void setActionRelation(String actionRelation) {
+        ActionRelation = actionRelation;
+    }
+
+    public String getPreActionRelation() {
+        return PreActionRelation;
+    }
+
+    public void setPreActionRelation(String preActionRelation) {
+        PreActionRelation = preActionRelation;
     }
 }

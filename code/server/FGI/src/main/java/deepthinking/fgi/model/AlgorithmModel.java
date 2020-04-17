@@ -13,13 +13,13 @@ import java.util.List;
  * @Description:
  * @data 2020/2/21 15:33
  */
-@ApiModel(value = "算子相关信息交互数据模型")
+@ApiModel(value = "算法相关信息交互数据模型")
 public class AlgorithmModel {
-    @ApiModelProperty(value = "算子基本信息")
+    @ApiModelProperty(value = "算法基本信息")
     private TableAlgorithm tableAlgorithm;
-    @ApiModelProperty(value = "算子公式变量信息")
+    @ApiModelProperty(value = "算法公式变量信息")
     private List<TableFunc> tableFuncs;
-    @ApiModelProperty(value = "算子用户关系 目前暂不处理")
+    @ApiModelProperty(value = "算法用户关系 目前暂不处理")
     private TableModuleuserrelation tableModuleuserrelation;
 
     public AlgorithmModel() {

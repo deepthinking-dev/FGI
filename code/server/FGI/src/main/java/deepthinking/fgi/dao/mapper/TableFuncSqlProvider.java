@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableFunc;
-import deepthinking.fgi.domain.TableFuncCriteria.Criteria;
-import deepthinking.fgi.domain.TableFuncCriteria.Criterion;
-import deepthinking.fgi.domain.TableFuncCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableFunc;
+import deepthinking.fgi.domain.TableFuncCriteria;
+import deepthinking.fgi.domain.TableFuncCriteria.Criteria;
+import deepthinking.fgi.domain.TableFuncCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableFuncSqlProvider {
@@ -46,8 +47,8 @@ public class TableFuncSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_func");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
+        if (record.getParametername() != null) {
+            sql.VALUES("ParameterName", "#{parametername,jdbcType=VARCHAR}");
         }
         
         if (record.getAlgorithmid() != null) {
@@ -90,6 +91,7 @@ public class TableFuncSqlProvider {
         } else {
             sql.SELECT("ID");
         }
+        sql.SELECT("ParameterName");
         sql.SELECT("AlgorithmID");
         sql.SELECT("VarName");
         sql.SELECT("VarType");
@@ -121,6 +123,10 @@ public class TableFuncSqlProvider {
         
         if (record.getId() != null) {
             sql.SET("ID = #{record.id,jdbcType=INTEGER}");
+        }
+        
+        if (record.getParametername() != null) {
+            sql.SET("ParameterName = #{record.parametername,jdbcType=VARCHAR}");
         }
         
         if (record.getAlgorithmid() != null) {
@@ -162,6 +168,7 @@ public class TableFuncSqlProvider {
         sql.UPDATE("table_func");
         
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
+        sql.SET("ParameterName = #{record.parametername,jdbcType=VARCHAR}");
         sql.SET("AlgorithmID = #{record.algorithmid,jdbcType=INTEGER}");
         sql.SET("VarName = #{record.varname,jdbcType=VARCHAR}");
         sql.SET("VarType = #{record.vartype,jdbcType=VARCHAR}");
@@ -183,6 +190,10 @@ public class TableFuncSqlProvider {
     public String updateByPrimaryKeySelective(TableFunc record) {
         SQL sql = new SQL();
         sql.UPDATE("table_func");
+        
+        if (record.getParametername() != null) {
+            sql.SET("ParameterName = #{parametername,jdbcType=VARCHAR}");
+        }
         
         if (record.getAlgorithmid() != null) {
             sql.SET("AlgorithmID = #{algorithmid,jdbcType=INTEGER}");

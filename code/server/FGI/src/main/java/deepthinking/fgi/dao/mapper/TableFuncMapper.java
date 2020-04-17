@@ -1,10 +1,10 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableFunc;
-import deepthinking.fgi.domain.TableFuncCriteria;
 import java.util.List;
 import java.util.Map;
 
+import deepthinking.fgi.domain.TableFunc;
+import deepthinking.fgi.domain.TableFuncCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -56,15 +57,16 @@ public interface TableFuncMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_func (ID, AlgorithmID, ",
+        "insert into table_func (ParameterName, AlgorithmID, ",
         "VarName, VarType, ",
         "ValValue, InOrOut, ",
         "Remark)",
-        "values (#{id,jdbcType=INTEGER}, #{algorithmid,jdbcType=INTEGER}, ",
+        "values (#{parametername,jdbcType=VARCHAR}, #{algorithmid,jdbcType=INTEGER}, ",
         "#{varname,jdbcType=VARCHAR}, #{vartype,jdbcType=VARCHAR}, ",
         "#{valvalue,jdbcType=VARCHAR}, #{inorout,jdbcType=DECIMAL}, ",
         "#{remark,jdbcType=VARCHAR})"
     })
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableFunc record);
 
     /**
@@ -74,6 +76,7 @@ public interface TableFuncMapper {
      * @mbg.generated
      */
     @InsertProvider(type=TableFuncSqlProvider.class, method="insertSelective")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(TableFunc record);
 
     /**
@@ -85,6 +88,7 @@ public interface TableFuncMapper {
     @SelectProvider(type=TableFuncSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="ParameterName", property="parametername", jdbcType=JdbcType.VARCHAR),
         @Result(column="AlgorithmID", property="algorithmid", jdbcType=JdbcType.INTEGER),
         @Result(column="VarName", property="varname", jdbcType=JdbcType.VARCHAR),
         @Result(column="VarType", property="vartype", jdbcType=JdbcType.VARCHAR),
@@ -102,12 +106,13 @@ public interface TableFuncMapper {
      */
     @Select({
         "select",
-        "ID, AlgorithmID, VarName, VarType, ValValue, InOrOut, Remark",
+        "ID, ParameterName, AlgorithmID, VarName, VarType, ValValue, InOrOut, Remark",
         "from table_func",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="ParameterName", property="parametername", jdbcType=JdbcType.VARCHAR),
         @Result(column="AlgorithmID", property="algorithmid", jdbcType=JdbcType.INTEGER),
         @Result(column="VarName", property="varname", jdbcType=JdbcType.VARCHAR),
         @Result(column="VarType", property="vartype", jdbcType=JdbcType.VARCHAR),
@@ -152,7 +157,8 @@ public interface TableFuncMapper {
      */
     @Update({
         "update table_func",
-        "set AlgorithmID = #{algorithmid,jdbcType=INTEGER},",
+        "set ParameterName = #{parametername,jdbcType=VARCHAR},",
+          "AlgorithmID = #{algorithmid,jdbcType=INTEGER},",
           "VarName = #{varname,jdbcType=VARCHAR},",
           "VarType = #{vartype,jdbcType=VARCHAR},",
           "ValValue = #{valvalue,jdbcType=VARCHAR},",
@@ -161,18 +167,17 @@ public interface TableFuncMapper {
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableFunc record);
-
     @Select({
-            "select",
-            "ID, VarName, VarType, InOrOut",
-            "from table_func",
-            "where AlgorithmID = #{AlgorithmID,jdbcType=INTEGER}"
-    })
-    @Results({
-            @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
-            @Result(column="VarName", property="varname", jdbcType=JdbcType.VARCHAR),
-            @Result(column="VarType", property="vartype", jdbcType=JdbcType.VARCHAR),
-            @Result(column="InOrOut", property="inorout", jdbcType=JdbcType.DECIMAL),
-    })
-    List<Map<String,Object>> selectBaseInfo(int AlgorithmID);
+                "select",
+                "ID, VarName, VarType, InOrOut",
+                "from table_func",
+                "where AlgorithmID = #{AlgorithmID,jdbcType=INTEGER}"
+        })
+        @Results({
+                @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+                @Result(column="VarName", property="varname", jdbcType=JdbcType.VARCHAR),
+                @Result(column="VarType", property="vartype", jdbcType=JdbcType.VARCHAR),
+                @Result(column="InOrOut", property="inorout", jdbcType=JdbcType.DECIMAL),
+        })
+        List<Map<String,Object>> selectBaseInfo(int AlgorithmID);
 }

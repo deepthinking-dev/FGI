@@ -59,11 +59,13 @@ public interface TableInterfaceroleMapper {
         "insert into table_interfacerole (RoleID, InterfaceID, ",
         "ParametersID, PreInterfaceID, ",
         "PreParametersID, Des, ",
-        "Remark)",
+        "Remark, ActionRelation, ",
+        "PreActionRelation)",
         "values (#{roleid,jdbcType=INTEGER}, #{interfaceid,jdbcType=VARCHAR}, ",
         "#{parametersid,jdbcType=VARCHAR}, #{preinterfaceid,jdbcType=VARCHAR}, ",
         "#{preparametersid,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
-        "#{remark,jdbcType=VARCHAR})"
+        "#{remark,jdbcType=VARCHAR}, #{actionrelation,jdbcType=VARCHAR}, ",
+        "#{preactionrelation,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableInterfacerole record);
@@ -93,7 +95,9 @@ public interface TableInterfaceroleMapper {
         @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.VARCHAR),
         @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ActionRelation", property="actionrelation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreActionRelation", property="preactionrelation", jdbcType=JdbcType.VARCHAR)
     })
     List<TableInterfacerole> selectByExample(TableInterfaceroleCriteria example);
 
@@ -106,7 +110,7 @@ public interface TableInterfaceroleMapper {
     @Select({
         "select",
         "ID, RoleID, InterfaceID, ParametersID, PreInterfaceID, PreParametersID, Des, ",
-        "Remark",
+        "Remark, ActionRelation, PreActionRelation",
         "from table_interfacerole",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -118,7 +122,9 @@ public interface TableInterfaceroleMapper {
         @Result(column="PreInterfaceID", property="preinterfaceid", jdbcType=JdbcType.VARCHAR),
         @Result(column="PreParametersID", property="preparametersid", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="ActionRelation", property="actionrelation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="PreActionRelation", property="preactionrelation", jdbcType=JdbcType.VARCHAR)
     })
     TableInterfacerole selectByPrimaryKey(Integer id);
 
@@ -163,7 +169,9 @@ public interface TableInterfaceroleMapper {
           "PreInterfaceID = #{preinterfaceid,jdbcType=VARCHAR},",
           "PreParametersID = #{preparametersid,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
-          "Remark = #{remark,jdbcType=VARCHAR}",
+          "Remark = #{remark,jdbcType=VARCHAR},",
+          "ActionRelation = #{actionrelation,jdbcType=VARCHAR},",
+          "PreActionRelation = #{preactionrelation,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableInterfacerole record);

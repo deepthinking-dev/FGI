@@ -59,10 +59,12 @@ public interface TableModuleMapper {
     @Insert({
         "insert into table_module (ModuleName, SqlUrl, ",
         "ModuleGroup, Des, ",
-        "UserID, Remark)",
+        "UserID, Status, ",
+        "Remark, Remark2)",
         "values (#{modulename,jdbcType=VARCHAR}, #{sqlurl,jdbcType=VARCHAR}, ",
         "#{modulegroup,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, ",
-        "#{userid,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})"
+        "#{userid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, ",
+        "#{remark,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableModule record);
@@ -91,7 +93,9 @@ public interface TableModuleMapper {
         @Result(column="ModuleGroup", property="modulegroup", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR)
     })
     List<TableModule> selectByExample(TableModuleCriteria example);
 
@@ -103,7 +107,7 @@ public interface TableModuleMapper {
      */
     @Select({
         "select",
-        "ID, ModuleName, SqlUrl, ModuleGroup, Des, UserID, Remark",
+        "ID, ModuleName, SqlUrl, ModuleGroup, Des, UserID, Status, Remark, Remark2",
         "from table_module",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -114,7 +118,9 @@ public interface TableModuleMapper {
         @Result(column="ModuleGroup", property="modulegroup", jdbcType=JdbcType.VARCHAR),
         @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         @Result(column="UserID", property="userid", jdbcType=JdbcType.INTEGER),
-        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
+        @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="Remark2", property="remark2", jdbcType=JdbcType.VARCHAR)
     })
     TableModule selectByPrimaryKey(Integer id);
 
@@ -158,28 +164,30 @@ public interface TableModuleMapper {
           "ModuleGroup = #{modulegroup,jdbcType=VARCHAR},",
           "Des = #{des,jdbcType=VARCHAR},",
           "UserID = #{userid,jdbcType=INTEGER},",
-          "Remark = #{remark,jdbcType=VARCHAR}",
+          "Status = #{status,jdbcType=VARCHAR},",
+          "Remark = #{remark,jdbcType=VARCHAR},",
+          "Remark2 = #{remark2,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableModule record);
     @Select({
-                "SELECT DISTINCT ModuleGroup FROM table_module"
-        })
-        List<String> GetModuleGroup();
+                    "SELECT DISTINCT ModuleGroup FROM table_module"
+            })
+            List<String> GetModuleGroup();
 
-        @Select({
-                "select table_name from information_schema.tables where table_schema='fgi' and table_name not like 'table_%'"
-        })
-        List<String> findAllTableFromDB();
+            @Select({
+                    "select table_name from information_schema.tables where table_schema='fgi' and table_name not like 'table_%'"
+            })
+            List<String> findAllTableFromDB();
 
-        @Select({
-                "SELECT t.COLUMN_NAME as COLUMN_NAME," ,
-                " (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) IS_NULLABLE," ,
-                " t.CHARACTER_MAXIMUM_LENGTH LENGTH," ,
-                " t.COLUMN_COMMENT COLUMN_COMMENT," ,
-                " t.COLUMN_TYPE COLUMN_TYPE" ,
-                " FROM information_schema.`COLUMNS` t" ,
-                " WHERE t.TABLE_SCHEMA = 'fgi' AND t.TABLE_NAME = #{tableName,jdbcType=VARCHAR} AND COLUMN_NAME !='ID'"
-        })
-        List<Map<String,Object>> findAllFiledByTableName(String tableName);
+            @Select({
+                    "SELECT t.COLUMN_NAME as COLUMN_NAME," ,
+                    " (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) IS_NULLABLE," ,
+                    " t.CHARACTER_MAXIMUM_LENGTH LENGTH," ,
+                    " t.COLUMN_COMMENT COLUMN_COMMENT," ,
+                    " t.COLUMN_TYPE COLUMN_TYPE" ,
+                    " FROM information_schema.`COLUMNS` t" ,
+                    " WHERE t.TABLE_SCHEMA = 'fgi' AND t.TABLE_NAME = #{tableName,jdbcType=VARCHAR} AND COLUMN_NAME !='ID'"
+            })
+            List<Map<String,Object>> findAllFiledByTableName(String tableName);
 }
