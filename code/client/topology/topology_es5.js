@@ -202,6 +202,7 @@ var Topology = {
 
     addAlgorithm(option){
         if(option.type == "tableAlgorithm"){
+            debugger
             $('#sfGruopListRight .panel-body').eq(option.data.data.index).append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
