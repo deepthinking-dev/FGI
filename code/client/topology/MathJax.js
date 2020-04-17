@@ -65,13 +65,17 @@
         let tableAl ={
             algorithmauthor:$('#gsName').val(),
             algorithmfun:$('#MathInput').val(),
+            algorithmgroup:$('#groupGs').val(),
             algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:2,
             des:$('#gsDes').val(),
             ispublic:0,
             moduleid:0,
             remark:"",
-            id:$("#AlgorithmnameY").attr("tablealgorithmid")
+            id:$("#AlgorithmnameY").attr("tablealgorithmid"),
+            remark2:"",
+            status:"",
+            userid:0
         }
         let tableF=[]
         let tableModule={
