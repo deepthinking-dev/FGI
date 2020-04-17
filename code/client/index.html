@@ -61,9 +61,7 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./topology/formula.js"></script>
     <script src="./toastr.js"></script>
-    <script src="./lib/template-web.js"></script>
-    <script src="./template/algorithm.js"></script>
-    <script>
+    <!-- <script>
         $(function() {
             var content = "";
             var Preview = {
@@ -180,11 +178,10 @@
             })  
         });
     });
-</script>
+</script> -->
 
 </head>
 <body> 
-    <div id="algorithm"></div>
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="ruleInfo">
@@ -385,12 +382,13 @@
         <div class="lkr-frame-div" style="height: 150px;">
             <div class="lkr-frame-content">
                 <h3>
-                    确认删除此分组?
+                    确认删除此规则?
                 </h3>
+
             </div>
             <div class="lkr-frame-foot">
-                <div class="lkr-button deleteRuleButton" onclick='ruleDeleteYes()' style="margin-right: 10px;">确定</div>
-                <div class="lkr-button" onclick='ruleDeleteClose()'>取消</div>
+                <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
             </div>
         </div>
     </div>
@@ -457,7 +455,7 @@
         </div>
     </div>
     <!-- 公式编辑 -->
-    <div class="Frame">
+    <div class="Frame" style="width: 1000px;height: 600px;">
         <div class="title">
             <span>公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
@@ -485,15 +483,16 @@
                 <span class="form-span">分组</span>
                 <input type="text" id="groupGs">
             </div>
-            <div class="AlgorithInput">
+            <!-- <div class="AlgorithInput">
                 <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="MathInput" onblur="Preview.Update()" type="text" >
-            </div>
-                <div>
+            </div> -->
+            <iframe id="mainContent" src="./kityformula-editor/index.html" width="1000px" height="300px"></iframe>
+                <!-- <div>
                     <span  class="form-span">公式预览</span>
                     <div id="MathPreview" ></div>
                     <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
-                </div>
+                </div> -->
 
         </div>
         <div class="form-group MathJaxEdit">
@@ -609,7 +608,10 @@
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right">模型所属组：</label>
-                    <select id='modulegroup' class="lkr-input"></select>
+                    <input type='text' id='modulegroup' class="lkr-input"/>
+                    <!-- <select class="lkr-select" style="flex: 1;">
+                        <option>信号产生模型类型</option>
+                    </select> -->
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right;">模型名称：</label>
@@ -751,11 +753,7 @@
                             </input>
                             </div>
                             <!-- 模型库页-->
-                            <div id="modelPageDiv" class='lkr-page'>
-                                <div class="panel-group" id="modelListRight" role="modelListRight" aria-multiselectable="true">
-
-                                </div>
-                            </div>
+                            <div id="modelPageDiv" class='lkr-page'></div>
                             <!-- 规则库页-->
                            <div id="ruleMde" class='lkr-page' style="display: none;">
                                <div class="panel-group" id="ruleListRight" role="ruleListRight" aria-multiselectable="true">
@@ -763,11 +761,7 @@
                                </div>
                            </div>
                             <!--算法库页-->
-                           <div id="algorithmPage" class='lkr-page' style="display: none">
-                               <div class="panel-group" id="sfGruopListRight" role="sfGruopListRight" aria-multiselectable="true">
-
-                               </div>
-                           </div>
+                           <div id="algorithmPage" class='lkr-page' style="display: none"></div>
                            <div class="mouldFoot">
                                 <!-- <div onclick="dataModify()" class ="dataManage"> 数据管理</div> -->
                                 <!-- <div>分组维护</div> -->
@@ -861,13 +855,11 @@
                   <span>算法信息</span>
                   <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
               </div>
-              <div style="position: relative;top:70px;margin:0 15px">
+              <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
-                      <div class="panel-group" id="sfGruopList" role="sfGruopList" aria-multiselectable="true">
-
-                      </div>
+                      <table id="dicTable"></table>
                   </div>
               </div>
       </div>
@@ -919,7 +911,7 @@
                         <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
                     </div>
                     <div>
-                        <span>分组</span><select type="text" id="group" style="width: 350px;height: 30px"></select>
+                        <span>分组</span><input type="text" id="group" style="width: 350px;height: 30px">
                     </div>
                 </div>
             <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
@@ -927,7 +919,6 @@
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
-        <button class="closeEditDic">取消</button>
     </div>
     <div id="colorDiv">
         <ul>
@@ -1086,17 +1077,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             url:urlConfig.host+'/module/getModuleById',
             data:{moduleId:window.bigData.editmoduleId},
             success: function(data) {
-                $.ajax({
-                    url:urlConfig.host+ '/group/findAllGroupMessagesByType',
-                    data:{type:1},
-                    success: function(res) {
-                        $("#modulegroup").empty()
-                        res.map(s=>{
-                            $("#modulegroup").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                        })
-                        $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
-                    }
-                })
+                // $('#addMb tbody').html('')
                 let str =`修改模型
                     <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
                 $(".lkr-frame-tilte").html(str)
@@ -1105,6 +1086,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('#fgiSource').show();
                 $('.addsjyth').show();
                 $("#mouldName").val(data.modulename).removeAttr("readonly")
+                $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
                 $("#mouldRemark").val(data.des).removeAttr("readonly")
                 window.bigData.editmoduleId = data.id
                 let thStr=``
@@ -1130,7 +1112,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             url:urlConfig.host+'/module/getModuleById',
             data:{moduleId:modlueId},
             success: function(data) {
-                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"});
+                // $('#addMb tbody').html('')
                 let str =`模型详情
                     <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
                 $(".lkr-frame-tilte").html(str)
@@ -1138,6 +1120,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('.operate').hide();
                 $(".addsjyth").hide();
                 $("#mouldName").val(data.modulename).attr({"readonly":"readonly"});
+                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"});
                 $("#mouldRemark").val(data.des).attr({"readonly":"readonly"});
                 $('#lkrFrame .lkr-button').hide();
                 window.bigData.editmoduleId = data.id
@@ -1177,17 +1160,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     str += `<option>${item}</option>`
                 })
                 $("#fgiName").html(str)
-            }
-        })
-        $.ajax({
-            url:urlConfig.host+'/group/findAllGroupMessagesByType',
-            type: "get",
-            data: {type: 1},
-            success(data) {
-                $("#modulegroup").empty();
-                data.map(s=>{
-                    $("#modulegroup").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                })
             }
         })
     }
@@ -1322,6 +1294,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
+                    // toastr.success('保存成功！');
                     $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1385,6 +1358,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
+                    toastr.success('修改成功！');
                     $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1495,6 +1469,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
+                    toastr.success('删除成功！');
                     $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
                     getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
@@ -1508,26 +1483,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#ruleMde").hide();
         $("#algorithmPage").hide();
         $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type: "get",
-            data: {type: 1},
-            success(data) {
-                $("#modelListRight").empty()
-                data.map((s,index)=>{
-                    $("#modelListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                  <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                })
+            url:urlConfig.host+'/module/GetAllModule',
+            data:'',
+            success: function(data) {
+                if(data){
+                    $(".dataManage").text("模型管理")
+                    $("#modelPageDiv").html('')
+                    let str=``
+                    data.map(item=>{
+                        $("#modelPageDiv").append(`<div class="left-list"><div class="left-list-tilte" style="height:50px;">${item.modulename}</div></div>
+                                                 `)
+                    })
+                }
             }
         })
         $.ajax({
@@ -1537,8 +1504,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 let str = '<option>全部</option>'
                 datas.map(item => {
                     str += `<option>${item}</option>`
-
-                })
+ 
+                })              
                 $("#selectedModlue").html(str)
             }
         })
@@ -1659,25 +1626,31 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#dataModulePage").hide();
         $("#AddAlgorithm").hide();
         $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
+            data:"",
             type:"get",
-            data: {type:2},
             success(data) {
-                $("#sfGruopList").empty()
-                data.map((s,index)=>{
-                    $("#sfGruopList").append(` <div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="collapse${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                  <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
-                                  </div>
-                              </div>
-                          </div>
-                          `)
+                if(!data.length) return;
+                console.log(data);
+                $("#dicTable").append(`<thead>
+                    <th style="width: 150px">作者</th>
+                    <th style="width: 150px">算法名称</th>
+                    <th style="width: 150px">算法描述</th>
+                    <th style="width: 150px">操作</th>
+                    </thead>`)
+                data.map(s=>{
+                    $("#dicTable").append(
+                        `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
+                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="发布" src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
                 })
             }
         })
@@ -1713,30 +1686,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#modelPageDiv").hide();
         $("#ruleMde").hide();
         $("#algorithmPage").show();
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type:2},
-            success(data) {
-                $("#sfGruopListRight").empty()
-                data.map((s,index)=>{
-                    $("#sfGruopListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#sfRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="sfRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                })
-            }
-        })
         $(".dataManage").text("算法管理")
+        //dictionary()
     }
 
     //删除字典信息
@@ -1747,7 +1698,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     //修改字典信息
     function editZd(s) {
-        $("#editDicTitle").text("修改算法")
         $("#editDicYes").attr("editId",s)
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
@@ -1756,31 +1706,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 console.log(data);
                 if(data.tableAlgorithm.algorithmtype == 1){
-                    $.ajax({
-                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                        type:"get",
-                        data: {type:2},
-                        success(res){
-                            $("#group").empty()
-                            res.map(s=>{
-                                $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                            })
-                            $("#group").val(data.tableAlgorithm.algorithmgroup)
-                        }
-                    })
                     $("#editDicYes").show();
                     $("#editDicName").val("");
                     $("#editDicDes").val("");
-                    $("#editAuthor").val("");
-                    $("#company").val("");
-                    $("#group").val("")
+                    $("#editAuthor").val("")
                     $("#editAuthor").attr("disabled",false);
                     $("#editDicName").attr("disabled",false);
                     $("#editDicDes").attr("disabled",false);
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor)
-                    $("#company").val(data.tableAlgorithm.remark);
                     $("#zdcsList").empty()
                     $("#addZdcs").show();
                     $("#editDic").show();
@@ -1789,11 +1724,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
                                 <span style="color:#fff;">参数名</span>
-                                <input class="zdcsCsmc" type="text" value="${t.parametername}">
+                                <input class="zdcsCsmc" type="text" value="${t.varname}">
                             </i>
                             <i>
                                 <span style="color:#fff;">变量</span>
-                                <input class="variable" type="text" value="${t.varname}">
+                                <input class="variable" type="text" value="">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
@@ -2194,10 +2129,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     dictionary()
                     $('.noticeList').append(`<li>${timeDay} 删除成功！</li>`)
+                    toastr.success('删除成功！');
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
+                    toastr.info(data.msg);
                     $('.noticeList').append(`<li>${timeDay} ${data.msg}</li>`)
                 }
             }
@@ -2318,6 +2255,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function modifyGz(s) {
         if(editGzType) {
             $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
+            toastr.info('当前编辑的规则需进行保存！')
             return false;
         }
         $("#gzDiv").hide();
@@ -2444,8 +2382,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupEditDiv").show();
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
-        $("#groupInputName").val("")
-
     })
     $("#addGroupYes").click(()=>{
         var tableGroupdata = {
@@ -2460,15 +2396,40 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 data:JSON.stringify(tableGroupdata),
                 contentType:"application/json",
                 success(data) {
-                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                     if(data == "分组名称重复"){
-
+                        toastr.error(data)
                     } else {
-                        reloadGroupList()
+                        toastr.success(data)
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type :$("#groupInputName").attr("type")},
+                            success(data) {
+                                $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
+                                if(data.length){
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                                    data.map(s=>{
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
+                                    })
+                                }
+                            }
+                        })
                     }
                 },
                 error(data){
-                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
+                    toastr.error(data)
                 }
             })
         } else {
@@ -2481,43 +2442,39 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data){
-                        $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
+                        toastr.success('修改成功！')
                         $("#groupEditDiv").hide();
-                        reloadGroupList()
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type :$("#groupInputName").attr("type")},
+                            success(data) {
+                                $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
+                                if(data.length){
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                                    data.map(s=>{
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
+                                    })
+                                }
+                            }
+                        })
                     }
                 }
             })
         }
     })
-    //刷新分组列表
-    function reloadGroupList() {
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type :$("#groupInputName").attr("type")},
-            success(data) {
-                $("#groupEditDiv").hide()
-                $("#groupTable").empty()
-                if(data.length){
-                    $("#groupTable").append(`<thead>
-                                        <th style="width: 220px">分组名称</th>
-                                        <th style="width: 220px">操作</th>
-                                        `)
-                    data.map(s=>{
-                        $("#groupTable").append(
-                            `<tr>
-                                <td style="width: 220px">${s.groupname}</td>
-                                <td style="width: 220px">
-                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                </td>
-                            </tr>
-                           `)
-                    })
-                }
-            }
-        })
-    }
     function modifyGroupShow(td,s) {
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
