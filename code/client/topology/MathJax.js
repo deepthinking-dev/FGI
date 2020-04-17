@@ -349,16 +349,14 @@ function ruleSure(){
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
-            des:'',
-            id:0,
-            interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
-            parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
-            preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
-            preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
-            remark:"",
-            roleid:0,
-            algorithmconditions:[]
-
+           des:'',
+           id:0,
+           interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+           parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+           preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+           preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
+           remark:"",
+           roleid:0,
        }
        obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
       algorithmRuleDataList.push(obj)
@@ -405,6 +403,7 @@ function ruleSure(){
         remark2:'',
         remark3:'',
         status:"",
+        rolegroup:$("#gzGroupName").val(),
     }
     let algorithmRuleSaveDataModel ={
         interfaceRoleDataModels :algorithmRuleDataList,
@@ -494,6 +493,7 @@ function ConfirmDelRule(){
                 window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
+                $("#ruleDeleteDiv").hide()
             }
         }
     })

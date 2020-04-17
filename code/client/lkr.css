@@ -1023,8 +1023,11 @@ body{
 .sfGruopTable th{
     text-align: center;
 }
-.sfGruopTable td,th{
+.ruleWinList td,th{
     border: 1px solid #77CDFE;
+}
+.ruleWinList th{
+    text-align: center;
 }
 .panel{
     margin-bottom: 0;
@@ -1033,3 +1036,5 @@ body{
     width:320px;
     height: 39px;
 }
+
+

@@ -838,9 +838,11 @@
            <div style="position: relative;top:40px;margin: 0 auto;margin-left: 30px">
                <input type="button" value="上传文件" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
            </div>
-           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
-               <div style="height: 430px;overflow: auto">
-                   <table id="gzTable"></table>
+           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
+               <div style="height: 480px;overflow: auto">
+                   <div class="panel-group" id="ruleGruopList" role="ruleGruopList" aria-multiselectable="true">
+
+                   </div>
                </div>
            </div>
        </div>
@@ -2179,30 +2181,25 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function getGzList() {
         $("#gzTable").empty();
         $.ajax({
-            url:urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-            data:{username:null},
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:3},
             success(data) {
-                if(!data.length) return;
-                $("#gzTable").append(`<thead>
-                    <th style="width: 150px">规则名称</th>
-                    <th style="width: 150px">规则描述</th>
-                    <th style="width: 150px">备注</th>
-                    <th style="width: 150px">操作</th>
-                    </thead>`)
-                data.map(s=>{
-                    $("#gzTable").append(
-                        `<tr>
-                            <td style="width: 150px">${s.rolename}</td>
-                            <td style="width: 150px">${s.des}</td>
-                            <td style="width: 150px">${s.remark}</td>
-                            <td style="width: 150px">
-                               <img src="static/edit.png" onclick="modifyGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                               <img src="static/delete.png" onclick="deleteGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                               <img src="static/download.png" onclick="exportGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                               <img src="static/fabu.png" onclick="exportGz(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
+                $("#ruleGruopList").empty()
+                data.map((s,index)=>{
+                    $("#ruleGruopList").append(`<div class="panel panel-default">
+                              <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ruleWin${index}" aria-expanded="true">${s.groupname}</a>
+                                  </h4>
+                              </div>
+                              <div id="ruleWin${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
+                                  <div class="panel-body">
+                                       <table class="ruleWinList"></table>
+                                  </div>
+                              </div>
+                          </div>
+                          `)
                 })
             }
         })
@@ -2633,7 +2630,56 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     })
+    //规则右侧手风琴展开
+    $('#ruleListRight').on('show.bs.collapse', function (e) {
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+            type:"get",
+            data: {groupName :$(e.target).attr("groupname")},
+            success(data) {
+                if(data.length){
+                    var div = $(e.target).children();
+                    div.empty()
+                    data.map((s,index)=>{
+                        div.append(`<div class="left-list"><div class="left-list-tilte" style="height:50px;">${s.rolename}</div></div>`)
+                    })
+                }
+            }
+        })
+    })
 
+    //规则弹窗手风琴展开
+    $('#ruleGruopList').on('show.bs.collapse', function (e) {
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+            type:"get",
+            data: {groupName :$(e.target).attr("groupname")},
+            success(data) {
+                if(data.length){
+                    var table = $(e.target).children().children();
+                    table.empty()
+                    table.append(`<thead>
+                    <th style="width: 150px">规则名称</th>
+                    <th style="width: 150px">描述</th>
+                    <th style="width: 200px">操作</th>
+                    </thead>`)
+                    data.map(s=>{
+                        table.append(
+                            `<tr>
+                            <td style="width: 150px">${s.rolename}</td>
+                            <td style="width: 150px">${s.des}</td>
+                            <td style="width: 150px">
+                                <img class="lkr-list-ediRule" ruleId="${s.id}" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img onclick="deleteRuleById(${s.id})" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="发布" src="static/fabu.png" onclick="publish(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                    })
+                }
+            }
+        })
+    })
     //算法手风琴点击标签页
     function accordion(e) {
         $.ajax({
@@ -2667,6 +2713,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
             }
         })
+    }
+    function deleteRuleById(s) {
+        window.bigData.delRuleId = s;
+        $("#ruleDeleteDiv").show()
     }
 </script>
 </body>

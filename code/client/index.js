@@ -1057,9 +1057,9 @@ $(function(){
             $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
             return false;
         }
-        window.bigData.editRuleId = $(e.target).data('id')
-        let ruleid =  $(e.target).data('id')
-        refreshId = $(e.target).data('addActionid');
+        window.bigData.editRuleId = $(e.target).attr('ruleId')
+        let ruleid =  $(e.target).attr('ruleId')
+        $("#gzDiv").hide()
         $.ajax({
             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
             type:"get",

@@ -734,7 +734,7 @@ body .form-input{
     margin: 0 auto;
     top: 20%;
     left: 30%;
-    z-index: 2;
+    z-index: 999999;
     background-color: #084b69;
 }
 #sureRule .title{
