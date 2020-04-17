@@ -393,13 +393,12 @@
         <div class="lkr-frame-div" style="height: 150px;">
             <div class="lkr-frame-content">
                 <h3>
-                    确认删除此规则?
+                    确认删除此分组?
                 </h3>
-
             </div>
             <div class="lkr-frame-foot">
-                <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
-                <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
+                <div class="lkr-button deleteRuleButton" onclick='ruleDeleteYes()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='ruleDeleteClose()'>取消</div>
             </div>
         </div>
     </div>
@@ -769,7 +768,11 @@
                                 <div id="rulePage" style="margin-top: 20px;"></div>
                            </div>
                             <!--算法库页-->
-                           <div id="algorithmPage" class='lkr-page' style="display: none"></div>
+                           <div id="algorithmPage" class='lkr-page' style="display: none">
+                               <div class="panel-group" id="sfGruopListRight" role="sfGruopListRight" aria-multiselectable="true">
+
+                               </div>
+                           </div>
                            <div class="mouldFoot">
                                 <div class="activeTypeName" onclick="dataModify()">数据管理</div>
                                 <div onclick="gruopEdit()">分组维护</div>
@@ -861,11 +864,13 @@
                   <span>算法信息</span>
                   <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
               </div>
-              <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
+              <div style="position: relative;top:70px;margin:0 15px">
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
-                      <table id="dicTable"></table>
+                      <div class="panel-group" id="sfGruopList" role="sfGruopList" aria-multiselectable="true">
+
+                      </div>
                   </div>
               </div>
       </div>
@@ -917,7 +922,7 @@
                         <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
                     </div>
                     <div>
-                        <span>分组</span><input type="text" id="group" style="width: 350px;height: 30px">
+                        <span>分组</span><select type="text" id="group" style="width: 350px;height: 30px"></select>
                     </div>
                 </div>
             <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
@@ -925,6 +930,7 @@
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
+        <button class="closeEditDic">取消</button>
     </div>
     <div id="colorDiv">
         <ul>
@@ -1275,7 +1281,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    // toastr.success('保存成功！');
                     $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1349,7 +1354,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    toastr.success('修改成功！');
                     $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1450,7 +1454,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    toastr.success('删除成功！');
                     $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1639,31 +1642,25 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#dataModulePage").hide();
         $("#AddAlgorithm").hide();
         $.ajax({
-            url:urlConfig.host + "/operatorMaintenance/getAllAlgorithm",
-            data:"",
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
+            data: {type:2},
             success(data) {
-                if(!data.length) return;
-                console.log(data);
-                $("#dicTable").append(`<thead>
-                    <th style="width: 150px">作者</th>
-                    <th style="width: 150px">算法名称</th>
-                    <th style="width: 150px">算法描述</th>
-                    <th style="width: 150px">操作</th>
-                    </thead>`)
-                data.map(s=>{
-                    $("#dicTable").append(
-                        `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
-                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="发布" src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
+                $("#sfGruopList").empty()
+                data.map((s,index)=>{
+                    $("#sfGruopList").append(` <div class="panel panel-default">
+                              <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse${index}" aria-expanded="true">${s.groupname}</a>
+                                  </h4>
+                              </div>
+                              <div id="collapse${index}" class="panel-collapse collapse" groupname="${s.groupname}">
+                                  <div class="panel-body">
+                                      <table class="sfGruopTable"></table>
+                                  </div>
+                              </div>
+                          </div>
+                          `)
                 })
             }
         })
@@ -1673,7 +1670,29 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#modelPageDiv").hide();
         $("#ruleMde").hide();
         $("#algorithmPage").show();
-        //dictionary()
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:2},
+            success(data) {
+                $("#sfGruopListRight").empty()
+                data.map((s,index)=>{
+                    $("#sfGruopListRight").append(`<div class="panel panel-default">
+                              <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#sfRight${index}" aria-expanded="true">${s.groupname}</a>
+                                  </h4>
+                              </div>
+                              <div id="sfRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
+                                  <div class="panel-body">
+
+                                  </div>
+                              </div>
+                          </div>
+                          `)
+                })
+            }
+        })
     }
     //删除字典信息
     function deleteZd(s) {
@@ -1683,6 +1702,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     //修改字典信息
     function editZd(s) {
+        $("#editDicTitle").text("修改算法")
         $("#editDicYes").attr("editId",s)
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
@@ -1691,16 +1711,31 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 console.log(data);
                 if(data.tableAlgorithm.algorithmtype == 1){
+                    $.ajax({
+                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                        type:"get",
+                        data: {type:2},
+                        success(res){
+                            $("#group").empty()
+                            res.map(s=>{
+                                $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                            })
+                            $("#group").val(data.tableAlgorithm.algorithmgroup)
+                        }
+                    })
                     $("#editDicYes").show();
                     $("#editDicName").val("");
                     $("#editDicDes").val("");
-                    $("#editAuthor").val("")
+                    $("#editAuthor").val("");
+                    $("#company").val("");
+                    $("#group").val("")
                     $("#editAuthor").attr("disabled",false);
                     $("#editDicName").attr("disabled",false);
                     $("#editDicDes").attr("disabled",false);
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor)
+                    $("#company").val(data.tableAlgorithm.remark);
                     $("#zdcsList").empty()
                     $("#addZdcs").show();
                     $("#editDic").show();
@@ -1709,11 +1744,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
                                 <span style="color:#fff;">参数名</span>
-                                <input class="zdcsCsmc" type="text" value="${t.varname}">
+                                <input class="zdcsCsmc" type="text" value="${t.parametername}">
                             </i>
                             <i>
                                 <span style="color:#fff;">变量</span>
-                                <input class="variable" type="text" value="">
+                                <input class="variable" type="text" value="${t.varname}">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
@@ -2114,12 +2149,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     dictionary()
                     $('.noticeList').append(`<li>${timeDay} 删除成功！</li>`)
-                    toastr.success('删除成功！');
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
-                    toastr.info(data.msg);
                     $('.noticeList').append(`<li>${timeDay} ${data.msg}</li>`)
                 }
             }
@@ -2210,7 +2243,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function modifyGz(s) {
         if(editGzType) {
             $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
-            toastr.info('当前编辑的规则需进行保存！')
             return false;
         }
         $("#gzDiv").hide();
@@ -2337,6 +2369,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupEditDiv").show();
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
+        $("#groupInputName").val("")
+
     })
     $("#addGroupYes").click(()=>{
         var tableGroupdata = {
@@ -2351,40 +2385,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 data:JSON.stringify(tableGroupdata),
                 contentType:"application/json",
                 success(data) {
+                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                     if(data == "分组名称重复"){
-                        toastr.error(data)
+
                     } else {
-                        toastr.success(data)
-                        $.ajax({
-                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                            type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
-                            success(data) {
-                                $("#groupEditDiv").hide()
-                                $("#groupTable").empty()
-                                if(data.length){
-                                    $("#groupTable").append(`<thead>
-                                        <th style="width: 220px">分组名称</th>
-                                        <th style="width: 220px">操作</th>
-                                        `)
-                                    data.map(s=>{
-                                        $("#groupTable").append(
-                                            `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
-                                                <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                                </td>
-                                            </tr>
-                                           `)
-                                    })
-                                }
-                            }
-                        })
+                        reloadGroupList()
                     }
                 },
                 error(data){
-                    toastr.error(data)
+                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                 }
             })
         } else {
@@ -2397,39 +2406,43 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data){
-                        toastr.success('修改成功！')
+                        $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                         $("#groupEditDiv").hide();
-                        $.ajax({
-                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                            type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
-                            success(data) {
-                                $("#groupEditDiv").hide()
-                                $("#groupTable").empty()
-                                if(data.length){
-                                    $("#groupTable").append(`<thead>
-                                        <th style="width: 220px">分组名称</th>
-                                        <th style="width: 220px">操作</th>
-                                        `)
-                                    data.map(s=>{
-                                        $("#groupTable").append(
-                                            `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
-                                                <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                                </td>
-                                            </tr>
-                                           `)
-                                    })
-                                }
-                            }
-                        })
+                        reloadGroupList()
                     }
                 }
             })
         }
     })
+    //刷新分组列表
+    function reloadGroupList() {
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type :$("#groupInputName").attr("type")},
+            success(data) {
+                $("#groupEditDiv").hide()
+                $("#groupTable").empty()
+                if(data.length){
+                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                    data.map(s=>{
+                        $("#groupTable").append(
+                            `<tr>
+                                <td style="width: 220px">${s.groupname}</td>
+                                <td style="width: 220px">
+                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                </td>
+                            </tr>
+                           `)
+                    })
+                }
+            }
+        })
+    }
     function modifyGroupShow(td,s) {
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
@@ -2444,6 +2457,113 @@ Date.prototype.Format = function (fmt) { // author: meizz
     $(".groupDivClose").click(()=>{
         $("#groupDiv").hide()
     })
+    function ruleDeleteClose() {
+        $('#ruleDeleteDiv').hide()
+    }
+    function deleteGroup(s) {
+        $("#ruleDeleteDiv").show()
+        $(".deleteRuleButton").attr("deleteId",s)
+    }
+    function ruleDeleteYes() {
+        $.ajax({
+            url: urlConfig.host + '/group/deleteTableGroupMessage',
+            type:"get",
+            data: {id :Number($(".deleteRuleButton").attr("deleteId"))},
+            success(data) {
+                if(data == "删除成功"){
+                    $('#ruleDeleteDiv').hide()
+                    reloadGroupList();
+                    $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                }
+            }
+        })
+    }
+    $('#sfGruopList').on('show.bs.collapse', function (e) {
+        accordion(e)
+    })
+    $('#sfGruopListRight').on('show.bs.collapse', function (e) {
+        $.ajax({
+            url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+            type:"get",
+            data: {groupName:$(e.target).attr("groupname")},
+            success(data) {
+                if(data.length){
+                    var div = $(e.target).children();
+                    div.empty()
+                    data.map((s,index)=>{
+                        window.addAlgorithm({
+                            name: 'rectangle',
+                            icon: 'icon-rectangle',
+                            id:s.tableAlgorithm.id,
+                            type:"tableAlgorithm",
+                            data: {
+                                id:s.tableAlgorithm.id+"tableAlgorithm",
+                                text: s.tableAlgorithm.algorithmname,
+                                rect: {
+                                    width: 200,
+                                    height: 100
+                                },
+                                parentId:s.tableAlgorithm.id,
+                                font: {
+                                    fontFamily: 'Arial',
+                                    color: 'aqua',
+                                    textBaseline: 'top'
+                                },
+                                data:{
+                                    inNum:s.inNum,
+                                    outNum:s.outNum,
+                                    index:$(e.target).attr('index')
+                                },
+                                children:[],
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                paddingTop: 10,
+                                paddingBottom: 10,
+                                borderRadius: 0.1,
+                                name: 'rectangle',
+                                fillStyle:'rgba(4,44,98,0.58)',
+                                strokeStyle: '#4295ec',
+                            }
+                        })
+                    })
+                }
+            }
+        })
+    })
+    //手风琴点击标签页
+    function accordion(e) {
+        $.ajax({
+            url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+            type:"get",
+            data: {groupName:$(e.target).attr("groupname")},
+            success(data) {
+                if(data.length){
+                    var table = $(e.target).children().children();
+                    table.empty()
+                    table.append(`<thead>
+                    <th style="width: 150px">作者</th>
+                    <th style="width: 150px">算法名称</th>
+                    <th style="width: 150px">算法描述</th>
+                    <th style="width: 150px">操作</th>
+                    </thead>`)
+                    data.map(s=>{
+                        table.append(
+                            `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
+                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="发布" src="static/fabu.png" onclick="publish(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                    })
+                }
+            }
+        })
+    }
 </script>
 </body>
 </html>

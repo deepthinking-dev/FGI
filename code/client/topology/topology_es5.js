@@ -201,7 +201,7 @@ var Topology = {
 
     addAlgorithm(option){
         if(option.type == "tableAlgorithm"){
-            $("#algorithmPage").append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
+            $('#sfGruopListRight .panel-body').eq(option.data.data.index).append(`<div class="left-list" ondragstart="onDragStart(event,${JSON.stringify(option).replace(/\"/g, "'")})" draggable="true">
                 <div class="left-list-tilte dbclickAlgorithm" style="height:50px;" AlgorithmId="${option.id}">${option.data.text}</div>
             </div>`);
         }
@@ -2113,19 +2113,20 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        Topology.addInlist = []
-        $.ajax({
-            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-            data:{algthId:node.id},
-            success: function(data) {
-                data.tableFuncs.map((item) =>{
-                    if(item.inorout == 0){
-                        Topology.addInlist.push(item)
-                    }
-
-                })
-            }
-        })
+        //.addInlist = []
+        // $.ajax({
+        //     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+        //     data:{algthId:node.id},
+        //     success: function(data) {
+        //         console.log(data);
+        //         data.tableFuncs.map((item) =>{
+        //             if(item.inorout == 0){
+        //                 Topology.addInlist.push(item)
+        //             }
+        //
+        //         })
+        //     }
+        // })
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
