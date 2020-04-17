@@ -516,7 +516,6 @@ body{
     width: 80px;
     color: #fff;
     margin:15px 0;
-    margin-left: 20px;
     border: none;
     height: 30px;
 }
@@ -591,18 +590,31 @@ body{
     overflow: auto;
 }
 #zdcsList{
-    height: 300px;
+    height: 240px;
     overflow: auto;
     width: 98%;
 }
 #editDicYes{
     position: absolute;
     bottom: 20px;
-    right: 60px;
+    right: 130px;
     width: 80px;
     background: #409eff;
     color: #fff;
     border: none;
+    height: 30px;
+    line-height: 30px;
+}
+.closeEditDic{
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    width: 80px;
+    background: #f56c6c;
+    color: #fff;
+    border: none;
+    height: 30px;
+    line-height: 30px;
 }
 #dicTable td,th{
     border: 1px solid #77CDFE;
@@ -637,7 +649,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -958,4 +970,24 @@ body{
 }
 #groupTable th{
     text-align: center;
+}
+.panel-default>.panel-heading+.panel-collapse>.panel-body{
+    background: #0d1c4b;
+    color:#fff;
+}
+.panel-default>.panel-heading{
+    color:#fff;
+    background: #25335e;
+}
+.sfGruopTable td,th{
+    border: 1px solid #77CDFE;
+}
+.sfGruopTable th{
+    text-align: center;
+}
+.sfGruopTable td,th{
+    border: 1px solid #77CDFE;
+}
+.panel{
+    margin-bottom: 0;
 }

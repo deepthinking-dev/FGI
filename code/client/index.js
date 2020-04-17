@@ -10,8 +10,6 @@ $(function(){
     })
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
-        // $("#dicDiv").show();
-        // dictionary()
     })
     $("#selectOutIn").change(()=> {
         if ($("#selectOutIn").val() == "1") {
@@ -379,12 +377,25 @@ $(function(){
         $("#editDicName").val("");
         $("#editDicDes").val("");
         $("#editAuthor").val("");
+        $("#company").val("");
         $("#dicDiv").hide();
         $("#addZdcs").show();
         $(".editDicClose").attr("class","addDicClose");
         $("#editAuthor").attr("disabled",false);
         $("#editDicName").attr("disabled",false);
         $("#editDicDes").attr("disabled",false);
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:2},
+            success(data){
+                console.log(data);
+                $("#group").empty()
+                data.map(s=>{
+                    $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                })
+            }
+        })
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDicTitle").text("修改算法")
@@ -402,13 +413,16 @@ $(function(){
             "tableAlgorithm": {
                 "algorithmauthor": $("#editAuthor").val(),
                 "algorithmfun": "",
+                "algorithmgroup":$('#group').val(),
                 "algorithmname": name,
                 "algorithmtype": 1,
                 "des": des,
                 "id": 0,
                 "ispublic": 0,
                 "moduleid":0,
-                "remark": ""
+                "remark": $('#company').val(),
+                "remark2":"",
+                "status":""
             },
             "tableFuncs": [
 
@@ -430,16 +444,19 @@ $(function(){
                 "id": 0,
                 "remark": ""
             };
-            obj.varname = $(s).find('.zdcsCsmc').val() //参数名称
+            obj.parametername = $(s).find('.zdcsCsmc').val() //参数名称
+            if(obj.parametername == ""){
+                flag = false;
+                $('.noticeList').append(`<li>${timeDay}请填写参数名！ </li>`)
+            }
+            obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                // toastr.info('请填写参数名称！')
-                $('.noticeList').append(`<li>${timeDay}请填写参数名称！ </li>`)
+                $('.noticeList').append(`<li>${timeDay}请填写变量！ </li>`)
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
             if(obj.inorout == ""){
                 flag = false;
-                // toastr.info('请填写输入输出！')
                 $('.noticeList').append(`<li>${timeDay}请填写输入输出！ </li>`)
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
@@ -447,7 +464,6 @@ $(function(){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
                 if(obj.valvalue == ""){
                     flag = false;
-                    // toastr.info('请填写取值！')
                     $('.noticeList').append(`<li>${timeDay}请填写取值！ </li>`)
                 }
             } else {
@@ -471,7 +487,6 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    // toastr.success('保存成功！');
                     $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
                     $("#editDic").hide()
                     dictionary();
@@ -483,13 +498,16 @@ $(function(){
             let jbxx = {
                 "algorithmauthor": $("#editAuthor").val(),
                 "algorithmfun": "",
+                "algorithmgroup":$('#group').val(),
                 "algorithmname": name,
                 "algorithmtype": 1,
                 "des": des,
                 "id": $("#editDicYes").attr("editId"),
                 "ispublic": 0,
                 "moduleid": 0,
-                "remark": ""
+                "remark": $('#company').val(),
+                "remark2":"",
+                "status":""
             }
             dataAll.tableAlgorithm.id = $("#editDicYes").attr("editId");
             $.ajax({
@@ -513,11 +531,8 @@ $(function(){
                         dictionary()
                         Topology.init();
                         $("#dicDiv").show()
-                        // toastr.success(data.msg);
                         $('.noticeList').append(`<li>${timeDay} ${data.msg} </li>`)
-                        
                     } else {
-                        // toastr.error(data.msg);
                         $('.noticeList').append(`<li>${timeDay} ${data.msg} </li>`)
                     }
                 }
