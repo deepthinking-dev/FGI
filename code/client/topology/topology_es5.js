@@ -32,6 +32,7 @@ var Topology = {
     tools: {},
     saveNode:[],
     addInlist:[],
+    addOutlist:[],
     banAdd:true,
     dblclickNode:{},
     isClickAction:[],
@@ -572,7 +573,7 @@ var Topology = {
                                             // i = i-(data[0].data.inNum+1)
                                             out_num ++
                                             // let nums = item.childStand.wz
-                                            // item.rect.x = data[0].rect.x +data[0].rect.width
+                                           
                                             // item.rect.y = data[0].rect.y + nums.y
 
                                             // item.rect.width = widthsa/10
@@ -618,7 +619,7 @@ var Topology = {
                                             // item.rotatedAnchors[3].x = item.rect.center.x -widthsa/2 +item.rect.width
                                             // item.rotatedAnchors[3].y =  item.rect.ey -item.rect.height/2
 
-                                            item.rect.x = data[0].rect.ex 
+                                            item.rect.x = data[0].rect.x +data[0].rect.width
                                             item.rect.y = data[0].rect.y + out_num*20 + 10
                                             item.rect.width = 20
                                             item.rect.height = 10                                
@@ -910,7 +911,7 @@ var Topology = {
                                     
                                 }
 
-                                if(data.data.inNum > 0){                                
+                                if(data.data.inNum > 0 || data.data.outNum > 0){                                
                                     let data2 = JSON.parse(JSON.stringify(data1)) 
                                     function guid() {
                                         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -941,6 +942,88 @@ var Topology = {
                                                 }
                                                 let UUid =  guid()
                                                 data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
+                                                data2.rect.width = widths
+                                                data2.rect.height = heights
+                                                data2.text = item.varname;
+                                                // data2.text = ""   
+                                                
+                                                data2.rect.ex = data1.rect.x + num.x;
+                                                data2.rect.ey = data1.rect.y + num.y;
+                                                data2.rect.x = data1.rect.x + num.x;
+                                                data2.rect.y = data1.rect.y+ num.y;
+                                                data2.textRect.x = data2.rect.x - widths/2;
+                                                data2.textRect.y = data2.rect.y -heights*2;
+                                                data2.textRect.width = 10;
+                                                data2.textRect.height = 5;
+                                                data2.paddingTopNum = -4
+                                                data2.paddingTop = -4
+                                                data2.textRect.ex = data2.textRect.x + data2.textRect.width;
+                                                data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.childStand = {
+                                                    type:data1.id+'的弟弟',
+                                                    wz:num,
+                                                    bb:{
+                                                        x:data1.rect.x,
+                                                        y:data1.rect.y,
+                                                        ex:data1.rect.ex,
+                                                        ey:data1.rect.ey
+                                                    }
+                                                }
+                                                data2.anchors.map((obj,i) => {
+                                                    obj.x = data1.anchors[i].x-185 + num.x
+                                                    obj.y = data1.anchors[i].y-85 + num.y
+                                                })
+                                                data2.rotatedAnchors.map((obj,i) => {
+                                                    obj.x = data1.rotatedAnchors[i].x-185 + num.x
+                                                    obj.y = data1.rotatedAnchors[i].y-85 + num.y
+                                                }) 
+                                                canvas.addNode(data2)
+                                                canvas.lockNodes([data2],true)   
+
+
+
+                                                obj = {
+                                                    id:item.id,
+                                                    uuid:UUid,
+                                                    algorithmid:currId1,
+                                                    varname:item.varname,
+                                                    vartype:item.vartype,
+                                                    valvalue:item.valvalue,
+                                                    inorout:item.inorout,
+                                                    remark:item.remark
+                                                }
+                                                saveList.children.push(obj)
+                                            }
+                                        
+
+                                        })
+                                    
+                                        // let widths = data1.rect.width/10
+                                        // let heights = data1.rect.height/10
+                                                                        
+                                    }
+                                    for(let i= 0;i<data.data.inNum; i++){                                   
+                                        self.addOutlist.map((item,index) =>{
+                                            if(i == index){
+                                                
+                                                let widths = 20
+                                                let heights = 10
+                                                let num = {
+                                                        x:data1.rect.width,
+                                                        y:(heights*i) + 10*i+10
+                                                    }
+                                                let type ="";
+                                                if(item.vartype == 1){
+                                                    type = item.valvalue
+                                                }
+                                                if(item.vartype == 2){
+                                                    type = "常量"
+                                                }
+                                                if(item.vartype == 3){
+                                                    type ="对象"
+                                                }
+                                                let UUid =  guid()
+                                                data2.id = data1.id+"OUT_" +item.id+"_"+ UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
                                                 data2.text = item.varname;
@@ -2113,20 +2196,23 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        //.addInlist = []
-        // $.ajax({
-        //     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-        //     data:{algthId:node.id},
-        //     success: function(data) {
-        //         console.log(data);
-        //         data.tableFuncs.map((item) =>{
-        //             if(item.inorout == 0){
-        //                 Topology.addInlist.push(item)
-        //             }
-        //
-        //         })
-        //     }
-        // })
+        Topology.addInlist = []
+        Topology.addOutlist = []
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+            data:{algthId:node.id},
+            success: function(data) {
+                console.log(data);
+                data.tableFuncs.map((item) =>{
+                    if(item.inorout == 0){
+                        Topology.addInlist.push(item)
+                    }else{
+                        Topology.addOutlist.push(item)
+                    }
+        
+                })
+            }
+        })
         event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
