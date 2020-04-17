@@ -215,6 +215,13 @@ body{
     cursor: pointer;
     border-radius: 3px;
 }
+.addsjyth{
+    background-color: #409eff;
+    border: none;
+    font-size: 16px;
+    margin-left: 15px;
+    color: #fff;
+}
 .lkr-button:hover{
     color: #d3d3d3;
     background: rgba(0, 66, 121, 0.801);
@@ -312,11 +319,19 @@ body{
 }
 .lkr-table td{
     color:#79ceff;
-    padding: 5px ;
+    padding: 0 ;
 }
 .lkr-table thead td{
     color:#ebeef8;
     background: rgba(78,164,253,0.15);
+}
+.lkr-table .dataSourceTbody td input{
+    border: none;
+    background: none;
+    width: 90px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 .lkr-msg-div-tilte{
     padding-bottom: 10px;

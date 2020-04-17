@@ -587,6 +587,7 @@ $(function(){
         $("#algorithmPage").hide();
         $("#ruleMde").show();
         $("#modelPageDiv").hide();
+        $(".dataManage").text("规则管理")
     })
     function getAllData(url,datas,type,param){
         $.ajax({

@@ -182,12 +182,6 @@
     });
 </script>
 
-<script id="algorithm" type="text/html">
-    <h1>{{title}}</h1>
-</script>
-<script>
-    
-</script>
 </head>
 <body> 
     <div id="algorithm"></div>
@@ -283,7 +277,7 @@
     <div id="sourceName" class="lkr-frame" style="z-index: 999999; display: none;">
         <div class="lkr-frame-div" style="height: 520px;">
             <div class="lkr-source-tilte">
-                连接数据源
+                链接数据源
                 <span style="cursor: pointer;" onclick='sourceNameClose()'>x</span>
             </div>
             <div id="addSource" class="addSource">
@@ -313,7 +307,7 @@
                         </td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="">
                     
                     </tbody>
                 </table>
@@ -639,11 +633,12 @@
 
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width:120px;text-align: right" class="sjyDiv">链接数据源：</label>
+                    
                     <!-- <select id='fgiName' class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>卫星信号规格参数A表</option>
                     </select> -->
                     <div id='fgiSource' class="lkr-button">链接数据源</div>
-
+                    <button class="addsjyth" type="button" onclick="addsjyth()">+</button>
                 </div>
                 <div id='addMb' >
                     <table class="lkr-table" border="1">
@@ -672,7 +667,7 @@
                             </td>
                           </tr>
                         </thead>
-                        <tbody >
+                        <tbody class="dataSourceTbody">
 
                         </tbody>
                     </table>
@@ -774,7 +769,9 @@
                                </div>
                            </div>
                            <div class="mouldFoot">
-                                <div class="activeTypeName" onclick="dataModify()">数据管理</div>
+                                <!-- <div onclick="dataModify()" class ="dataManage"> 数据管理</div> -->
+                                <!-- <div>分组维护</div> -->
+                                <div class="activeTypeName dataManage" onclick="dataModify()">数据管理</div>
                                 <div onclick="gruopEdit()">分组维护</div>
                             </div>
 
@@ -1038,7 +1035,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
             return fmt;
 }
 
-  var timeDay = new Date().Format("yyyy-MM-dd HH:mm:ss");
+  var timeDay = new Date().Format("yyyy-MM-dd hh:mm:ss");
+
+
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
     })
@@ -1080,6 +1079,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).data('id')
         $('#lkrFrame').fadeToggle(500)
+        $('.addsjyth').show();
+        $("#lkrFrame .lkr-button").show();
         $.ajax({
             url:urlConfig.host+'/module/getModuleById',
             data:{moduleId:window.bigData.editmoduleId},
@@ -1091,6 +1092,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('.sjyDiv').show();
                 $('.operate').show();
                 $('#fgiSource').show();
+                $('.addsjyth').show();
                 $("#mouldName").val(data.modulename).removeAttr("readonly")
                 $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
                 $("#mouldRemark").val(data.des).removeAttr("readonly")
@@ -1112,7 +1114,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
     })
     $('body').on('dblclick','.dbclickModule',(e) =>{
-        debugger
         let modlueId= $(e.target).attr('data-id')
         $('#lkrFrame').fadeToggle(500)
         $.ajax({
@@ -1125,6 +1126,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $(".lkr-frame-tilte").html(str)
                 $('.sjyDiv').hide();
                 $('.operate').hide();
+                $(".addsjyth").hide();
                 $("#mouldName").val(data.modulename).attr({"readonly":"readonly"});
                 $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"});
                 $("#mouldRemark").val(data.des).attr({"readonly":"readonly"});
@@ -1154,6 +1156,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('.sjyDiv').show();
         $('.operate').show();
         $('#fgiSource').show();
+        $('.addsjyth').show();
+        $('#lkrFrame .lkr-button').show()
         $('#lkrFrame').fadeToggle(500)
         $.ajax({
             url:urlConfig.host+'/module/findAllTableFromDB',
@@ -1201,8 +1205,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
            $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 window.bigData.editmoduledata.push({
-                    fieldname:items.children('.columnName').text(),
-                    tableName:items.children('.tableName').text()
+                    fieldname:items.children('.columnName').text()?items.children('.columnName').text():items.children('.columnName').find('input').val(),
+                    tableName:items.children('.tableName').text()?items.children('.tableName').text() :items.children('.tableName').find('input').val()
                 })
             })
         }
@@ -1252,12 +1256,28 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let mouldParam = []
 
         if(window.bigData.frameType == 'add'){
+            let flag = true
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
+                if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${timeDay}请填写字段英文名称！ </li>`)
+                    flag = false
+                    return false
+                }
+                if(items.children('.columnType').text() == "" && items.children('.columnType').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${timeDay}请填写字段类型！ </li>`)
+                    flag = false
+                    return false
+                }
+                if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${timeDay}请填写字段表名！ </li>`)
+                    flag = false
+                    return false
+                }
                 mouldParam.push({
-                    fieldname:items.children('.columnName').text(),
-                    fieldtype:items.children('.columnType').text(),
-                    tablename:items.children('.tableName').text()
+                    fieldname:items.children('.columnName').text()?items.children('.columnName').text() :items.children('.columnName').find('input').val(),
+                    fieldtype:items.children('.columnType').text()?items.children('.columnType').text() :items.children('.columnType').find('input').val(),
+                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val()
                     // id:null,
                     // moduleid:null,
                     // remark:null
@@ -1273,7 +1293,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 // id:null
             }
             console.log(param)
-            $.ajax({
+            if(flag){
+                $.ajax({
                 url:urlConfig.host+'/module/addModule',
                 type:'post',
                 dataType: 'json',
@@ -1315,7 +1336,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     })
                 }
 
-            })
+               }) 
+            }
+          
         }else{
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
@@ -1402,6 +1425,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $(v).prop('checked',false)
         })
     }
+    function addsjyth(){
+        $(".dataSourceTbody").append(`<tr>
+            <td class="columnName"><input type="text" value=""></td>
+            <td class="columnComment"><input type="text" value=""></td>
+            <td class="columnType"><input type="text" value=""></td>
+            <td><input type="text" value=""></td>
+            <td><input type="text" value=""></td>
+            <td class="tableName"><input type="text" value=""></td>
+            <td><button class="delTab">删除</button></td></tr>`)
+    }
+   
     function reseTabsList(val){
 
         if(val == "全部"){
@@ -1411,7 +1445,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 data:'',
                 success: function(data) {
                     if(data){
-                        debugger
                         $(".moduleContentList").html('')
                         let str=``
                         data.map(item=>{
@@ -1501,6 +1534,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data:'',
             success: function(data) {
                 if(data){
+                    $(".dataManage").text("模型管理")
                     $("#modelPageDiv").html('')
                     let str=``
                     data.map(item=>{
@@ -1552,9 +1586,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
             if(items.prop('checked')){
                let list = $(items).parent().nextAll()
-            //    list.map(item =>{
-            //     debugger
-            //    })
                 let obj ={
                     IS_NULLABLE:list.eq(4).text(),
                     COLUMN_NAME:list.eq(0).text(),
@@ -1577,7 +1608,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
             <td><button class="delTab">删除</button></td></tr>`
         })
-        $('#addMb tbody').html(thStr)
+        $('#addMb tbody').append(thStr)
         $('#addSource tbody').html('')
         $("#sourceName").fadeToggle(500)
     }
@@ -1693,6 +1724,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 })
             }
         })
+        $(".dataManage").text("算法管理")
     }
     //删除字典信息
     function deleteZd(s) {
