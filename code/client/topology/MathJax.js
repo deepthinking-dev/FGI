@@ -1006,10 +1006,7 @@ function ruleAddButtonS(){
         data:{algthId:currId},
         success: function(data) {
             let str =`<div class="actionInfo" data-title="xin">
-                    <select class="actionSelected1">
-                        <option value="1">输出</option>
-                        <option value="0">输入</option>
-                    </select>
+                    <input value="输出" class="actionSelected1">  
                     <input value="" class="varNameInput" style="display: none;">   
                     <select class="varNameInput1">
                     </select>
