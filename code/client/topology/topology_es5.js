@@ -29,7 +29,7 @@ var Topology = {
         lineDown: 9
     },
     lineTypeStyle: {curve: 0, polyline: 1, line: 2},
-    tools: [],
+    tools: {},
     saveNode:[],
     addInlist:[],
     banAdd:true,
@@ -1001,7 +1001,8 @@ var Topology = {
                                         // let heights = data1.rect.height/10
                                                                         
                                     }
-                                    self.tools.push(saveList)
+                                    self.tools[data.id] = saveList
+                                    // push(saveList)
                                     canvas.render();
                                 } 
                             }
@@ -1339,260 +1340,433 @@ var Topology = {
 
                             let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
                             let currId = data.id.slice(0,tableAlgorithmIndex);
-                            self.isClickAction.map(SS=>{
-                                if( window.bigData.ruleType == "edit"){
-                                    $.ajax({
-                                        url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
-                                        type:"get",
-                                        data: {Id: window.bigData.editRuleId},
-                                        success(data) {
-                                            if(data){
-                                                let str =``
-                                                 data.operatorInterfaceDataModels.map(item=>{
-                                                     if(item.algorithmID == currId){
-                                                        $.ajax({
-                                                            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                                            data:{algthId:currId},
-                                                            success: function(suziData) {
-                                                                self.tools.map(_sz =>{
-                                                                    if(_sz.id == item.algorithmID+"tableAlgorithm"){                                                                       
-                                                                        if(item.tableInterfaceparametersList.length == _sz.children.length){
-                                                                            item.tableInterfaceparametersList.map(hh=>{
-                                                                                suziData.tableFuncs.map(sz=>{
-                                                                                    if(hh.parameterssources == sz.id){
-                                                                                        str +=`<div class="actionInfo" data-uuid='${hh.id}' Funcs-id='${sz.id}' data-name='${sz.varname}' data-title='${sz.remark}'>`
-                                                                                        if(hh.inorout == 1){
-                                                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                                                        }else{
-                                                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
-                                                                                        }
-                                                                                            str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
-                                                                                        if(sz.vartype == 1 || sz.vartype == "基本类型"){
-                                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                                        }else if(sz.vartype == 2 || sz.vartype == "常量"){
-                                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                                        }  else{
-                                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                                        } 
-                                                                                            str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>   
-                                                                                            <button type="button" onclick="reduceButton(event)">x</button>                                                    
-                                                                                            </div>`     
-                                                                                    }
-            
-                                                                                    $('.ruleContentDiv').html(str)
-                                                                                   
-                                                                                })
-                                                                            })
-                                                                        }else{
-                                                                            _sz.children.map((index,t) =>{
-                                                                                if(index.remark != "xin"){
-                                                                                    str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                                                    if(index.inorout == 1){
-                                                                                        str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                                                    }else{
-                                                                                        str+=  ` <input value="输入" class="actionSelected1" disabled>  `
-                                                                                    }
-                                                                                        str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                                                                    if(index.vartype == "基本类型"  || index.vartype == 1 ){
-                                                                                        str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                                    }else if(index.vartype == "常量" ||  index.vartype == 2){
-                                                                                        str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                                    } else{
-                                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                                    } 
-                                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                                                        </div>`   
-                                                                                }else{
-                                                                                    str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                                                            <select class="actionSelected1">
-                                                                                                <option value="1">输出</option>
-                                                                                                <option value="0">输入</option>
-                                                                                            </select>
-                                                                                            <select class="varNameInput1">
-                                                                                            </select>`
-                                                                                        if(index.vartype == "基本类型" || index.vartype == 1 ){
-                                                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                                        }else if(index.vartype == "常量"||  index.vartype == 2){
-                                                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                                        } else{
-                                                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                                        } 
-                                                                                        str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
-                                                                                        <button type="button" onclick="reduceButton(event)">x</button>                                               
-                                                                                    </div>`   
-                                                                                }  
-                                                                            }) 
-                                                                           
-                                                                        }
-                                                                    }
-                                                                })                                                               
-                                                            }
-                                                        }) 
-                                                     }
-                                                 })                                       
-                                            }
-                                        
-                                        }
-                                    })
-                                } else{
-                                    $.ajax({
-                                        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                        data:{algthId:currId},
-                                        success: function(data) {
-                                            $(".actionSelected2").empty();
-                                            $('.ruleActionZZ').text(data.tableAlgorithm.algorithmauthor)
-                                            $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
-                                            $('.ruleActionMS').text(data.tableAlgorithm.des)
-                                            let str =``
-                                            if(SS.isClick && SS.id ==data.tableAlgorithm.id+"tableAlgorithm"){
-                                                SS.isClick = false
-                                                canvas.data.nodes.map(item=>{
-                                                    if(item.childStand){
-                                                        if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
-                                                            let uuid = item.id.substr((item.id.indexOf('---')-36),36)
-                                                            data.tableFuncs.map(index =>{
-                                                                if((item.id).split("_")[1] == index.id){
-                                                                    str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                                    if(index.inorout == 1){
+                            $.ajax({
+                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                data:{algthId:currId},
+                                success: function(data) {
+                                    $(".actionSelected2").empty();
+                                    $('.ruleActionZZ').text(data.tableAlgorithm.algorithmauthor)
+                                    $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
+                                    $('.ruleActionMS').text(data.tableAlgorithm.des)
+                                    let str =``    
+                                    if( window.bigData.ruleType == "edit"){
+                                        $.ajax({
+                                            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+                                            type:"get",
+                                            data: {Id: window.bigData.editRuleId},
+                                            success(datagz) {
+                                                datagz.operatorInterfaceDataModels.map(item=>{
+                                                    let newData = null
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >data.tableFuncs.length){
+                                                        item.tableInterfaceparametersList.map(inter=>{
+                                                            data.tableFuncs.map(index =>{ 
+                                                                if(inter.parameterssources == index.id){
+                                                                    str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                    if(inter.inorout == 1){
                                                                         str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                                     }else{
                                                                         str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                     }
                                                                         str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                                                    if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                                                                    if(index.vartype == 1 || index.vartype == "基本类型"){
                                                                         str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                    }else if(index.vartype == 2 || index.vartype == "常量" ){
+                                                                    }else if(index.vartype == 2 || index.vartype == "常量"){
                                                                         str+=`<input value="常量" class="actionSelected2" disabled>`
                                                                     }  else{
                                                                         str+=`<input value="对象" class="actionSelected2" disabled>`
                                                                     } 
-                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                                        </div>`                                                           
+                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                                        <button type="button" onclick="reduceButton(event)">x</button>                                                    
+                                                                        </div>`     
                                                                 }
-                                                            }) 
-                                                            
-                                                        }
+
+                                                                $('.ruleContentDiv').html(str)
+                                                            })
+                                                        })
+                                                       
                                                     }
-                                                })
-                                                $('.ruleContentDiv').html(str)
-                                                data.tableFuncs.map((s,i)=>{
-                                                    $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
-                                                    $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true);              
-                                                })
-                                                $(".actionSelected2").off("change").on("change",()=>{
-                                                    if($(".actionSelected2").val() == "2"){
-                                                        $("#varTypeInput").val("常量")
-                                                    }
-                                                    if($(".actionSelected2").val() == "3"){
-                                                        $("#varTypeInput").val("对象")
-                                                    }
-                                                    if($(".actionSelected2").val() == "1"){
-                                                        $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
-                                                    }
-                                                })
-                                            }else{
-                                                self.tools.map(item=>{
-                                                    if(item.id == data.tableAlgorithm.id+'tableAlgorithm'){
-                                                        item.children.map((index,t) =>{
-                                                            if(index.remark != "xin"){
-                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                                if(index.inorout == 1 || index.inorout =="输出"){
-                                                                    str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                                }else{
-                                                                    str+=  ` <input value="输入" class="actionSelected1" disabled>  `
-                                                                }
-                                                                    str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                                                if(index.vartype == "基本类型" || index.vartype == "1"){
-                                                                    str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                }else if(index.vartype == "常量" || index.vartype == "2"){
-                                                                    str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                } else if(index.vartype == "对象"|| index.vartype == "3"){
-                                                                    str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                } 
-                                                                    str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                                    </div>`   
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length <data.tableFuncs.length){
+                                                        data.tableFuncs.map(index =>{                                                           
+                                                            str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                            if(index.inorout == 1){
+                                                                str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                             }else{
-                                                                str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                                        <select class="actionSelected1">
-                                                                            <option value="1">输出</option>
-                                                                            <option value="0">输入</option>
-                                                                        </select>
-                                                                        <select class="varNameInput1">
-                                                                        </select>`
-                                                                    if(index.vartype == "基本类型" || index.vartype == "1"){
-                                                                        str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                                    }else if(index.vartype == "常量" || index.vartype == "2"){
-                                                                        str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                                    } else if(index.vartype == "对象"|| index.vartype == "3"){
-                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                                    } 
-                                                                    str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
-                                                                    <button type="button" onclick="reduceButton(event)">x</button>                                               
-                                                                </div>`   
-                                                            } 
-                                                            
-                                                            $('body').off("change").on('change','.varNameInput1',(e) => {
-                                                                data.tableFuncs.map(item => {
-                                                                    if($(e.target).val()== item.varname){
-                                                                        if(item.vartype == "1"){
-                                                                            $(e.target).parent().children('.actionSelected2').val("基本类型")
-                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
-                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
-                                                                            $(e.target).parent().attr("Funcs-id",item.id)
-                                                                        }
-                                                                        
-                                                                        if(item.vartype == "2"){
-                                                                            $(e.target).parent().children('.actionSelected2').val("常量")
-                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
-                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
-                                                                            $(e.target).parent().attr("Funcs-id",item.id)
-                                                                        }
-                                                                        if(item.vartype == "3"){
-                                                                            $(e.target).parent().children('.actionSelected2').val("对象")
-                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
-                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
-                                                                            $(e.target).parent().attr("Funcs-id",item.id)
-                                                                        }
-                                                                        if(item.vartype == ""){
-                                                                            $(e.target).parent().children('.actionSelected2').val("")
-                                                                            $(e.target).parent().children('#varTypeInput').val(item.valvalue)
-                                                                            $(e.target).parent().children('.varNameInput').val($(e.target).val())
-                                                                            $(e.target).parent().attr("Funcs-id",item.id)
-                                                                        }                  
-                                                                    }else if($(e.target).val()== "请选择"){
-                                                                        $(e.target).parent().children('.actionSelected2').val("")
-                                                                        $(e.target).parent().children('#varTypeInput').val("")
-                                                                        $(e.target).parent().children('.varNameInput').val("")
-                                                                        $(e.target).parent().attr("")
-                                                                    }
-                                                                })
-                                                                })  
-                                                        }) 
-                                                        $('.ruleContentDiv').html(str)
-                                                        let lstr1=`<option>请选择</option>`
-                                                        data.tableFuncs.map(item => {
-                                                            lstr1 += `<option value="${item.varname}">${item.varname}</option>`
-                                                        })
-                                                        item.children.map((index,t)=>{
-                                                            if(index.remark == "xin"){
-                                                                $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
-                                                                setTimeout(function () {
-                                                                    $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
-                                                                    $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
-                                                                }, 100);
-                                                                
+                                                                str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                             }
+                                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                            if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                                                                str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                            }else if(index.vartype == 2 || index.vartype == "常量" ){
+                                                                str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                            }  else{
+                                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                            } 
+                                                                str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                                </div>`                                                           
                                                             
-                                                        })
+                                                        }) 
                                                     }
+                                                    
                                                 })
                                             }
-                                            
+                                        })
+                                    }else{
+                                                                           
+                                    canvas.data.nodes.map(item=>{
+                                        if(item.childStand){
+                                            if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
+                                                let uuid = item.id.substr((item.id.indexOf('---')-36),36)
+                                                data.tableFuncs.map(index =>{
+                                                    if((item.id).split("_")[1] == index.id){
+                                                        str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                        if(index.inorout == 1){
+                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                        }else{
+                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                                        }
+                                                            str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                        if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                        }else if(index.vartype == 2 || index.vartype == "常量" ){
+                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                        }  else{
+                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                        } 
+                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                            </div>`                                                           
+                                                    }
+                                                }) 
+                                                
+                                            }
                                         }
                                     })
+                                    self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t) =>{
+                                        if(index.remark == "xin"){
+                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                                                    <select class="actionSelected1">
+                                                        <option value="1">输出</option>
+                                                        <option value="0">输入</option>
+                                                    </select>
+                                                    <select class="varNameInput1">
+                                                    </select>`                                       
+                                                    if(index.vartype == "基本类型" || index.vartype == 1 ){
+                                                    str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                }else if(index.vartype == "常量"||  index.vartype == 2){
+                                                    str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                } else{
+                                                    str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                } 
+                                                str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                <button type="button" onclick="reduceButton(event)">x</button>                                               
+                                            </div>`  
+                                        }
+                                                // else{
+                                                //     str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                                                //             <select class="actionSelected1">
+                                                //                 <option value="1">输出</option>
+                                                //                 <option value="0">输入</option>
+                                                //             </select>
+                                                //             <select class="varNameInput1">
+                                                //             </select>`
+                                                //         if(index.vartype == "基本类型" || index.vartype == 1 ){
+                                                //             str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                //         }else if(index.vartype == "常量"||  index.vartype == 2){
+                                                //             str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                //         } else{
+                                                //             str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                //         } 
+                                                //         str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                //         <button type="button" onclick="reduceButton(event)">x</button>                                               
+                                                //     </div>`   
+                                                // } 
+                                    })
+                                    $('.ruleContentDiv').html(str)
+                                    data.tableFuncs.map((s,i)=>{
+                                        $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
+                                        $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true);              
+                                    })
+                                    $(".actionSelected2").off("change").on("change",()=>{
+                                        if($(".actionSelected2").val() == "2"){
+                                            $("#varTypeInput").val("常量")
+                                        }
+                                        if($(".actionSelected2").val() == "3"){
+                                            $("#varTypeInput").val("对象")
+                                        }
+                                        if($(".actionSelected2").val() == "1"){
+                                            $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
+                                        }
+                                    })
+                                    let lstr1=`<option>请选择</option>`
+                                    data.tableFuncs.map(item => {
+                                        lstr1 += `<option value="${item.varname}">${item.varname}</option>`
+                                    })
+                                    self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t)=>{
+                                        if(index.remark == "xin"){
+                                            $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
+                                            setTimeout(function () {
+                                                $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
+                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
+                                            }, 100);
+                                            
+                                        }
+                                        
+                                    })
+                                    }
                                 }
-                               
                             })
+                            
+                            // self.isClickAction.map(SS=>{
+                            //     if( window.bigData.ruleType == "edit"){
+                            //         $.ajax({
+                            //             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+                            //             type:"get",
+                            //             data: {Id: window.bigData.editRuleId},
+                            //             success(data) {
+                            //                 if(data){
+                            //                     let str =``
+                            //                      data.operatorInterfaceDataModels.map(item=>{
+                            //                          if(item.algorithmID == currId){
+                            //                             $.ajax({
+                            //                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            //                                 data:{algthId:currId},
+                            //                                 success: function(suziData) {
+                            //                                     self.tools.map(_sz =>{
+                            //                                         if(_sz.id == item.algorithmID+"tableAlgorithm"){                                                                       
+                            //                                             if(item.tableInterfaceparametersList.length == _sz.children.length){
+                            //                                                 item.tableInterfaceparametersList.map(hh=>{
+                            //                                                     suziData.tableFuncs.map(sz=>{
+                            //                                                         if(hh.parameterssources == sz.id){
+                            //                                                             str +=`<div class="actionInfo" data-uuid='${hh.id}' Funcs-id='${sz.id}' data-name='${sz.varname}' data-title='${sz.remark}'>`
+                            //                                                             if(hh.inorout == 1){
+                            //                                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
+                            //                                                             }else{
+                            //                                                                 str+= `<input value="输入" class="actionSelected1" disabled>  `
+                            //                                                             }
+                            //                                                                 str+=` <input value="${sz.varname}"  class="varNameInput" disabled>`
+                            //                                                             if(sz.vartype == 1 || sz.vartype == "基本类型"){
+                            //                                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                                             }else if(sz.vartype == 2 || sz.vartype == "常量"){
+                            //                                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                                             }  else{
+                            //                                                                 str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                                             } 
+                            //                                                                 str+= `<input value="${sz.valvalue}" id="varTypeInput" disabled>   
+                            //                                                                 <button type="button" onclick="reduceButton(event)">x</button>                                                    
+                            //                                                                 </div>`     
+                            //                                                         }
+            
+                            //                                                         $('.ruleContentDiv').html(str)
+                                                                                   
+                            //                                                     })
+                            //                                                 })
+                            //                                             }else{
+                            //                                                 _sz.children.map((index,t) =>{
+                            //                                                     if(index.remark != "xin"){
+                            //                                                         str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                            //                                                         if(index.inorout == 1){
+                            //                                                             str+=`<input value="输出" class="actionSelected1" disabled>  `
+                            //                                                         }else{
+                            //                                                             str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                            //                                                         }
+                            //                                                             str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                            //                                                         if(index.vartype == "基本类型"  || index.vartype == 1 ){
+                            //                                                             str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                                         }else if(index.vartype == "常量" ||  index.vartype == 2){
+                            //                                                             str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                                         } else{
+                            //                                                             str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                                         } 
+                            //                                                             str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                            //                                                             </div>`   
+                            //                                                     }else{
+                            //                                                         str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                            //                                                                 <select class="actionSelected1">
+                            //                                                                     <option value="1">输出</option>
+                            //                                                                     <option value="0">输入</option>
+                            //                                                                 </select>
+                            //                                                                 <select class="varNameInput1">
+                            //                                                                 </select>`
+                            //                                                             if(index.vartype == "基本类型" || index.vartype == 1 ){
+                            //                                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                                             }else if(index.vartype == "常量"||  index.vartype == 2){
+                            //                                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                                             } else{
+                            //                                                                 str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                                             } 
+                            //                                                             str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                            //                                                             <button type="button" onclick="reduceButton(event)">x</button>                                               
+                            //                                                         </div>`   
+                            //                                                     }  
+                            //                                                 }) 
+                                                                           
+                            //                                             }
+                            //                                         }
+                            //                                     })                                                               
+                            //                                 }
+                            //                             }) 
+                            //                          }
+                            //                      })                                       
+                            //                 }
+                                        
+                            //             }
+                            //         })
+                            //     } else{
+                            //         $.ajax({
+                            //             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            //             data:{algthId:currId},
+                            //             success: function(data) {
+                            //                 $(".actionSelected2").empty();
+                            //                 $('.ruleActionZZ').text(data.tableAlgorithm.algorithmauthor)
+                            //                 $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
+                            //                 $('.ruleActionMS').text(data.tableAlgorithm.des)
+                            //                 let str =``
+                            //                 if(SS.isClick && SS.id ==data.tableAlgorithm.id+"tableAlgorithm"){
+                            //                     SS.isClick = false
+                            //                     canvas.data.nodes.map(item=>{
+                            //                         if(item.childStand){
+                            //                             if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
+                            //                                 let uuid = item.id.substr((item.id.indexOf('---')-36),36)
+                            //                                 data.tableFuncs.map(index =>{
+                            //                                     if((item.id).split("_")[1] == index.id){
+                            //                                         str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                            //                                         if(index.inorout == 1){
+                            //                                             str+=`<input value="输出" class="actionSelected1" disabled>  `
+                            //                                         }else{
+                            //                                             str+= `<input value="输入" class="actionSelected1" disabled>  `
+                            //                                         }
+                            //                                             str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                            //                                         if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                            //                                             str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                         }else if(index.vartype == 2 || index.vartype == "常量" ){
+                            //                                             str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                         }  else{
+                            //                                             str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                         } 
+                            //                                             str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                            //                                             </div>`                                                           
+                            //                                     }
+                            //                                 }) 
+                                                            
+                            //                             }
+                            //                         }
+                            //                     })
+                            //                     $('.ruleContentDiv').html(str)
+                            //                     data.tableFuncs.map((s,i)=>{
+                            //                         $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
+                            //                         $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true);              
+                            //                     })
+                            //                     $(".actionSelected2").off("change").on("change",()=>{
+                            //                         if($(".actionSelected2").val() == "2"){
+                            //                             $("#varTypeInput").val("常量")
+                            //                         }
+                            //                         if($(".actionSelected2").val() == "3"){
+                            //                             $("#varTypeInput").val("对象")
+                            //                         }
+                            //                         if($(".actionSelected2").val() == "1"){
+                            //                             $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
+                            //                         }
+                            //                     })
+                            //                 }else{
+                            //                         self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t) =>{
+                            //                             if(index.remark != "xin"){
+                            //                                 str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                            //                                 if(index.inorout == 1 || index.inorout =="输出"){
+                            //                                     str+=`<input value="输出" class="actionSelected1" disabled>  `
+                            //                                 }else{
+                            //                                     str+=  ` <input value="输入" class="actionSelected1" disabled>  `
+                            //                                 }
+                            //                                     str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                            //                                 if(index.vartype == "基本类型" || index.vartype == "1"){
+                            //                                     str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                 }else if(index.vartype == "常量" || index.vartype == "2"){
+                            //                                     str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                 } else if(index.vartype == "对象"|| index.vartype == "3"){
+                            //                                     str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                 } 
+                            //                                     str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                            //                                     </div>`   
+                            //                             }else{
+                            //                                 str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
+                            //                                         <select class="actionSelected1">
+                            //                                             <option value="1">输出</option>
+                            //                                             <option value="0">输入</option>
+                            //                                         </select>
+                            //                                         <select class="varNameInput1">
+                            //                                         </select>`
+                            //                                     if(index.vartype == "基本类型" || index.vartype == "1"){
+                            //                                         str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                            //                                     }else if(index.vartype == "常量" || index.vartype == "2"){
+                            //                                         str+=`<input value="常量" class="actionSelected2" disabled>`
+                            //                                     } else if(index.vartype == "对象"|| index.vartype == "3"){
+                            //                                         str+=`<input value="对象" class="actionSelected2" disabled>`
+                            //                                     } 
+                            //                                     str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                            //                                     <button type="button" onclick="reduceButton(event)">x</button>                                               
+                            //                                 </div>`   
+                            //                             } 
+                                                        
+                            //                             $('body').off("change").on('change','.varNameInput1',(e) => {
+                            //                                 data.tableFuncs.map(item => {
+                            //                                     if($(e.target).val()== item.varname){
+                            //                                         if(item.vartype == "1"){
+                            //                                             $(e.target).parent().children('.actionSelected2').val("基本类型")
+                            //                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                            //                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            //                                             $(e.target).parent().attr("Funcs-id",item.id)
+                            //                                         }
+                                                                    
+                            //                                         if(item.vartype == "2"){
+                            //                                             $(e.target).parent().children('.actionSelected2').val("常量")
+                            //                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                            //                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            //                                             $(e.target).parent().attr("Funcs-id",item.id)
+                            //                                         }
+                            //                                         if(item.vartype == "3"){
+                            //                                             $(e.target).parent().children('.actionSelected2').val("对象")
+                            //                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                            //                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            //                                             $(e.target).parent().attr("Funcs-id",item.id)
+                            //                                         }
+                            //                                         if(item.vartype == ""){
+                            //                                             $(e.target).parent().children('.actionSelected2').val("")
+                            //                                             $(e.target).parent().children('#varTypeInput').val(item.valvalue)
+                            //                                             $(e.target).parent().children('.varNameInput').val($(e.target).val())
+                            //                                             $(e.target).parent().attr("Funcs-id",item.id)
+                            //                                         }                  
+                            //                                     }else if($(e.target).val()== "请选择"){
+                            //                                         $(e.target).parent().children('.actionSelected2').val("")
+                            //                                         $(e.target).parent().children('#varTypeInput').val("")
+                            //                                         $(e.target).parent().children('.varNameInput').val("")
+                            //                                         $(e.target).parent().attr("")
+                            //                                     }
+                            //                                 })
+                            //                                 })  
+                            //                         })
+                            //                         $('.ruleContentDiv').html(str)
+                            //                         let lstr1=`<option>请选择</option>`
+                            //                         data.tableFuncs.map(item => {
+                            //                             lstr1 += `<option value="${item.varname}">${item.varname}</option>`
+                            //                         })
+                            //                         self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t)=>{
+                            //                             if(index.remark == "xin"){
+                            //                                 $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
+                            //                                 setTimeout(function () {
+                            //                                     $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
+                            //                                     $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
+                            //                                 }, 100);
+                                                            
+                            //                             }
+                                                        
+                            //                         })
+                            //                 }
+                                                
+                            //                 }
+                                            
+                            //             })
+                                    
+                            //         }
+                               
+                            // })
                             
                             $('#ruleAct').show();
                             // $(`#ruleAct`).css({
