@@ -3,7 +3,9 @@
 // 用HTTP://localhost:8000或http://127.0.0.1:8000连接这个服务器
 
 // 首先加载所有需要用到的模块
-var http = require('http');    // 加载http服务api模块
+var http = require('http');
+console.log(http);
+// 加载http服务api模块
 var fs = require('fs');      // 加载fs文件服务api模块
 var server = new http.Server();  // 创建新的HTTP服务器
 var urlapi = require('url');    // 创建url路由api模块

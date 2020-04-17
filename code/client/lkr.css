@@ -536,6 +536,29 @@ body{
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
+#groupDiv{
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    width: 500px;
+    height: 700px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+#groupEditDiv{
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    width:400px;
+    height:300px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    z-index: 99999;
+}
 #gzDiv{
     position: absolute;
     left: 30%;
@@ -589,7 +612,7 @@ body{
 #gzTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -687,6 +710,28 @@ body{
     line-height: 40px;
     margin-right: 20px;
 }
+#groupDiv span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
+#groupEditDiv span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
 #gzDiv span{
     text-align: right;
     font-size: 16px;
@@ -725,6 +770,40 @@ body{
     top: 10px;
     left: 20px;
     text-align: center;
+}
+#groupDiv .title{
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    height: 40px;
+}
+#groupDiv .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    text-align: center;
+}
+#groupEditDiv .title{
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    height: 40px;
+}
+#groupEditDiv .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: -5px;
+    left: 20px;
+    text-align: center;
+}
+#groupEditDiv .groupMain{
+    position: absolute;
+    width: 100%;
+    top: 100px;
+
 }
 #gzDiv .title span{
     position: relative;
@@ -833,4 +912,46 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-left: 10px;
+}
+#addGroup{
+    background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin: 15px 0;
+    border: none;
+    height: 30px;
+}
+#groupInputName{
+    width: 200px;
+    height: 40px;
+}
+#addGroupYes{
+    background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin:15px 0;
+    margin-left: 20px;
+    border: none;
+    height: 30px;
+    position: absolute;
+    bottom: 20px;
+    right: 120px;
+}
+.cancelGroup{
+    background: #f56c6c;
+    width: 80px;
+    color: #fff;
+    margin:15px 0;
+    margin-left: 20px;
+    border: none;
+    height: 30px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+#groupTable td,th{
+    border: 1px solid #77CDFE;
+}
+#groupTable th{
+    text-align: center;
 }
