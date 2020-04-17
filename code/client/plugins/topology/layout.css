@@ -50,7 +50,7 @@ body {
 /*右侧属性样式*/
 #flex_props{
     float: left;
-    border: #265696 solid 1px !important;
+    /* border: #265696 solid 1px !important; */
     border-radius: 4px;
     background-image: url('/static/model.png');
     background-size: 100% 100%;
@@ -82,6 +82,7 @@ body {
 #flex_props .pv5{
     width: 100%;
     height: auto;
+    display: flex;
 }
 /*中间画布样式 */
 #flex_canvas {
