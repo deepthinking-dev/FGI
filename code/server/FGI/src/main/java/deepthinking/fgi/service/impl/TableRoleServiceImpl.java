@@ -833,6 +833,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         try {
             //保存最后算法规则信息
             TableRole tableRole=algorithmRuleSaveDataModel.getTableRole();
+            tableRole.setStatus("未发布");
             insert(tableRole);
             //新增接口信息
             List<OperatorInterfaceDataModel> operatorInterfaceDataModels=algorithmRuleSaveDataModel.getOperatorInterfaceDataModels();

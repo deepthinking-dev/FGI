@@ -69,6 +69,7 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
         module.setSqlurl("fgi");
         try {
             //添加模型
+            module.setStatus("未发布");
             insert(module);
             //获取模型ID
             int id=module.getId();
