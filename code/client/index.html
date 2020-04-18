@@ -1046,8 +1046,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             return fmt;
 }
 
-  var timeDay = new Date().Format("yyyy-MM-dd hh:mm:ss");
-
+ 
+    function getTime(){
+        var timeDay = new Date().Format("yyyy-MM-dd hh:mm:ss");
+        return timeDay
+    }
 
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
@@ -1286,17 +1289,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${timeDay}请填写字段英文名称！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}请填写字段英文名称！ </li>`)
                     flag = false
                     return false
                 }
                 if(items.children('.columnType').text() == "" && items.children('.columnType').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${timeDay}请填写字段类型！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}请填写字段类型！ </li>`)
                     flag = false
                     return false
                 }
                 if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${timeDay}请填写字段表名！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}请填写字段表名！ </li>`)
                     flag = false
                     return false
                 }
@@ -1328,7 +1331,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1392,7 +1395,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1501,7 +1504,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                     getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
                 }
@@ -2214,12 +2217,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(data.status == 1){
                     dictionary()
-                    $('.noticeList').append(`<li>${timeDay} 删除成功！</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
-                    $('.noticeList').append(`<li>${timeDay} ${data.msg}</li>`)
+                    $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
                 }
             }
         })
@@ -2359,7 +2362,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     //编辑规则
     function modifyGz(s) {
         if(editGzType) {
-            $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
+            $('.noticeList').append(`<li>${getTime()}当前编辑的规则需进行保存！ </li>`)
             return false;
         }
         $("#gzDiv").hide();
@@ -2498,9 +2501,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data == "分组名称重复"){
-                        $('.noticeList').append(`<li>${timeDay}${data} </li>`)
+                        $('.noticeList').append(`<li>${getTime()}${data} </li>`)
                     } else {
-                        $('.noticeList').append(`<li>${timeDay}${data} </li>`)
+                        $('.noticeList').append(`<li>${getTime()}${data} </li>`)
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
@@ -2559,7 +2562,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     }
                 },
                 error(data){
-                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
+                    $('.noticeList').append(`<li>${getTime()}${data} </li>`)
                 }
             })
         } else {
@@ -2572,7 +2575,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data){
-                        $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
+                        $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
                         $("#groupEditDiv").hide();
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -2635,7 +2638,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data == "删除成功"){
                     $('#ruleDeleteDiv').hide()
                     reloadGroupList();
-                    $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                 }
             }
         })
@@ -2868,9 +2871,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {modelId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${timeDay} 已发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
                 } else {
-                    $('.noticeList').append(`<li>${timeDay} 取消发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
                 }
                 getModuleList()
             }
@@ -2885,9 +2888,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 console.log(data);
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${timeDay} 已发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
                 } else {
-                    $('.noticeList').append(`<li>${timeDay} 取消发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
                 }
                 getGzList()
             }
@@ -2901,9 +2904,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {algthId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${timeDay} 已发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
                 } else {
-                    $('.noticeList').append(`<li>${timeDay} 取消发布</li>`)
+                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
                 }
                 sfWinList()
             }
@@ -2917,7 +2920,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {id :$("#moduleGroupDeleteYes").attr("deleteId")},
             success(res) {
-                $('.noticeList').append(`<li>${timeDay} ${res} </li>`)
+                $('.noticeList').append(`<li>${getTime()} ${res} </li>`)
                 $("#moduleGroupDelete").hide();
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',

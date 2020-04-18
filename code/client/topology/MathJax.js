@@ -55,11 +55,11 @@
     //提交算子信息及公式编辑
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
-            $('.noticeList').append(`<li>${timeDay} 请填写算子名称！</li>`)
+            $('.noticeList').append(`<li>${getTime()} 请填写算子名称！</li>`)
             return false;
         }
         if($('#MathInput').val() == ""){
-            $('.noticeList').append(`<li>${timeDay} 请填写公式！！</li>`)
+            $('.noticeList').append(`<li>${getTime()} 请填写公式！！</li>`)
             return false;
         }
         let tableAl ={
@@ -124,12 +124,12 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        $('.noticeList').append(`<li>${timeDay} ${data.msg}！</li>`)
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                         Topology.init();
                         dictionary()
                     }
                     if(data.status == 2){
-                        $('.noticeList').append(`<li>${timeDay} ${data.msg}！</li>`)
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
                 }
             })
@@ -156,7 +156,7 @@
                         $(".Frame").hide();
                         dictionary()
                         Topology.init();
-                        $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
+                        $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     }
                 }
             })
@@ -220,7 +220,7 @@ function ConfirmLogic(){
     let formula=""
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
-        $('.noticeList').append(`<li>${timeDay}请填写逻辑运算名称!</li>`)
+        $('.noticeList').append(`<li>${getTime()}请填写逻辑运算名称!</li>`)
         return false;
     }
     if(logicLi.length > 0){
@@ -230,7 +230,7 @@ function ConfirmLogic(){
             formula += obj+ " and ";
         }
     }else{
-        $('.noticeList').append(`<li>${timeDay}请至少填写一个</li>`)
+        $('.noticeList').append(`<li>${getTime()}请至少填写一个</li>`)
         return false;
     }
 
@@ -262,7 +262,7 @@ function ConfirmLogic(){
             data:JSON.stringify(param),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
+                    $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
                     dictionary()
@@ -279,7 +279,7 @@ function ConfirmLogic(){
             data:JSON.stringify(tableAl),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
+                    $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
                     dictionary()
@@ -305,10 +305,10 @@ function uploadSure(){
 　　　　 contentType: false,
         success(data) {
             $("#fileupload").hide();
-            $('.noticeList').append(`<li>${timeDay}导入成功！</li>`)
+            $('.noticeList').append(`<li>${getTime()}导入成功！</li>`)
         },
         error(data){
-            $('.noticeList').append(`<li>${timeDay}导入失败!</li>`)
+            $('.noticeList').append(`<li>${getTime()}导入失败!</li>`)
         }
     })
 }
@@ -424,7 +424,7 @@ function ruleSure(){
             data:JSON.stringify(tableRole),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
             }
         })
     }else{
@@ -436,7 +436,7 @@ function ruleSure(){
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
             }
         })
     }
@@ -461,7 +461,7 @@ function ConfirmDelAlgorithm(){
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
-                $('.noticeList').append(`<li>${timeDay}${data.msg} </li>`)
+                $('.noticeList').append(`<li>${getTime()}${data.msg} </li>`)
             }
         }
     })
@@ -483,7 +483,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
-                $('.noticeList').append(`<li>${timeDay}删除成功 </li>`)
+                $('.noticeList').append(`<li>${getTime()}删除成功 </li>`)
                 window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null});
                 canvas.data.nodes = [];
                 canvas.data.lines = [];
@@ -520,7 +520,7 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                $('.noticeList').append(`<li>${timeDay}请选择变量名称！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请选择变量名称！ </li>`)
                 return false;
             }
             //有uuid说明这个小接口已存在
@@ -814,7 +814,7 @@ function ActionSure(){
                     if(Del1UUid == Del2UUid){                       
                         if(item.inorout == 0){
                             canvas.data.nodes.splice(i,1); 
-                            $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                            $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                             window.Topology.dblclickNode.data.inNum --    
                             
                             nowList.map((test,R)=>{
@@ -871,7 +871,7 @@ function ActionSure(){
                         }else{
                             window.Topology.dblclickNode.data.outNum --
                             canvas.data.nodes.splice(i,1); 
-                            $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                            $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
 
                             nowList.map((test,R)=>{
                                 
@@ -986,7 +986,7 @@ function ActionSure(){
                 contentType: "application/json;charset=UTF-8",
                 data:JSON.stringify(operatorInterfaceDataModel),
                 success: function(data) {
-                    $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
                 }
             })
         }

@@ -208,7 +208,7 @@ $(function(){
     $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
-                $('.noticeList').append(`<li>${timeDay}行为值来源为对象才能赋值！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}行为值来源为对象才能赋值！ </li>`)
                 return false
             }
         }
@@ -219,7 +219,7 @@ $(function(){
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
                     if(res == ""){
-                        $('.noticeList').append(`<li>${timeDay}非本系统模型，无选择参数！ </li>`)
+                        $('.noticeList').append(`<li>${getTime()}非本系统模型，无选择参数！ </li>`)
                         return false;
                     }
                     $("#actionSelectDiv").show();
@@ -403,7 +403,7 @@ $(function(){
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
-            $('.noticeList').append(`<li>${timeDay}请填写算法名称！ </li>`)
+            $('.noticeList').append(`<li>${getTime()}请填写算法名称！ </li>`)
             return false;
         }
         let des =  $("#editDicDes").val();
@@ -445,24 +445,24 @@ $(function(){
             obj.parametername = $(s).find('.zdcsCsmc').val() //参数名称
             if(obj.parametername == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${timeDay}请填写参数名！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请填写参数名！ </li>`)
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${timeDay}请填写变量！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请填写变量！ </li>`)
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
             if(obj.inorout == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${timeDay}请填写输入输出！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请填写输入输出！ </li>`)
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
             if(obj.vartype == "2" || obj.vartype == "3"){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
                 if(obj.valvalue == ""){
                     flag = false;
-                    $('.noticeList').append(`<li>${timeDay}请填写取值！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}请填写取值！ </li>`)
                 }
             } else {
                 obj.valvalue = $(s).find('.zdcsTypeSelect').val()//下拉框类型值
@@ -485,7 +485,7 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                     $("#editDic").hide()
                     dictionary();
                     Topology.init();
@@ -529,9 +529,9 @@ $(function(){
                         sfWinList()
                         Topology.init();
                         $("#dicDiv").show()
-                        $('.noticeList').append(`<li>${timeDay} ${data.msg} </li>`)
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
                     } else {
-                        $('.noticeList').append(`<li>${timeDay} ${data.msg} </li>`)
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
                     }
                 }
             })
@@ -1035,7 +1035,7 @@ $(function(){
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
-            $('.noticeList').append(`<li>${timeDay}至少勾选一个规则！ </li>`)
+            $('.noticeList').append(`<li>${getTime()}至少勾选一个规则！ </li>`)
             return false;
        }
        let id = $("input[name='exportGz']:checked").val();
@@ -1050,7 +1050,7 @@ $(function(){
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
         if(editGzType) {
-            $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
+            $('.noticeList').append(`<li>${getTime()}当前编辑的规则需进行保存！ </li>`)
             return false;
         }
         window.bigData.editRuleId = $(e.target).attr('ruleId')

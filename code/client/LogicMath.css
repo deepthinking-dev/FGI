@@ -48,7 +48,7 @@ body .form-input{
 .form-group div{
     position: relative;
     margin-top: 15px;
-    float: left;
+    /* float: left; */
 }
 .form-group div .form-span{
     text-align: right;

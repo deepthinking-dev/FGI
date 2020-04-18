@@ -49,7 +49,7 @@ var Topology = {
     saveKnowledgeMap: function (id) {
         var self = this;
         ww = JSON.stringify(canvas.data)
-        $('.noticeList').append(`<li>${timeDay}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
+        $('.noticeList').append(`<li>${getTime()}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
     },
     // 绑定事件
     bindEvent: function () {
@@ -684,7 +684,7 @@ var Topology = {
                                             arr.splice(j,1);  
                                             self.banAdd = false                                         
                                             j--;
-                                            $('.noticeList').append(`<li>${timeDay}同一个规则算子不能重复！ </li>`)
+                                            $('.noticeList').append(`<li>${getTime()}同一个规则算子不能重复！ </li>`)
                                         }
                                     }
                                 }
@@ -961,7 +961,7 @@ var Topology = {
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
-                                        $('.noticeList').append(`<li>${timeDay}操作失败！ </li>`)
+                                        $('.noticeList').append(`<li>${getTime()}操作失败！ </li>`)
                                         canvas.render();
                                         setTimeout(function () {
                                             selected = null;
@@ -1096,7 +1096,7 @@ var Topology = {
                                         }
 
                                     } else {
-                                        $('.noticeList').append(`<li>${timeDay}输出输入类型不匹配！ </li>`)
+                                        $('.noticeList').append(`<li>${getTime()}输出输入类型不匹配！ </li>`)
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
                                                 canvas.data.lines.splice(i,1)
@@ -1109,7 +1109,7 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    $('.noticeList').append(`<li>${timeDay}只能输出连接输入！ </li>`)
+                                    $('.noticeList').append(`<li>${getTime()}只能输出连接输入！ </li>`)
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
                                             canvas.data.lines.splice(i,1)
@@ -1144,30 +1144,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            debugger
-                            let zuidaID  = ''
-                            if(window.idStoreData[data.nodes.id]){
-                                zuidaID = data.nodes[0].id
-                            }
-                            //删除小方块接口参数数据
-                            data.nodes.map(UU =>{
-                                if(UU.childStand){
-                                    window.Topology.tools.map(item=>{
-                                        if(item.id+"的弟弟" == UU.childStand.type){
-                                            item.children.map((index,i)=>{
-                                            let Indexuuid =index.uuid.slice(0,index.uuid.indexOf("---"))
-                                            let UUId = UU.id.substr((UU.id.indexOf('---')-36),36)
-                                            if(Indexuuid == UUId){
-                                                item.children.splice(i,1);
-                                                // data.nodes.splice(i,1);
-                                                canvas.render();
-                                            }
-                                            })
-                                        }
-                                    })
-                                    
-                                }
-                            })
+                            delete  window.Topology.tools[data.nodes[0].id]
                             data.nodes.map(index=>{
                                 let length=canvas.data.nodes.length;
                                 let deletedata =[];
@@ -1177,9 +1154,6 @@ var Topology = {
                                     if(canvas.data.nodes[i].childStand){
                                         if(index.id+"的弟弟" == canvas.data.nodes[i].childStand.type) {    
                                             deletedata.push(canvas.data.nodes[i].id)  
-                                                                             
-                                            // canvas.data.nodes.splice(0,1);
-                                            // canvas.render();
                                         }
                                     }
                                 }
@@ -1205,7 +1179,7 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
-                                                                    $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                                                                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                                                                     canvas.render();
                                                                 }
                                                             }
@@ -1219,23 +1193,16 @@ var Topology = {
                                     })
                                 })
                                 deletedata.map(index=>{
-                                    debugger
                                     canvas.data.nodes.map((_iddel,i)=>{
                                         if(index==_iddel.id){
                                             canvas.data.nodes.splice(i,1);
                                             canvas.render();
                                         }
                                     })
-                                    window.Topology.tools[index.id].children.map((child,i)=>{
-                                        let UUId = index.substr((index.indexOf('---')-36),36)
-                                        if(UUId == child.uuid){
-                                            child.splice(i,1) 
-                                        }
-                                    })
-                                    if(window.Topology.tools[index.id].children.length == 0){
-                                        window.Topology.tools.splice(k,1)
-                                    }
+                                   
+                                        
                                 })
+                              
                                 if(window.bigData.ruleType == "edit"){
                                     //从数据库删除大方块的数据
                                     $.ajax({
@@ -1248,7 +1215,7 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
-                                                $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
+                                                $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                                                 canvas.render();
                                             }
                                         }
