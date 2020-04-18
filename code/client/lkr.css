@@ -641,7 +641,7 @@ body{
 #gzTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsg{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -1038,5 +1038,13 @@ body{
     width:320px;
     height: 39px;
 }
-
+#actionMsg{
+    width: 350px;
+    height: 40px;
+    margin-left: 30%;
+}
+#actionDiv i{
+    width: 20px;
+    display: inline-block;
+}
 
