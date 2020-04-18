@@ -39,6 +39,7 @@
             background-image: url(./static/mum1.png);
             background-size: 100% 100%;
             background-repeat: no-repeat;
+            margin: 10px 0;
         }
         i{
             font-style:normal
@@ -627,6 +628,7 @@
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right">模型所属组：</label>
                     <select id='modulegroup' class="lkr-input"></select>
+                    <input type='text' id='modulegroupshow' class="lkr-input" style="display: none;"/>
 
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
@@ -1135,7 +1137,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
     })
     $('body').on('dblclick','.dbclickModule',(e) =>{
-        let modlueId= $(e.target).attr('data-id')
+        let modlueId= $(e.target).attr('moduleId')
         $('#lkrFrame').fadeToggle(500)
         $.ajax({
             url:urlConfig.host+'/module/getModuleById',
@@ -1143,13 +1145,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 // $('#addMb tbody').html('')
                 let str =`模型详情
-                    <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
+                <span style="cursor: pointer;" onclick='lkrFrameClose()'>x</span>`
                 $(".lkr-frame-tilte").html(str)
                 $('.sjyDiv').hide();
                 $('.operate').hide();
                 $(".addsjyth").hide();
                 $("#mouldName").val(data.modulename).attr({"readonly":"readonly"});
-                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"});
+                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"}).hide();
+                $("#modulegroupshow").val(data.modulegroup).attr({"readonly":"readonly"}).show();
                 $("#mouldRemark").val(data.des).attr({"readonly":"readonly"});
                 $('#lkrFrame .lkr-button').hide();
                 window.bigData.editmoduleId = data.id
@@ -1271,6 +1274,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     */
     function lkrFrameClose(){
         reseAddMb()
+        $("#modulegroup").show();
+        $("#modulegroupshow").hide();
         $('#lkrFrame').fadeToggle(500)
     }
     function Confirm(){
@@ -1323,7 +1328,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    // toastr.success('保存成功！');
                     $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1333,7 +1337,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 let str=``
                                 data.map(item=>{
                                     $(".moduleContentList").append(`<div class="left-list">
-                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
+                                            <div class="left-list-tilte dbclickModule" moduleId='${item.id}'>${item.modulename}</div>
                                             <div class="left-list-event">
                                                 <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
@@ -1387,7 +1391,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    toastr.success('修改成功！');
                     $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1397,7 +1400,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 let str=``
                                 data.map(item=>{
                                     $(".moduleContentList").append(`<div class="left-list">
-                                            <div class="left-list-tilte dbclickModule" data-id='${item.id}'>${item.modulename}</div>
+                                            <div class="left-list-tilte dbclickModule" moduleId='${item.id}'>${item.modulename}</div>
                                             <div class="left-list-event">
                                                 <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
                                                 <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
@@ -1460,10 +1463,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         let str=``
                         data.map(item=>{
                             $(".moduleContentList").append(`<div class="left-list">
-                                    <div class="left-list-tilte dbclickModule"  data-id='${item.id}'>${item.modulename}</div>
+                                    <div class="left-list-tilte dbclickModule"  moduleId='${item.id}'>${item.modulename}</div>
                                     <div class="left-list-event">
-                                        <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                        <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
+                                        <div class='lkr-list-edit lkr-edit' moduleId='${item.id}' >编辑模型</div>
+                                        <div class='lkr-list-del lkr-del' moduleId='${item.id}' >删除模型</div>
                                     </div>
                                 </div>`)
                         })
@@ -1479,10 +1482,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $(".moduleContentList").html('')
                 data.map(item => {
                     $(".moduleContentList").append(`<div class="left-list">
-                        <div class="left-list-tilte dbclickModule"  data-id='${item.id}'>${item.modulename}</div>
+                        <div class="left-list-tilte dbclickModule"  moduleId='${item.id}'>${item.modulename}</div>
                         <div class="left-list-event">
-                            <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                            <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
+                            <div class='lkr-list-edit lkr-edit' moduleId='${item.id}' >编辑模型</div>
+                            <div class='lkr-list-del lkr-del' moduleId='${item.id}' >删除模型</div>
                         </div>
                     </div>`)
                 })
@@ -1498,7 +1501,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    toastr.success('删除成功！');
                     $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
                     getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
@@ -2199,12 +2201,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     dictionary()
                     $('.noticeList').append(`<li>${timeDay} 删除成功！</li>`)
-                    toastr.success('删除成功！');
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
-                    toastr.info(data.msg);
                     $('.noticeList').append(`<li>${timeDay} ${data.msg}</li>`)
                 }
             }
@@ -2346,7 +2346,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function modifyGz(s) {
         if(editGzType) {
             $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
-            toastr.info('当前编辑的规则需进行保存！')
             return false;
         }
         $("#gzDiv").hide();
@@ -2485,9 +2484,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data == "分组名称重复"){
-                        toastr.error(data)
+                        $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                     } else {
-                        toastr.success(data)
+                        $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
@@ -2546,7 +2545,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     }
                 },
                 error(data){
-                    toastr.error(data)
+                    $('.noticeList').append(`<li>${timeDay}${data} </li>`)
                 }
             })
         } else {
@@ -2559,7 +2558,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data){
-                        toastr.success('修改成功！')
+                        $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
                         $("#groupEditDiv").hide();
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -2690,7 +2689,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
-                        div.append(`<div moduleId="${s.id}" class="left-list-tilte" style="height:50px;">${s.modulename}</div>`)
+                        div.append(`<div moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div>`)
                     })
                 }
             }

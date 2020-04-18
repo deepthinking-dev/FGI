@@ -49,7 +49,7 @@ var Topology = {
     saveKnowledgeMap: function (id) {
         var self = this;
         ww = JSON.stringify(canvas.data)
-        toastr.info("需要保存的json：\n" + JSON.stringify(canvas.data));
+        $('.noticeList').append(`<li>${timeDay}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
     },
     // 绑定事件
     bindEvent: function () {
@@ -684,7 +684,7 @@ var Topology = {
                                             arr.splice(j,1);  
                                             self.banAdd = false                                         
                                             j--;
-                                            toastr.info('同一个规则算子不能重复！')
+                                            $('.noticeList').append(`<li>${timeDay}同一个规则算子不能重复！ </li>`)
                                         }
                                     }
                                 }
@@ -961,7 +961,7 @@ var Topology = {
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
-                                        toastr.info('操作失败！')
+                                        $('.noticeList').append(`<li>${timeDay}操作失败！ </li>`)
                                         canvas.render();
                                         setTimeout(function () {
                                             selected = null;
@@ -1127,7 +1127,6 @@ var Topology = {
                                 
                                 if(fromType == toType){
                                     flag = true
-                                    break;
                                 }else if(value){
                                     fromType = typeof(value)
                                 }else{
@@ -1145,6 +1144,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            debugger
                             let zuidaID  = ''
                             if(window.idStoreData[data.nodes.id]){
                                 zuidaID = data.nodes[0].id
@@ -1205,7 +1205,7 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
-                                                                    toastr.success('删除成功！');
+                                                                    $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
                                                                     canvas.render();
                                                                 }
                                                             }
@@ -1219,27 +1219,22 @@ var Topology = {
                                     })
                                 })
                                 deletedata.map(index=>{
+                                    debugger
                                     canvas.data.nodes.map((_iddel,i)=>{
                                         if(index==_iddel.id){
                                             canvas.data.nodes.splice(i,1);
                                             canvas.render();
                                         }
                                     })
-                                    window.Topology.tools.map((item,k)=>{
-                                        if(index.slice(0,index.indexOf('tableAlgorithm'))+"tableAlgorithm" == item.id){
-                                            item.children.map((child,i)=>{
-                                                let UUId = index.substr((index.indexOf('---')-36),36)
-                                                if(UUId == child.uuid){
-                                                    item.children.splice(i,1) 
-                                                }
-                                            })
+                                    window.Topology.tools[index.id].children.map((child,i)=>{
+                                        let UUId = index.substr((index.indexOf('---')-36),36)
+                                        if(UUId == child.uuid){
+                                            child.splice(i,1) 
                                         }
-                                        if(item.children.length == 0){
-                                            window.Topology.tools.splice(k,1)
-                                        }
-                                      
-                                       
                                     })
+                                    if(window.Topology.tools[index.id].children.length == 0){
+                                        window.Topology.tools.splice(k,1)
+                                    }
                                 })
                                 if(window.bigData.ruleType == "edit"){
                                     //从数据库删除大方块的数据
@@ -1253,7 +1248,7 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
-                                                toastr.success('删除成功！');
+                                                $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
                                                 canvas.render();
                                             }
                                         }

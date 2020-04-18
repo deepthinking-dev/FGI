@@ -208,7 +208,6 @@ $(function(){
     $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
-                // toastr.info('行为值来源为对象才能赋值！')
                 $('.noticeList').append(`<li>${timeDay}行为值来源为对象才能赋值！ </li>`)
                 return false
             }
@@ -220,7 +219,6 @@ $(function(){
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
                     if(res == ""){
-                        toastr.info("非本系统模型，无选择参数！");
                         $('.noticeList').append(`<li>${timeDay}非本系统模型，无选择参数！ </li>`)
                         return false;
                     }
@@ -404,7 +402,6 @@ $(function(){
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
-            // toastr.info('请填写算法名称！')
             $('.noticeList').append(`<li>${timeDay}请填写算法名称！ </li>`)
             return false;
         }
@@ -1037,7 +1034,6 @@ $(function(){
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
-            // toastr.info("至少勾选一个规则！");
             $('.noticeList').append(`<li>${timeDay}至少勾选一个规则！ </li>`)
             return false;
        }
@@ -1053,7 +1049,6 @@ $(function(){
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
         if(editGzType) {
-            // toastr.info('当前编辑的规则需进行保存！')
             $('.noticeList').append(`<li>${timeDay}当前编辑的规则需进行保存！ </li>`)
             return false;
         }

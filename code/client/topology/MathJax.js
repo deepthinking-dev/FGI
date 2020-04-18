@@ -55,11 +55,11 @@
     //提交算子信息及公式编辑
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
-            toastr.info('请填写算子名称！')
+            $('.noticeList').append(`<li>${timeDay} 请填写算子名称！</li>`)
             return false;
         }
         if($('#MathInput').val() == ""){
-            toastr.info('请填写公式！')
+            $('.noticeList').append(`<li>${timeDay} 请填写公式！！</li>`)
             return false;
         }
         let tableAl ={
@@ -124,12 +124,12 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        toastr.success(data.msg);
+                        $('.noticeList').append(`<li>${timeDay} ${data.msg}！</li>`)
                         Topology.init();
                         dictionary()
                     }
                     if(data.status == 2){
-                        toastr.info(data.msg)
+                        $('.noticeList').append(`<li>${timeDay} ${data.msg}！</li>`)
                     }
                 }
             })
@@ -156,7 +156,7 @@
                         $(".Frame").hide();
                         dictionary()
                         Topology.init();
-                        toastr.success('保存成功！');
+                        $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
                     }
                 }
             })
@@ -220,7 +220,7 @@ function ConfirmLogic(){
     let formula=""
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
-        toastr.info("请填写逻辑运算名称")
+        $('.noticeList').append(`<li>${timeDay}请填写逻辑运算名称!</li>`)
         return false;
     }
     if(logicLi.length > 0){
@@ -230,7 +230,7 @@ function ConfirmLogic(){
             formula += obj+ " and ";
         }
     }else{
-        toastr.info("请至少填写一个")
+        $('.noticeList').append(`<li>${timeDay}请至少填写一个</li>`)
         return false;
     }
 
@@ -262,7 +262,7 @@ function ConfirmLogic(){
             data:JSON.stringify(param),
             success: function(data) {
                 if(data.status == 1){
-                    toastr.success('保存成功！');
+                    $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
                     dictionary()
@@ -279,7 +279,7 @@ function ConfirmLogic(){
             data:JSON.stringify(tableAl),
             success: function(data) {
                 if(data.status == 1){
-                    toastr.success('保存成功！');
+                    $('.noticeList').append(`<li>${timeDay}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
                     Topology.init();
                     dictionary()
@@ -305,10 +305,10 @@ function uploadSure(){
 　　　　 contentType: false,
         success(data) {
             $("#fileupload").hide();
-            toastr.success("导入成功")
+            $('.noticeList').append(`<li>${timeDay}导入成功！</li>`)
         },
         error(data){
-            toastr.info("导入失败")
+            $('.noticeList').append(`<li>${timeDay}导入失败!</li>`)
         }
     })
 }
@@ -424,7 +424,6 @@ function ruleSure(){
             data:JSON.stringify(tableRole),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                // toastr.success('修改成功！');
                 $('.noticeList').append(`<li>${timeDay}修改成功！ </li>`)
             }
         })
@@ -437,7 +436,6 @@ function ruleSure(){
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                // toastr.success('保存成功！');
                 $('.noticeList').append(`<li>${timeDay}保存成功！ </li>`)
             }
         })
@@ -463,7 +461,6 @@ function ConfirmDelAlgorithm(){
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
-                // toastr.info(data.msg);
                 $('.noticeList').append(`<li>${timeDay}${data.msg} </li>`)
             }
         }
@@ -486,7 +483,6 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('#lkrRule').fadeToggle(500)
-                // toastr.success('删除成功！');
                 $('.noticeList').append(`<li>${timeDay}删除成功 </li>`)
                 window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null});
                 canvas.data.nodes = [];
@@ -524,7 +520,6 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                // toastr.success('请选择变量名称！');
                 $('.noticeList').append(`<li>${timeDay}请选择变量名称！ </li>`)
                 return false;
             }
@@ -876,7 +871,6 @@ function ActionSure(){
                         }else{
                             window.Topology.dblclickNode.data.outNum --
                             canvas.data.nodes.splice(i,1); 
-                            // toastr.success('删除成功！');
                             $('.noticeList').append(`<li>${timeDay}删除成功！ </li>`)
 
                             nowList.map((test,R)=>{
@@ -1028,8 +1022,8 @@ function ruleAddButtonS(){
                     <input value="" class="varNameInput" style="display: none;">   
                     <select class="varNameInput1">
                     </select>
-                    <input value="" class="actionSelected2" disabled>   
-                    <input value="" id="varTypeInput" disabled>                                                 
+                    <input value="" class="actionSelected2" disabled style="margin-left: 6px;">   
+                    <input value="" id="varTypeInput" disabled style="margin-left: 6px;">                                                 
                     <button type="button" onclick="reduceButton(event)">x</button> 
                     </div>` 
                     $('.ruleContentDiv').append(str);
