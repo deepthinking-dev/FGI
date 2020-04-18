@@ -16,6 +16,8 @@ $(function(){
         if ($("#selectOutIn").val() == "1") {
             $("#actionInDiv").show();
             $("#actionOutDiv").hide();
+            $("#actionMsgIn").show();
+            $("#actionMsgOut").hide();
                 if ($("#addActionButton").attr("resData")) {//后台返回数据
                     $("#actionInDiv").empty();
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
@@ -77,6 +79,8 @@ $(function(){
         } else {
             $("#actionInDiv").hide();
             $("#actionOutDiv").show();
+            $("#actionMsgIn").hide();
+            $("#actionMsgOut").show();
             if($("#addActionButton").attr("resData")){//后台数据
                     if($("#addActionButton").attr("resData")){
                         $.ajax({
@@ -161,7 +165,11 @@ $(function(){
         }
     })
     $('body').on('click','.deleteActionData',(e) => {
-        $("#actionMsg").val("")
+        if($("#selectOutIn").val() == 1){
+            $("#actionMsgIn").val("");
+        } else {
+            $("#actionMsgOut").val("");
+        }
         var divBig =  $(e.target).parent().parent()
         $(e.target).parent().remove();
         divBig.find('i').each((i,s)=>{
@@ -169,8 +177,8 @@ $(function(){
         })
     })
     $('body').on('click','#addActionButton',(e) => {
-        $("#actionMsg").val("")
         if($("#selectOutIn").val() == "1"){
+            $("#actionMsgIn").val("");
             var num = $("#actionInDiv div").length;
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
@@ -190,6 +198,7 @@ $(function(){
                       </div>
                     `)
         } else {
+            $("#actionMsgOut").val("");
             $.ajax({
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                 data:{algthId:$("#addActionButton").attr("id_out")},
@@ -300,7 +309,8 @@ $(function(){
             var sendDataAll = {
                 algorithmconditions:sendDataIn,
                 interfaceParametersID:$("#addActionButton").attr("in_small"),
-                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id
+                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                actionRelation:$("#actionMsgIn").val()
             }
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
@@ -326,7 +336,8 @@ $(function(){
             var sendDataAllOut = {
                 algorithmconditions:sendDataOut,
                 interfaceParametersID:$("#addActionButton").attr("out_small"),
-                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id
+                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                actionRelation:$("#actionMsgOut").val()
             }
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
@@ -354,7 +365,7 @@ $(function(){
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
                         s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArrIn;
-                        s.dataIn.interfaceRoleDataModels.actionRelation = $("#actionMsg").val();
+                        s.dataIn.interfaceRoleDataModels.actionRelation = $("#actionMsgIn").val();
                     }
                 })
                 var dataArrOut = [];
@@ -374,7 +385,7 @@ $(function(){
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
                         s.dataOut.interfaceRoleDataModels.algorithmconditions = dataArrOut;
-                        s.dataOut.interfaceRoleDataModels.preActionRelation = $("#actionMsg").val();
+                        s.dataOut.interfaceRoleDataModels.preActionRelation = $("#actionMsgOut").val();
                     }
                 })
         }

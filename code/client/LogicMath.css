@@ -850,7 +850,7 @@ body .form-input{
     width: 800px;
     left: 25%;
     top: 20%;
-    display: none;
+    display: block;
     background-image: url(./static/mum1.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;

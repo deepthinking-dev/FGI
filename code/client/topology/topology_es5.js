@@ -466,6 +466,8 @@ var Topology = {
                                 globalActionDatas.map(s=>{
                                     if(s.id == out_small + "AND" + in_small){
                                         try{
+                                            $("#actionMsgIn").val("");
+                                            $("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
                                             var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                                             lineDatas.map((t,i)=>{
                                                 $("#actionInDiv").append(`
