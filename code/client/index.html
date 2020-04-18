@@ -1741,6 +1741,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     //修改字典信息
     function editZd(s) {
         $("#editDicYes").attr("editId",s)
+        $("#group").attr("disabled",false)
         $("#editDicTitle").text("修改算法")
         $("#dicDiv").hide()
         $.ajax({

@@ -1127,7 +1127,6 @@ var Topology = {
                                 
                                 if(fromType == toType){
                                     flag = true
-                                    break;
                                 }else if(value){
                                     fromType = typeof(value)
                                 }else{
