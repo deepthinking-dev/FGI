@@ -265,6 +265,7 @@ var Topology = {
                             data:{
                                 inNum:item.inNum,
                                 outNum:item.outNum,
+                                sid:item.tableAlgorithm.id
                             },
                             children:[],
                             paddingLeft: 10,
@@ -677,23 +678,22 @@ var Topology = {
                             this.workspace.nativeElement.scrollTop += 10;
                          
                             //去掉重复id的node（一个算子在一套规则中只能出现一次）
-                            function unique(arr){         
-                                for(var i=0; i<arr.length; i++){
-                                    for(var j=i+1; j<arr.length; j++){
-                                        if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
-                                            arr.splice(j,1);  
-                                            self.banAdd = false                                         
-                                            j--;
-                                            $('.noticeList').append(`<li>${getTime()}同一个规则算子不能重复！ </li>`)
-                                        }
-                                    }
-                                }
-                                return arr;
-                            }
-                            unique(canvas.data.nodes)
+                            // function unique(arr){         
+                            //     for(var i=0; i<arr.length; i++){
+                            //         for(var j=i+1; j<arr.length; j++){
+                            //             if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
+                            //                 arr.splice(j,1);  
+                            //                 self.banAdd = false                                         
+                            //                 j--;
+                            //                 $('.noticeList').append(`<li>${getTime()}同一个规则算子不能重复！ </li>`)
+                            //             }
+                            //         }
+                            //     }
+                            //     return arr;
+                            // }
+                            // unique(canvas.data.nodes)
                             break;
                         case 'addNode':
-                            
                             selNodes = [data];
                             selected = {
                                 "type": event,
@@ -715,10 +715,12 @@ var Topology = {
                                 children:[]
                             }
                             let tableAlgorithmIndex1 = data.id.indexOf("tableAlgorithm");
+                            data.data.sid =tableAlgorithmIndex1
+                            // data.id = guid()
                             let currId1 = data.id.slice(0,tableAlgorithmIndex1);
                             //存储编辑区数据
-                            unique(canvas.data.nodes)
-                            self.saveNode = unique(canvas.data.nodes)
+                            // unique(canvas.data.nodes)
+                            // self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
                             self.initNode(); 
 
@@ -736,7 +738,8 @@ var Topology = {
                                             return v.toString(16);
                                         });
                                     }
-                                    window.idStoreData[data.id] = guid()
+                                    data.id = guid()
+                                    //window.idStoreData[data.id] = guid()
                                     
                                 }
 
@@ -797,7 +800,9 @@ var Topology = {
                                                         ex:data1.rect.ex,
                                                         ey:data1.rect.ey
                                                     },
-                                                    text:item.valvalue
+                                                    text:item.valvalue,
+                                                    fid:tableAlgorithmIndex1,
+                                                    fUUid: data.id
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
@@ -880,7 +885,9 @@ var Topology = {
                                                         ex:data1.rect.ex,
                                                         ey:data1.rect.ey
                                                     },
-                                                    text:item.valvalue
+                                                    text:item.valvalue,
+                                                    fid:tableAlgorithmIndex1,
+                                                    fUUid: data.id
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
