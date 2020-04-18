@@ -1,6 +1,7 @@
 
     function FrameClose(){
         $(".Frame").attr("style","display:none;");
+        $("#dicDiv").show()
     }
     function LogicClose(){
         $(".Logic").attr("style","display:none;");
@@ -97,6 +98,7 @@
                 obj.varname = MathJaxParamLength.eq(i).find('.MathJaxInput1').val()
                 obj.vartype = MathJaxParamLength.eq(i).find('.MathJaxInput2').val()
                 obj.inorout = 0;
+                obj.parametername = MathJaxParamLength.eq(i).find('.MathJaxInputCs').val();
                 if(MathJaxParamLength.eq(i).find('.isShow1').css('display') == "block"){
                     obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()
                 } else {

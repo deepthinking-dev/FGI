@@ -43,12 +43,11 @@ body .form-input{
     margin: 0 auto;
 }
 .Frame .form-group{
-    margin-left: 30px;
+    margin-left: 15px;
 }
 .form-group div{
     position: relative;
-    margin-top: 15px;
-    /* float: left; */
+    margin-top: 5px;
 }
 .form-group div .form-span{
     text-align: right;
@@ -148,18 +147,18 @@ body .form-input{
     position: relative;
     top: 80px;
     margin: 0 auto;
-    width: 88%;
+    width:98%;
     height: 250px;
     overflow: auto;
 }
 .MathJaxEdit div{
-    width: 500px;
-   margin: 0 auto;
+    width: 650px;
+    margin: 0 auto;
 }
 .MathJaxEdit .width-50{
     position: relative;
     margin:10px 0 ;
-    width: 25%;
+    width: 20%;
     float: left;
 }
 .isShow2{
@@ -368,7 +367,7 @@ body .form-input{
 }
 .frame-foot{
     position: absolute;
-    bottom: 30px;
+    bottom: 15px;
     right: 50px;
 }
 .frame-foot .button{

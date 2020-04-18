@@ -136,6 +136,10 @@
                     data.map(item => {
                         str +=`<div class="MathJaxParam">
                                 <div class="width-50">
+                                    <span>参数名</span>
+                                    <input type="text" value="" class="MathJaxInputCs inputButton">
+                                </div>
+                                <div class="width-50">
                                     <span>变量</span>
                                     <input type="text"  readonly="readonly" value="${item}" class="MathJaxInput1 inputButton">
                                 </div>
@@ -605,7 +609,7 @@
         </div>
     </div>
 <!--       字典确定删除框-->
-       <div class="lkr-frame" id='deleteZdDiv'>
+       <div class="lkr-frame" id='deleteZdDiv' style="z-index:20000;">
            <div class="lkr-frame-div" style="height: 150px;">
                <div class="lkr-frame-content">
                    <h3>
@@ -872,7 +876,7 @@
                   <span>算法信息</span>
                   <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
               </div>
-              <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
+              <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
@@ -1559,7 +1563,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {type:2},
             success(data){
-                $("#group").empty()
+                $("#groupGs").empty()
                 data.map(s=>{
                     $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
                 })
@@ -1882,12 +1886,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
-                    //window.changeBds(data.tableAlgorithm.algorithmfun);
+                    window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){
                         let str =``
                         data.tableFuncs.map((item)=>{
                             str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
+                                        <div class="width-50">
+                                            <span>参数名</span>
+                                            <input type="text" value="${item.parametername}" class="MathJaxInputCs inputButton">
+                                        </div>
                                         <div class="width-50">
                                             <span>变量</span>
                                             <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
@@ -2216,7 +2224,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             success(data) {
                 if(data.status == 1){
-                    dictionary()
+                    sfWinList()
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
