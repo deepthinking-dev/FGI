@@ -60,4 +60,11 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
      * @return
      */
     int delAlgorithmById(String algthId);
+
+    /**
+     *
+     * @param algthId
+     * @return
+     */
+    boolean updataStatus(String algthId,String status);
 }

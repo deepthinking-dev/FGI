@@ -1164,4 +1164,25 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         }
         return true;
     }
+    @Override
+    public boolean updataStatus(String roleId,String status) {
+        if(roleId==null||roleId.equals("0")){
+            logger.warn("传入的ID无效");
+            return false;
+        }else {
+            try {
+                TableRole tableRole=new TableRole();
+                tableRole.setId(Integer.parseInt(roleId));
+                if(status.equals("发布")){
+                    tableRole.setStatus("发布中");
+                }else{
+                    tableRole.setStatus("未发布");
+                }
+                return updateByPrimaryKeySelective(tableRole)==1;
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                return false;
+            }
+        }
+    }
 }

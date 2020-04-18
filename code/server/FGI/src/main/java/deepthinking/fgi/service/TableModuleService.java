@@ -77,4 +77,12 @@ public interface TableModuleService extends BaseService<TableModule,Integer> {
      * @return
      */
     TableModule findTableModuleByName(String name);
+
+    /**
+     * 修改模型的状态信息
+     * @param modelId
+     * @param status
+     * @return
+     */
+    public boolean updataStatus(String modelId,String status);
 }

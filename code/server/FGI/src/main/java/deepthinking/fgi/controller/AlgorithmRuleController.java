@@ -156,6 +156,13 @@ public class AlgorithmRuleController {
     public boolean delTableOperatorinterface(String operatorinterfaceId){
         return tableRoleService.delTableOperatorinterface(operatorinterfaceId);
     }
+    @GetMapping("/updataStatus")
+    @ApiOperation(value = "04-15 修改规则的状态", notes = "返回修改结果", httpMethod = "GET")
+    @ApiImplicitParams({@ApiImplicitParam(name = "roleId", value = "规则ID", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "status", value = "状态 传入‘发布’或者‘取消发布’", dataType = "string", paramType = "query", required = true)})
+    public boolean updataStatus(String roleId,String status) {
+        return tableRoleService.updataStatus(roleId,status);
+    }
 }
 
 

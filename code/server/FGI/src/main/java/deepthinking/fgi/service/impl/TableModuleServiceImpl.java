@@ -3,10 +3,7 @@ package deepthinking.fgi.service.impl;
 import com.github.pagehelper.PageInfo;
 import deepthinking.fgi.dao.mapper.TableModuleMapper;
 import deepthinking.fgi.dao.mapper.TableModulefieldMapper;
-import deepthinking.fgi.domain.TableModule;
-import deepthinking.fgi.domain.TableModuleCriteria;
-import deepthinking.fgi.domain.TableModulefield;
-import deepthinking.fgi.domain.TableModulefieldCriteria;
+import deepthinking.fgi.domain.*;
 import deepthinking.fgi.service.TableModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -198,6 +195,28 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
             return tableModule;
         }else{
             return null;
+        }
+    }
+
+    @Override
+    public boolean updataStatus(String modelId, String status) {
+        if(modelId==null||modelId.equals("0")){
+            logger.warn("传入的ID无效");
+            return false;
+        }else {
+            try {
+                TableModule tableModule=new TableModule();
+                tableModule.setId(Integer.parseInt(modelId));
+                if(status.equals("发布")){
+                    tableModule.setStatus("发布中");
+                }else{
+                    tableModule.setStatus("未发布");
+                }
+                return updateByPrimaryKeySelective(tableModule)==1;
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                return false;
+            }
         }
     }
 }
