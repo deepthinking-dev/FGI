@@ -2778,7 +2778,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
-                        div.append(`<div class="left-list"><div class="left-list-tilte" style="height:50px;">${s.rolename}</div></div>`)
+                        div.append(`<div class="left-list"><div ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
                     })
                 }
             }
