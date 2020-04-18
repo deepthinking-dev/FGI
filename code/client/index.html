@@ -470,7 +470,7 @@
         </div>
     </div>
     <!-- 公式编辑 -->
-    <div class="Frame" style="width: 1000px;height: 600px;">
+    <div class="Frame" style="width: 1200px;height: 600px;">
         <div class="title">
             <span>公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
@@ -498,11 +498,15 @@
                 <span class="form-span">分组</span>
                 <select type="text" id="groupGs"></select>
             </div>
+            <div class="AlgorithInput">
+                <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+                <iframe id="mainContent" src="./kityformula-editor/index.html" width="850px" height="245px"></iframe>
+            </div>
             <!-- <div class="AlgorithInput">
                 <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="MathInput" onblur="Preview.Update()" type="text" >
             </div> -->
-            <iframe id="mainContent" src="./kityformula-editor/index.html" width="1000px" height="300px"></iframe>
+            
                 <!-- <div>
                     <span  class="form-span">公式预览</span>
                     <div id="MathPreview" ></div>
@@ -510,8 +514,8 @@
                 </div> -->
 
         </div>
-        <div class="form-group MathJaxEdit">
-        </div>     
+        <!-- <div class="form-group MathJaxEdit">
+        </div>      -->
         <div class="frame-foot">
             <div class="button closeGsButton" onclick='ConfirmFrame()'>确定</div>
         </div>
@@ -730,9 +734,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="props" id="flex_props">
+                        <div class="props" id="flex_props1">
                             <div class="pv5">
-                                <div id="flex_props_home">
+                                <div id="flex_props1_home">
                                     <div>
                                         <div class="sub-title">
                                             提示：

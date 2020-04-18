@@ -186,12 +186,13 @@ public interface TableAlgorithmMapper {
     int updateByPrimaryKey(TableAlgorithm record);
     @Select({
                 "select",
-                "ID, AlgorithmName, AlgorithmAuthor,Des",
+                "ID, AlgorithmName,Status,AlgorithmAuthor,Des",
                 "from table_algorithm where AlgorithmGroup = #{groupName}"
         })
         @Results({
                 @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
                 @Result(column="AlgorithmName", property="algorithmname", jdbcType=JdbcType.VARCHAR),
+                @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
                 @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
                 @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
         })

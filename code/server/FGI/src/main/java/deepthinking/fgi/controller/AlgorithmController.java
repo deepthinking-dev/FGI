@@ -5,10 +5,7 @@ import deepthinking.fgi.domain.TableAlgorithm;
 import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
 import deepthinking.fgi.service.TableAlgorithmService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,14 +27,14 @@ public class AlgorithmController {
 
 
     @GetMapping("/getAllAlgorithm")
-    @ApiOperation(value = "03-01 根据分组获取所有算子,仅返回算子基本信息", notes = "返回算子基本信息", httpMethod = "GET")
+    @ApiOperation(value = "03-01 根据分组获取所有算法,仅返回算法基本信息", notes = "返回算法基本信息", httpMethod = "GET")
     @ApiImplicitParam(name = "groupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
     public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName){
         return tableAlgorithmService.getAllAlgorithm(groupName);
     }
 
     @PostMapping("/addAlgorithm")
-    @ApiOperation(value = "03-02 添加算子信息(包括参数信息)", notes = "返回添加结果", httpMethod = "POST")
+    @ApiOperation(value = "03-02 添加算法信息(包括参数信息)", notes = "返回添加结果", httpMethod = "POST")
     public ResultDto addAlgorithm(@ApiParam @RequestBody AlgorithmModel algorithmModel){
         ResultDto result=new ResultDto();
         int i= tableAlgorithmService.addAlgorithm(algorithmModel);
@@ -53,14 +50,14 @@ public class AlgorithmController {
     }
 
     @GetMapping("/getAlgorithmById")
-    @ApiOperation(value = "03-03 根据算子ID获取该算子相关的所有信息，包括参数以及参数关联算子信息", notes = "返回算法详细信息", httpMethod = "GET")
-    @ApiImplicitParam(name = "algthId", value = "算子ID", dataType = "string", paramType = "query", required = true)
+    @ApiOperation(value = "03-03 根据算法ID获取该算法相关的所有信息，包括参数以及参数关联算法信息", notes = "返回算法详细信息", httpMethod = "GET")
+    @ApiImplicitParam(name = "algthId", value = "算法ID", dataType = "string", paramType = "query", required = true)
     public AlgorithmModel getAlgorithmById(String algthId){
         return tableAlgorithmService.getAlgorithmById(algthId);
     }
 
     @PostMapping("/modAlgorithmBaseInfoById")
-    @ApiOperation(value = "03-04 修改算子基本信息", notes = "返回修改结果", httpMethod = "POST")
+    @ApiOperation(value = "03-04 修改算法基本信息", notes = "返回修改结果", httpMethod = "POST")
     public ResultDto modAlgorithmById(@ApiParam @RequestBody TableAlgorithm tableAlgorithm){
         ResultDto result=new ResultDto();
         int i= tableAlgorithmService.modAlgorithmBaseInfoById(tableAlgorithm);
@@ -73,7 +70,7 @@ public class AlgorithmController {
         return result;
     }
     @PostMapping("/modAlgorithmFuncsById")
-    @ApiOperation(value = "03-05 修改算子参数信息", notes = "返回修改结果", httpMethod = "POST")
+    @ApiOperation(value = "03-05 修改算法参数信息", notes = "返回修改结果", httpMethod = "POST")
     public ResultDto modAlgorithmFuncsById(@ApiParam @RequestBody AlgorithmModel algorithmModel){
         ResultDto result=new ResultDto();
         int i= tableAlgorithmService.modAlgorithmFuncsById(algorithmModel);
@@ -91,20 +88,27 @@ public class AlgorithmController {
     }
 
     @GetMapping("/delAlgorithmById")
-    @ApiOperation(value = "03-06 删除算子", notes = "返回删除结果", httpMethod = "GET")
-    @ApiImplicitParam(name = "algthId", value = "算子ID", dataType = "string", paramType = "query", required = true)
+    @ApiOperation(value = "03-06 删除算法", notes = "返回删除结果", httpMethod = "GET")
+    @ApiImplicitParam(name = "algthId", value = "算法ID", dataType = "string", paramType = "query", required = true)
     public ResultDto delAlgorithmById(String algthId){
         ResultDto result=new ResultDto();
         int i=tableAlgorithmService.delAlgorithmById(algthId);
         result.setStatus(i);
         if(i==0){
-            result.setMsg("删除算子信息的算子ID不能为空");
+            result.setMsg("删除算法信息的算法ID不能为空");
         }else if(i==1){
             result.setMsg("删除成功");
         }else if(i==2){
-            result.setMsg("算子与其他算子存在关联关系，无法删除");
+            result.setMsg("算法与其他算法存在关联关系，无法删除");
         }
         return result;
+    }
+    @GetMapping("/updataStatus")
+    @ApiOperation(value = "03-07 修改算法状态", notes = "返回修改结果", httpMethod = "GET")
+    @ApiImplicitParams({@ApiImplicitParam(name = "algthId", value = "算法ID", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "status", value = "状态（传入‘发布’与‘取消发布’）", dataType = "string", paramType = "query", required = true)})
+    public boolean updataStatus(String algthId,String status) {
+        return tableAlgorithmService.updataStatus(algthId,status);
     }
 
 }

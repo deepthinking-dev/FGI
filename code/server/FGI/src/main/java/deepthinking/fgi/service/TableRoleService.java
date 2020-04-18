@@ -113,4 +113,12 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @return
      */
     boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId);
+
+    /**
+     * 修改规则状态信息
+     * @param roleId
+     * @param status
+     * @return
+     */
+    public boolean updataStatus(String roleId,String status);
 }

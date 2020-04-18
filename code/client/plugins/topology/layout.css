@@ -48,7 +48,7 @@ body {
     cursor: pointer;
 }
 /*右侧属性样式*/
-#flex_props{
+#flex_props1{
     float: left;
     /* border: #265696 solid 1px !important; */
     border-radius: 4px;
@@ -67,7 +67,7 @@ body {
     justify-content: space-between;
     margin-left: 10px;
 }
-#flex_props_home{
+#flex_props1_home{
     width: 100%;
     height: 15vh;
     border: #265696 solid 1px !important;
@@ -79,7 +79,7 @@ body {
     color: #fff;
     padding-left: 20px;
 }
-#flex_props .pv5{
+#flex_props1 .pv5{
     width: 100%;
     height: auto;
     display: flex;
@@ -121,12 +121,12 @@ body {
     text-align: center;
     text-decoration: none !important;
 }
-/*#flex_props .title{*/
+/*#flex_props1 .title{*/
 /*    margin-left: 20px;*/
 /*    font-size: 1.5rem;*/
 /*    font-weight: bold;*/
 /*}*/
-#flex_props li{
+#flex_props1 li{
     font-size: 1rem;
     margin-top: 10px;
     list-style: none;
@@ -317,3 +317,4 @@ div{
     display: none;
     /* border:1px solid #2e60a2; */
 }
+/* 公式编辑器样式 */
