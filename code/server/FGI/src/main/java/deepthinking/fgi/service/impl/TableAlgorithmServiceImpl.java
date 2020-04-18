@@ -87,7 +87,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                     tableFunc.setParametername("公式计算结果");
                     tableFunc.setVarname("result");
                     tableFunc.setVartype(tableFuncs.get(0).getVartype());
-                    tableFunc.setValvalue("");
+                    tableFunc.setValvalue(tableFuncs.get(0).getValvalue());
                     tableFunc.setRemark("");
                     tableFuncs.add(tableFunc);
                 }
