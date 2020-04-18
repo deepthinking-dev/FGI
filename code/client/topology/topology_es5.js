@@ -536,6 +536,7 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
+                            debugger
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
@@ -773,7 +774,7 @@ var Topology = {
                                                     type ="对象"
                                                 }
                                                 let UUid =  guid()
-                                                data2.id = data1.id+"IN_" +item.id+"_"+ UUid+"---"+type;
+                                                data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
                                                 data2.text = item.varname;
@@ -792,7 +793,7 @@ var Topology = {
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                 data2.childStand = {
-                                                    type:data1.id+'的弟弟',
+                                                    type:"IN",
                                                     wz:num,
                                                     bb:{
                                                         x:data1.rect.x,
@@ -802,7 +803,8 @@ var Topology = {
                                                     },
                                                     text:item.valvalue,
                                                     fid:tableAlgorithmIndex1,
-                                                    fUUid: data.id
+                                                    fUUid: data.id,
+                                                    canshuId:item.id
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
@@ -858,7 +860,7 @@ var Topology = {
                                                     type ="对象"
                                                 }
                                                 let UUid =  guid()
-                                                data2.id = data1.id+"OUT_" +item.id+"_"+ UUid+"---"+type;
+                                                data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
                                                 data2.text = item.varname;
@@ -877,7 +879,7 @@ var Topology = {
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                 data2.childStand = {
-                                                    type:data1.id+'的弟弟',
+                                                    type:"OUT",
                                                     wz:num,
                                                     bb:{
                                                         x:data1.rect.x,
@@ -887,7 +889,8 @@ var Topology = {
                                                     },
                                                     text:item.valvalue,
                                                     fid:tableAlgorithmIndex1,
-                                                    fUUid: data.id
+                                                    fUUid: data.id,
+                                                    canshuId:item.id
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
