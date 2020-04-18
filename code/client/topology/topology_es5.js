@@ -538,6 +538,7 @@ var Topology = {
                                 selected = null;
                                 selNodes = null;
                             });
+                            canvas.lock(0)
                             break;
                         case 'moveNodes':
                             // debugger
