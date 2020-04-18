@@ -355,7 +355,10 @@ function ruleSure(){
     $("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
+        debugger
        let obj ={
+           actionRelation:item.dataIn.interfaceRoleDataModels.actionRelation,
+           preActionRelation:item.dataOut.interfaceRoleDataModels.preActionRelation,
            des:'',
            id:0,
            interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
@@ -541,7 +544,6 @@ function ActionSure(){
                     }
                     window.bigData.isAddInOutType = "in";
                     test.id = data.id +"IN"+ "_" +xinguid+ "---" +typeIn;
-                    test.text = "in"+ data.data.inNum;
                     
                 }else{
                     data.data.outNum ++
@@ -555,7 +557,6 @@ function ActionSure(){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     test.id = data.id +"OUT"+ "_" +xinguid+"---" +typeIn;
-                    test.text = "out"+data.data.outNum
                 }
 
                 test.rect.x = data.rect.x + num.x
@@ -614,7 +615,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val();
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
                 window.bigData.isAddInOut = true;
 
                 let flag = canvas.addNode(test)
@@ -665,7 +666,7 @@ function ActionSure(){
         }else{
             varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
-        test.text =varName
+        test.text = $('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
         canvas.render();
         let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
         if(uuid.indexOf('---') == -1){

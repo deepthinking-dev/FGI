@@ -782,7 +782,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.varname;
+                                                data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -832,7 +832,8 @@ var Topology = {
                                                     vartype:item.vartype,
                                                     valvalue:item.valvalue,
                                                     inorout:item.inorout,
-                                                    remark:item.remark
+                                                    remark:item.remark,
+                                                    parametername:item.parametername
                                                 }
                                                 saveList.children.push(obj)
                                             }
@@ -868,7 +869,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.varname;
+                                                data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -918,7 +919,8 @@ var Topology = {
                                                     vartype:item.vartype,
                                                     valvalue:item.valvalue,
                                                     inorout:item.inorout,
-                                                    remark:item.remark
+                                                    remark:item.remark,
+                                                    parametername:item.parametername
                                                 }
                                                 saveList.children.push(obj)
                                             }
@@ -1174,7 +1176,7 @@ var Topology = {
                                 //删除大方块同时删除大方块的子元素（小方块）
                                 for(let i =0;i < length; i++){
                                     if(canvas.data.nodes[i].childStand){
-                                        if(index.id+"的弟弟" == canvas.data.nodes[i].childStand.type) {    
+                                        if(index.id == canvas.data.nodes[i].childStand.fUUid) {    
                                             deletedata.push(canvas.data.nodes[i].id)  
                                         }
                                     }
@@ -1287,7 +1289,7 @@ var Topology = {
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
-                                                                    str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                                    str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                                     if(inter.inorout == 1){
                                                                         str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                                     }else{
@@ -1319,7 +1321,7 @@ var Topology = {
                                                             nowLists = dataAl.tableFuncs
                                                         }
                                                         nowLists.map(index =>{                                                           
-                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                             if(index.inorout == 1){
                                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                             }else{
@@ -1370,7 +1372,7 @@ var Topology = {
                                     // })
                                     self.tools[data.id].children.map((index,t) =>{
                                         if(index.remark == "xin"){
-                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                 if(index.inorout == 1){
                                                     str+=`<input value="输出" class="actionSelected1" disabled>`
                                                 }else{
@@ -1388,7 +1390,7 @@ var Topology = {
                                                 <button type="button" onclick="reduceButton(event)">x</button>                                               
                                             </div>`  
                                         } else{
-                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                             if(index.inorout == 1){
                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
                                             }else{
