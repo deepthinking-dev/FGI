@@ -646,22 +646,34 @@ var Topology = {
                                 }
                             })
                             canvas.data.lines.map(item => {
-                                if(item.from.id.indexOf(data[0].id) != -1){
-                                   console.log(item.from.id)
-                                    let nodesa = canvas.data.nodes.filter(obj => {
-                                        console.log(obj.id)
-                                        if(item.from.id == obj.id) return obj
-                                    })[0]
-                                    item.from.x = nodesa.rotatedAnchors[2].x
-                                    item.from.y = nodesa.rotatedAnchors[2].y
-                                }
-                                if(item.to.id.indexOf(data[0].id) != -1){
-                                    let nodesa = canvas.data.nodes.filter(obj => {
-                                        if(item.to.id == obj.id) return obj
-                                    })[0]
-                                    item.to.x = nodesa.rotatedAnchors[0].x
-                                    item.to.y = nodesa.rotatedAnchors[0].y
-                                }
+                                let nodesa = canvas.data.nodes.filter(obj => {
+                                    console.log(obj.id)
+                                    if(item.from.id == obj.id) return obj
+                                })[0]
+                                item.from.x = nodesa.rotatedAnchors[2].x
+                                item.from.y = nodesa.rotatedAnchors[2].y
+
+                                let nodesa1 = canvas.data.nodes.filter(obj => {
+                                    if(item.to.id == obj.id) return obj
+                                })[0]
+                                item.to.x = nodesa1.rotatedAnchors[0].x
+                                item.to.y = nodesa1.rotatedAnchors[0].y
+                                // if(item.from.id.indexOf(data[0].id) != -1){
+                                //    console.log(item.from.id)
+                                //     let nodesa = canvas.data.nodes.filter(obj => {
+                                //         console.log(obj.id)
+                                //         if(item.from.id == obj.id) return obj
+                                //     })[0]
+                                //     item.from.x = nodesa.rotatedAnchors[2].x
+                                //     item.from.y = nodesa.rotatedAnchors[2].y
+                                // }
+                                // if(item.to.id.indexOf(data[0].id) != -1){
+                                //     let nodesa = canvas.data.nodes.filter(obj => {
+                                //         if(item.to.id == obj.id) return obj
+                                //     })[0]
+                                //     item.to.x = nodesa.rotatedAnchors[0].x
+                                //     item.to.y = nodesa.rotatedAnchors[0].y
+                                // }
                             })
                             break    
                         case 'moveOutNode':
