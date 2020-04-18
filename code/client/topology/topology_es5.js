@@ -250,7 +250,7 @@ var Topology = {
                         id:item.tableAlgorithm.id,
                         type:"tableAlgorithm",
                         data: {
-                            id:item.tableAlgorithm.id+"tableAlgorithm",
+                            id:item.tableAlgorithm.id,
                             text: item.tableAlgorithm.algorithmname,
                             rect: {
                                 width: 200,
@@ -536,13 +536,13 @@ var Topology = {
                             });
                             break;
                         case 'moveNodes':
-                            debugger
+                            // debugger
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             let nowList =[]
                             canvas.data.nodes.map(now=>{
-                                if(now.id.includes(data[0].id)){
+                                if(now.childStand && data[0].id ==now.childStand.fUUid){
                                     nowList.push(now)
                                 }
                             })
@@ -550,8 +550,8 @@ var Topology = {
                             let out_num = -1
                             nowList.map((item,i) => {
                                 if(item.childStand){
-                                    if(item.childStand.type == data[0].id+'的弟弟'){
-                                        if(item.id.includes('IN')){
+                                    if( data[0].id ==item.childStand.fUUid){
+                                        if(item.childStand.type =="IN"){
                                             in_num++
                                             item.rect.width = 20
                                             item.rect.height = 10 
@@ -715,10 +715,7 @@ var Topology = {
                                 name:data.text,
                                 children:[]
                             }
-                            let tableAlgorithmIndex1 = data.id.indexOf("tableAlgorithm");
-                            data.data.sid =tableAlgorithmIndex1
-                            // data.id = guid()
-                            let currId1 = data.id.slice(0,tableAlgorithmIndex1);
+                         
                             //存储编辑区数据
                             // unique(canvas.data.nodes)
                             // self.saveNode = unique(canvas.data.nodes)
@@ -802,7 +799,7 @@ var Topology = {
                                                         ey:data1.rect.ey
                                                     },
                                                     text:item.valvalue,
-                                                    fid:tableAlgorithmIndex1,
+                                                    fid:data.data.sid,
                                                     fUUid: data.id,
                                                     canshuId:item.id
                                                 }
@@ -822,7 +819,7 @@ var Topology = {
                                                 obj = {
                                                     id:item.id,
                                                     uuid:UUid,
-                                                    algorithmid:currId1,
+                                                    algorithmid:data.data.sid,
                                                     varname:item.varname,
                                                     vartype:item.vartype,
                                                     valvalue:item.valvalue,
@@ -888,7 +885,7 @@ var Topology = {
                                                         ey:data1.rect.ey
                                                     },
                                                     text:item.valvalue,
-                                                    fid:tableAlgorithmIndex1,
+                                                    fid:data.data.sid,
                                                     fUUid: data.id,
                                                     canshuId:item.id
                                                 }
@@ -908,7 +905,7 @@ var Topology = {
                                                 obj = {
                                                     id:item.id,
                                                     uuid:UUid,
-                                                    algorithmid:currId1,
+                                                    algorithmid:data.data.sid,
                                                     varname:item.varname,
                                                     vartype:item.vartype,
                                                     valvalue:item.valvalue,

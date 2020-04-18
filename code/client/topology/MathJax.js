@@ -514,7 +514,7 @@ function ActionSure(){
     //当前大模块的小接口节点数据
     let nowList =[]
 
-    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
+    let tableAlgorithmIndex = data.data.sid;
     let currId = data.id.slice(0,tableAlgorithmIndex);
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){

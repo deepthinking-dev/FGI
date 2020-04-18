@@ -2662,7 +2662,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             id:s.tableAlgorithm.id,
                             type:"tableAlgorithm",
                             data: {
-                                id:s.tableAlgorithm.id+"tableAlgorithm",
+                                id:s.tableAlgorithm.id,
                                 text: s.tableAlgorithm.algorithmname,
                                 rect: {
                                     width: 200,
@@ -2677,7 +2677,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 data:{
                                     inNum:s.inNum,
                                     outNum:s.outNum,
-                                    index:$(e.target).attr('index')
+                                    index:$(e.target).attr('index'),
+                                    sid:s.tableAlgorithm.id
                                 },
                                 children:[],
                                 paddingLeft: 10,
