@@ -1251,16 +1251,15 @@ var Topology = {
                         //     break;
                         case 'dblclick':
 
-                            let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
-                            let currId = data.id.slice(0,tableAlgorithmIndex);
+                            let currId = data.data.sid;
                             $.ajax({
                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                 data:{algthId:currId},
-                                success: function(data) {
+                                success: function(dataAl) {
                                     $(".actionSelected2").empty();
-                                    $('.ruleActionZZ').text(data.tableAlgorithm.algorithmauthor)
-                                    $('.ruleActionMC').text(data.tableAlgorithm.algorithmname)
-                                    $('.ruleActionMS').text(data.tableAlgorithm.des)
+                                    $('.ruleActionZZ').text(dataAl.tableAlgorithm.algorithmauthor)
+                                    $('.ruleActionMC').text(dataAl.tableAlgorithm.algorithmname)
+                                    $('.ruleActionMS').text(dataAl.tableAlgorithm.des)
                                     let str =``    
                                     if( window.bigData.ruleType == "edit"){
                                         $.ajax({
@@ -1269,10 +1268,9 @@ var Topology = {
                                             data: {Id: window.bigData.editRuleId},
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
-                                                    let newData = null
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >data.tableFuncs.length){
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >dataAl.tableFuncs.length){
                                                         item.tableInterfaceparametersList.map(inter=>{
-                                                            data.tableFuncs.map(index =>{ 
+                                                            dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
                                                                     str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
                                                                     if(inter.inorout == 1){
@@ -1298,8 +1296,8 @@ var Topology = {
                                                         })
                                                        
                                                     }
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length <data.tableFuncs.length){
-                                                        data.tableFuncs.map(index =>{                                                           
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length <dataAl.tableFuncs.length){
+                                                        dataAl.tableFuncs.map(index =>{                                                           
                                                             str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
                                                             if(index.inorout == 1){
                                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
@@ -1323,47 +1321,43 @@ var Topology = {
                                                 })
                                             }
                                         })
-                                    }else{
-                                                                           
-                                    canvas.data.nodes.map(item=>{
-                                        if(item.childStand){
-                                            if(item.childStand.type == data.tableAlgorithm.id+'tableAlgorithm的弟弟'){
-                                                let uuid = item.id.substr((item.id.indexOf('---')-36),36)
-                                                data.tableFuncs.map(index =>{
-                                                    if((item.id).split("_")[1] == index.id){
-                                                        str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                                        if(index.inorout == 1){
-                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                                        }else{
-                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
-                                                        }
-                                                            str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                                        if(index.vartype == 1 ||index.vartype == "基本类型" ){
-                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                                        }else if(index.vartype == 2 || index.vartype == "常量" ){
-                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
-                                                        }  else{
-                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
-                                                        } 
-                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                            </div>`                                                           
-                                                    }
-                                                }) 
-                                                
-                                            }
-                                        }
-                                    })
-                                    self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t) =>{
+                                    }else{                                                    
+                                    // canvas.data.nodes.map(item=>{
+                                    //     if(item.childStand && item.childStand.fUUid == data.id){
+                                    //         let uuid = item.id.substr((item.id.indexOf('---')-36),36)
+                                    //         dataAl.tableFuncs.map(index =>{
+                                    //             if(item.childStand.canshuId == index.id){
+                                    //                 str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                    //                 if(index.inorout == 1){
+                                    //                     str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                    //                 }else{
+                                    //                     str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                    //                 }
+                                    //                     str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                    //                 if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                                    //                     str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                    //                 }else if(index.vartype == 2 || index.vartype == "常量" ){
+                                    //                     str+=`<input value="常量" class="actionSelected2" disabled>`
+                                    //                 }  else{
+                                    //                     str+=`<input value="对象" class="actionSelected2" disabled>`
+                                    //                 } 
+                                    //                     str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                    //                     </div>`                                                           
+                                    //             }
+                                    //         }) 
+                                    //     }
+                                    // })
+                                    self.tools[data.id].children.map((index,t) =>{
                                         if(index.remark == "xin"){
-                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>
-                                                    <select class="actionSelected1">
-                                                        <option value="1">输出</option>
-                                                        <option value="0">输入</option>
-                                                    </select>
-                                                    <select class="varNameInput1">
-                                                    </select>`                                       
-                                                    if(index.vartype == "基本类型" || index.vartype == 1 ){
-                                                    str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                if(index.inorout == 1){
+                                                    str+=`<input value="输出" class="actionSelected1" disabled>`
+                                                }else{
+                                                    str+= `<input value="输入" class="actionSelected1" disabled>`
+                                                }
+                                                str+=`<select class="varNameInput1"  style="margin-left: 10px;"> </select>`                                       
+                                                if(index.vartype == "基本类型" || index.vartype == 1 ){
+                                                str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                                 }else if(index.vartype == "常量"||  index.vartype == 2){
                                                     str+=`<input value="常量" class="actionSelected2" disabled>`
                                                 } else{
@@ -1372,10 +1366,27 @@ var Topology = {
                                                 str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
                                                 <button type="button" onclick="reduceButton(event)">x</button>                                               
                                             </div>`  
-                                        } 
+                                        } else{
+                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                            if(index.inorout == 1){
+                                                str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                            }else{
+                                                str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                            }
+                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                            if(index.vartype == 1 ||index.vartype == "基本类型" ){
+                                                str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                            }else if(index.vartype == 2 || index.vartype == "常量" ){
+                                                str+=`<input value="常量" class="actionSelected2" disabled>`
+                                            }  else{
+                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                            } 
+                                                str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
+                                                </div>`              
+                                        }
                                     })
                                     $('.ruleContentDiv').html(str)
-                                    data.tableFuncs.map((s,i)=>{
+                                    dataAl.tableFuncs.map((s,i)=>{
                                         $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
                                         $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true);              
                                     })
@@ -1391,10 +1402,10 @@ var Topology = {
                                         }
                                     })
                                     let lstr1=`<option>请选择</option>`
-                                    data.tableFuncs.map(item => {
+                                    dataAl.tableFuncs.map(item => {
                                         lstr1 += `<option value="${item.varname}">${item.varname}</option>`
                                     })
-                                    self.tools[data.tableAlgorithm.id+'tableAlgorithm'].children.map((index,t)=>{
+                                    self.tools[data.id].children.map((index,t)=>{
                                         if(index.remark == "xin"){
                                             $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                             setTimeout(function () {

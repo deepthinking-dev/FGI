@@ -19,7 +19,6 @@
               "background-image": "url('./static/lkr.png')",
               "background-size": "100% 100%",
               "background-repeat": "no-repeat",
-              "z-index":'99'
         })
       escType = false
       fullscreen = true;
