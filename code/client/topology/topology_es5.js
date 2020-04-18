@@ -338,39 +338,43 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                            let Index_in = data.to.id.indexOf("tableAlgorithm");
-                            let Index_out = data.from.id.indexOf("tableAlgorithm");
-                            let id_in = data.to.id.slice(0,Index_in);//算子id
-                            let id_out = data.from.id.slice(0,Index_out);
-                            var bigOutName,smallOutName,bigInName,smallInName;
+                            let id_in;//输入端算子id
+                            let id_out;//输出端算子id
+                            canvas.data.nodes.map(s=>{
+                                if(s.id == data.from.id){
+                                    id_out = s.childStand.fid
+                                }
+                                if(s.id == data.to.id){
+                                    id_in = s.childStand.fid
+                                }
+                            })
+
+                            var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big;
                             var bigList=[];
                             canvas.data.nodes.map(s=>{
                                 if(s.id == data.from.id){
-                                    smallOutName = s.text
+                                    smallOutName = s.text;
+                                    out_big = s.childStand.fUUid;
                                 }
                                 if(s.id == data.to.id){
-                                    smallInName = s.text
-                                }
-                                if(!s.id.includes("---")){
-                                    bigList.push(s)
+                                    smallInName = s.text;
+                                    in_big = s.childStand.fUUid;
                                 }
                             })
-                            bigList.map(x=>{
-                                if(data.from.id.includes(x.id)){
-                                    bigOutName = x.text
+                            canvas.data.nodes.map(s=>{
+                                if(s.id == out_big){
+                                    bigOutName = s.text;
                                 }
-                                if(data.to.id.includes(x.id)){
-                                    bigInName = x.text
+                                if(s.id == in_big){
+                                    bigInName = s.text;
                                 }
                             })
                             $("#selectOutIn").empty();
                             $("#selectOutIn").append(`<option value="1">${bigInName}的参数${smallInName}</option><option value="2">${bigOutName}的参数${smallOutName}</option>`)
                             $('#selectOutIn').val('1')
-                            let out_big = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
-                            let in_big= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
-                            let out_small = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
-                            let in_small =  data.to.id.split('---')[0].slice(data.to.id.split('---')[0].length -36)//输入小矩形uuid
 
+                            let out_small = data.from.id.split('---')[0]//输出小矩形uuid
+                            let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
                             $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             window.lineDiv = true;
                             deleteLineDataId = out_small + "AND" + in_small;
@@ -977,21 +981,28 @@ var Topology = {
                                     }
                                 })
                             }else{
-                            
-                                let fromSzId = data.from.id.split("tableAlgorithm")[0];
-                                let toSzId = data.to.id.split("tableAlgorithm")[0];
-                                if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
-                                    let fromIndex = data.from.id.indexOf('---');
-                                    let fromType = data.from.id.slice(fromIndex+3);
-                                    let toIndex = data.to.id.indexOf('---');
-                                    let toType = data.to.id.slice(toIndex+3);
-
-                                    //输出大矩形id = data.from.id.slice(0,data.from.id.indexOf('OUT'))
-                                    //输入大矩形id = data.to.id.slice(0,data.to.id.indexOf('IN'))
-                                    let uuidOut = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
-                                    let uuidIn= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
-                                    let uuidOutSmall = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
-                                    let uuidInSmall =  data.to.id.split('---')[0].slice(data.to.id.split('---')[0].length -36)//输入小矩形uuid
+                                let fromUuidType = data.from.id;
+                                let toUuidType = data.to.id;
+                                let fromSzId,toSzId,fromOutIn,toOutIn;
+                                let uuidOut;//输出大矩形uuid
+                                let uuidIn;//输入大矩形uuid
+                                let uuidOutSmall = data.from.id.split('---')[0]//输出小矩形uuid
+                                let uuidInSmall =  data.to.id.split('---')[0]//输入小矩形uuid
+                                let fromType = data.from.id.split('---')[1]//输出小矩形类型
+                                let toType = data.to.id.split('---')[1]//输入小矩形类型
+                                canvas.data.nodes.map(s=>{
+                                    if(s.id == fromUuidType){
+                                        fromSzId = s.childStand.fid;
+                                        fromOutIn = s.childStand.type;
+                                        uuidOut = s.childStand.fUUid;
+                                    }
+                                    if(s.id == toUuidType){
+                                        toSzId = s.childStand.fid;
+                                        toOutIn = s.childStand.type
+                                        uuidIn = s.childStand.fUUid;
+                                    }
+                                })
+                                if(fromOutIn =="OUT" && toOutIn == "IN"){
                                     let value = ""
                                     if(fromType == "常量"){
                                         canvas.data.nodes.map(item=>{
@@ -1050,13 +1061,11 @@ var Topology = {
                                                 break;
                                         }
                                         data.strokeStyle = strokeStyle;
-                                        window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                                        $('#topo_canvas div').eq(0).append(`<span id='${data.from.id}_${data.id}_${data.to.id}'></span>`)
                                         locked = data.locked;
                                         self.initLine();
                                         var flag = true;
                                         globalActionDatas.map(s=>{//回显线
-                                            if(s.id == data.from.id + "AND" + data.to.id){
+                                            if(s.id == uuidOutSmall + "AND" + uuidInSmall){
                                                 flag = false
                                             }
                                         })
