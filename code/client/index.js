@@ -161,6 +161,7 @@ $(function(){
         }
     })
     $('body').on('click','.deleteActionData',(e) => {
+        $("#actionMsg").val("")
         var divBig =  $(e.target).parent().parent()
         $(e.target).parent().remove();
         divBig.find('i').each((i,s)=>{
@@ -168,6 +169,7 @@ $(function(){
         })
     })
     $('body').on('click','#addActionButton',(e) => {
+        $("#actionMsg").val("")
         if($("#selectOutIn").val() == "1"){
             var num = $("#actionInDiv div").length;
                 $("#actionInDiv").append(`
