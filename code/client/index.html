@@ -719,9 +719,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="props" id="flex_props">
+                        <div class="props" id="flex_props1">
                             <div class="pv5">
-                                <div id="flex_props_home">
+                                <div id="flex_props1_home">
                                     <div>
                                         <div class="sub-title">
                                             提示：
@@ -2550,7 +2550,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {groupName:$(e.target).attr("groupname")},
             success(data) {
                 if(data.length){
-                    debugger
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
