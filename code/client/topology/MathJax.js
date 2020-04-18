@@ -346,6 +346,7 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
+    debugger
      //动作
     editGzType = false;
     $("#currentGzName").text($("#ruleName").val());
@@ -372,8 +373,8 @@ function ruleSure(){
     Object.values(window.Topology.tools).map(item=>{
         // let bigList = []
         let objF = {
-            algorithmID:item.id.slice(0,item.id.indexOf("tableAlgorithm")),
-            id:window.idStoreData[item.id] ,
+            algorithmID:item.id,
+            id:item.uuid,
             interfaceName:item.name,
             roleID:0,
             tableInterfaceparametersList:[]
@@ -381,16 +382,11 @@ function ruleSure(){
        operatorInterfaceDataModels.push(objF)
         
         item.children.map(index=>{
-            let id =""
-            if(index.uuid.indexOf("---") == -1){
-                id= index.uuid
-            }else{
-                id =index.uuid.slice(0,index.uuid.indexOf("---"))
-            }
+           
             let CsObj = {
-                id:id,
+                id:index.uuid,
                 inorout:index.inorout,
-                interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
+                interfaceid:item.uuid,
                 parametersname:index.varname,
                 parameterssources:index.id
             }
@@ -491,7 +487,7 @@ function ConfirmDelRule(){
                 canvas.data.lines = [];
                 canvas.render();
                 window.bigData.ruleType = "add"
-                window.Topology.tools = []
+                window.Topology.tools = {}
                 window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
@@ -949,27 +945,19 @@ function ActionSure(){
     })
     //修改接口参数，从数据库修改删除
     if(UPdataList.length > 0 || AddList > 0){
-        let algorithmID =window.Topology.dblclickNode.id
-        algorithmID=algorithmID.slice(0,algorithmID.indexOf('tableAlgorithm'))
         if(window.bigData.ruleType == "edit"){
             let operatorInterfaceDataModel ={
-                algorithmID:algorithmID,
-                id:window.idStoreData[window.Topology.dblclickNode.id] ,
+                algorithmID:data.data.sid,
+                id:data.id ,
                 interfaceName:window.Topology.dblclickNode.text,
                 roleID:window.bigData.editRuleId,
                 tableInterfaceparametersList:[]
             }
            window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
-                let id =""
-                if(index.uuid.indexOf("---") == -1){
-                    id= index.uuid
-                }else{
-                    id = index.uuid.slice(0,index.uuid.indexOf("---"))
-                }
                 let CsObj = {
-                    id:id,
+                    id:index.id,
                     inorout:index.inorout,
-                    interfaceid:window.idStoreData[index.algorithmid+"tableAlgorithm"],
+                    interfaceid:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                     parametersname:index.varname,
                     parameterssources:index.id
                 }

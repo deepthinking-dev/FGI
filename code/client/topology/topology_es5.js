@@ -741,6 +741,7 @@ var Topology = {
                                         });
                                     }
                                     data.id = guid()
+                                    saveList.uuid = data.id
                                     //window.idStoreData[data.id] = guid()
                                     
                                 }
@@ -1277,7 +1278,7 @@ var Topology = {
                                             data: {Id: window.bigData.editRuleId},
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >dataAl.tableFuncs.length){
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >= dataAl.tableFuncs.length){
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
@@ -1305,9 +1306,15 @@ var Topology = {
                                                         })
                                                        
                                                     }
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length <dataAl.tableFuncs.length){
-                                                        dataAl.tableFuncs.map(index =>{                                                           
-                                                            str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
+                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length < dataAl.tableFuncs.length){
+                                                        let nowLists = []
+                                                        if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
+                                                            nowLists = self.tools[data.id].children
+                                                        }else{
+                                                            nowLists = dataAl.tableFuncs
+                                                        }
+                                                        nowLists.map(index =>{                                                           
+                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
                                                             if(index.inorout == 1){
                                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                             }else{

@@ -686,10 +686,11 @@ $(function(){
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {
                                 isClick:true,
-                                id:item.algorithmID+"tableAlgorithm"
+                                id:item.algorithmID
                             }
                             let saveList ={
-                                id :item.algorithmID+"tableAlgorithm",
+                                id :item.algorithmID,
+                                uuid:item.id,
                                 name:item.interfaceName,
                                 children:[]
                             }
@@ -706,9 +707,9 @@ $(function(){
                                 }
                                 saveList.children.push(hx)
                             })
-                            idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
+                            // idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                             window.Topology.isClickAction.push(obj)
-                            window.Topology.tools[item.algorithmID+"tableAlgorithm"] = saveList
+                            window.Topology.tools[item.id] = saveList
                         })
                     }
                 }
@@ -730,7 +731,7 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                $("#editDicTitle").text("算法详情")
+                $("#editDicTitle").text("算子详情")
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $.ajax({
