@@ -148,7 +148,8 @@ public class AlgorithmRuleController {
     @PostMapping("/saveFunAction")
     @ApiOperation(value = "04-13 保存某个参数的动作信息，传入动作对象集合", notes = "返回保存结果", httpMethod = "POST")
     public boolean saveFunAction(@ApiParam @RequestBody FuncSaveData funcSaveData){
-        return tableRoleService.saveFunAction(funcSaveData.getAlgorithmconditions(),funcSaveData.getInterfaceParametersID(),funcSaveData.getInterfaceRoleId());
+        return tableRoleService.saveFunAction(funcSaveData.getAlgorithmconditions(),funcSaveData.getInterfaceParametersID(),
+                funcSaveData.getInterfaceRoleId(),funcSaveData.getActionRelation());
     }
     @GetMapping("/delTableOperatorinterface")
     @ApiOperation(value = "04-14 根据接口ID删除一个接口，连同该接口相关的线一起删除", notes = "返回删除结果", httpMethod = "GET")

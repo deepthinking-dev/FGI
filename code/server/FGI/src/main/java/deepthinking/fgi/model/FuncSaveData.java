@@ -13,14 +13,17 @@ public class FuncSaveData {
     private String interfaceParametersID;
     @ApiModelProperty(value = "动作所在线的ID")
     private int interfaceRoleId;
+    @ApiModelProperty(value = "动作间的关系")
+    private String actionRelation;
 
     public FuncSaveData() {
     }
 
-    public FuncSaveData(List<TableAlgorithmcondition> algorithmconditions, String interfaceParametersID, int interfaceRoleId) {
+    public FuncSaveData(List<TableAlgorithmcondition> algorithmconditions, String interfaceParametersID, int interfaceRoleId, String actionRelation) {
         this.algorithmconditions = algorithmconditions;
         this.interfaceParametersID = interfaceParametersID;
         this.interfaceRoleId = interfaceRoleId;
+        this.actionRelation = actionRelation;
     }
 
     public List<TableAlgorithmcondition> getAlgorithmconditions() {
@@ -45,5 +48,13 @@ public class FuncSaveData {
 
     public void setInterfaceRoleId(int interfaceRoleId) {
         this.interfaceRoleId = interfaceRoleId;
+    }
+
+    public String getActionRelation() {
+        return actionRelation;
+    }
+
+    public void setActionRelation(String actionRelation) {
+        this.actionRelation = actionRelation;
     }
 }
