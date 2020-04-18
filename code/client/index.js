@@ -1224,8 +1224,24 @@ $(function(){
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
                     $('#MathInput').attr("disabled","disabled");
+                    $('#companyGs').attr("disabled","disabled");
+                    $('#companyGs').val("");
+                    $('#companyGs').val(data.tableAlgorithm.remark);
+                    $.ajax({
+                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                        type:"get",
+                        data: {type:2},
+                        success(resss){
+                            $("#groupGs").empty()
+                            resss.map(s=>{
+                                $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                            })
+                            $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                            $("#groupGs").attr("disabled",true)
+                        }
+                    })
                     $('.closeGsButton').hide();
-                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
                     window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){

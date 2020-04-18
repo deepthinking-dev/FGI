@@ -71,7 +71,7 @@
             des:$('#gsDes').val(),
             ispublic:0,
             moduleid:0,
-            remark:"",
+            remark:$('#companyGs').val(),
             id:$("#AlgorithmnameY").attr("tablealgorithmid"),
             remark2:"",
             status:"",
