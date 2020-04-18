@@ -967,3 +967,11 @@ body .form-input{
     right: 10px;
     bottom: 20px;
 }
+.sfGruopTable{
+    table-layout: fixed;
+    width: 100%;
+}
+.ruleWinList{
+    table-layout: fixed;
+    width: 100%;
+}
