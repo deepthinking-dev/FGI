@@ -54,6 +54,7 @@
     })
     //提交算子信息及公式编辑
     function ConfirmFrame(){
+        console.log($("#hiddenInput").val(),"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
         if($('#AlgorithmnameY').val() == ""){
             toastr.info('请填写算子名称！')
             return false;
