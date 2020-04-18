@@ -1826,6 +1826,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $.ajax({
+                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                        type:"get",
+                        data: {type:2},
+                        success(res) {
+                            $("#groupGs").empty()
+                            res.map(s=>{
+                                $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                            })
+                            $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                        }
+                    })
                     $('.closeGsButton').show();
                     $("#gsName").val("");
                     $("#gsDes").val("");
