@@ -480,18 +480,17 @@ function ConfirmDelRule(){
         success: function(data) {
             if(data == true){
                 window.bigData.delRuleId = ''
-                $('#lkrRule').fadeToggle(500)
                 $('.noticeList').append(`<li>${getTime()}删除成功 </li>`)
-                window.getAllData('/algorithmRule/getAllAlgorithmRule',{id:'id',Tname:'rolename'},'规则',{username:null});
                 canvas.data.nodes = [];
-                canvas.data.lines = [];
-                canvas.render();
+                canvas.data.lines = [];               
                 window.bigData.ruleType = "add"
                 window.Topology.tools = {}
                 window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
                 $("#ruleDeleteDiv").hide()
+                $('#gzDiv').fadeToggle(500)
+                canvas.render();
             }
         }
     })
