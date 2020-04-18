@@ -190,7 +190,7 @@
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="ruleInfo">
-            <span class="ActTitle">算法详情</span>
+            <span class="ActTitle">算子详情</span>
             <div class="ActContont">
                 <div style="margin: 5px 20px;display:flex;">
                     <label style="line-height: 20px;width: 70px;text-align: left">作者：</label>
@@ -2404,10 +2404,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {
                                 isClick:true,
-                                id:item.algorithmID+"tableAlgorithm"
+                                id:item.algorithmID
                             }
                             let saveList ={
-                                id :item.algorithmID+"tableAlgorithm",
+                                id :item.algorithmID,
+                                uuid:item.id,
                                 name:item.interfaceName,
                                 children:[]
                             }
@@ -2424,9 +2425,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                                 saveList.children.push(hx)
                             })
-                            idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
+                            // idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                             window.Topology.isClickAction.push(obj)
-                            window.Topology.tools[item.algorithmID+"tableAlgorithm"] = saveList
+                            window.Topology.tools[item.id] = saveList
                         })
                     }
                 }
