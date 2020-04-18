@@ -471,7 +471,7 @@
         </div>
     </div>
     <!-- 公式编辑 -->
-    <div class="Frame" style="width: 1200px;height: 600px;">
+    <div class="Frame">
         <div class="title">
             <span>公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
@@ -508,8 +508,8 @@
                 <input id="MathInput" onblur="Preview.Update()" type="text" >
             </div>      
             <div>
-                <span  class="form-span">公式预览</span>
-                <div id="MathPreview" ></div>
+                <span class="form-span">公式预览</span>
+                <div id="MathPreview"></div>
                 <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
             </div>
 
@@ -1348,6 +1348,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                     $('#lkrFrame').fadeToggle(500)
+                    $("#dataModulePage").show()
                     getModuleList()
                 }
                }) 
@@ -1408,15 +1409,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         </div>`)
                                 })
                             }
+                            $('#lkrFrame').fadeToggle(500)
+                            $("#dataModulePage").show()
+                            getModuleList()
                         }
                     })
-                    $('#lkrFrame').fadeToggle(500)
                 }
-
             })
         }
-
-
     }
     function reseTabs(){
         $.ajax({
@@ -1546,6 +1546,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function editAlgorithm(){
         $(".Frame").fadeToggle(500);
+        $("#dicDiv").hide()
+        $("#companyGs").attr("disabled",false)
+        $("#groupGs").attr("disabled",false)
         AlgorithmConfirm()
         window.bigData.formulaType = 'add';
         $.ajax({
@@ -1743,8 +1746,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
     //修改字典信息
     function editZd(s) {
         $("#editDicYes").attr("editId",s)
+        $("#group").attr("disabled",false)
         $("#editDicTitle").text("修改算法")
         $("#dicDiv").hide()
+        $("#companyGs").attr("disabled",false)
+        $("#groupGs").attr("disabled",false)
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
             data:{algthId:s} ,
@@ -1855,16 +1861,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    $("#companyGs").val("");
+                    $("#companyGs").val(data.tableAlgorithm.remark);
+                    $("#MathInput").val("");
+                    $("#gsName").attr("disabled",false);
+                    $("#gsDes").attr("disabled",false);
+                    $('#AlgorithmnameY').attr("disabled",false);
+                    $('#MathInput').attr("disabled",false);
+                    $("#MathInput").val(data.tableAlgorithm.algorithmfun);
+                    $("#MathInput").attr("disabled",false)
                     $('.closeGsButton').show();
                     $("#gsName").val("");
                     $("#gsDes").val("");
-                    $("#MathInput").val("");
                     $('#AlgorithmnameY').val("");
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor);
                     $("#gsDes").val(data.tableAlgorithm.des);
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
-                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
                     //window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){

@@ -382,6 +382,7 @@ $(function(){
         $("#editAuthor").attr("disabled",false);
         $("#editDicName").attr("disabled",false);
         $("#editDicDes").attr("disabled",false);
+        $("#group").attr("disabled",false)
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
@@ -1127,44 +1128,62 @@ $(function(){
                 $("#editDicTitle").text("算法详情")
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
+                    $.ajax({
+                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                        type:"get",
+                        data: {type:2},
+                        success(resss){
+                            $("#group").empty()
+                            resss.map(s=>{
+                                $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                            })
+                            $("#group").val(data.tableAlgorithm.algorithmgroup)
+                            $("#group").attr("disabled",true)
+                        }
+                    })
+                    $("#editAuthor").val("");
+                    $("#editDicName").val("");
+                    $("#editDicDes").val("");
+                    $("#company").val("");
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#editDicName").val(data.tableAlgorithm.algorithmname).attr({"disabled":"disabled"});
                     $("#editDicDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    $("#company").val(data.tableAlgorithm.remark).attr({"disabled":"disabled"});
                     $("#zdcsList").empty();
                     $("#addZdcs").hide();
                     $("#editDic").show();
                     data.tableFuncs.map(t=>{
                         $("#zdcsList").append(`
-                         <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
-                            <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名</span>
-                                <input class="zdcsCsmc" disabled type="text" value="${t.varname}">
-                            </i>
-                            <i>
-                                <span style="color:#fff;">变量</span>
-                                <input class="variable" type="text" value="">
-                            </i>
-                            <i>
-                                <span style="color:#fff;">类型</span>
-                                <select class="zdcsSelect" disabled>
-                                    <option value="2">常量</option>
-                                    <option value="3">对象</option>
-                                    <option value="1">基本类型</option>
-                                </select>
-                            </i>
-                            <i>
-                                <span style="color:#fff;">取值</span>
-                                <input type="text" value="" class="zdcsText" disabled>
-                            </i>
-                            <i>
-                                <span style="color:#fff;">输入输出</span>
-                                <select class="zdcsExport" disabled>
-                                    <option value="0">输入</option>
-                                    <option value="1">输出</option>
-                                </select>
-                            </i>
-                        </div>
-                    `)
+                             <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
+                                <i style="margin-top: 5px">
+                                    <span style="color:#fff;">参数名</span>
+                                    <input class="zdcsCsmc" disabled type="text" value="${t.parametername}">
+                                </i>
+                                <i>
+                                    <span style="color:#fff;">变量</span>
+                                    <input class="variable" type="text" value="${t.varname}">
+                                </i>
+                                <i>
+                                    <span style="color:#fff;">类型</span>
+                                    <select class="zdcsSelect" disabled>
+                                        <option value="2">常量</option>
+                                        <option value="3">对象</option>
+                                        <option value="1">基本类型</option>
+                                    </select>
+                                </i>
+                                <i>
+                                    <span style="color:#fff;">取值</span>
+                                    <input type="text" value="" class="zdcsText" disabled>
+                                </i>
+                                <i>
+                                    <span style="color:#fff;">输入输出</span>
+                                    <select class="zdcsExport" disabled>
+                                        <option value="0">输入</option>
+                                        <option value="1">输出</option>
+                                    </select>
+                                </i>
+                            </div>
+                        `)
                     })
                     for(var i=0;i<data.tableFuncs.length;i++){
                         $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
@@ -1200,8 +1219,24 @@ $(function(){
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
                     $('#MathInput').attr("disabled","disabled");
+                    $('#companyGs').attr("disabled","disabled");
+                    $('#companyGs').val("");
+                    $('#companyGs').val(data.tableAlgorithm.remark);
+                    $.ajax({
+                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                        type:"get",
+                        data: {type:2},
+                        success(resss){
+                            $("#groupGs").empty()
+                            resss.map(s=>{
+                                $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                            })
+                            $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                            $("#groupGs").attr("disabled",true)
+                        }
+                    })
                     $('.closeGsButton').hide();
-                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun
+                    window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
                     window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){
