@@ -470,7 +470,7 @@
         </div>
     </div>
     <!-- 公式编辑 -->
-    <div class="Frame" style="width: 1200px;height: 600px;">
+    <div class="Frame">
         <div class="title">
             <span>公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
@@ -507,8 +507,8 @@
                 <input id="MathInput" onblur="Preview.Update()" type="text" >
             </div>      
             <div>
-                <span  class="form-span">公式预览</span>
-                <div id="MathPreview" ></div>
+                <span class="form-span">公式预览</span>
+                <div id="MathPreview"></div>
                 <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
             </div>
 
@@ -1544,6 +1544,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function editAlgorithm(){
         $(".Frame").fadeToggle(500);
+        $("#dicDiv").hide()
         AlgorithmConfirm()
         window.bigData.formulaType = 'add';
         $.ajax({
