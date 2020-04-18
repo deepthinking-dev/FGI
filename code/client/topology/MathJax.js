@@ -504,7 +504,7 @@ function ConfirmDelRule(){
 }
 //取消删除规则
 function ruleDelClose(){
-    $('#lkrRule').fadeToggle(500)
+    $('#ruleDeleteDiv').hide()
 }
 
 //动作确定

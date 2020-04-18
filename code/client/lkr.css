@@ -1020,6 +1020,7 @@ body{
 }
 .sfGruopTable td,th{
     border: 1px solid #77CDFE;
+    overflow: hidden;
 }
 .sfGruopTable th{
     text-align: center;

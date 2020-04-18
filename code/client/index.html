@@ -410,7 +410,7 @@
     <!-- 上传导入文件框 -->
     <div id="fileupload">
         <div class="title">
-            <span>上传文件</span>
+            <span>导入规则</span>
             <span onclick="uploadClose()" style="cursor: pointer;">X</span>
         </div>
         <form class="uploadForm" name="uploadForm">
@@ -854,8 +854,8 @@
                <span>规则信息</span>
                <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;">X</span>
            </div>
-           <div style="position: relative;top:40px;margin: 0 auto;margin-left: 30px">
-               <input type="button" value="上传文件" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
+           <div style="position: relative;top:40px;margin: 0 auto;margin-left:15px">
+               <input type="button" value="导入规则" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
            </div>
            <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                <div style="height: 480px;overflow: auto">
@@ -920,13 +920,13 @@
                         <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 30px">
                     </div>
                     <div style="margin: 8px 0">
+                        <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
+                    </div>
+                    <div style="margin: 8px 0">
                         <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 30px">
                     </div>
                     <div style="margin: 8px 0">
                         <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px">
-                    </div>
-                    <div style="margin: 8px 0">
-                        <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
                     </div>
                     <div>
                         <span>分组</span><select type="text" id="group" style="width: 350px;height: 30px"></select>
@@ -1728,6 +1728,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function editZd(s) {
         $("#editDicYes").attr("editId",s)
         $("#editDicTitle").text("修改算法")
+        $("#dicDiv").hide()
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
             data:{algthId:s} ,
@@ -2497,6 +2498,35 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                            `)
                                     })
                                 }
+                                if($("#groupInputName").attr("type") == 1){
+                                    $.ajax({
+                                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                                        type: "get",
+                                        data: {type: 1},
+                                        success(data) {
+                                            $("#modelListRight").empty()
+                                            data.map((s, index) => {
+                                                $("#modelListRight").append(`<div class="panel panel-default">
+                                                  <div class="panel-heading" role="tab">
+                                                      <h4 class="panel-title">
+                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
+                                                      </h4>
+                                                  </div>
+                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
+                                                      <div class="panel-body">
+                                                          <table class="sfGruopTable"></table>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              `)
+                                            })
+                                        }
+                                    })
+                                } else if($("#groupInputName").attr("type") == 2){
+                                    dictionary()
+                                } else if($("#groupInputName").attr("type") == 3){
+                                    ruleGroupShow()
+                                }
                             }
                         })
                     }
@@ -2646,7 +2676,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
-                        div.append(`<div class="left-list-tilte dbclickAlgorithm" style="height:50px;">${s.modulename}</div>`)
+                        div.append(`<div moduleId="${s.id}" class="left-list-tilte" style="height:50px;">${s.modulename}</div>`)
                     })
                 }
             }
@@ -2665,6 +2695,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     table.append(`<thead>
                     <th style="width: 150px">模型名称</th>
                     <th style="width: 150px">描述</th>
+                    <th style="width: 150px">状态</th>
                     <th style="width: 200px">操作</th>
                     </thead>`)
                     data.map(s=>{
@@ -2678,8 +2709,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                         table.append(
                             `<tr>
-                            <td style="width: 150px">${s.modulename}</td>
-                            <td style="width: 150px">${s.des}</td>
+                            <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
+                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
+                            <td style="width: 150px">${s.status}</td>
                             <td style="width: 150px">
                                 <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                 <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
@@ -2723,7 +2755,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     table.append(`<thead>
                     <th style="width: 150px">规则名称</th>
                     <th style="width: 150px">描述</th>
-                    <th style="width: 200px">操作</th>
+                    <th style="width: 150px">状态</th>
+                    <th style="width: 180px">操作</th>
                     </thead>`)
                     data.map(s=>{
                         var img,title;
@@ -2736,12 +2769,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                         table.append(
                             `<tr>
-                            <td style="width: 150px">${s.rolename}</td>
-                            <td style="width: 150px">${s.des}</td>
-                            <td style="width: 150px">
+                            <td title="${s.rolename}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.rolename}</td>
+                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.des}</td>
+                            <td style="width: 150px">${s.status}</td>
+                            <td style="width: 180px">
                                 <img class="lkr-list-ediRule" ruleId="${s.id}" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                 <img onclick="deleteRuleById(${s.id})" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishRule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="${title}" src="${img}" onclick="publishRule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 10px">
+                                <img title="导出" src="static/download.png" onclick="downloadRule(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
                        `)
@@ -2761,9 +2796,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var table = $(e.target).children().children();
                     table.empty()
                     table.append(`<thead>
-                    <th style="width: 150px">作者</th>
-                    <th style="width: 150px">算法名称</th>
-                    <th style="width: 150px">算法描述</th>
+                    <th style="width: 120px">作者</th>
+                    <th style="width: 120px">算法名称</th>
+                    <th style="width: 120px">算法描述</th>
+                    <th style="width: 120px">状态</th>
                     <th style="width: 150px">操作</th>
                     </thead>`)
                     data.map(s=>{
@@ -2778,8 +2814,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         table.append(
                             `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                            <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.status}</td>
                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
                                 <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                 <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
@@ -2941,6 +2978,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     //关闭删除模型分组窗口
     function closeModuleGroupDelete() {
         $("#moduleGroupDelete").hide()
+    }
+    function downloadRule(s) {
+        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + s
     }
 </script>
 </body>
