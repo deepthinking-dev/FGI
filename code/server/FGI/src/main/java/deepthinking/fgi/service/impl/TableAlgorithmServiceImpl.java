@@ -74,6 +74,8 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             if(tableAlgorithms.size()>0){//重名
                 return 2;
             }
+            //设置状态
+            algorithmModel.getTableAlgorithm().setStatus("未发布");
             insertSelective(algorithmModel.getTableAlgorithm());
             //获取算子ID
             int id=algorithmModel.getTableAlgorithm().getId();
@@ -222,5 +224,27 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     @Override
     public PageInfo<TableAlgorithm> pageFind(int pageNum, int pageSize, Object parameter) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         return null;
+    }
+
+    @Override
+    public boolean updataStatus(String algthId,String status) {
+        if(algthId==null||algthId.equals("0")){
+            logger.warn("传入的ID无效");
+            return false;
+        }else {
+            try {
+                TableAlgorithm tableAlgorithm=new TableAlgorithm();
+                tableAlgorithm.setId(Integer.parseInt(algthId));
+                if(status.equals("发布")){
+                    tableAlgorithm.setStatus("发布中");
+                }else{
+                    tableAlgorithm.setStatus("未发布");
+                }
+                return updateByPrimaryKeySelective(tableAlgorithm)==1;
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                return false;
+            }
+        }
     }
 }

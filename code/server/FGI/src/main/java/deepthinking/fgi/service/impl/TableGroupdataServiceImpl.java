@@ -90,7 +90,7 @@ public class TableGroupdataServiceImpl extends BaseServiceImpl<TableGroupdata,In
                     }
                     break;
             }
-            if(flag){
+            if(!flag){
                 return 2;
             }else{
                 return groupdataMapper.deleteByPrimaryKey(id);

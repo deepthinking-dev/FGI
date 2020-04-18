@@ -90,4 +90,12 @@ public class ModuleController {
     public TableModule findTableModuleByName(String name){
         return tableModuleService.findTableModuleByName(name);
     }
+
+    @GetMapping("/updataStatus")
+    @ApiOperation(value = "01-12 修改模型的状态", notes = "返回修改结果", httpMethod = "GET")
+    @ApiImplicitParams({@ApiImplicitParam(name = "modelId", value = "模型ID", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "status", value = "状态 传入‘发布’或者‘取消发布’", dataType = "string", paramType = "query", required = true)})
+    public boolean updataStatus(String modelId,String status) {
+        return tableModuleService.updataStatus(modelId,status);
+    }
 }

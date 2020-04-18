@@ -539,6 +539,18 @@ body{
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
+#dataModulePage{
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    width: 700px;
+    height: 700px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    z-index: 9;
+}
 #groupDiv{
     position: absolute;
     left: 30%;
@@ -628,7 +640,7 @@ body{
 #gzTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -649,7 +661,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option,#gzGroupName option,#groupGs option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -726,6 +738,17 @@ body{
     line-height: 40px;
     margin-right: 20px;
 }
+#dataModulePage span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    vertical-align: top;
+    line-height: 40px;
+    margin-right: 20px;
+}
 #groupDiv span{
     text-align: right;
     font-size: 16px;
@@ -787,6 +810,20 @@ body{
     left: 20px;
     text-align: center;
 }
+#dataModulePage .title{
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    height: 40px;
+}
+#dataModulePage .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    text-align: center;
+}
 #groupDiv .title{
     position: absolute;
     width: 100%;
@@ -836,6 +873,7 @@ body{
     background: #409eff;
     border: none;
     color: #fff;
+    margin: 15px 0;
 }
 #fileupload button{
     position: absolute;
@@ -985,9 +1023,18 @@ body{
 .sfGruopTable th{
     text-align: center;
 }
-.sfGruopTable td,th{
+.ruleWinList td,th{
     border: 1px solid #77CDFE;
+}
+.ruleWinList th{
+    text-align: center;
 }
 .panel{
     margin-bottom: 0;
 }
+#gzGroupName{
+    width:320px;
+    height: 39px;
+}
+
+

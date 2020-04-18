@@ -66,13 +66,17 @@
         let tableAl ={
             algorithmauthor:$('#gsName').val(),
             algorithmfun:$('#MathInput').val(),
+            algorithmgroup:$('#groupGs').val(),
             algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:2,
             des:$('#gsDes').val(),
             ispublic:0,
             moduleid:0,
             remark:"",
-            id:$("#AlgorithmnameY").attr("tablealgorithmid")
+            id:$("#AlgorithmnameY").attr("tablealgorithmid"),
+            remark2:"",
+            status:"",
+            userid:0
         }
         let tableF=[]
         let tableModule={
@@ -324,6 +328,16 @@ function RelateClose(){
 //规则弹框
 function ruleOpen(){
     $("#sureRule").fadeToggle(500);
+    $.ajax({
+        url:urlConfig.host+ '/group/findAllGroupMessagesByType',
+        data:{type:3},
+        success(res) {
+            $("#gzGroupName").empty()
+            res.map(s=>{
+                $("#gzGroupName").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+            })
+        }
+    })
 }
 //关闭规则弹框
 function RuleClose(){
@@ -340,16 +354,14 @@ function ruleSure(){
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
        let obj ={
-            des:'',
-            id:0,
-            interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
-            parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
-            preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
-            preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
-            remark:"",
-            roleid:0,
-            algorithmconditions:[]
-
+           des:'',
+           id:0,
+           interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+           parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+           preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+           preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
+           remark:"",
+           roleid:0,
        }
        obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
       algorithmRuleDataList.push(obj)
@@ -392,7 +404,11 @@ function ruleSure(){
         id:0,
         remark:'',
         rolename:$("#ruleName").val(),
-        uuserid:0
+        uuserid:0,
+        remark2:'',
+        remark3:'',
+        status:"",
+        rolegroup:$("#gzGroupName").val(),
     }
     let algorithmRuleSaveDataModel ={
         interfaceRoleDataModels :algorithmRuleDataList,
@@ -482,6 +498,7 @@ function ConfirmDelRule(){
                 window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
+                $("#ruleDeleteDiv").hide()
             }
         }
     })

@@ -31,12 +31,12 @@ public class TableGroupdataController {
         return tableGroupdataService.findAllGroupMessagesByType(type);
     }
 
-    @GetMapping("/updtaTableGroupMessage")
+    @PostMapping("/updtaTableGroupMessage")
     @ApiOperation(value = "06-02 修改分组信息", notes = "返回修改后的信息,返回null表示修改失败", httpMethod = "POST")
     public TableGroupdata updtaTableGroupMessage(@ApiParam @RequestBody TableGroupdata tableGroupdata){
         return tableGroupdataService.updtaTableGroupMessage(tableGroupdata);
     }
-    @GetMapping("/saveTableGroupMessage")
+    @PostMapping("/saveTableGroupMessage")
     @ApiOperation(value = "06-04 新增分组信息", notes = "返回新增结果", httpMethod = "POST")
     public String saveTableGroupMessage(@ApiParam @RequestBody TableGroupdata tableGroupdata){
         int i=tableGroupdataService.saveTableGroupMessage(tableGroupdata);
