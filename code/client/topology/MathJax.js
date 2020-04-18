@@ -387,7 +387,7 @@ function ruleSure(){
         item.children.map(index=>{
            
             let CsObj = {
-                id:index.uuid,
+                id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                 inorout:index.inorout,
                 interfaceid:item.uuid,
                 parametersname:index.varname,
