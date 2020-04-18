@@ -1569,20 +1569,35 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let modlueList =[]
         $("input:checkbox[name='item']").each((i,v) => {
             let items = $(v)
-
+            let flag =true
             if(items.prop('checked')){
                let list = $(items).parent().nextAll()
-                let obj ={
-                    IS_NULLABLE:list.eq(4).text(),
-                    COLUMN_NAME:list.eq(0).text(),
-                    COLUMN_TYPE:list.eq(2).text(),
-                    LENGTH:list.eq(3).text(),
-                    COLUMN_COMMENT:list.eq(1).text(),
-                    TABLE_NAME:$("#fgiName").val()
+               let addMbTr = $('#addMb tbody tr')
+               if(addMbTr.length > 0){
+                    for(let s=0;s<addMbTr.length;s++){
+                        let itemh = $(addMbTr).eq(s)
+                        let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
+                        let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
+                        if( list.eq(0).text() == fieldname && $("#fgiName").val() == tableName){
+                            flag = false
+                            break;
+                        }
+                    }
                 }
-                modlueList.push(obj)
+                if(flag){
+                    let obj ={
+                        IS_NULLABLE:list.eq(4).text(),
+                        COLUMN_NAME:list.eq(0).text(),
+                        COLUMN_TYPE:list.eq(2).text(),
+                        LENGTH:list.eq(3).text(),
+                        COLUMN_COMMENT:list.eq(1).text(),
+                        TABLE_NAME:$("#fgiName").val()
+                    }
+                    modlueList.push(obj)
+                }
             }
         })
+        
         let thStr = ''
         modlueList.map(item => {
             thStr += `<tr>

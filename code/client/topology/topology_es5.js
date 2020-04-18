@@ -1123,13 +1123,13 @@ var Topology = {
                                 }
                             }
                             function isType(fromType,toType,value){
-                                debugger
                                 let flag =false
-                                if(value){
-                                    fromType = typeof(value)
-                                }
+                                
                                 if(fromType == toType){
                                     flag = true
+                                    break;
+                                }else if(value){
+                                    fromType = typeof(value)
                                 }else{
                                     var typeArr1 =["byte","int","long","short","float","double"];
                                     var typeArr2 = ["char","String"] 
@@ -1141,7 +1141,6 @@ var Topology = {
                                     }
                                     
                                 }
-                                console.log(flag)
                                 return flag
                             }
                             break;
