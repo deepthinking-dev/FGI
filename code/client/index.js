@@ -18,9 +18,10 @@ $(function(){
             $("#actionOutDiv").hide();
                 if ($("#addActionButton").attr("resData")) {//后台返回数据
                     $("#actionInDiv").empty();
-                    resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map(t => {
+                    resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
                         $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
+                                   <i>${i+1}</i>
                                    <span>行为值来源</span><input class="xwzly_in" disabled>
                                    <span>行为</span><select class="xwSelect_in">
                                    <option value=">">></option>
@@ -32,7 +33,7 @@ $(function(){
                                    <option value="assignment">赋值</option>
                                </select>
                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                               </div>
                          `)
                     })
@@ -45,9 +46,10 @@ $(function(){
                             try {
                                 var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                                 $("#actionInDiv").empty();
-                                lineDatas.map(t => {
+                                lineDatas.map((t,i) => {
                                     $("#actionInDiv").append(`
                                       <div style="margin: 10px 0">
+                                           <i>${i+1}</i>
                                            <span>行为值来源</span><input class="xwzly_in" disabled>
                                            <span>行为</span><select class="xwSelect_in">
                                            <option value=">">></option>
@@ -59,7 +61,7 @@ $(function(){
                                            <option value="assignment">赋值</option>
                                        </select>
                                            <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                       </div>
                                     `)
                                 })
@@ -86,9 +88,10 @@ $(function(){
                                     optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                                 })
                                 $("#actionOutDiv").empty();
-                                resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map(t=>{
+                                resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
                                     $("#actionOutDiv").append(`
                                           <div style="margin: 10px 0">
+                                               <i>${i+1}</i>
                                                <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
                                                <span>行为</span><select class="xwSelect_out">
                                                <option value=">">></option>
@@ -100,7 +103,7 @@ $(function(){
                                                <option value="assignment">赋值</option>
                                            </select>
                                                <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                           </div>
                                  `)
                                 })
@@ -124,9 +127,10 @@ $(function(){
                             if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
                                 try {
                                     var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
-                                    lineDatas.map(t=>{
+                                    lineDatas.map((t,i)=>{
                                         $("#actionOutDiv").append(`
-                                                   <div style="margin: 10px 0">
+                                               <div style="margin: 10px 0">
+                                                   <i>${i+1}</i>
                                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
                                                    <span>行为</span><select class="xwSelect_out">
                                                    <option value=">">></option>
@@ -138,7 +142,7 @@ $(function(){
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
                                     })
@@ -157,12 +161,20 @@ $(function(){
         }
     })
     $('body').on('click','.deleteActionData',(e) => {
-        $(e.target).parent().remove()
+        $("#actionMsg").val("")
+        var divBig =  $(e.target).parent().parent()
+        $(e.target).parent().remove();
+        divBig.find('i').each((i,s)=>{
+            $(s).text(i+1)
+        })
     })
     $('body').on('click','#addActionButton',(e) => {
+        $("#actionMsg").val("")
         if($("#selectOutIn").val() == "1"){
+            var num = $("#actionInDiv div").length;
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
+                           <i>${num+1}</i>
                            <span>行为值来源</span><input class="xwzly_in" disabled>
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
@@ -174,7 +186,7 @@ $(function(){
                            <option value="assignment">赋值</option>
                        </select>
                            <span>表达式</span><input type="text" value="" class="bds_in">
-                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                       </div>
                     `)
         } else {
@@ -186,8 +198,10 @@ $(function(){
                     res.tableFuncs.map(s=>{
                         optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                     })
+                    var num = $("#actionOutDiv div").length;
                     $("#actionOutDiv").append(`
                           <div style="margin: 10px 0">
+                               <i>${num+1}</i>
                                <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
                                <span>行为</span><select class="xwSelect_out">
                                <option value=">">></option>
@@ -199,7 +213,7 @@ $(function(){
                                <option value="assignment">赋值</option>
                            </select>
                                <span>表达式</span><input type="text" value="" class="bds_out">
-                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                           </div>
                         `)
                 }
@@ -278,7 +292,8 @@ $(function(){
                     "interfaceparametersid":$("#addActionButton").attr("in_small"),
                     "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                     "remark": "",
-                    "valuesources": 0
+                    "valuesources": 0,
+                    "xh":$(this).find("i").text()
                 };
                 sendDataIn.push(obj)
             })
@@ -303,7 +318,8 @@ $(function(){
                     "interfaceparametersid":$("#addActionButton").attr("out_small"),
                     "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                     "remark": "",
-                    "valuesources":Number($(this).find(".xwzly_out").val())
+                    "valuesources":Number($(this).find(".xwzly_out").val()),
+                    "xh":$(this).find("i").text()
                 };
                 sendDataOut.push(obj)
             })
@@ -330,13 +346,15 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("in_small"),
                         "interfaceroleid": 0,
                         "remark": "",
-                        "valuesources": 0
+                        "valuesources": 0,
+                        "xh":$(this).find("i").text()
                     };
                     dataArrIn.push(obj)
                 })
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
                         s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArrIn;
+                        s.dataIn.interfaceRoleDataModels.actionRelation = $("#actionMsg").val();
                     }
                 })
                 var dataArrOut = [];
@@ -348,13 +366,15 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("out_small"),
                         "interfaceroleid": 0,
                         "remark": "",
-                        "valuesources":Number($(this).find(".xwzly_out").val())
+                        "valuesources":Number($(this).find(".xwzly_out").val()),
+                        "xh":$(this).find("i").text()
                     };
                     dataArrOut.push(obj)
                 })
                 globalActionDatas.map(s=>{
                     if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
                         s.dataOut.interfaceRoleDataModels.algorithmconditions = dataArrOut;
+                        s.dataOut.interfaceRoleDataModels.preActionRelation = $("#actionMsg").val();
                     }
                 })
         }

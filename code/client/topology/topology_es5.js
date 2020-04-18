@@ -435,9 +435,10 @@ var Topology = {
                                     resCurrentLineData.dataOut = resOutAll;
                                     $("#addActionButton").attr("resData",true)
                                     try{
-                                        resBaseIn.map(t=>{
+                                        resBaseIn.map((t,i)=>{
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0" actionId=${t.id}>
+                                                   <i>${i+1}</i>
                                                    <span>行为值来源</span><input class="xwzly_in" disabled>
                                                    <span>行为</span><select class="xwSelect_in">
                                                    <option value=">">></option>
@@ -449,7 +450,7 @@ var Topology = {
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                             `)
                                         })
@@ -466,9 +467,10 @@ var Topology = {
                                     if(s.id == out_small + "AND" + in_small){
                                         try{
                                             var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                                            lineDatas.map(t=>{
+                                            lineDatas.map((t,i)=>{
                                                 $("#actionInDiv").append(`
                                               <div style="margin: 10px 0">
+                                                    <i>${i+1}</i>
                                                    <span>行为值来源</span><input class="xwzly_in" disabled>
                                                    <span>行为</span><select class="xwSelect_in">
                                                    <option value=">">></option>
@@ -480,7 +482,7 @@ var Topology = {
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 20px;height: 20px;border: none">X</button>
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                             `)
                                             })
@@ -1086,6 +1088,7 @@ var Topology = {
                                                         "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
+                                                        "actionRelation":"",
                                                         fromSzId
                                                     }
                                                 ,
@@ -1102,6 +1105,7 @@ var Topology = {
                                                         "preParametersID":  uuidOutSmall,
                                                         "remark": "",
                                                         "roleid": 0,
+                                                        "preActionRelation":"",
                                                         toSzId
                                                     }
                                                 ,
