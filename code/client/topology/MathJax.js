@@ -516,8 +516,7 @@ function ActionSure(){
     //当前大模块的小接口节点数据
     let nowList =[]
 
-    let tableAlgorithmIndex = data.data.sid;
-    let currId = data.id.slice(0,tableAlgorithmIndex);
+    let currId = data.data.sid;
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
@@ -588,7 +587,7 @@ function ActionSure(){
                 test.fullIconRect.x = data.fullIconRect.x + num.x
                 test.fullIconRect.y = data.fullIconRect.y + num.y
                 test.childStand = {
-                    type:data.id+'的弟弟',
+                    type:"OUT",
                     wz:num,
                     bb:{
                         x:data.rect.x,
@@ -596,7 +595,10 @@ function ActionSure(){
                         ex:data.rect.ex,
                         ey:data.rect.ey
                     },
-                    text:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val()
+                    text:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                    fid:data.data.sid,
+                    fUUid: data.id,
+                    canshuId: $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
                 }
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     test.anchors.map((obj,i) => {
@@ -666,7 +668,7 @@ function ActionSure(){
         if(varName){
             varName = varName
         }else{
-            varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+            varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
         test.text =varName
         canvas.render();
@@ -710,17 +712,8 @@ function ActionSure(){
         let UPFlag = false
         let childList =window.Topology.tools[data.id].children
         for(var c = 0;c<childList.length;c++){
-        
-            let uuID  =''
-            if(childList[c].uuid.indexOf('---') == -1){
-                uuID = childList[c].uuid
-            }else{
-                let sy = childList[c].uuid.indexOf('---')
-                uuID = childList[c].uuid.slice(0,sy)
-            } 
             let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-                clyId = clyId.split('---')[0]
-            if(uuID == clyId){
+            if(childList[c].uuid == clyId){
                 UPdataList.push(childList[c])
                 UPFlag = true
                 break;
@@ -743,7 +736,7 @@ function ActionSure(){
             if(varName){
                 varName = varName
             }else{
-                varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+                varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             }
             let uuid = ''
             if(id){
@@ -801,6 +794,7 @@ function ActionSure(){
     lsList = UPdataList.concat(AddList)
     if(DelList.length > 0){
         DelList.map(item=>{
+            debugger
             let Del1UUid = item.uuid.split('---')[0]
             for(let i = nowList.length - 1;i >=0 ;i--){
                 let nowUUid =nowList[i].id.substr((nowList[i].id.indexOf('---')-36),36)
@@ -1013,11 +1007,9 @@ function ActionClose(){
 //加
 function ruleAddButtonS(){
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
-    let tableAlgorithmIndex = data.id.indexOf("tableAlgorithm");
-    let currId = data.id.slice(0,tableAlgorithmIndex);
     $.ajax({
         url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-        data:{algthId:currId},
+        data:{algthId:data.data.sid},
         success: function(data) {
             let str =`<div class="actionInfo" data-title="xin">
                     <input value="输出" class="actionSelected1">  

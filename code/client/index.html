@@ -1341,16 +1341,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         data:'',
                         success: function(data) {
                             if(data){
-                                let str=``
-                                data.map(item=>{
-                                    $(".moduleContentList").append(`<div class="left-list">
-                                            <div class="left-list-tilte dbclickModule" moduleId='${item.id}'>${item.modulename}</div>
-                                            <div class="left-list-event">
-                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
-                                            </div>
-                                        </div>`)
-                                })
+                                $("#modulegroup").val("")
+                                $("#mouldName").val("")
+                                $("#mouldRemark").val("")
+                                $('#addMb tbody').html('')
                             }
                         }
                     })
@@ -1404,18 +1398,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
                         success: function(data) {
-                            if(data){
-                                let str=``
-                                data.map(item=>{
-                                    $(".moduleContentList").append(`<div class="left-list">
-                                            <div class="left-list-tilte dbclickModule" moduleId='${item.id}'>${item.modulename}</div>
-                                            <div class="left-list-event">
-                                                <div class='lkr-list-edit lkr-edit' data-id='${item.id}' >编辑模型</div>
-                                                <div class='lkr-list-del lkr-del' data-id='${item.id}' >删除模型</div>
-                                            </div>
-                                        </div>`)
-                                })
-                            }
                             $('#lkrFrame').fadeToggle(500)
                             $("#dataModulePage").show()
                             getModuleList()
@@ -1582,8 +1564,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("input:checkbox[name='item']").each((i,v) => {
             let items = $(v)
             let flag =true
-            if(items.prop('checked')){
-               let list = $(items).parent().nextAll()
+            let list = $(items).parent().nextAll()
+            if(items.prop('checked')){            
                let addMbTr = $('#addMb tbody tr')
                if(addMbTr.length > 0){
                     for(let s=0;s<addMbTr.length;s++){
@@ -1607,6 +1589,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     }
                     modlueList.push(obj)
                 }
+            }else{
+                let addMbTr = $('#addMb tbody tr')
+                if(addMbTr.length > 0){
+                    for(let s=0;s<addMbTr.length;s++){
+                        let itemh = $(addMbTr).eq(s)
+                        let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
+                        let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
+                        if( list.eq(0).text() == fieldname && $("#fgiName").val() == tableName){
+                            $(addMbTr).eq(s).remove();
+                        }
+                    }
+                }
+                if( window.bigData.editmoduledata.length > 0){
+                    window.bigData.editmoduledata.map((item,i)=>{
+                        if(list.eq(0).text() == item.fieldname && $("#fgiName").val() == item.tableName){
+                            window.bigData.editmoduledata.splice(i,1)
+                        }
+                    })
+                }
+               
             }
         })
         
