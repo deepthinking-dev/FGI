@@ -84,8 +84,9 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
                 if(algorithmModel.getTableAlgorithm().getAlgorithmtype()== AlgorithmtypeEnum.formula.getAlgorithmtype()){
                     TableFunc tableFunc=new TableFunc();
                     tableFunc.setInorout(InOrOutType.out.getType());
-                    tableFunc.setVarname("公式计算结果");
-                    tableFunc.setVartype("");
+                    tableFunc.setParametername("公式计算结果");
+                    tableFunc.setVarname("result");
+                    tableFunc.setVartype(tableFuncs.get(0).getVartype());
                     tableFunc.setValvalue("");
                     tableFunc.setRemark("");
                     tableFuncs.add(tableFunc);
