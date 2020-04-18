@@ -774,7 +774,8 @@ var Topology = {
                                                         y:data1.rect.y,
                                                         ex:data1.rect.ex,
                                                         ey:data1.rect.ey
-                                                    }
+                                                    },
+                                                    text:item.valvalue
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
@@ -809,7 +810,7 @@ var Topology = {
                                         // let heights = data1.rect.height/10
                                                                         
                                     }
-                                    for(let i= 0;i<data.data.outNum; i++){                                   
+                                    for(let i= 0;i<data.data.outNum; i++){                                 
                                         self.addOutlist.map((item,index) =>{
                                             if(i == index){
                                                 
@@ -856,7 +857,8 @@ var Topology = {
                                                         y:data1.rect.y,
                                                         ex:data1.rect.ex,
                                                         ey:data1.rect.ey
-                                                    }
+                                                    },
+                                                    text:item.valvalue
                                                 }
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
@@ -946,6 +948,7 @@ var Topology = {
                                     }
                                 })
                             }else{
+                            
                                 let fromSzId = data.from.id.split("tableAlgorithm")[0];
                                 let toSzId = data.to.id.split("tableAlgorithm")[0];
                                 if(data.from.id.includes("OUT") && data.to.id.includes("IN")){
@@ -960,8 +963,16 @@ var Topology = {
                                     let uuidIn= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid
                                     let uuidOutSmall = data.from.id.split('---')[0].slice(data.from.id.split('---')[0].length -36)//输出小矩形uuid
                                     let uuidInSmall =  data.to.id.split('---')[0].slice(data.to.id.split('---')[0].length -36)//输入小矩形uuid
-
-                                    if(fromType == toType){
+                                    let value = ""
+                                    if(fromType == "常量"){
+                                        canvas.data.nodes.map(item=>{
+                                            if(item.id == data.from.id){
+                                                value = item.childStand.text
+                                            }
+                                        })
+                                    }
+                                    let type = isType(fromType,toType,value)
+                                    if(type){
                                         switch (fromType) {
                                             case '常量':
                                                 strokeStyle = '#0eff23';
@@ -1063,7 +1074,7 @@ var Topology = {
                                         }
 
                                     } else {
-                                        toastr.info('输出输入类型不匹配！')
+                                        $('.noticeList').append(`<li>${timeDay}输出输入类型不匹配！ </li>`)
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
                                                 canvas.data.lines.splice(i,1)
@@ -1076,7 +1087,7 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    toastr.info('只能输出连接输入！')
+                                    $('.noticeList').append(`<li>${timeDay}只能输出连接输入！ </li>`)
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
                                             canvas.data.lines.splice(i,1)
@@ -1088,6 +1099,28 @@ var Topology = {
                                         }
                                     })
                                 }
+                            }
+                            function isType(fromType,toType,value){
+                                debugger
+                                let flag =false
+                                if(value){
+                                    fromType = typeof(value)
+                                }
+                                if(fromType == toType){
+                                    flag = true
+                                }else{
+                                    var typeArr1 =["byte","int","long","short","float","double"];
+                                    var typeArr2 = ["char","String"] 
+                                    if(typeArr1.includes(fromType) && typeArr1.includes(toType)){
+                                        flag = true
+                                    }
+                                    if(typeArr2.includes(fromType) && typeArr2.includes(toType)){
+                                        flag = true
+                                    }
+                                    
+                                }
+                                console.log(flag)
+                                return flag
                             }
                             break;
                         case 'delete':

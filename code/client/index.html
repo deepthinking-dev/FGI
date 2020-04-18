@@ -61,7 +61,7 @@
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./topology/formula.js"></script>
     <script src="./toastr.js"></script>
-    <!-- <script>
+    <script>
         $(function() {
             var content = "";
             var Preview = {
@@ -178,7 +178,7 @@
             })  
         });
     });
-</script> -->
+</script>
 
 </head>
 <body> 
@@ -483,24 +483,23 @@
                 <span class="form-span">分组</span>
                 <select type="text" id="groupGs"></select>
             </div>
-            <div class="AlgorithInput">
-                <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
-                <iframe id="mainContent" src="./kityformula-editor/index.html" width="850px" height="245px"></iframe>
-            </div>
             <!-- <div class="AlgorithInput">
                 <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
-                <input id="MathInput" onblur="Preview.Update()" type="text" >
+                <iframe id="mainContent" src="./kityformula-editor/index.html" width="850px" height="245px"></iframe>
             </div> -->
-            
-                <!-- <div>
-                    <span  class="form-span">公式预览</span>
-                    <div id="MathPreview" ></div>
-                    <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
-                </div> -->
+            <div class="AlgorithInput">
+                <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+                <input id="MathInput" onblur="Preview.Update()" type="text" >
+            </div>      
+            <div>
+                <span  class="form-span">公式预览</span>
+                <div id="MathPreview" ></div>
+                <div id="MathBuffer" style="font-size: 20px;visibility:hidden; position:absolute; top:0; left: 0;margin: 0 auto;"></div>
+            </div>
 
         </div>
-        <!-- <div class="form-group MathJaxEdit">
-        </div>      -->
+        <div class="form-group MathJaxEdit">
+        </div>     
         <div class="frame-foot">
             <div class="button closeGsButton" onclick='ConfirmFrame()'>确定</div>
         </div>
@@ -1511,7 +1510,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
+                                      <table class="sfGruopTable" style="width:100%;"></table>
                                   </div>
                               </div>
                           </div>
@@ -1658,7 +1657,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="moduleGruop${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
+                                      <table class="sfGruopTable"  style="width:100%;"></table>
                                   </div>
                               </div>
                           </div>
@@ -1684,7 +1683,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="moduleGruop${index}" class="panel-collapse collapse" groupname="${s.groupname}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
+                                      <table class="sfGruopTable"  style="width:100%;"></table>
                                   </div>
                               </div>
                           </div>
@@ -2267,7 +2266,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="moduleGruopWin${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable"></table>
+                                      <table class="sfGruopTable"  style="width:100%;"></table>
                                   </div>
                               </div>
                           </div>

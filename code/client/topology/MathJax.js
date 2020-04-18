@@ -598,7 +598,8 @@ function ActionSure(){
                         y:data.rect.y,
                         ex:data.rect.ex,
                         ey:data.rect.ey
-                    }
+                    },
+                    text:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val()
                 }
                 if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     test.anchors.map((obj,i) => {
