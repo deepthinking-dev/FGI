@@ -47,7 +47,36 @@ public class TableGroupdataServiceImpl extends BaseServiceImpl<TableGroupdata,In
     @Override
     public TableGroupdata updtaTableGroupMessage(TableGroupdata tableGroupdata) {
         try {
+            TableGroupdata oldGroupData=selectByPrimaryKey(tableGroupdata.getId());
             groupdataMapper.updateByPrimaryKeySelective(tableGroupdata);
+            //将该组下所有的都改为新组名
+            String oldName=oldGroupData.getGroupname();
+            int type=tableGroupdata.getGrouptype();
+            String name=tableGroupdata.getGroupname();
+            int id=tableGroupdata.getId();
+            switch (type){
+                case 1://模型
+                    TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
+                    tableModuleCriteria.createCriteria().andModulegroupEqualTo(oldName);
+                    TableModule tableModule=new TableModule();
+                    tableModule.setModulegroup(name);
+                    tableModuleMapper.updateByExampleSelective(tableModule,tableModuleCriteria);
+                    break;
+                case 2://算法
+                    TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
+                    tableAlgorithmCriteria.createCriteria().andAlgorithmgroupEqualTo(oldName);
+                    TableAlgorithm tableAlgorithm=new TableAlgorithm();
+                    tableAlgorithm.setAlgorithmgroup(name);
+                    tableAlgorithmMapper.updateByExampleSelective(tableAlgorithm,tableAlgorithmCriteria);
+                    break;
+                case 3://规则
+                    TableRoleCriteria tableRoleCriteria=new TableRoleCriteria();
+                    tableRoleCriteria.createCriteria().andRolegroupEqualTo(oldName);
+                    TableRole tableRole=new TableRole();
+                    tableRole.setRolegroup(name);
+                    tableRoleMapper.updateByExampleSelective(tableRole,tableRoleCriteria);
+                    break;
+            }
             return tableGroupdata;
         }catch (Exception e){
             e.printStackTrace();
