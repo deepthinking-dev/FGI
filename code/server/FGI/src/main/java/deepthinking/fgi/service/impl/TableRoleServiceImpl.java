@@ -1109,7 +1109,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     }
 
     @Override
-    public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId) {
+    public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId,String actionRelation) {
         try {
             TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
             tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfaceRoleId).andInterfaceparametersidEqualTo(interfaceParametersID);
@@ -1159,6 +1159,14 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     algorithmconditionMapper.insert(data);
                 });
             }
+            //修改动作间关系信息
+            TableInterfacerole interfacerole=interfaceroleMapper.selectByPrimaryKey(interfaceRoleId);
+            if(interfacerole.getParametersid().equals(interfaceParametersID)){
+                interfacerole.setActionrelation(actionRelation);
+            }else if(interfacerole.getPreparametersid().equals(interfaceParametersID)){
+                interfacerole.setPreactionrelation(actionRelation);
+            }
+            interfaceroleMapper.updateByPrimaryKeySelective(interfacerole);
         }catch (Exception e){
             logger.error(e.getMessage());
             return false;
