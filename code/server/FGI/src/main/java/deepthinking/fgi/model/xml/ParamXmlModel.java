@@ -28,6 +28,8 @@ public class ParamXmlModel implements Serializable {
 
     private String remark;  //备注
 
+    private String parameterName;   //参数名称
+
     public ParamXmlModel() {
     }
 
@@ -77,5 +79,9 @@ public class ParamXmlModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

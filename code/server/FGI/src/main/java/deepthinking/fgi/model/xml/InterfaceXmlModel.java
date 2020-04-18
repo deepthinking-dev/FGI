@@ -54,5 +54,4 @@ public class InterfaceXmlModel implements Serializable {
         this.id = id;
     }
 
-
 }

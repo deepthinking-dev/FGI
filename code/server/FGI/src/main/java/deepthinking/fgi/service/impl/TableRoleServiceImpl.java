@@ -83,6 +83,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableRole.setEntrancenote(rule.getEntrancenote());
         tableRole.setCoordinate(rule.getCoordinate());
         tableRole.setUuserid(rule.getUserid());
+        tableRole.setRolegroup(rule.getRoleGroup());
+        tableRole.setStatus(rule.getStatus());
+        tableRole.setRemark2(rule.getRemark2());
+        tableRole.setRemark3(rule.getRemark3());
 
         roleMapper.insert(tableRole);
 
@@ -250,13 +254,15 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     map2.put(id, interfaceParamXmlModel.getId());
 
                     if(interfaceParamXmlModel.getIotype() == 1){    //输出
-                        TableInterfacerole tableInterfacerole = new TableInterfacerole();   //接口关系
-                        tableInterfacerole.setRoleid(tableRole.getId());
-                        tableInterfacerole.setPreinterfaceid(interfaceXmlModel.getId());
-                        tableInterfacerole.setPreparametersid(interfaceParamXmlModel.getId());
-                        tableInterfacerole.setDes(interfaceParamXmlModel.getDesc());
-                        tableInterfacerole.setRemark(interfaceParamXmlModel.getRemark());
-                        tableInterfaceroleList.add(tableInterfacerole);
+                        if(null != interfaceParamXmlModel.getInterfa()){
+                            TableInterfacerole tableInterfacerole = new TableInterfacerole();   //接口关系
+                            tableInterfacerole.setRoleid(tableRole.getId());
+                            tableInterfacerole.setPreinterfaceid(interfaceXmlModel.getId());
+                            tableInterfacerole.setPreparametersid(interfaceParamXmlModel.getId());
+                            tableInterfacerole.setDes(interfaceParamXmlModel.getDesc());
+                            tableInterfacerole.setRemark(interfaceParamXmlModel.getRemark());
+                            tableInterfaceroleList.add(tableInterfacerole);
+                        }
                     }
                     interfaceParamXmlModel.getActions().getAction().forEach(action ->{
                         TableAlgorithmcondition tableAlgorithmcondition = new TableAlgorithmcondition();
@@ -470,6 +476,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             rule.setEntrancenote(tableRole.getEntrancenote());
             rule.setCoordinate(tableRole.getCoordinate());
             rule.setUserid(tableRole.getUuserid());
+            rule.setRoleGroup(tableRole.getRolegroup());
+            rule.setStatus(tableRole.getStatus());
+            rule.setRemark2(tableRole.getRemark2());
+            rule.setRemark3(tableRole.getRemark3());
             //====================算法========================//
 
             //获取规则的所有接口
@@ -545,6 +555,9 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                         interfaceXmlModel.getAlgorithm().setFunc(tableAlgorithm.getAlgorithmfun());
                         interfaceXmlModel.getAlgorithm().setDesc(tableAlgorithm.getDes());
                         interfaceXmlModel.getAlgorithm().setRemark(tableAlgorithm.getRemark());
+                        interfaceXmlModel.getAlgorithm().setAlgorithmGroup(tableAlgorithm.getAlgorithmgroup());
+                        interfaceXmlModel.getAlgorithm().setStatus(tableAlgorithm.getStatus());
+                        interfaceXmlModel.getAlgorithm().setRemarks2(tableAlgorithm.getRemark2());
                         ParamsXmlModel paramsXmlModel = new ParamsXmlModel();
                         allFuncList.forEach(tableFunc -> {
                             if(tableFunc.getAlgorithmid().intValue() == tableAlgorithm.getId().intValue()){
@@ -555,6 +568,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                 paramXmlModel.setValue(tableFunc.getValvalue());
                                 paramXmlModel.setIotype(tableFunc.getInorout().intValue());
                                 paramXmlModel.setRemark(tableFunc.getRemark());
+                                paramXmlModel.setName(tableFunc.getParametername());
                                 paramsXmlModel.getParam().add(paramXmlModel);
                             }
                         });

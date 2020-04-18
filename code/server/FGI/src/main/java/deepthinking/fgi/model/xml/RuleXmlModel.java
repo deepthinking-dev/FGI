@@ -29,7 +29,17 @@ public class RuleXmlModel implements Serializable {
 
     private Integer userid;     //用户ID
 
+    private String roleGroup;   //所属组
+
+    private String status;      //状态
+
+    private String remark2;     //备注2
+
+    private String remark3;     //备注3
+
     private InterfacesXmlModel interfaces;  //接口
+
+
 
     public RuleXmlModel() {
     }
@@ -90,4 +100,35 @@ public class RuleXmlModel implements Serializable {
         this.interfaces = interfaces;
     }
 
+    public String getRoleGroup() {
+        return roleGroup;
+    }
+
+    public void setRoleGroup(String roleGroup) {
+        this.roleGroup = roleGroup;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRemark2() {
+        return remark2;
+    }
+
+    public void setRemark2(String remark2) {
+        this.remark2 = remark2;
+    }
+
+    public String getRemark3() {
+        return remark3;
+    }
+
+    public void setRemark3(String remark3) {
+        this.remark3 = remark3;
+    }
 }

@@ -34,6 +34,12 @@ public class AlgorithmXmlModel implements Serializable {
 
     private String remark;  //备注
 
+    private String algorithmGroup;  //所属组
+
+    private String status;  //状态
+
+    private String remarks2;    //备注
+
     private ParamsXmlModel params;  //参数
 
     public AlgorithmXmlModel() {
@@ -117,5 +123,29 @@ public class AlgorithmXmlModel implements Serializable {
 
     public void setParams(ParamsXmlModel params) {
         this.params = params;
+    }
+
+    public String getAlgorithmGroup() {
+        return algorithmGroup;
+    }
+
+    public void setAlgorithmGroup(String algorithmGroup) {
+        this.algorithmGroup = algorithmGroup;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRemarks2() {
+        return remarks2;
+    }
+
+    public void setRemarks2(String remarks2) {
+        this.remarks2 = remarks2;
     }
 }
