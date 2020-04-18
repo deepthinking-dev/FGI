@@ -1344,6 +1344,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                     $('#lkrFrame').fadeToggle(500)
+                    $("#dataModulePage").show()
                     getModuleList()
                 }
                }) 
@@ -1405,15 +1406,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         </div>`)
                                 })
                             }
+                            $('#lkrFrame').fadeToggle(500)
+                            $("#dataModulePage").show()
+                            getModuleList()
                         }
                     })
-                    $('#lkrFrame').fadeToggle(500)
                 }
-
             })
         }
-
-
     }
     function reseTabs(){
         $.ajax({
