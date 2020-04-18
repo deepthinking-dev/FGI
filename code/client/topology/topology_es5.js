@@ -322,7 +322,6 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
-                  console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -342,6 +341,29 @@ var Topology = {
                             let Index_out = data.from.id.indexOf("tableAlgorithm");
                             let id_in = data.to.id.slice(0,Index_in);//算子id
                             let id_out = data.from.id.slice(0,Index_out);
+                            var bigOutName,smallOutName,bigInName,smallInName;
+                            var bigList=[];
+                            canvas.data.nodes.map(s=>{
+                                if(s.id == data.from.id){
+                                    smallOutName = s.text
+                                }
+                                if(s.id == data.to.id){
+                                    smallInName = s.text
+                                }
+                                if(!s.id.includes("---")){
+                                    bigList.push(s)
+                                }
+                            })
+                            bigList.map(x=>{
+                                if(data.from.id.includes(x.id)){
+                                    bigOutName = x.text
+                                }
+                                if(data.to.id.includes(x.id)){
+                                    bigInName = x.text
+                                }
+                            })
+                            $("#selectOutIn").empty();
+                            $("#selectOutIn").append(`<option value="1">${bigInName}的参数${smallInName}</option><option value="2">${bigOutName}的参数${smallOutName}</option>`)
                             $('#selectOutIn').val('1')
                             let out_big = idStoreData[data.from.id.slice(0,data.from.id.indexOf('OUT'))];//输出大矩形uuid
                             let in_big= idStoreData[data.to.id.slice(0,data.to.id.indexOf('IN'))];//输入大矩形uuid

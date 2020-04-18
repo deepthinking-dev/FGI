@@ -528,7 +528,7 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     if(data.status == 1){
-                        dictionary()
+                        sfWinList()
                         Topology.init();
                         $("#dicDiv").show()
                         $('.noticeList').append(`<li>${timeDay} ${data.msg} </li>`)

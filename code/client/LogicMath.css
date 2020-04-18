@@ -869,7 +869,7 @@ body .form-input{
     line-height: 30px;
     margin-right: 20px;
 }
-.xwzly_in,.xwzly_out,.bds_in,.bds_out,.xwSelect_in,.xwSelect_out,#selectOutIn{
+.xwzly_in,.xwzly_out,.bds_in,.bds_out,.xwSelect_in,.xwSelect_out{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -878,6 +878,18 @@ body .form-input{
     outline: none;
     color: #fff;
     width: 125px;
+    height: 30px;
+    padding-left: 10px;
+}
+#selectOutIn{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 180px;
     height: 30px;
     padding-left: 10px;
 }
