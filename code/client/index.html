@@ -2269,8 +2269,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     $("#searchName").bind('input propertychange',function(s){
         let val = $("#searchName").val()
-        $('.left-list').each((i,s)=>{
-            if($(s).children().text().includes(val)){
+        $('.left-list-tilte').each((i,s)=>{
+            if($(s).text().includes(val)){
                 $(s).show()
             } else {
                 $(s).hide()
