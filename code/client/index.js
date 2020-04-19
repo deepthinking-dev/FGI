@@ -19,6 +19,7 @@ $(function(){
             $("#actionMsgOut").hide();
                 if ($("#addActionButton").attr("resData")) {//后台返回数据
                     $("#actionInDiv").empty();
+                    $("#actionMsgIn").val($("#addActionButton").attr("actionRelation"))
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
                         $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
@@ -81,6 +82,7 @@ $(function(){
             $("#actionMsgIn").hide();
             $("#actionMsgOut").show();
             if($("#addActionButton").attr("resData")){//后台数据
+                $("#actionMsgOut").val($("#addActionButton").attr("preActionRelation"))
                     if($("#addActionButton").attr("resData")){
                         $.ajax({
                             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',

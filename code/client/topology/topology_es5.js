@@ -340,6 +340,13 @@ var Topology = {
                         case 'line':
                             let id_in;//输入端算子id
                             let id_out;//输出端算子id
+                            $("#actionMsgIn").val("");
+                            $("#actionMsgIn").show();
+                            $("#actionMsgOut").hide();
+                            $("#addActionButton").attr({
+                                actionRelation:"",
+                                preActionRelation:""
+                            })
                             canvas.data.nodes.map(s=>{
                                 if(s.id == data.from.id){
                                     id_out = s.childStand.fid
@@ -395,6 +402,11 @@ var Topology = {
                                     }
                                 })
                                 if(responseCurrentData){
+                                    $("#actionMsgIn").val(responseCurrentData.actionRelation)
+                                    $("#addActionButton").attr({
+                                        actionRelation:responseCurrentData.actionRelation,
+                                        preActionRelation:responseCurrentData.preActionRelation
+                                    })
                                     responseCurrentData.algorithmconditions.map(s=>{
                                         if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
                                             resBaseOut.push(s)
