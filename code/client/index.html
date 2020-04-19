@@ -934,7 +934,7 @@
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
-
+        <button class="closeEditDic">取消</button>
     </div>
     <div id="colorDiv">
         <ul>
@@ -970,6 +970,7 @@
 <script>
     var editGzType = false;
     var globalActionDatas = [];
+    var modelSelectList;
     var deleteLineDataId;
     var currentActionInput;
     var responseActionDatas;
@@ -1135,11 +1136,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
         canvas.scale(1)
     })
     function changeVarType(e){
-        if(e.target.value == "2" || e.target.value == "3"){
+        if(e.target.value == "2"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
             $(e.target).parent().next().find('span').text("取值")
             $(e.target).parent().next().append(`<input type="text" value=""  class="zdcsText">`)
+        } else if(e.target.value == "3"){
+            $(e.target).parent().next().find('input').remove();
+            $(e.target).parent().next().find('select').remove();
+            $(e.target).parent().next().find('span').text("对象名称")
+            $(e.target).parent().next().append(modelSelectList)
         } else {
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
@@ -1892,8 +1898,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     for(var i=0;i<data.tableFuncs.length;i++){
                         $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
                         $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
-                        if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                        if(data.tableFuncs[i].vartype == 2){
                             $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else if(data.tableFuncs[i].vartype == 3){
+                            var select = modelSelectList;
+                            $("#editDic .zdcsText").eq(i).hide();
+                            $(select).val(data.tableFuncs[i].valvalue);
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("对象名称")
+                            $("#editDic .zdcsSelect").eq(i).parent().next().append(select);
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("select").val(data.tableFuncs[i].valvalue)
                         } else {
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
@@ -2397,7 +2410,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').fadeToggle(500)
-            sfWinList()
+            sfWinList();
+            $.ajax({
+                url: urlConfig.host + '/module/GetAllModule',
+                type: "get",
+                success(res){
+                    modelSelectList=`<select class="moduleTypeSelect">`;
+                    res.map(s=>{
+                        modelSelectList+=`<option value="${s.modulename}">${s.modulename}</option>`
+                    })
+                    modelSelectList+=`</select>`;
+                }
+            })
         }
         if($('#flex_tools .liactive').text() == "规则库"){
             $('#gzDiv').fadeToggle(500)
@@ -2558,6 +2582,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupEditDiv").show();
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
+        $("#groupInputName").val("")
     })
     $("#addGroupYes").click(()=>{
         var tableGroupdata = {
@@ -3085,6 +3110,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function downloadRule(s) {
         location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + s
     }
+    $(".closeEditDic").click(()=>{
+        $("#editDic").hide()
+    })
 </script>
 </body>
 </html>

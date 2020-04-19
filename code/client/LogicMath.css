@@ -834,15 +834,7 @@ body .form-input{
     z-index: 1000000;
 }
 #zdcsList span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 70px;
-    height: 30px;
-    vertical-align: top;
-    line-height: 30px;
-    margin-right: 15px;
+    text-align: raddGroup
 }
 #actionDiv{
     position: absolute;

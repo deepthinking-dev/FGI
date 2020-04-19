@@ -163,6 +163,8 @@
                 }
             })
         }
+        $("#dicDiv").show()
+        sfWinList();
 }
 function fieldsClose(){
     $("#fields").attr("style","display:none;");
@@ -346,7 +348,6 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
-    debugger
      //动作
     editGzType = false;
     $("#currentGzName").text($("#ruleName").val());

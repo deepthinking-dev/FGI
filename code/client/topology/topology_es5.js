@@ -1182,7 +1182,12 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            delete  window.Topology.tools[data.nodes[0].id]
+                            try {
+                                delete  window.Topology.tools[data.nodes[0].id]
+                            }catch (e) {
+                                console.log(e);
+                            }
+
                             data.nodes.map(index=>{
                                 let length=canvas.data.nodes.length;
                                 let deletedata =[];
@@ -1888,23 +1893,26 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
-
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
                 globalActionDatas.splice(i,1)
             }
         })
-        try{
-            $.ajax({
-                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-                type:"get",
-                data: {interfaceRoueId :resCurrentLineData.dataIn.interfaceRoleDataModels.id},
-                success(data) {}
-            })
-        }catch (e) {
-            console.log(e);
-        }
+        responseActionDatas.map(s=>{
+            if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
+                try {
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                        type:"get",
+                        data: {interfaceRoueId :s.id},
+                        success(data) {}
+                    })
+                } catch (e) {
+
+                }
+            }
+        })
     },
     // 撤销
     undo: function () {
