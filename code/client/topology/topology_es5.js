@@ -895,7 +895,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
+                                                data2.text = item.varname;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
