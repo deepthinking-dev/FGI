@@ -189,7 +189,8 @@
 <body> 
        <!-- 关系选择 -->
     <div id="ruleAct">
-        <div class="ruleInfo">
+        <div class="head-hidden" style="width: 100%;height: 50px;overflow: hidden;z-index: 99;position: relative;"></div>
+        <div class="ruleInfo">           
             <span class="ActTitle">算子详情</span>
             <div class="ActContont">
                 <div style="margin: 5px 20px;display:flex;">
@@ -296,19 +297,13 @@
                             <input type="checkbox" name="item" id="selectAll"/>
                         </td>
                         <td>
-                            字段英文
-                        </td>
-                        <td>
-                            字段中文
+                            字段名称
                         </td>
                         <td>
                             字段类型
                         </td>
                         <td>
-                            字段描述
-                        </td>
-                        <td>
-                            是否主键
+                            备注
                         </td>
                         </tr>
                     </thead>
@@ -657,19 +652,13 @@
                         <thead>
                           <tr>
                             <td>
-                                字段英文
-                            </td>
-                            <td>
-                                字段中文
+                                字段名称
                             </td>
                             <td>
                                 字段类型
                             </td>
                             <td>
-                                字段描述
-                            </td>
-                            <td>
-                                是否主键
+                                备注
                             </td>
                             <td>
                                 字段表名
@@ -1058,6 +1047,85 @@ Date.prototype.Format = function (fmt) { // author: meizz
         var timeDay = new Date().Format("yyyy-MM-dd hh:mm:ss");
         return timeDay
     }
+    
+
+    //拖拽弹框
+    $('body').on('mousedown','.head-hidden',(event) =>{
+        let  obj=$("#ruleAct"); 
+        if(event.button==0){//判断是否点击鼠标左键  
+            /*  
+            * clientX和clientY代表鼠标当前的横纵坐标  
+            * offset()该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。  
+            * bind()绑定事件，同样unbind解绑定，此效果的实现最后必须要解绑定，否则鼠标松开后拖拽效果依然存在  
+            * getX获取当前鼠标横坐标和对象离屏幕左侧距离之差（也就是left）值，  
+            * getY和getX同样道理，这两个差值就是鼠标相对于对象的定位，因为拖拽后鼠标和拖拽对象的相对位置是不变的  
+            */  
+            gapX=event.clientX-obj.offset().left;  
+            gapY=event.clientY-obj.offset().top;  
+            //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的  
+            $(document).bind("mousemove",move);  
+            //此处的$(document)可以改为obj  
+            $(document).bind("mouseup",stop);  
+            
+        }  
+        return false;//阻止默认事件或冒泡  
+        function move(event){  
+            obj.css({  
+                "left":(event.clientX-gapX)+"px",  
+                "top":(event.clientY-gapY)+"px"  
+            });  
+            return false;//阻止默认事件或冒泡  
+        }  
+        function stop(){  
+            //解绑定，这一步很必要，前面有解释  
+            $(document).unbind("mousemove",move);  
+            $(document).unbind("mouseup",stop);  
+            
+        }
+    })
+    // var drag=function(obj){  
+                  
+    //     obj.bind("mousedown",start);  
+
+    //     function start(event){  
+    //         if(event.button==0){//判断是否点击鼠标左键  
+    //             /*  
+    //             * clientX和clientY代表鼠标当前的横纵坐标  
+    //             * offset()该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。  
+    //             * bind()绑定事件，同样unbind解绑定，此效果的实现最后必须要解绑定，否则鼠标松开后拖拽效果依然存在  
+    //             * getX获取当前鼠标横坐标和对象离屏幕左侧距离之差（也就是left）值，  
+    //             * getY和getX同样道理，这两个差值就是鼠标相对于对象的定位，因为拖拽后鼠标和拖拽对象的相对位置是不变的  
+    //             */  
+    //             gapX=event.clientX-obj.offset().left;  
+    //             gapY=event.clientY-obj.offset().top;  
+    //             //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的  
+    //             $(document).bind("mousemove",move);  
+    //             //此处的$(document)可以改为obj  
+    //             $(document).bind("mouseup",stop);  
+                
+    //         }  
+    //         return false;//阻止默认事件或冒泡  
+    //     }  
+    //     function move(event){  
+    //         obj.css({  
+    //             "left":(event.clientX-gapX)+"px",  
+    //             "top":(event.clientY-gapY)+"px"  
+    //         });  
+    //         return false;//阻止默认事件或冒泡  
+    //     }  
+    //     function stop(){  
+    //         //解绑定，这一步很必要，前面有解释  
+    //         $(document).unbind("mousemove",move);  
+    //         $(document).unbind("mouseup",stop);  
+            
+    //     }  
+    // }  
+    // obj=$("#ruleAct");  
+    // drag(obj);//传入的必须是jQuery对象，否则不能调用jQuery的自定义函数 
+
+
+
+
 
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
@@ -1136,8 +1204,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnName">${item.fieldname?item.fieldname:''}</td>
                     <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
-                    <td>${item.LENGTH?item.LENGTH:''}</td>
-                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
                     <td><button class="delTab">删除</button></td></tr>`
                 })
@@ -1172,8 +1238,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnName">${item.fieldname?item.fieldname:''}</td>
                     <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
-                    <td>${item.LENGTH?item.LENGTH:''}</td>
-                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
                     </tr>`
                 })
@@ -1218,9 +1282,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr><td><input id='${'chk'+item.COLUMN_NAME}' type="checkbox" name="item" data-id='${item.COLUMN_NAME}'/></td>
                     <td>${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
                     <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-                    <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-                    <td>${item.LENGTH?item.LENGTH:''}</td>
-                    <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td></tr>`
+                    <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td></tr>`
                 })
                 $('#addSource tbody').html(thStr)
 
@@ -1436,8 +1498,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="columnName"><input type="text" value=""></td>
             <td class="columnComment"><input type="text" value=""></td>
             <td class="columnType"><input type="text" value=""></td>
-            <td><input type="text" value=""></td>
-            <td><input type="text" value=""></td>
             <td class="tableName"><input type="text" value=""></td>
             <td><button class="delTab">删除</button></td></tr>`)
     }
@@ -1621,8 +1681,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
             <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
             <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-            <td>${item.LENGTH?item.LENGTH:''}</td>
-            <td>${item.IS_NULLABLE?item.IS_NULLABLE:''}</td>
             <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
             <td><button class="delTab">删除</button></td></tr>`
         })

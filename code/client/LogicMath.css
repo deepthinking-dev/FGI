@@ -897,6 +897,7 @@ body .form-input{
     width: 100%;
     height: 120px;
     border-bottom: 1px solid #4295ec;
+    margin-top: -50px;
 }
 #ruleAct .ruleInfo .ActTitle{
     font-size: 14px;
