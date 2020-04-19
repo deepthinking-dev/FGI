@@ -113,18 +113,31 @@ body{
     width: 50%;
     float: left;
     list-style: none;
-    text-align: center;
+    text-align: center; 
 }
 .title-page li span {
     font-weight: 400;
     font-style: normal;
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.498039215686275);
+    /* color: rgba(255, 255, 255, 0.498039215686275); */
+    color: #fff;
     text-align: right;
     cursor: pointer;
+    opacity: 0.5;
 }
 .title-page li span .dataMod{
     background-image: url(./static/dataMo.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    top: 2px;
+    position: relative;
+    margin-right: 3px;
+}
+.title-page li span .ruleI{
+    background-image: url(./static/rule.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     width: 15px;
