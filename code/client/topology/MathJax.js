@@ -110,6 +110,7 @@
         if(window.bigData.formulaType == 'edit'){
             tableAl.algorithmauthor = $('#gsName').val();
             tableAl.des = $('#gsDes').val();
+            tableAl.status =  $("#gsStatus").val();
         }
         let param = {
             tableAlgorithm:tableAl,
@@ -129,8 +130,7 @@
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                         Topology.init();
                         dictionary()
-                    }
-                    if(data.status == 2){
+                    } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
                 }
