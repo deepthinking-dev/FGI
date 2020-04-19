@@ -69,7 +69,8 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         try {
             //算子名称不能重复
             TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
-            tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname());
+            tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname())
+                    .andAlgorithmgroupEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmgroup());
             List<TableAlgorithm> tableAlgorithms=tableAlgorithmMapper.selectByExample(tableAlgorithmCriteria);
             if(tableAlgorithms.size()>0){//重名
                 return 2;
@@ -126,7 +127,7 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             //算子名称不能重复
             TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
             tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname())
-                    .andIdNotEqualTo(algorithmModel.getTableAlgorithm().getId());
+                    .andIdNotEqualTo(algorithmModel.getTableAlgorithm().getId()).andAlgorithmgroupEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmgroup());
             List<TableAlgorithm> tableAlgorithms=tableAlgorithmMapper.selectByExample(tableAlgorithmCriteria);
             if(tableAlgorithms.size()>0){//重名
                 return 3;
