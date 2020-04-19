@@ -356,7 +356,6 @@ function ruleSure(){
     $("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
     window.globalActionDatas.map(item=>{
-        debugger
        let obj ={
            actionRelation:item.dataIn.interfaceRoleDataModels.actionRelation,
            preActionRelation:item.dataOut.interfaceRoleDataModels.preActionRelation,
@@ -791,7 +790,6 @@ function ActionSure(){
     lsList = UPdataList.concat(AddList)
     if(DelList.length > 0){
         DelList.map(item=>{
-            debugger
             let Del1UUid = item.uuid.split('---')[0]
             for(let i = nowList.length - 1;i >=0 ;i--){
                 let nowUUid =nowList[i].id.substr((nowList[i].id.indexOf('---')-36),36)

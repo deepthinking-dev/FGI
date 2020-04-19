@@ -1304,7 +1304,7 @@ var Topology = {
                                             data: {Id: window.bigData.editRuleId},
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length >= dataAl.tableFuncs.length){
+                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length >= dataAl.tableFuncs.length){
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
@@ -1332,7 +1332,7 @@ var Topology = {
                                                         })
                                                        
                                                     }
-                                                    if(item.algorithmID == currId&&item.tableInterfaceparametersList.length < dataAl.tableFuncs.length){
+                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length < dataAl.tableFuncs.length){
                                                         let nowLists = []
                                                         if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
                                                             nowLists = self.tools[data.id].children
