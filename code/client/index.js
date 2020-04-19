@@ -752,10 +752,6 @@ $(function(){
         })
     })
 
-
-    $('body').on('click','button.delTab',(e) => {
-        $(e.target).parents('tr').remove();
-    })
     $("#showAllmag").on("click",()=>{
         showMsg(window.selectId)
     })

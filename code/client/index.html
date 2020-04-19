@@ -1213,7 +1213,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
-                    <td><button class="delTab">删除</button></td></tr>`
+                    <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
 
@@ -1507,7 +1507,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="columnComment"><input type="text" value=""></td>
             <td class="columnType"><input type="text" value=""></td>
             <td class="tableName"><input type="text" value=""></td>
-            <td><button class="delTab">删除</button></td></tr>`)
+            <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
     }
    
     function reseTabsList(val){
@@ -1690,11 +1690,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
             <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
             <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
-            <td><button class="delTab">删除</button></td></tr>`
+            <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
         })
         $('#addMb tbody').append(thStr)
         $('#addSource tbody').html('')
         $("#sourceName").fadeToggle(500)
+    }
+
+
+    function delTab(event){
+        $(event.target).parents('tr').remove();
     }
     function AlgorithmConfirm(){
         let s = $('#sfType').val();
