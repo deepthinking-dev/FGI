@@ -1,6 +1,7 @@
 
     function FrameClose(){
         $(".Frame").attr("style","display:none;");
+        $("#dicDiv").show()
     }
     function LogicClose(){
         $(".Logic").attr("style","display:none;");
@@ -109,7 +110,6 @@
         if(window.bigData.formulaType == 'edit'){
             tableAl.algorithmauthor = $('#gsName').val();
             tableAl.des = $('#gsDes').val();
-            tableAl.status =  $("#gsStatus").val();
         }
         let param = {
             tableAlgorithm:tableAl,
@@ -159,8 +159,6 @@
                         dictionary()
                         Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
-                    } else {
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
                 }
             })
@@ -546,7 +544,7 @@ function ActionSure(){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     window.bigData.isAddInOutType = "in";
-                    test.id = data.id +"IN"+ "_" +xinguid+ "---" +typeIn;
+                    test.id = xinguid+ "---" +typeIn;
                     
                 }else{
                     data.data.outNum ++
@@ -559,7 +557,7 @@ function ActionSure(){
                     if(typeIn== "基本类型"){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
-                    test.id = data.id +"OUT"+ "_" +xinguid+"---" +typeIn;
+                    test.id = xinguid+"---" +typeIn;
                 }
 
                 test.rect.x = data.rect.x + num.x
@@ -618,7 +616,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
+                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
                 window.bigData.isAddInOut = true;
 
                 let flag = canvas.addNode(test)
@@ -960,7 +958,7 @@ function ActionSure(){
                 let CsObj = {
                     id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                     inorout:index.inorout,
-                    interfaceid:data.id,
+                    interfaceid:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                     parametersname:index.varname,
                     parameterssources:index.id
                 }

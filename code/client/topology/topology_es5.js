@@ -796,7 +796,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
+                                                data2.text = item.varname;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -1314,7 +1314,7 @@ var Topology = {
                                                                     }else{
                                                                         str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                     }
-                                                                        str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
+                                                                        str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
                                                                     if(index.vartype == 1 || index.vartype == "基本类型"){
                                                                         str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                                                     }else if(index.vartype == 2 || index.vartype == "常量"){
@@ -1346,7 +1346,7 @@ var Topology = {
                                                             }else{
                                                                 str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                             }
-                                                                str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
+                                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
                                                             if(index.vartype == 1 ||index.vartype == "基本类型" ){
                                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
@@ -1375,7 +1375,7 @@ var Topology = {
                                     //                 }else{
                                     //                     str+= `<input value="输入" class="actionSelected1" disabled>  `
                                     //                 }
-                                    //                     str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
+                                    //                     str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
                                     //                 if(index.vartype == 1 ||index.vartype == "基本类型" ){
                                     //                     str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                     //                 }else if(index.vartype == 2 || index.vartype == "常量" ){
@@ -1415,7 +1415,7 @@ var Topology = {
                                             }else{
                                                 str+= `<input value="输入" class="actionSelected1" disabled>  `
                                             }
-                                                str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
+                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
                                             if(index.vartype == 1 ||index.vartype == "基本类型" ){
                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
@@ -1445,14 +1445,14 @@ var Topology = {
                                     })
                                     let lstr1=`<option>请选择</option>`
                                     dataAl.tableFuncs.map(item => {
-                                        lstr1 += `<option value="${item.parametername}">${item.parametername}</option>`
+                                        lstr1 += `<option value="${item.varname}">${item.varname}</option>`
                                     })
                                     self.tools[data.id].children.map((index,t)=>{
                                         if(index.remark == "xin"){
                                             $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                             setTimeout(function () {
                                                 $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
-                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.parametername+"']").attr("selected",true);
+                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
                                             }, 100);
                                             
                                         }

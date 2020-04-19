@@ -9,35 +9,74 @@ body{
     display: none;
 }
 .yjl_tools{
-    width: 35px;
+    width: 70px;
     /* display: flex; */
     position: absolute;
-    top: 65px;
-    color: #fff;
-    height: 60px;
+    top: 0;
+    right: 10px;
+    color: #45a1e9;
+    height: 100px;
     border: 1px solid #45a1e9;
     z-index: 99999;
 }
 .yjl_tools >div{
     position: relative;
     display: inline-block;
-    float: left;
-    width: 30px;
-    height: 15px;
+    width: 65px;
+    height: 30px;
     clear: both;
     margin: 2px 2px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    line-height: 30px;
+   
+}
+.yjl_tools .colorTpye i{
+    background-image: url(./static/typeQ.png);
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 2px;
+    position: relative;
+    left: 5px;
+}
+.yjl_tools #btn i{
+    background-image: url(./static/fullS.png);
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align:text-bottom;
+    top: 2px;
+    position: relative;
+    left: 5px;
+}
+.yjl_tools #saveRule i{
+    background-image: url(./static/saveQ.png);
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align:text-bottom;
+    top: 2px;
+    position: relative;
+    left: 5px;
 }
 .yjl_tools > button{
     margin: 2px 2px;
     padding: 0;
     background: none;
     border: none;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
-    width: 30px;
+    width: 65px;
+    height: 30px;
 
 }
 .algorithmFoot{
@@ -886,12 +925,13 @@ body{
     color: #fff;
 }
 #colorDiv{
-    width: 80px;
+    width: 70px;
     height: 390px;
     position: absolute;
-    top:10%;
-    right: 22%;
+    top:110px;
+    right: 10px;
     display: none;
+    z-index: 999;
 }
 #colorDiv ul{
     padding: 0;

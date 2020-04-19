@@ -21,6 +21,7 @@ body {
     width: calc(100% - 365px);
     float: left;
     margin: 0 auto;
+    position: relative;
 }
 /*左侧工具栏样式*/
 #flex_tools {
