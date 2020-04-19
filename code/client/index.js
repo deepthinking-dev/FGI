@@ -490,14 +490,16 @@ $(function(){
                 $('.noticeList').append(`<li>${getTime()}请填写输入输出！ </li>`)
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
-            if(obj.vartype == "2" || obj.vartype == "3"){
+            if(obj.vartype == "2"){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
                 if(obj.valvalue == ""){
                     flag = false;
                     $('.noticeList').append(`<li>${getTime()}请填写取值！ </li>`)
                 }
-            } else {
+            } else if(obj.vartype == "1") {
                 obj.valvalue = $(s).find('.zdcsTypeSelect').val()//下拉框类型值
+            } else {
+                obj.valvalue = $(s).find('.moduleTypeSelect').val()//下拉框模型值
             }
             if($(s).attr("divid")){
                 obj.id = Number($(s).attr("divid"))
