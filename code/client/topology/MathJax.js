@@ -956,9 +956,9 @@ function ActionSure(){
             }
            window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
                 let CsObj = {
-                    id:index.id,
+                    id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                     inorout:index.inorout,
-                    interfaceid:index.uuid.substr((index.uuid.indexOf('---')-36),36),
+                    interfaceid:data.id,
                     parametersname:index.varname,
                     parameterssources:index.id
                 }

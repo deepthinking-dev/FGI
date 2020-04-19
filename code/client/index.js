@@ -522,7 +522,7 @@ $(function(){
                     $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                     $("#editDic").hide()
                     dictionary();
-                    Topology.init();
+                    // Topology.init();
                     $("#dicDiv").show()
                 }
             })
@@ -561,7 +561,7 @@ $(function(){
                 success(data) {
                     if(data.status == 1){
                         sfWinList()
-                        Topology.init();
+                        // Topology.init();
                         $("#dicDiv").show()
                         $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
                     } else {
