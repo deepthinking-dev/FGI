@@ -1,7 +1,6 @@
 
     function FrameClose(){
         $(".Frame").attr("style","display:none;");
-        $("#dicDiv").show()
     }
     function LogicClose(){
         $(".Logic").attr("style","display:none;");
@@ -110,6 +109,7 @@
         if(window.bigData.formulaType == 'edit'){
             tableAl.algorithmauthor = $('#gsName').val();
             tableAl.des = $('#gsDes').val();
+            tableAl.status =  $("#gsStatus").val();
         }
         let param = {
             tableAlgorithm:tableAl,
@@ -159,6 +159,8 @@
                         dictionary()
                         Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                    } else {
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
                 }
             })

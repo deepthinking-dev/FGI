@@ -10,7 +10,6 @@ $(function(){
     })
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
-        $("#dicDiv").show()
     })
     $("#selectOutIn").change(()=> {
         if ($("#selectOutIn").val() == "1") {
@@ -539,7 +538,7 @@ $(function(){
                 "moduleid": 0,
                 "remark": $('#company').val(),
                 "remark2":"",
-                "status":""
+                "status":$("#zdStatus").val()
             }
             dataAll.tableAlgorithm.id = $("#editDicYes").attr("editId");
             $.ajax({
@@ -1181,6 +1180,7 @@ $(function(){
         }
         $("#dataModulePage").hide();
         $("#lkrFrame").hide();
+        $("#dicDiv").hide();
         let AlgorithmId= $(e.target).attr('algorithmid')
         showMsg(AlgorithmId)
     })

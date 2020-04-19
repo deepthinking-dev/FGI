@@ -479,6 +479,7 @@
         </div>
         <div class="form-group">
             <div id="authorShow">
+                <input type="text" style="display: none" value="" id="gsStatus">
                 <div>
                     <span class="form-span">作者</span>
                     <input id="gsName" type="text" >
@@ -928,6 +929,7 @@
                     <div>
                         <span>分组</span><select type="text" id="group" style="width: 350px;height: 30px"></select>
                     </div>
+                    <input type="text" value="" id="zdStatus" style="display: none">
                 </div>
             <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
             <button style="background: #409eff;color: #fff;margin-bottom: 20px;margin-left: 20px" id="addZdcs">新增参数</button>
@@ -1856,9 +1858,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $("#editDicName").val(data.tableAlgorithm.algorithmname);
                     $("#editDicDes").val(data.tableAlgorithm.des);
                     $("#editAuthor").val(data.tableAlgorithm.algorithmauthor)
-                    $("#company").val("")
-                    $("#company").val(data.tableAlgorithm.remark)
-                    $("#zdcsList").empty()
+                    $("#company").val("");
+                    $("#company").val(data.tableAlgorithm.remark);
+                    $("#zdStatus").val("");
+                    $("#zdStatus").val(data.tableAlgorithm.status);
+                    $("#zdcsList").empty();
                     $("#addZdcs").show();
                     $("#editDic").show();
                     data.tableFuncs.map(t=>{
@@ -1944,6 +1948,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    $("#gsStatus").val("");
+                    $("#gsStatus").val(data.tableAlgorithm.status);
                     $("#companyGs").val("");
                     $("#companyGs").val(data.tableAlgorithm.remark);
                     $("#MathInput").val("");
