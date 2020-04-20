@@ -809,10 +809,10 @@
                                 字段类型
                             </td>
                             <td>
-                                备注
+                                字段表名
                             </td>
                             <td>
-                                字段表名
+                                备注
                             </td>
                             <td class="operate">
                                 操作
@@ -1276,9 +1276,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     });
-
-
-
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
     })
@@ -1360,8 +1357,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnName">${item.fieldname?item.fieldname:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
-                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>                 
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>                 
+                    
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
@@ -1394,8 +1392,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnName">${item.fieldname?item.fieldname:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
-                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                   
                     </tr>`
                 })
                 $('#addMb tbody').html(thStr)
@@ -1516,17 +1515,20 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${getTime()}请填写字段英文名称！ </li>`)
+                    $('.noticeList').append(`<li>${getTime()}请填写字段名称！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
                 if(items.children('.columnType').text() == "" && items.children('.columnType').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写字段类型！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
                 if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写字段表名！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
@@ -1559,6 +1561,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success: function(data) {
                     $(".moduleContentList").html('')
                     $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1617,6 +1620,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success: function(data) {
                     $(".moduleContentList").html('')
                     $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1655,9 +1659,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".dataSourceTbody").append(`<tr>
             <td class="columnName"><input type="text" value=""></td>
             <td class="columnType"><input type="text" value=""></td>
-            <td class="columnComment"><input type="text" value=""></td>
-         
             <td class="tableName"><input type="text" value=""></td>
+            <td class="columnComment"><input type="text" value=""></td>        
+            
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
     }
    
@@ -1713,6 +1717,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data){
                     window.bigData.delmoduleId = ''
                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
                 }
@@ -1802,11 +1807,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 if(flag){
                     let obj ={
-                        IS_NULLABLE:list.eq(4).text(),
                         COLUMN_NAME:list.eq(0).text(),
-                        COLUMN_TYPE:list.eq(2).text(),
+                        COLUMN_TYPE:list.eq(1).text(),
                         LENGTH:list.eq(3).text(),
-                        COLUMN_COMMENT:list.eq(1).text(),
+                        COLUMN_COMMENT:list.eq(2).text(),
                         TABLE_NAME:$("#fgiName").val()
                     }
                     modlueList.push(obj)
@@ -1839,9 +1843,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
             thStr += `<tr>
             <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
             <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
+            <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
             <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
            
-            <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
+            
             <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
         })
         $('#addMb tbody').append(thStr)
@@ -2465,11 +2470,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     sfWinList()
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             }
         })
@@ -2621,6 +2628,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function modifyGz(s) {
         if(editGzType) {
             $('.noticeList').append(`<li>${getTime()}当前编辑的规则需进行保存！ </li>`)
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         $("#gzDiv").hide();
@@ -2762,8 +2770,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success(data) {
                     if(data == "分组名称重复"){
                         $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     } else {
                         $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
@@ -2823,6 +2833,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 },
                 error(data){
                     $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             })
         } else {
@@ -2836,6 +2847,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success(data) {
                     if(data){
                         $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#groupEditDiv").hide();
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -2899,6 +2911,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#ruleDeleteDiv').hide()
                     reloadGroupList();
                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             }
         })
@@ -3133,8 +3146,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getModuleList()
             }
@@ -3150,8 +3165,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 console.log(data);
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getGzList()
             }
@@ -3166,8 +3183,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 sfWinList()
             }
@@ -3182,6 +3201,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {id :$("#moduleGroupDeleteYes").attr("deleteId")},
             success(res) {
                 $('.noticeList').append(`<li>${getTime()} ${res} </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 $("#moduleGroupDelete").hide();
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',

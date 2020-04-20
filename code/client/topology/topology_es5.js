@@ -50,6 +50,7 @@ var Topology = {
         var self = this;
         ww = JSON.stringify(canvas.data)
         $('.noticeList').append(`<li>${getTime()}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
     },
     // 绑定事件
     bindEvent: function () {
@@ -808,7 +809,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.varname;
+                                                data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -895,7 +896,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.varname;
+                                                data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -1005,6 +1006,7 @@ var Topology = {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
                                         $('.noticeList').append(`<li>${getTime()}操作失败！ </li>`)
+                                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
                                             selected = null;
@@ -1147,6 +1149,7 @@ var Topology = {
 
                                     } else {
                                         $('.noticeList').append(`<li>${getTime()}输出输入类型不匹配！ </li>`)
+                                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
                                                 canvas.data.lines.splice(i,1)
@@ -1160,6 +1163,7 @@ var Topology = {
                                     }
                                 } else {
                                     $('.noticeList').append(`<li>${getTime()}只能输出连接输入！ </li>`)
+                                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
                                             canvas.data.lines.splice(i,1)
@@ -1235,6 +1239,7 @@ var Topology = {
                                                             success(data) {
                                                                 if(data == true){
                                                                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                                                                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
                                                             }
@@ -1271,6 +1276,7 @@ var Topology = {
                                         success: function(data) {
                                             if(data == true){
                                                 $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                                                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }
                                         }
@@ -1316,7 +1322,13 @@ var Topology = {
                                             data: {Id: window.bigData.editRuleId},
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
-                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length >= dataAl.tableFuncs.length){
+                                                    let nowLists = []
+                                                    if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
+                                                        nowLists = self.tools[data.id].children
+                                                    }else{
+                                                        nowLists = dataAl.tableFuncs
+                                                    }
+                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length >= nowLists.length){
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
@@ -1326,7 +1338,7 @@ var Topology = {
                                                                     }else{
                                                                         str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                                     }
-                                                                        str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                        str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
                                                                     if(index.vartype == 1 || index.vartype == "基本类型"){
                                                                         str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                                                     }else if(index.vartype == 2 || index.vartype == "常量"){
@@ -1344,13 +1356,7 @@ var Topology = {
                                                         })
                                                        
                                                     }
-                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length < dataAl.tableFuncs.length){
-                                                        let nowLists = []
-                                                        if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
-                                                            nowLists = self.tools[data.id].children
-                                                        }else{
-                                                            nowLists = dataAl.tableFuncs
-                                                        }
+                                                    if(item.id == data.id&&item.tableInterfaceparametersList.length < nowLists.length){ 
                                                         nowLists.map(index =>{                                                           
                                                             str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                             if(index.inorout == 1){
@@ -1358,7 +1364,7 @@ var Topology = {
                                                             }else{
                                                                 str+= `<input value="输入" class="actionSelected1" disabled>  `
                                                             }
-                                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                                str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
                                                             if(index.vartype == 1 ||index.vartype == "基本类型" ){
                                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
@@ -1427,7 +1433,7 @@ var Topology = {
                                             }else{
                                                 str+= `<input value="输入" class="actionSelected1" disabled>  `
                                             }
-                                                str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
+                                                str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
                                             if(index.vartype == 1 ||index.vartype == "基本类型" ){
                                                 str+=`<input value="基本类型" class="actionSelected2" disabled>`
                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
@@ -1457,14 +1463,14 @@ var Topology = {
                                     })
                                     let lstr1=`<option>请选择</option>`
                                     dataAl.tableFuncs.map(item => {
-                                        lstr1 += `<option value="${item.varname}">${item.varname}</option>`
+                                        lstr1 += `<option value="${item.parametername}">${item.parametername}</option>`
                                     })
                                     self.tools[data.id].children.map((index,t)=>{
                                         if(index.remark == "xin"){
                                             $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                             setTimeout(function () {
                                                 $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
-                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.varname+"']").attr("selected",true);
+                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.parametername+"']").attr("selected",true);
                                             }, 100);
                                             
                                         }

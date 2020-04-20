@@ -57,10 +57,12 @@
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
             $('.noticeList').append(`<li>${getTime()} 请填写算子名称！</li>`)
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         if($('#MathInput').val() == ""){
             $('.noticeList').append(`<li>${getTime()} 请填写公式！！</li>`)
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         let tableAl ={
@@ -128,11 +130,13 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
-                        Topology.init();
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        // Topology.init();
                         dictionary()
                         $("#dicDiv").show()
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -158,8 +162,9 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         dictionary()
-                        Topology.init();
+                        // Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -225,6 +230,7 @@ function ConfirmLogic(){
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
         $('.noticeList').append(`<li>${getTime()}请填写逻辑运算名称!</li>`)
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
     if(logicLi.length > 0){
@@ -235,6 +241,7 @@ function ConfirmLogic(){
         }
     }else{
         $('.noticeList').append(`<li>${getTime()}请至少填写一个</li>`)
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
 
@@ -267,8 +274,9 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
-                    Topology.init();
+                    // Topology.init();
                     dictionary()
                 }
             }
@@ -284,8 +292,9 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
-                    Topology.init();
+                    // Topology.init();
                     dictionary()
                 }
             }
@@ -310,9 +319,11 @@ function uploadSure(){
         success(data) {
             $("#fileupload").hide();
             $('.noticeList').append(`<li>${getTime()}导入成功！</li>`)
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         },
         error(data){
             $('.noticeList').append(`<li>${getTime()}导入失败!</li>`)
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         }
     })
 }
@@ -426,6 +437,7 @@ function ruleSure(){
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })
     }else{
@@ -438,6 +450,7 @@ function ruleSure(){
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })
     }
@@ -463,6 +476,7 @@ function ConfirmDelAlgorithm(){
             }
             if(data.status == 2){
                 $('.noticeList').append(`<li>${getTime()}${data.msg} </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         }
     })
@@ -484,6 +498,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('.noticeList').append(`<li>${getTime()}删除成功 </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 canvas.data.nodes = [];
                 canvas.data.lines = [];               
                 window.bigData.ruleType = "add"
@@ -492,7 +507,7 @@ function ConfirmDelRule(){
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
                 $("#ruleDeleteDiv").hide()
-                $('#gzDiv').fadeToggle(500)
+                $('#gzDiv').show()
                 canvas.render();
             }
         }
@@ -505,6 +520,7 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(){
+    debugger
     //双击的大模块数据
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     //拷贝大模块数据变成小接口数据
@@ -519,7 +535,8 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                $('.noticeList').append(`<li>${getTime()}请选择变量名称！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请选择参数名称！ </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false;
             }
             //有uuid说明这个小接口已存在
@@ -690,11 +707,12 @@ function ActionSure(){
            id:id,
            uuid:uuid,
            algorithmid:currId,
-           varname:varName,
+           varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
            vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
            valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
            inorout:inorout,
-           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
+           parametername:varName
        }
        lsList.push(obj)
    }
@@ -753,14 +771,15 @@ function ActionSure(){
                 inorout = 1
             }
             obj = {
-                id:id,
+                id:id,   
                 uuid:uuid,
                 algorithmid:currId,
-                varname:varName,
+                varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
                 vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
                 valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
                 inorout:inorout,
-                remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title")
+                remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
+                parametername:varName
             }
             AddList.push(obj)
         }
@@ -806,6 +825,7 @@ function ActionSure(){
                         if(item.inorout == 0){
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                             window.Topology.dblclickNode.data.inNum --    
                             
                             nowList.map((test,R)=>{
@@ -863,6 +883,7 @@ function ActionSure(){
                             window.Topology.dblclickNode.data.outNum --
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
 
                             nowList.map((test,R)=>{
                                 
@@ -935,7 +956,7 @@ function ActionSure(){
             nowNodesList.map(index=>{
                 let index_UUid = index.uuid.substr((index.uuid.indexOf('---')-36),36)
                 if(update_UUid == index_UUid){
-                    item.text = index.varname
+                    item.text = index.parametername
                     canvas.render();
                 }
             })
@@ -943,36 +964,36 @@ function ActionSure(){
         
     })
     //修改接口参数，从数据库修改删除
-    if(UPdataList.length > 0 || AddList > 0){
-        if(window.bigData.ruleType == "edit"){
-            let operatorInterfaceDataModel ={
-                algorithmID:data.data.sid,
-                id:data.id ,
-                interfaceName:window.Topology.dblclickNode.text,
-                roleID:window.bigData.editRuleId,
-                tableInterfaceparametersList:[]
-            }
-           window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
-                let CsObj = {
-                    id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
-                    inorout:index.inorout,
-                    interfaceid:index.uuid.substr((index.uuid.indexOf('---')-36),36),
-                    parametersname:index.varname,
-                    parameterssources:index.id
-                }
-                operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)                  
-            })
-            $.ajax({
-                type:"post",
-                dataType: "json",
-                url:urlConfig.host+'/algorithmRule/modInterfaceRole',
-                contentType: "application/json;charset=UTF-8",
-                data:JSON.stringify(operatorInterfaceDataModel),
-                success: function(data) {
-                    $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
-                }
-            })
+
+    if(window.bigData.ruleType == "edit"){
+        let operatorInterfaceDataModel ={
+            algorithmID:data.data.sid,
+            id:data.id ,
+            interfaceName:window.Topology.dblclickNode.text,
+            roleID:window.bigData.editRuleId,
+            tableInterfaceparametersList:[]
         }
+        window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
+            let CsObj = {
+                id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
+                inorout:index.inorout,
+                interfaceid:index.uuid.substr((index.uuid.indexOf('---')-36),36),
+                parametersname:index.varname,
+                parameterssources:index.id
+            }
+            operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)                  
+        })
+        $.ajax({
+            type:"post",
+            dataType: "json",
+            url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify(operatorInterfaceDataModel),
+            success: function(data) {
+                $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            }
+        })
     }
 
     canvas.render();
@@ -1011,12 +1032,12 @@ function ruleAddButtonS(){
                     let actionInfoNum = $('.ruleContentDiv .actionInfo').length-1
                     let lstr1=`<option>请选择</option>`
                     data.tableFuncs.map(item => {
-                       lstr1 += `<option>${item.varname}</option>`
+                       lstr1 += `<option>${item.parametername}</option>`
                     })
                   $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
                   $('body').off("change").on('change','.varNameInput1',(e) => {
                     data.tableFuncs.map(item => {
-                       if($(e.target).val()== item.varname){
+                       if($(e.target).val()== item.parametername){
                             if(item.vartype == "1"){
                                 $(e.target).parent().children('.actionSelected2').val("基本类型")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
