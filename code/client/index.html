@@ -1099,7 +1099,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     //拖拽弹框
     $('body').on('mousedown','.head-hidden',(event) =>{
-        let  obj=$("#ruleAct"); 
+        var e = event || window.event;
+        let  obj=$("#ruleAct"),disX = 0, disY = 0;
         if(event.button==0){//判断是否点击鼠标左键  
             /*  
             * clientX和clientY代表鼠标当前的横纵坐标  
@@ -1108,19 +1109,41 @@ Date.prototype.Format = function (fmt) { // author: meizz
             * getX获取当前鼠标横坐标和对象离屏幕左侧距离之差（也就是left）值，  
             * getY和getX同样道理，这两个差值就是鼠标相对于对象的定位，因为拖拽后鼠标和拖拽对象的相对位置是不变的  
             */  
-            gapX=event.clientX-obj.offset().left;  
-            gapY=event.clientY-obj.offset().top;  
+            // 鼠标相对于div左侧位置
+            disX = event.clientX-obj.offset().left;  
+            disY= event.clientY-obj.offset().top;
             //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的  
             $(document).bind("mousemove",move);  
             //此处的$(document)可以改为obj  
-            $(document).bind("mouseup",stop);  
+            $(document).bind("mouseup",stop); 
             
         }  
         return false;//阻止默认事件或冒泡  
-        function move(event){  
+        function move(event){ 
+
+            let leftNum = 0,topnNum = 0
+             // 获取浏览器可见区域宽高，div宽高
+	        var browserWidth = document.documentElement.clientWidth,
+	        browserHeight = document.documentElement.clientHeight,
+	        boxWidth = document.getElementById('ruleAct').offsetWidth,
+            boxHeight = document.getElementById('ruleAct').offsetHeight;
+            leftNum =event.clientX-disX 
+            if((leftNum -disX) < 0){
+                leftNum = 0
+            }
+            if((leftNum+boxWidth) > browserWidth){
+                leftNum = browserWidth -boxWidth
+            }
+            topnNum = event.clientY-disY 
+            if(topnNum < 0){
+                topnNum = 0
+            }
+            if((topnNum+boxHeight) >browserHeight){
+                topnNum = browserHeight - boxHeight
+            }
             obj.css({  
-                "left":(event.clientX-gapX)+"px",  
-                "top":(event.clientY-gapY)+"px"  
+                "left":leftNum+"px",  
+                "top":topnNum+"px"  
             });  
             return false;//阻止默认事件或冒泡  
         }  
