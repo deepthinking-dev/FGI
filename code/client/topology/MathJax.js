@@ -130,6 +130,7 @@
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                         Topology.init();
                         dictionary()
+                        $("#dicDiv").show()
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
@@ -163,7 +164,6 @@
                 }
             })
         }
-        $("#dicDiv").show()
         sfWinList();
 }
 function fieldsClose(){
