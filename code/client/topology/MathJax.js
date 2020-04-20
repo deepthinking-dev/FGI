@@ -65,7 +65,7 @@
         }
         let tableAl ={
             algorithmauthor:$('#gsName').val(),
-            algorithmfun:$('#MathInput').val(),
+            algorithmfun:sessionStorage.latex,
             algorithmgroup:$('#groupGs').val(),
             algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:2,
