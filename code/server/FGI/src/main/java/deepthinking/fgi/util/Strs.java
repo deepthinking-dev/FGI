@@ -16,7 +16,9 @@ import java.util.*;
  */
 public class Strs {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static String regexVars = "\\W|\\d|sin|cos|tan|cot|log|ln|sqrt|_";// 需要剔除,剩下变量
+    private static String regexVars = "\\W|\\d|sin|cos|tan|cot|log|ln|sqrt|_|arcsin|arccos|alpha|beta|gamma|delta|epsilon|varepsilon" +
+            "|zeta|eta|theta|vartheta|iota|kappa|lambda|mu|nu|xi|omicron|pi|rho|sigma|phi|varphi|psi|chi|omega|overline|overleftarrow|overbrace" +
+            "|frac|times|dim|pmod|nabla|partial|forall|approx|Delta|dot|ggg|gg|>|<|ge|geqq|leq|leqq|equiv|ne|propto|pm|\\$|vert|\\{|\\}|\\/|\\[|\\]|int";// 需要剔除,剩下变量
 
     /**
      * 判断是否是空值或者纯空格
