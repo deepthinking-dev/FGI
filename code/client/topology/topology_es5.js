@@ -1382,31 +1382,6 @@ var Topology = {
                                             }
                                         })
                                     }else{                                                    
-                                    // canvas.data.nodes.map(item=>{
-                                    //     if(item.childStand && item.childStand.fUUid == data.id){
-                                    //         let uuid = item.id.substr((item.id.indexOf('---')-36),36)
-                                    //         dataAl.tableFuncs.map(index =>{
-                                    //             if(item.childStand.canshuId == index.id){
-                                    //                 str +=`<div class="actionInfo" data-uuid='${uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}'>`
-                                    //                 if(index.inorout == 1){
-                                    //                     str+=`<input value="输出" class="actionSelected1" disabled>  `
-                                    //                 }else{
-                                    //                     str+= `<input value="输入" class="actionSelected1" disabled>  `
-                                    //                 }
-                                    //                     str+=` <input value="${index.varname}"  class="varNameInput" disabled>`
-                                    //                 if(index.vartype == 1 ||index.vartype == "基本类型" ){
-                                    //                     str+=`<input value="基本类型" class="actionSelected2" disabled>`
-                                    //                 }else if(index.vartype == 2 || index.vartype == "常量" ){
-                                    //                     str+=`<input value="常量" class="actionSelected2" disabled>`
-                                    //                 }  else{
-                                    //                     str+=`<input value="对象" class="actionSelected2" disabled>`
-                                    //                 } 
-                                    //                     str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                    //                     </div>`                                                           
-                                    //             }
-                                    //         }) 
-                                    //     }
-                                    // })
                                     self.tools[data.id].children.map((index,t) =>{
                                         if(index.remark == "xin"){
                                             str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
