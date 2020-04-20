@@ -520,11 +520,14 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
-                    $("#editDic").hide()
-                    dictionary();
-                    // Topology.init();
-                    $("#dicDiv").show()
+                    if(data.status == 1){
+                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                        $("#editDic").hide()
+                        dictionary();
+                        $("#dicDiv").show()
+                    } else {
+                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                    }
                 }
             })
         } else {
