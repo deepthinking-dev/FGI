@@ -421,7 +421,10 @@ $(function(){
             type:"get",
             data: {type:2},
             success(data){
-                console.log(data);
+                if(data.length == 0){
+                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    return
+                }
                 $("#group").empty()
                 data.map(s=>{
                     $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)

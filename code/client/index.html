@@ -1419,6 +1419,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type: "get",
             data: {type: 1},
             success(data){
+                if(data.length == 0){
+                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    return
+                }
                 $("#modulegroup").empty();
                 data.map(s=>{
                     $("#modulegroup").append(`<option value="${s.groupname}">${s.groupname}</option>`)
@@ -1767,6 +1771,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {type:2},
             success(data){
+                if(data.length == 0){
+                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    return
+                }
+                $("#group").empty()
                 $("#groupGs").empty()
                 data.map(s=>{
                     $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
