@@ -67,7 +67,7 @@
         }
         let tableAl ={
             algorithmauthor:$('#gsName').val(),
-            algorithmfun:$('#MathInput').val(),
+            algorithmfun:sessionStorage.latex,
             algorithmgroup:$('#groupGs').val(),
             algorithmname:$('#AlgorithmnameY').val(),
             algorithmtype:2,
@@ -346,6 +346,10 @@ function ruleOpen(){
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},
         success(res) {
+            if(res.length == 0){
+                $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                return
+            }
             $("#gzGroupName").empty()
             res.map(s=>{
                 $("#gzGroupName").append(`<option value="${s.groupname}">${s.groupname}</option>`)

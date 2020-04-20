@@ -423,7 +423,10 @@ $(function(){
             type:"get",
             data: {type:2},
             success(data){
-                console.log(data);
+                if(data.length == 0){
+                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    return
+                }
                 $("#group").empty()
                 data.map(s=>{
                     $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
@@ -529,10 +532,14 @@ $(function(){
                 success(data) {
                     $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    $("#editDic").hide()
-                    dictionary();
-                    // Topology.init();
-                    $("#dicDiv").show()
+                    if(data.status == 1){
+                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                        $("#editDic").hide()
+                        dictionary();
+                        $("#dicDiv").show()
+                    } else {
+                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                    }
                 }
             })
         } else {
@@ -864,6 +871,7 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $('.Frame').fadeToggle(500)
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
@@ -886,7 +894,6 @@ $(function(){
                     })
                     $('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
-                    window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){
                         let str =``
@@ -956,7 +963,7 @@ $(function(){
                             }
                         }
                     }
-                    $('.Frame').fadeToggle(500)
+
                 }else if(data.tableAlgorithm.algorithmtype == 3){
                     $('.addButton').hide();
                     $(".closeLjButton").hide();
