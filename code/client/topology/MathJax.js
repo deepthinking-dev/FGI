@@ -524,7 +524,6 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(){
-    debugger
     //双击的大模块数据
     let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
     //拷贝大模块数据变成小接口数据
@@ -775,7 +774,7 @@ function ActionSure(){
                 inorout = 1
             }
             obj = {
-                id:id,   
+                id:id,
                 uuid:uuid,
                 algorithmid:currId,
                 varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
@@ -830,7 +829,7 @@ function ActionSure(){
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                            window.Topology.dblclickNode.data.inNum --    
+                            window.Topology.dblclickNode.data.inNum --
                             
                             nowList.map((test,R)=>{
                                 
@@ -985,7 +984,7 @@ function ActionSure(){
                 parametersname:index.varname,
                 parameterssources:index.id
             }
-            operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)                  
+            operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
         })
         $.ajax({
             type:"post",
