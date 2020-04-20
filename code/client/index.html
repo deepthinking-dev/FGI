@@ -55,14 +55,7 @@
             display: none;
         }
     </style>
-     <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            showProcessingMessages: false, 
-            tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
-        });
-    </script>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="./MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
     <script src="./topology/formula.js"></script>
     <script src="./toastr.js"></script>
@@ -73,129 +66,8 @@
     <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/defaultFilterFix.js"></script>
         <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
         <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-        <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script>
-        $(function() {
-            var content = "";
-            var Preview = {
-            delay: 150,        
-            preview: null,    
-            buffer: null,      
-            timeout: null,     
-            mjRunning: false,  
-            mjPending: false,  
-            oldText: null,    
-            Init: function () {
-                this.preview = document.getElementById("MathPreview");
-                this.buffer = document.getElementById("MathBuffer");
-            },
-            SwapBuffers: function () {
-                var buffer = this.preview, preview = this.buffer;
-                this.buffer = buffer; this.preview = preview;
-                buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
-                preview.style.position = ""; preview.style.visibility = "";
-            },
-            Update: function () {
-                var value = document.getElementById("MathInput").value
-                if (this.timeout) {clearTimeout(this.timeout)}
-                this.timeout = setTimeout(this.callback,this.delay);
-            },
-            CreatePreview: function () {
-                Preview.timeout = null;
-                if (this.mjPending) return;
-                var text = "`" + document.getElementById("MathInput").value + "`";
-                if (text === this.oldtext) return;
-                if (this.mjRunning) {
-                    this.mjPending = true;
-                    MathJax.Hub.Queue(["CreatePreview",this]);
-                } else {
-                    this.buffer.innerHTML = this.oldtext = text;
-                    this.mjRunning = true;
-                    MathJax.Hub.Queue(
-                        ["Typeset",MathJax.Hub,this.buffer],
-                        ["PreviewDone",this]
-                    );
-                }
-            },
-            PreviewDone: function () {
-                this.mjRunning = this.mjPending = false;
-                this.SwapBuffers();
-            }
-        };
-        function changeBds(value) {
-            document.getElementById("MathInput").value = value
-            Preview.Update()
-        };
-        parent.changeBds = changeBds
-        Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
-        Preview.callback.autoReset = true;  
-        Preview.Init();
-        Preview.Update();
-        
-        $("#MathInput").on("input", function(val) {
-            content = "$"+$(this).val()+"$";
-            let contentVal = $(this).val()
-            Preview.Update();
-            $.ajax({
-                type:"get",   
-                url:urlConfig.host+'/mark/getMark',
-                data:{
-                    target:$(this).val()
-                },
-                success: function(data) {
-                   data = window.formula(data);
-                    let  str = ''
-                    data.map(item => {
-                        str +=`<div class="MathJaxParam">
-                                <div class="width-50">
-                                    <span>参数名</span>
-                                    <input type="text" value="" class="MathJaxInputCs inputButton">
-                                </div>
-                                <div class="width-50">
-                                    <span>变量</span>
-                                    <input type="text"  readonly="readonly" value="${item}" class="MathJaxInput1 inputButton">
-                                </div>
-                                <div class="width-50 width-select">
-                                    <span>类型</span>
-                                    <select id="" class="MathJaxInput2 inputButton" >
-                                        <option value="2">常量</option>
-                                        <option value="1">基本类型</option>
-                                    </select>
-                                </div>
-                                <div class="width-50 isShow1"> 
-                                        <span>取值</span>
-                                        <input type="text" class="MathJaxInput3 inputButton">
-                                </div>
-                                <div class="width-50 isShow2"> 
-                                        <span>数据项</span>
-                                        <select class="MathJaxSelect MathJaxInput1 inputButton">
-                                            <option>byte</option>
-                                            <option>short</option>
-                                            <option>int</option>
-                                            <option>long</option>
-                                            <option>float</option>
-                                            <option>double</option>
-                                            <option>boolean</option>
-                                            <option>char</option>
-                                            <option>date</option>
-                                            <option>string</option>
-                                            <option>BLOB</option>
-                                            <option>boolean</option>
-                                            <option>array</option>
-                                        </select>
-                                </div>
-                                <div class="width-50"> 
-                                        <span>描述</span>
-                                        <input type="text" class="MathJaxInput4 inputButton">
-                                </div>
-                            </div>`                       
-                    })
-                    $(".MathJaxEdit").html(str)    
-                }
-            })  
-        });
-    });
-    </script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
+
     <script type="text/javascript">
 
         //实例化编辑器
@@ -2474,7 +2346,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     sfWinList()
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
-                    //Topology.init();
+                    Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){

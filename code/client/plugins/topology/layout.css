@@ -201,10 +201,15 @@ div{
     font-weight: bold;
 }
 .sub-title{
+    position: absolute;
     font-size: 12px;
-    margin-top: 5px;
+    top: 15px;
     margin-bottom: 5px;
     font-weight: 700;
+}
+.noticeList{
+    position: relative;
+    margin-top: 30px;
 }
 .hint{
     font-size: 10px;
