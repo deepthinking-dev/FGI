@@ -536,6 +536,7 @@ $(function(){
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
                         $("#editDic").hide()
                         dictionary();
+                        sfWinList();
                         $("#dicDiv").show()
                     } else {
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
@@ -588,6 +589,7 @@ $(function(){
                 }
             })
         }
+
     })
     $('body').on('click','#addZdcs',(e) => {
         $("#zdcsList").append(`

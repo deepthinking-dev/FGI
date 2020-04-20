@@ -165,6 +165,8 @@
                         // Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    } else {
+                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
                     }
                 }
             })
@@ -513,6 +515,8 @@ function ConfirmDelRule(){
                 $("#ruleDeleteDiv").hide()
                 $('#gzDiv').show()
                 canvas.render();
+                getGzList()
+                ruleGroupShow()
             }
         }
     })
