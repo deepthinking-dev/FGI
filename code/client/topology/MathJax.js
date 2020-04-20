@@ -128,7 +128,7 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
-                        Topology.init();
+                        //Topology.init();
                         dictionary()
                         $("#dicDiv").show()
                     } else {
@@ -158,7 +158,7 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         dictionary()
-                        Topology.init();
+                        //Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     }
                 }
@@ -268,7 +268,7 @@ function ConfirmLogic(){
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
-                    Topology.init();
+                    //Topology.init();
                     dictionary()
                 }
             }
@@ -285,7 +285,7 @@ function ConfirmLogic(){
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
                     $(".Logic").attr("style","display:none;");
-                    Topology.init();
+                    //Topology.init();
                     dictionary()
                 }
             }

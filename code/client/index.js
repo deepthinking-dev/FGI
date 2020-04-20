@@ -694,10 +694,6 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
-        if(editGzType) {
-            $('.noticeList').append(`<li>${getTime()}当前编辑的规则需进行保存！ </li>`)
-            return false;
-        }
         window.bigData.editRuleId = $(e.target).attr('ruleId')
         let ruleid =  $(e.target).attr('ruleId')
         $("#gzDiv").hide()
