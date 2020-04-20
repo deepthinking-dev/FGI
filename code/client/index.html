@@ -2095,12 +2095,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 })
                                 $('.Logic-form-field').html(str1)
                             }
-
+                            let obj;
                             algorithmfun = algorithmfun.split(" and ")
                             let str =``
                             for(let i=0;i<algorithmfun.length;i++){
                                 if(algorithmfun[i].indexOf('与') !=-1){
-                                    let obj = algorithmfun[i].split("与")
+                                     obj = algorithmfun[i].split("与")
                                     str+=` <li class="logicLi">
                                                 <select name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
@@ -2124,7 +2124,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if(algorithmfun[i].indexOf('或') !=-1){
-                                    let obj = algorithmfun[i].split("或")
+                                     obj = algorithmfun[i].split("或")
                                     str+=` <li class="logicLi">
                                                 <select name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
@@ -2148,7 +2148,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if(algorithmfun[i].indexOf('非') !=-1){
-                                    let obj = algorithmfun[i].split("非")
+                                     obj = algorithmfun[i].split("非")
                                     str+=` <li class="logicLi">
                                             <select name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
@@ -2172,7 +2172,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('<') !=-1) && (algorithmfun[i].indexOf('<=') == -1)){
-                                    let obj = algorithmfun[i].split("<")
+                                     obj = algorithmfun[i].split("<")
                                     str+=` <li class="logicLi">
                                                 <select name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
@@ -2196,7 +2196,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('<=') !=-1) && (algorithmfun[i].indexOf('<') !=-1)  && (algorithmfun[i].indexOf('=') !=-1)){
-                                    let obj = algorithmfun[i].split("<=")
+                                     obj = algorithmfun[i].split("<=")
                                     str+=` <li class="logicLi">
                                                 <select name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
@@ -2220,7 +2220,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') == -1)){
-                                    let obj = algorithmfun[i].split(">")
+                                     obj = algorithmfun[i].split(">")
                                     str+=` <li class="logicLi">
                                             <select name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
@@ -2244,7 +2244,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') !=-1) && (algorithmfun[i].indexOf('>=') !=-1)){
-                                    let obj = algorithmfun[i].split(">=")
+                                     obj = algorithmfun[i].split(">=")
                                     str+=` <li class="logicLi">
                                                 <select name="" class="Logic-form-field inputButton">
                                                     <option value="">${obj[0]}</option>
@@ -2268,7 +2268,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $('.logicLi').eq(i).find(".Logic-form-field").find("option[value='"+obj[0]+"']").attr("selected",true);
                                 }
                                 if((algorithmfun[i].indexOf('=') !=-1) && (algorithmfun[i].indexOf('>') ==-1) && (algorithmfun[i].indexOf('<') == -1)){
-                                    let obj = algorithmfun[i].split("=")
+                                     obj = algorithmfun[i].split("=")
                                     str+=` <li class="logicLi">
                                             <select name="" class="Logic-form-field inputButton">
                                                 <option value="">${obj[0]}</option>
