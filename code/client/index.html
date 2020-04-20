@@ -277,7 +277,7 @@
             var arr = [];
             arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
             arr.push("编辑器的纯文本内容为：");
-            arr.push(UE.getEditor('editor').getContentTxt());
+            arr.push(UE.getEditor('editor').hasContents());
             alert(arr.join("\n"));
         }
         function hasContent() {
@@ -2125,7 +2125,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname)
                     $('#AlgorithmnameY').attr({"value":data.tableAlgorithm.algorithmname,"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid});
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
-                    window.changeBds(data.tableAlgorithm.algorithmfun);
+
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){
                         let str =``

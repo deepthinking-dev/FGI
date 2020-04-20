@@ -22,7 +22,7 @@ body .form-input{
 /* 公式编辑弹框 */
 .Frame{
     position: absolute;
-    height: 700px;
+    height: 750px;
     width: 700px;
     /* display: flex; */
     display: none;
@@ -32,7 +32,7 @@ body .form-input{
     background-size: 100% 100%;
     background-repeat: no-repeat;
     margin:0 auto;
-    top: 15%; 
+    top: 12%;
     left: 30%;
     z-index: 999;
 }
@@ -145,10 +145,10 @@ body .form-input{
 
 .MathJaxEdit{
     position: relative;
-    top: 80px;
+    top: 65px;
     margin: 0 auto;
     width:98%;
-    height: 250px;
+    height: 200px;
     overflow: auto;
 }
 .MathJaxEdit div{

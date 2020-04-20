@@ -851,6 +851,7 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $('.Frame').fadeToggle(500)
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
@@ -873,7 +874,6 @@ $(function(){
                     })
                     $('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
-                    window.changeBds(data.tableAlgorithm.algorithmfun);
                     window.bigData.formulaType = 'edit';
                     if(data.tableFuncs.length>0){
                         let str =``
@@ -943,7 +943,7 @@ $(function(){
                             }
                         }
                     }
-                    $('.Frame').fadeToggle(500)
+
                 }else if(data.tableAlgorithm.algorithmtype == 3){
                     $('.addButton').hide();
                     $(".closeLjButton").hide();
