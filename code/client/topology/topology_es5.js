@@ -1040,8 +1040,8 @@ var Topology = {
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
-                                        $('.noticeList').append(`<li>${getTime()}操作失败！ </li>`)
-                                        toastr.info(`操作失败！` )
+                                        $('.noticeList').append(`<li>${getTime()}【算法连线】操作失败！ </li>`)
+                                        toastr.info(`【算法连线】操作失败！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
@@ -1184,8 +1184,8 @@ var Topology = {
                                         }
 
                                     } else {
-                                        $('.noticeList').append(`<li>${getTime()}输出输入类型不匹配！ </li>`)
-                                        toastr.info(`输出输入类型不匹配！` )
+                                        $('.noticeList').append(`<li>${getTime()}【算法连线】输出输入类型不匹配！ </li>`)
+                                        toastr.info(`【算法连线】输出输入类型不匹配！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
@@ -1199,8 +1199,8 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    $('.noticeList').append(`<li>${getTime()}只能输出连接输入！ </li>`)
-                                    toastr.info(`只能输出连接输入！` )
+                                    $('.noticeList').append(`<li>${getTime()}【算法连线】只能输出连接输入！ </li>`)
+                                    toastr.info(`【算法连线】只能输出连接输入！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
@@ -1236,7 +1236,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            if(data.nodes.length==0){
+                            if(data.nodes.length==0 && data.lines.length == 0){
                                 $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
                                 toastr.info(`请选择要删除的节点或者线！` )
                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1281,8 +1281,8 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
-                                                                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                                                                    toastr.info(`删除成功！` )
+                                                                    $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
+                                                                    toastr.info(`【算法】删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
@@ -1319,8 +1319,8 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
-                                                $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                                                toastr.info(`删除成功！` )
+                                                $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
+                                                toastr.info(`【算法】删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }
@@ -1958,8 +1958,25 @@ var Topology = {
     },
     // 撤销
     undo: function () {
-        debugger
         canvas.undo();
+        let arrayList =[]
+        let fuuid1 =""
+        canvas.data.nodes.map(item=>{
+            if(item.childStand){
+                window.Topology.tools[item.childStand.fUUid].children.map((index,i)=>{
+                    fuuid1 =item.childStand.fUUid
+                    let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
+                    if(fuuid == index.uuid){
+                       
+                        arrayList.push(index)
+                        
+                    }
+                })
+            }
+        })
+        // window.Topology.tools[fuuid1].children = []
+        // window.Topology.tools[fuuid1].children  =arrayList
+        console.log(arrayList)
     },
     // 恢复
     redo: function () {

@@ -15,7 +15,7 @@ body{
     top: 0;
     right: 10px;
     color: #45a1e9;
-    height: 200px;
+    height: 220px;
     border: 1px solid #45a1e9;
     z-index: 99999;
 }
@@ -116,7 +116,7 @@ body{
     line-height: 20px;
 
 }
-.yjl_tools .menu-a-delete {
+.yjl_tools .deleteDiv {
     position: relative;
     display: inline-block;
     width: 55px;
@@ -126,12 +126,15 @@ body{
     cursor: pointer;
     font-size: 12px;
     text-align: center;
-    line-height: 10px;
+    line-height: 20px;
 }
-.yjl_tools .menu-a-delete a{
+.yjl_tools .undoDiv{
+    top: -4px;
+}
+.yjl_tools .deleteDiv a{
     color: #45a1e9;
 }
-.yjl_tools .menu-a-delete a i{
+.yjl_tools .deleteDiv a i{
     background-image: url(./static/delete.png);
     background-size: 12px 14px;
     background-repeat: no-repeat;
@@ -144,12 +147,12 @@ body{
     left: 5px;
 }
 
-.yjl_tools .menu-a-undo a{
+.yjl_tools .undoDiv a{
     position: relative;
     color: #45a1e9;
     left: 4px;
 }
-.yjl_tools .menu-a-undo a i{
+.yjl_tools .undoDiv a i{
     background-image: url(./static/undo.png);
     background-size: 16px 16px;
     background-repeat: no-repeat;
@@ -160,6 +163,21 @@ body{
     top: 0;
     position: relative;
     left: 3px;
+}
+.yjl_tools .clearCanvas{
+    left: 3px
+}
+.yjl_tools .clearCanvas i{
+    background-image: url(./static/clear.png);
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
+    position: relative;
+    left: 5px;
 }
 .algorithmFoot{
     width: 100%;
@@ -1031,7 +1049,7 @@ body{
     width: 65px;
     height: 390px;
     position: absolute;
-    top: 210px;
+    top: 230px;
     right: 10px;
     display: none;
     z-index: 999;
