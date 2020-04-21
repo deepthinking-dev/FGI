@@ -56,14 +56,14 @@
     //提交算子信息及公式编辑
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 请填写算子名称！</li>`)
-            toastr.info(`请填写算子名称！` )
+            $('.noticeList').append(`<li>${getTime()} 【算法】请填写算子名称！</li>`)
+            toastr.info(`【算法】请填写算子名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         if($('#MathInput').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 请填写公式！</li>`)
-            toastr.info(`请填写公式！` )
+            $('.noticeList').append(`<li>${getTime()} 【算法】请填写公式！</li>`)
+            toastr.info(`【算法】请填写公式！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -131,15 +131,15 @@
                 success: function(data) {
                     if(data.status == 1){
                         $(".Frame").hide();
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
-                        toastr.info(`${data.msg}！` )
+                        $('.noticeList').append(`<li>${getTime()} 【算法】${data.msg}！</li>`)
+                        toastr.info(`【算法】${data.msg}！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         // Topology.init();
                         dictionary()
                         $("#dicDiv").show()
                     } else {
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
-                        toastr.info(`${data.msg}！` )
+                        $('.noticeList').append(`<li>${getTime()} 【算法】${data.msg}！</li>`)
+                        toastr.info(`【算法】${data.msg}！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
@@ -167,12 +167,12 @@
                         $(".Frame").hide();
                         dictionary()
                         // Topology.init();
-                        $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
-                        toastr.info(`保存成功！` )
+                        $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
+                        toastr.info(`【算法】保存成功！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     } else {
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
-                        toastr.info(`${data.msg}！` )
+                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg}！</li>`)
+                        toastr.info(`【算法】${data.msg}！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
@@ -233,8 +233,8 @@ function ConfirmLogic(){
     let formula=""
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
-        $('.noticeList').append(`<li>${getTime()}请填写逻辑运算名称!</li>`)
-        toastr.info(`请填写逻辑运算名称！` )
+        $('.noticeList').append(`<li>${getTime()}【算法】请填写逻辑运算名称!</li>`)
+        toastr.info(`【算法】请填写逻辑运算名称！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
@@ -245,8 +245,8 @@ function ConfirmLogic(){
             formula += obj+ " and ";
         }
     }else{
-        $('.noticeList').append(`<li>${getTime()}请至少填写一个</li>`)
-        toastr.info(`请至少填写一个！` )
+        $('.noticeList').append(`<li>${getTime()}【算法】请至少填写一个</li>`)
+        toastr.info(`【算法】请至少填写一个！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
@@ -279,8 +279,8 @@ function ConfirmLogic(){
             data:JSON.stringify(param),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
-                    toastr.info(`保存成功！` )
+                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
+                    toastr.info(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -298,8 +298,8 @@ function ConfirmLogic(){
             data:JSON.stringify(tableAl),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
-                    toastr.info(`保存成功！` )
+                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
+                    toastr.info(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -357,8 +357,8 @@ function ruleOpen(){
         data:{type:3},
         success(res) {
             if(res.length == 0){
-                $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
-                toastr.info(`请先添加分组!` )
+                $('.noticeList').append(`<li>${getTime()}请先添加【规则】分组！</li>`)
+                toastr.info(`请先添加【规则】分组!` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return
             }
@@ -459,8 +459,9 @@ function ruleSure(){
             data:JSON.stringify(tableRole),
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
-                $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
-                toastr.info(`修改成功！` )
+                $('.noticeList').append(`<li>${getTime()}【规则】修改成功！ </li>`)
+                toastr.info(`【规则】修改成功！` )
+                window.bigData.isExportId = data.tableRole.id
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })
@@ -473,10 +474,15 @@ function ruleSure(){
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
                 $("#sureRule").hide()
-                $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
-                toastr.info(`保存成功！` )
+                $('.noticeList').append(`<li>${getTime()}【规则】保存成功！ </li>`)
+                toastr.info(`【规则】保存成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + data.tableRole.id
+                window.bigData.isExportId = data.tableRole.id
+                if( window.bigData.isExportButton){
+                    location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + data.tableRole.id
+                    window.bigData.isExportButton = false
+                }
+              
             }
         })
     }
@@ -502,8 +508,8 @@ function ConfirmDelAlgorithm(){
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
-                $('.noticeList').append(`<li>${getTime()}${data.msg} </li>`)
-                toastr.info(`${data.msg}` )
+                $('.noticeList').append(`<li>${getTime()}【算法】${data.msg} </li>`)
+                toastr.info(`【算法】${data.msg}` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         }
@@ -525,12 +531,13 @@ function ConfirmDelRule(){
         success: function(data) {
             if(data == true){
                 window.bigData.delRuleId = ''
-                $('.noticeList').append(`<li>${getTime()}删除成功 </li>`)
-                toastr.info(`删除成功` )
+                $('.noticeList').append(`<li>${getTime()}【算法】删除成功 </li>`)
+                toastr.info(`【算法】删除成功` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 canvas.data.nodes = [];
                 canvas.data.lines = [];               
                 window.bigData.ruleType = "add"
+                window.bigData.isExportId = ''
                 window.Topology.tools = {}
                 window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
@@ -565,8 +572,8 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                $('.noticeList').append(`<li>${getTime()}请选择参数名称！ </li>`)
-                toastr.info(`请选择参数名称！` )
+                $('.noticeList').append(`<li>${getTime()}请选择【算法】参数名称！ </li>`)
+                toastr.info(`请选择【算法】参数名称！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false;
             }
@@ -855,8 +862,8 @@ function ActionSure(){
                     if(Del1UUid == Del2UUid){                       
                         if(item.inorout == 0){
                             canvas.data.nodes.splice(i,1); 
-                            $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                            toastr.info(`删除成功！` )
+                            $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
+                            toastr.info(`【算法参数】删除成功！` )
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                             window.Topology.dblclickNode.data.inNum --
                             
@@ -914,8 +921,8 @@ function ActionSure(){
                         }else{
                             window.Topology.dblclickNode.data.outNum --
                             canvas.data.nodes.splice(i,1); 
-                            $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                            toastr.info(`删除成功！` )
+                            $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
+                            toastr.info(`【算法参数】删除成功！` )
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
 
                             nowList.map((test,R)=>{
@@ -1023,8 +1030,8 @@ function ActionSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(operatorInterfaceDataModel),
             success: function(data) {
-                $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
-                toastr.info(`修改成功！` )
+                $('.noticeList').append(`<li>${getTime()}【算法参数】修改成功！ </li>`)
+                toastr.info(`【算法参数】修改成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })

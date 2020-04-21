@@ -1054,7 +1054,8 @@
         isAddInOutType: 'out',
         editRuleId:'',
         ruleType:'add',
-        isExport: false
+        isExportId: '',
+        isExportButton:false
     }
     window.filed ={
         inputFieldsTarget:'',
@@ -1193,7 +1194,29 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     
     $('body').on('click','.export',(e) =>{
-        $('.noticeList').append(`<li>${getTime()}请先暂存</li>`)
+        window.bigData.isExportButton = true
+       if(window.bigData.isExportId == "") {
+        $("#sureRule").show()
+            $.ajax({
+            url:urlConfig.host+ '/group/findAllGroupMessagesByType',
+            data:{type:3},
+            success(res) {
+                if(res.length == 0){
+                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    toastr.info(`请先添加分组!` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    return
+                }
+                $("#gzGroupName").empty()
+                res.map(s=>{
+                    $("#gzGroupName").append(`<option value="${s.groupname}">${s.groupname}</option>`)
+                })
+            }
+        })
+       }else{
+        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + window.bigData.isExportId
+       }
+       
 
     })
     $('body').on('click','.colorTpye',(e) =>{
@@ -1205,10 +1228,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     
     $('body').on('click','.clearCanvas',(e) =>{
-        canvas.data.nodes = []
-        canvas.data.lines = []
-        window.Topology.Tools = []
-        canvas.render();
+        location.reload();
     })
     function changeVarType(e){
         if(e.target.value == "2"){

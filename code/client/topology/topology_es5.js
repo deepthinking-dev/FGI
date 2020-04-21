@@ -1039,8 +1039,8 @@ var Topology = {
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
-                                        $('.noticeList').append(`<li>${getTime()}操作失败！ </li>`)
-                                        toastr.info(`操作失败！` )
+                                        $('.noticeList').append(`<li>${getTime()}【算法连线】操作失败！ </li>`)
+                                        toastr.info(`【算法连线】操作失败！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
@@ -1183,8 +1183,8 @@ var Topology = {
                                         }
 
                                     } else {
-                                        $('.noticeList').append(`<li>${getTime()}输出输入类型不匹配！ </li>`)
-                                        toastr.info(`输出输入类型不匹配！` )
+                                        $('.noticeList').append(`<li>${getTime()}【算法连线】输出输入类型不匹配！ </li>`)
+                                        toastr.info(`【算法连线】输出输入类型不匹配！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
@@ -1198,8 +1198,8 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    $('.noticeList').append(`<li>${getTime()}只能输出连接输入！ </li>`)
-                                    toastr.info(`只能输出连接输入！` )
+                                    $('.noticeList').append(`<li>${getTime()}【算法连线】只能输出连接输入！ </li>`)
+                                    toastr.info(`【算法连线】只能输出连接输入！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
@@ -1280,8 +1280,8 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
-                                                                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                                                                    toastr.info(`删除成功！` )
+                                                                    $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
+                                                                    toastr.info(`【算法】删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
@@ -1318,8 +1318,8 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
-                                                $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                                                toastr.info(`删除成功！` )
+                                                $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
+                                                toastr.info(`【算法】删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }

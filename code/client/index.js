@@ -252,8 +252,8 @@ $(function(){
     $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
-                $('.noticeList').append(`<li>${getTime()}行为值来源为对象才能赋值！ </li>`)
-                toastr.info(`行为值来源为对象才能赋值！` )
+                $('.noticeList').append(`<li>${getTime()}【算法】行为值来源为对象才能赋值！ </li>`)
+                toastr.info(`【算法】行为值来源为对象才能赋值！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false
             }
@@ -265,8 +265,8 @@ $(function(){
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
                     if(res == ""){
-                        $('.noticeList').append(`<li>${getTime()}非本系统模型，无选择参数！ </li>`)
-                        toastr.info(`非本系统模型，无选择参数！` )
+                        $('.noticeList').append(`<li>${getTime()}【算法】非本系统模型，无选择参数！ </li>`)
+                        toastr.info(`【算法】非本系统模型，无选择参数！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         return false;
                     }
@@ -446,8 +446,8 @@ $(function(){
             data: {type:2},
             success(data){
                 if(data.length == 0){
-                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
-                    toastr.info(`请先添加分组！` )
+                    $('.noticeList').append(`<li>${getTime()}请先添加【算法】分组！</li>`)
+                    toastr.info(`请先添加【算法】分组！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
@@ -465,8 +465,8 @@ $(function(){
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
-            $('.noticeList').append(`<li>${getTime()}请填写算法名称！ </li>`)
-            toastr.info(`请填写算法名称！` )
+            $('.noticeList').append(`<li>${getTime()}【算法】请填写算法名称！ </li>`)
+            toastr.info(`【算法】请填写算法名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -509,22 +509,22 @@ $(function(){
             obj.parametername = $(s).find('.zdcsCsmc').val() //中文名称
             if(obj.parametername == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写中文名！ </li>`)
-                toastr.info(`请填写中文名！` )
+                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写中文名！ </li>`)
+                toastr.info(`【算法字典】请填写中文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写英文名！ </li>`)
-                toastr.info(`请填写英文名！` )
+                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写英文名！ </li>`)
+                toastr.info(`【算法字典】请填写英文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
             if(obj.inorout == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写输入输出！ </li>`)
-                toastr.info(`请填写输入输出！` )
+                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写输入输出！ </li>`)
+                toastr.info(`【算法字典】请填写输入输出！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
@@ -532,8 +532,8 @@ $(function(){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
                 if(obj.valvalue == ""){
                     flag = false;
-                    $('.noticeList').append(`<li>${getTime()}请填写取值！ </li>`)
-                    toastr.info(`请填写取值！` )
+                    $('.noticeList').append(`<li>${getTime()}【算法字典】请填写取值！ </li>`)
+                    toastr.info(`【算法字典】请填写取值！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             } else if(obj.vartype == "1") {
@@ -559,8 +559,8 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
-                    toastr.info(`保存成功！` )
+                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！ </li>`)
+                    toastr.info(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
@@ -715,6 +715,8 @@ $(function(){
     $('body').on('click','.lkr-list-ediRule',(e) => {
         window.bigData.editRuleId = $(e.target).attr('ruleId')
         let ruleid =  $(e.target).attr('ruleId')
+        window.bigData.isExportId = ruleid
+        window.Topology.Tools = {}
         $("#gzDiv").hide()
         $.ajax({
             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
