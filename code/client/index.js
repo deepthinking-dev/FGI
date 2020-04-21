@@ -634,7 +634,7 @@ $(function(){
     //点击删除模型
     $('body').on('click','.lkr-list-del',(e) => {
         window.bigData.delmoduleId = $(e.target).attr('moduleId')
-        $('#lkrFrameDel').fadeToggle(500)
+        $('#lkrFrameDel').show()
     })
   
     // 点击删除算子
@@ -873,7 +873,7 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
-                    $('.Frame').fadeToggle(500)
+                    $('.Frame').show()
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
@@ -1189,7 +1189,7 @@ $(function(){
                         }
                     })
 
-                    $(".Logic").fadeToggle(500)
+                    $(".Logic").show()
                 }
             }
         })

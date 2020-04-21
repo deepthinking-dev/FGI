@@ -343,7 +343,7 @@ function RelateClose(){
 }
 //规则弹框
 function ruleOpen(){
-    $("#sureRule").fadeToggle(500);
+    $("#sureRule").show();
     $.ajax({
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},

@@ -1312,7 +1312,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#fgiSource').show();
         $('.addsjyth').show();
         $('#lkrFrame .lkr-button').show()
-        $('#lkrFrame').fadeToggle(500)
+        $('#lkrFrame').show()
+        $("#mouldName").attr("readonly",false);
+        $("#mouldRemark").attr("readonly",false);
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type: "get",
@@ -1400,7 +1402,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
      * 关闭模型二次删除确认框
     */
     function lkrFrameDelClose(){
-        $('#lkrFrameDel').fadeToggle(500)
+        $('#lkrFrameDel').hide()
     }
     /**
      * 关闭新建参数模型框
@@ -1409,7 +1411,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         reseAddMb()
         $("#modulegroup").show();
         $("#modulegroupshow").hide();
-        $('#lkrFrame').fadeToggle(500)
+        $('#lkrFrame').hide()
     }
     function Confirm(){
         let mouldParam = []
@@ -1617,7 +1619,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     window.bigData.delmoduleId = ''
                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
                     getModuleList()
-                    $('#lkrFrameDel').fadeToggle(500)
+                    $('#lkrFrameDel').hide()
                 }
             }
         })
@@ -2477,11 +2479,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
-            $('#dataModulePage').fadeToggle(500)
+            $('#dataModulePage').show()
             getModuleList()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
-            $('#dicDiv').fadeToggle(500)
+            $('#dicDiv').show()
             sfWinList();
             $.ajax({
                 url: urlConfig.host + '/module/GetAllModule',
@@ -2496,7 +2498,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
         if($('#flex_tools .liactive').text() == "规则库"){
-            $('#gzDiv').fadeToggle(500)
+            $('#gzDiv').show()
             getGzList()
         }
     }
