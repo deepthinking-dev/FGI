@@ -2507,15 +2507,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     $("#searchName").bind('input propertychange',function(s){
         let val = $("#searchName").val();
-        if(val == "") return;
+        if(val == ""){
+            $('#modelPageDiv .panel-collapse').each((i,s)=>{
+                $(s).removeClass("in");
+            })
+            $('#algorithmPage .panel-collapse').each((i,s)=>{
+                $(s).removeClass("in");
+            })
+            $('#ruleMde .panel-collapse').each((i,s)=>{
+                $(s).removeClass("in");
+            })
+            return false;
+        }
         var list=[];
         if($('.liactive').text() == "模型库"){
             $('#modelPageDiv .panel-heading').each((i,s)=>{
                 if($(s).children().children().text().includes(val)){
                     $(s).next().addClass("in");
+                    $(s).next().css('height',"")
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         $(x).show()
-
                     })
                 } else {
                     // $(s).next().removeClass("in");
@@ -2523,6 +2534,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         if($(x).text().includes(val)){
                             $(x).show();
                             $(x).parent().parent().parent().parent().addClass("in")
+                            $(x).parent().parent().parent().parent().css('height',"")
                             list.push($(x).parent().parent().parent().parent())
                         } else {
                             $(x).hide()
@@ -2535,6 +2547,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $('#algorithmPage .panel-heading').each((i,s)=>{
                 if($(s).children().children().text().includes(val)){
                     $(s).next().addClass("in");
+                    $(s).next().css('height',"")
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         $(x).show()
                     })
@@ -2542,8 +2555,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         if($(x).text().includes(val)){
                             $(x).show();
-                            $(x).parent().parent().parent().parent().addClass("in")
-                            list.push($(x).parent().parent().parent().parent())
+                            list.push($(x).parent().parent().parent())
+                            $(x).parent().parent().parent().css('height',"")
                         } else {
                             $(x).hide()
                         }
@@ -2554,6 +2567,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $('#ruleMde .panel-heading').each((i,s)=>{
                 if($(s).children().children().text().includes(val)){
                     $(s).next().addClass("in");
+                    $(s).next().css('height',"")
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         $(x).show()
                     })
@@ -2562,6 +2576,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         if($(x).text().includes(val)){
                             $(x).show();
                             $(x).parent().parent().parent().parent().addClass("in")
+                            $(x).parent().parent().parent().parent().css('height',"")
                             list.push($(x).parent().parent().parent().parent())
                         } else {
                             $(x).hide()
@@ -2619,6 +2634,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
      }
     $('#flex_tools span').click((e)=>{
         $('#flex_tools span').removeClass("liactive")
+        $("#searchName").val("");
         var activeName;
         if(e.target.localName == "i"){
             $(e.target).parent().addClass("liactive")
