@@ -476,6 +476,7 @@ function ruleSure(){
                 $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                 toastr.info(`保存成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + data.tableRole.id
             }
         })
     }
