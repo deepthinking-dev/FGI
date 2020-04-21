@@ -137,6 +137,7 @@
                         // Topology.init();
                         dictionary()
                         $("#dicDiv").show()
+
                     } else {
                         $('.noticeList').append(`<li>${getTime()} 【算法】${data.msg}！</li>`)
                         toastr.info(`【算法】${data.msg}！` )

@@ -248,8 +248,8 @@
            <div style="margin: 20px 20px;height: 400px;overflow: auto;display: none" id="actionOutDiv"></div>
            <span style="margin-left: 20px;margin-top: 4px">逻辑关系</span>
            <select id="addLjSelect">
-               <option>&&</option>
-               <option>||</option>
+               <option>&</option>
+               <option>|</option>
                <option>!</option>
            </select>
            <button class="addLjgxType" type="button"  style="background: #409eff;color: #fff;margin-left: 15px;height: 20px;border: none;width: 22px">+</button>
@@ -1363,10 +1363,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('#lkrFrame .lkr-button').hide();
                 window.bigData.editmoduleId = data.id
                 let thStr=``
+                debugger
                 data.modulefields.map(item => {
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
-                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnComment">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnName">${item.englishname?item.englishname:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td> 
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
                     <td class="columnRemark"></td>
@@ -1583,6 +1584,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#lkrFrame').fadeToggle(500)
                     $("#dataModulePage").show()
                     getModuleList()
+                    dataModlue()
                 }
                }) 
             }
@@ -1650,6 +1652,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
                                 getModuleList()
+                                dataModlue()
                             }
                         })
                     }
@@ -3000,6 +3003,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             type:"get",
                             data: {type :$("#groupInputName").attr("type")},
                             success(data) {
+                                var types = $("#groupInputName").attr("type");
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
                                 if(data.length){
@@ -3013,7 +3017,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
                                            `)
@@ -3079,6 +3083,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             success(data) {
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
+                                var typess = $("#groupInputName").attr("type");
                                 if(data.length){
                                     $("#groupTable").append(`<thead>
                                         <th style="width: 220px">分组名称</th>
@@ -3090,7 +3095,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
                                            `)
@@ -3098,6 +3103,35 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                             }
                         })
+                        if($("#groupInputName").attr("type") == 1){
+                            $.ajax({
+                                url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                                type: "get",
+                                data: {type: 1},
+                                success(data) {
+                                    $("#modelListRight").empty()
+                                    data.map((s, index) => {
+                                        $("#modelListRight").append(`<div class="panel panel-default">
+                                                  <div class="panel-heading" role="tab">
+                                                      <h4 class="panel-title">
+                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
+                                                      </h4>
+                                                  </div>
+                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
+                                                      <div class="panel-body">
+                                                          <table class="sfGruopTable"></table>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              `)
+                                    })
+                                }
+                            })
+                        } else if($("#groupInputName").attr("type") == 2){
+                            dictionary()
+                        } else if($("#groupInputName").attr("type") == 3){
+                            ruleGroupShow()
+                        }
                     }
                 }
             })
@@ -3425,7 +3459,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     //删除模型分组
     $("#moduleGroupDeleteYes").click(()=>{
-        var type = $("#moduleGroupDeleteYes").attr("type");
         $.ajax({
             url: urlConfig.host + '/group/deleteTableGroupMessage',
             type:"get",
@@ -3435,11 +3468,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 toastr.info(`${res} ` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 $("#moduleGroupDelete").hide();
+                var type = $("#moduleGroupDeleteYes").attr("type");
+                console.log(type);
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',
                     type:"get",
                     data: {type :type},
                     success(data) {
+                        console.log(type);
                         $("#groupTable").empty()
                         if(data.length){
                             $("#groupTable").append(`<thead>
@@ -3495,6 +3531,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             })
                         }
                         if(type == 3){
+                            debugger
                             $("#ruleListRight").empty()
                             data.map((s,index)=>{
                                 $("#ruleListRight").append(`<div class="panel panel-default">
@@ -3527,7 +3564,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     $(".closeEditDic").click(()=>{
         $("#editDic").hide();
-        $("#dicDiv").show();
     })
 </script>
 </body>

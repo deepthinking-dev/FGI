@@ -42,11 +42,13 @@ $(function(){
                 if ($("#addActionButton").attr("resData")) {//后台返回数据
                     $("#actionInDiv").empty();
                     $("#actionMsgIn").val($("#addActionButton").attr("actionRelation"))
+                    var from_name = $("#addActionButton").attr("from_name");
+                    var from_id = $("#addActionButton").attr("from_id");
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
                         $("#actionInDiv").append(`
                               <div style="margin: 10px 0">
                                    <i>${i+1}</i>
-                                   <span>行为值来源</span><input class="xwzly_in" disabled>
+                                   <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                                    <span>行为</span><select class="xwSelect_in">
                                    <option value=">">></option>
                                    <option value="<"><</option>
@@ -66,6 +68,8 @@ $(function(){
                         $('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
                     })
                 } else {
+                    var from_name = $("#addActionButton").attr("from_name");
+                    var from_id = $("#addActionButton").attr("from_id");
                     globalActionDatas.map(s => {
                         if (s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")) {
                             try {
@@ -75,7 +79,7 @@ $(function(){
                                     $("#actionInDiv").append(`
                                       <div style="margin: 10px 0">
                                            <i>${i+1}</i>
-                                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                                            <span>行为</span><select class="xwSelect_in">
                                            <option value=">">></option>
                                            <option value="<"><</option>
@@ -581,6 +585,7 @@ $(function(){
                         dictionary();
                         sfWinList();
                         $("#dicDiv").show()
+                        dictionaryShow()
                     } else {
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
                         toastr.info(`${data.msg}` )
@@ -628,6 +633,7 @@ $(function(){
                         $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
                         toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        dictionaryShow()
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
                         toastr.info(`${data.msg}` )

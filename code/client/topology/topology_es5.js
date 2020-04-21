@@ -395,6 +395,10 @@ var Topology = {
                                            $('#addActionButton').attr("from_id",s.id);
                                        }
                                     })
+                                    $("#actionInDiv .xwzly_in").each((i,s)=>{
+                                        $(s).val($('#addActionButton').attr("from_name"));
+                                        $(s).attr($('#addActionButton').attr("from_id"))
+                                    })
                                 }
                             })
                             $("#selectOutIn").empty();
