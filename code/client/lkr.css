@@ -179,6 +179,9 @@ body{
     position: relative;
     left: 5px;
 }
+.moduleSelect{
+    display: none;
+}
 .algorithmFoot{
     width: 100%;
     display: flex;

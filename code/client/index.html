@@ -280,7 +280,7 @@
 <!--       入口备注-->
        <div id="rkDiv">
            <div style="text-align: center;margin: 25px 0">
-                <p style="color:#fff;">入口备注</p>
+                <p style="color:#fff;">算子备注</p>
            </div>
            <textarea id="bzMsg"></textarea>
            <div style="position: absolute;bottom: 20px;right: 0">
@@ -1304,16 +1304,44 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnComment"><input type="text" value="${item.fieldname?item.fieldname:''}"></td> 
                     <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
-                    <td class="columnType"><input type="text" value="${item.fieldtype?item.fieldtype:''}"></td>           
+                    <td class="columnType">
+                        <select class="moduleSelect">
+                            <option value="byte">byte</option>
+                            <option value="short">short</option>
+                            <option value="int">int</option>
+                            <option value="long">long</option>
+                            <option value="float">float</option>
+                            <option value="double">double</option>
+                            <option value="boolean">boolean</option>
+                            <option value="char">char</option>
+                            <option value="date">date</option>
+                            <option value="string">string</option>
+                            <option value="BLOB">BLOB</option>
+                            <option value="boolean">boolean</option>
+                            <option value="array">array</option>
+                        </select>
+                        <input type="text" class="moduleInputOne" value="${item.fieldtype?item.fieldtype:''}" onchange="myFunction(event)">
+                        </td>           
                     <td class="tableName"><input type="text" value="${item.tablename?item.tablename:''}"></td>
                     <td class="columnRemark"><input type="text" value="${item.remark?item.remark:''}"></td>
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
-
+              
             }
         })
     })
+    function myFunction(e){
+        if( $(e.target).val() == ""){
+            $(e.target).parent('.columnType').children('.moduleSelect').show()
+            $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+        }else{
+            $(e.target).parent('.columnType').children('.moduleSelect').hide()
+            $(e.target).parent('.columnType').children('.moduleInputOne').show()
+        }
+       
+    }
+
     $('body').on('dblclick','.dbclickModule',(e) =>{
         let modlueId= $(e.target).attr('moduleId')
         $('#lkrFrame').fadeToggle(500)
@@ -1478,13 +1506,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
 
-                // if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
-                //     $('.noticeList').append(`<li>${getTime()}请填写字段中文名称！ </li>`)
-                //     toastr.info('请填写字段中文名称！')
-                //     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                //     flag = false
-                //     return false
-                // }
+                if(items.children('.columnComment').text() == "" && items.children('.columnComment').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${getTime()}请填写【模型】字段中文名称！ </li>`)
+                    toastr.info('请填写【模型】字段中文名称！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    flag = false
+                    return false
+                }
                 if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写【模型】字段英文名称！ </li>`)
                     toastr.info('请填写【模型】字段英文名称！')
@@ -1563,8 +1591,23 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 let id=0
+                let flag = true
                 if(items.attr("id")){
                     id = items.attr("id")
+                }
+                if(items.children('.columnComment').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${getTime()}请填写【模型】字段中文名称！ </li>`)
+                    toastr.info('请填写【模型】字段中文名称！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    flag = false
+                    return false
+                }
+                if(items.children('.columnName').find('input').val() == ""){
+                    $('.noticeList').append(`<li>${getTime()}请填写【模型】字段英文名称！ </li>`)
+                    toastr.info('请填写【模型】字段英文名称！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    flag = false
+                    return false
                 }
                 mouldParam.push({
                     fieldname:items.children('.columnComment').find('input').val()?items.children('.columnComment').find('input').val() :items.children('.columnComment').find('input').val(),
@@ -1588,28 +1631,31 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 // id:null
             }
             console.log(param)
-            $.ajax({
-                url:urlConfig.host+'/module/modModuleById',
-                type:'post',
-                dataType: 'json',
-                data:JSON.stringify(param),
-                contentType: "application/json;charset=UTF-8",//指定消息请求类型
-                success: function(data) {
-                    $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${getTime()}【模型】修改成功！ </li>`)
-                    toastr.info('【模型】修改成功！')
-                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    $.ajax({
-                        url:urlConfig.host+'/module/GetAllModule',
-                        data:'',
-                        success: function(data) {
-                            $('#lkrFrame').fadeToggle(500)
-                            $("#dataModulePage").show()
-                            getModuleList()
-                        }
-                    })
-                }
-            })
+            if(flag){
+                $.ajax({
+                    url:urlConfig.host+'/module/modModuleById',
+                    type:'post',
+                    dataType: 'json',
+                    data:JSON.stringify(param),
+                    contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                    success: function(data) {
+                        $(".moduleContentList").html('')
+                        $('.noticeList').append(`<li>${getTime()}【模型】修改成功！ </li>`)
+                        toastr.info('【模型】修改成功！')
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        $.ajax({
+                            url:urlConfig.host+'/module/GetAllModule',
+                            data:'',
+                            success: function(data) {
+                                $('#lkrFrame').fadeToggle(500)
+                                $("#dataModulePage").show()
+                                getModuleList()
+                            }
+                        })
+                    }
+                })
+            }
+            
         }
     }
     function reseTabs(){

@@ -724,6 +724,7 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
+        debugger
         window.bigData.editRuleId = $(e.target).attr('ruleId')
         let ruleid =  $(e.target).attr('ruleId')
         window.bigData.isExportId = ruleid
