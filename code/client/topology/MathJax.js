@@ -96,12 +96,15 @@
                 if(window.bigData.formulaType == 'edit'){
                     obj.id = Number(MathJaxParamLength.eq(i).attr('formulaid')) ;
                     obj.algorithmid = Number($("#updateSzId").val());
+                    obj.inorout = Number(MathJaxParamLength.eq(i).attr('inorout')) ;;
+                }else{
+                    obj.inorout = 0;
                 }
                 obj.moduleid =0;
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()
                 obj.varname = MathJaxParamLength.eq(i).find('.MathJaxInput1').val()
                 obj.vartype = MathJaxParamLength.eq(i).find('.MathJaxInput2').val()
-                obj.inorout = 0;
+               
                 obj.parametername = MathJaxParamLength.eq(i).find('.MathJaxInputCs').val();
                 if(MathJaxParamLength.eq(i).find('.isShow1').css('display') == "block"){
                     obj.valvalue = MathJaxParamLength.eq(i).find('.MathJaxInput3').val()

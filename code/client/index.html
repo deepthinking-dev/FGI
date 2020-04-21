@@ -2296,7 +2296,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     if(data.tableFuncs.length>0){
                         let str =``
                         data.tableFuncs.map((item)=>{
-                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
+                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}" inorout="${item.inorout}">
                                         <div class="width-50">
                                             <span>中文名</span>
                                             <input type="text" value="${item.parametername}" class="MathJaxInputCs inputButton" maxlength="50">
