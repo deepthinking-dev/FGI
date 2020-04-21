@@ -262,7 +262,10 @@ var Topology = {
                             font: {
                                 fontFamily: 'Arial',
                                 color: 'aqua',                           
-                                textBaseline: 'top'
+                                textBaseline: 'top',
+                                overflow:'hidden',
+                                whiteSpace:'nowrap',
+                                textOverflow:'ellipsis'
                             },
                             data:{
                                 inNum:item.inNum,
@@ -649,6 +652,7 @@ var Topology = {
                                             item.rotatedAnchors[2].y = 0
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
+                                            item.textMaxLine = 1
                                         }else{                                         
                                             out_num ++                                            
                                             item.rect.x = data[0].rect.x +data[0].rect.width
@@ -674,6 +678,7 @@ var Topology = {
                                             item.iconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
                                             item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.textMaxLine = 1
                                             item.anchors[0].x = 0
                                             item.anchors[0].y =0
                                             item.anchors[1].x =0
@@ -865,6 +870,7 @@ var Topology = {
                                                 data2.paddingTop = -4
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.textMaxLine = 1
                                                 data2.childStand = {
                                                     type:"IN",
                                                     wz:num,
@@ -952,6 +958,7 @@ var Topology = {
                                                 data2.paddingTop = -4
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.textMaxLine = 1
                                                 data2.childStand = {
                                                     type:"OUT",
                                                     wz:num,
@@ -1355,7 +1362,11 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-
+                            $("#topo_canvas textarea").attr({"readonly":"readonly"}).css({
+                                "z-index":"-10",
+                                "background": "none",
+                                "border": "none"
+                            })
                             let currId = data.data.sid;
                             data.hideInput = true
                             $.ajax({
