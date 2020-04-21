@@ -474,7 +474,7 @@
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
-            <span>公式编辑</span>
+            <span id="editDicTitle">公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="form-group">
@@ -1825,6 +1825,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         sessionStorage.latex="";
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
+        $("#editDicTitle").text("公式编辑")
         $("#companyGs").attr("disabled",false)
         $("#groupGs").attr("disabled",false)
         AlgorithmConfirm()
@@ -2585,6 +2586,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                 }
+                dictionaryShow()
             }
         })
     }
@@ -2710,6 +2712,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     toastr.info('【算法】字典删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
+                    dictionaryShow()
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)

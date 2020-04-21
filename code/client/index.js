@@ -802,6 +802,8 @@ $(function(){
             type:"get",
             success(data) {
                 $("#editDicTitle").text("算子详情")
+                window.bigData.formulaType = "" 
+                $("#dicDiv").hide()
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $.ajax({
@@ -923,7 +925,7 @@ $(function(){
                     })
                     $('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
-                    window.bigData.formulaType = 'edit';
+                    window.bigData.formulaType = '';
                     if(data.tableFuncs.length>0){
                         let str =``
                         data.tableFuncs.map((item)=>{
@@ -996,7 +998,7 @@ $(function(){
                 }else if(data.tableAlgorithm.algorithmtype == 3){
                     $('.addButton').hide();
                     $(".closeLjButton").hide();
-                    window.bigData.formulaType = 'edit';
+                    window.bigData.formulaType = '';
                     $('#LogicName').val(data.tableAlgorithm.algorithmname).attr({"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"});
                     $("#ljName").val(data.tableAlgorithm.algorithmauthor).attr("disabled","disabled");
                     $('#ljDes').val(data.tableAlgorithm.des).attr("disabled","disabled");
