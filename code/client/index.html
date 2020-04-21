@@ -1832,7 +1832,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function editAlgorithm(){
         sessionStorage.src="";
         sessionStorage.latex="";
-        ue.setContent('');
+        try {
+            ue.setContent('');
+        }catch (e) {
+            console.log(e);
+        }
+
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
         $("#editDicTitle").text("公式编辑")
