@@ -1362,7 +1362,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('#lkrFrame .lkr-button').hide();
                 window.bigData.editmoduleId = data.id
                 let thStr=``
-                debugger
                 data.modulefields.map(item => {
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnComment">${item.fieldname?item.fieldname:''}</td>
@@ -1386,6 +1385,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('.operate').show();
         $('#fgiSource').show();
         $('.addsjyth').show();
+        $("#mouldName").val("")
+        $("#mouldRemark").val("")
+        $("#addMb tbody").html("")
         $('#lkrFrame .lkr-button').show()
         $('#lkrFrame').show()
         $("#mouldName").attr("readonly",false);
@@ -1521,7 +1523,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     return false
                 }
                 // if(items.children('.columnType').find('select').val() == ""){
-                //     debugger
                 //     $('.noticeList').append(`<li>${getTime()}请选择字段类型！ </li>`)
                 //     toastr.info('请选择字段类型！')
                 //     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1612,11 +1613,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     return false
                 }
                 mouldParam.push({
-                    fieldname:items.children('.columnComment').find('input').val()?items.children('.columnComment').find('input').val() :items.children('.columnComment').find('input').val(),
-                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():items.children('.columnType').find('input').val(),
-                    tablename:items.children('.tableName').find('input').val()?items.children('.tableName').find('input').val():items.children('.tableName').find('input').val(),
-                    englishname:items.children('.columnName').find('input').val()?items.children('.columnName').find('input').val():items.children('.columnName').find('input').val(),
-                    remark:items.children('.columnRemark').find('input').val()?items.children('.columnRemark').find('input').val():items.children('.columnRemark').find('input').val(),
+                    fieldname:items.children('.columnComment').find('input').val(),
+                    fieldtype:items.children('.columnType').find('select').val(),
+                    tablename:items.children('.tableName').find('input').val(),
+                    englishname:items.children('.columnName').find('input').val(),
+                    remark:items.children('.columnRemark').find('input').val(),
                     id:items.attr("id") || 0,
                     moduleid:items.attr("moduleid") || window.bigData.editmoduleId
                 })
@@ -1906,15 +1907,43 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
         
         let thStr = ''
-        modlueList.map(item => {
-            thStr += `<tr>
-            <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-            <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
-            <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-            <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
-            <td class="columnRemark"><input type="text" value=""></td>
-            <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
-        })
+        if(window.bigData.frameType == 'add'){
+            modlueList.map(item => {
+                thStr += `<tr>
+                <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
+                <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
+                <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
+                <td class="columnRemark"><input type="text" value=""></td>
+                <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
+            })
+        }else{
+            modlueList.map(item => {
+                thStr += `<tr>
+                <td class="columnComment"> <input type="text" value="${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}"></td>
+                <td class="columnName"> <input type="text" value="${item.COLUMN_NAME?item.COLUMN_NAME:''}"></td>
+                <td class="columnType"><select class="moduleSelect">
+                            <option value="byte">byte</option>
+                            <option value="short">short</option>
+                            <option value="int">int</option>
+                            <option value="long">long</option>
+                            <option value="float">float</option>
+                            <option value="double">double</option>
+                            <option value="boolean">boolean</option>
+                            <option value="char">char</option>
+                            <option value="date">date</option>
+                            <option value="string">string</option>
+                            <option value="BLOB">BLOB</option>
+                            <option value="boolean">boolean</option>
+                            <option value="array">array</option>
+                        </select>
+                       <input type="text"  class="moduleInputOne"  value="${item.COLUMN_TYPE?item.COLUMN_TYPE:''}" onchange="myFunction(event)"></td>
+                <td class="tableName"> <input type="text" value="${item.TABLE_NAME?item.TABLE_NAME:''}"></td>
+                <td class="columnRemark"><input type="text" value=""></td>
+                <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
+            })
+        }
+ 
         $('#addMb tbody').append(thStr)
         $('#addSource tbody').html('')
         $("#sourceName").fadeToggle(500)
