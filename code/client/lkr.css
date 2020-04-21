@@ -783,7 +783,7 @@ body{
 #gzTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -804,7 +804,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option,#gzGroupName option,#groupGs option,.moduleTypeSelect option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option,#gzGroupName option,#groupGs option,.moduleTypeSelect option,#addLjSelect option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -1182,18 +1182,22 @@ body{
     height: 39px;
 }
 #actionMsgIn{
-    width: 350px;
+    width: 400px;
     height: 40px;
-    margin-left: 30%;
+    margin-left: 5%;
 }
 #actionMsgOut{
-    width: 350px;
+    width: 400px;
     height: 40px;
-    margin-left: 30%;
+    margin-left: 5%;
     display: none;
 }
 #actionDiv i{
     width: 20px;
     display: inline-block;
+}
+#addLjSelect{
+    width: 100px;
+    height: 30px;
 }
 

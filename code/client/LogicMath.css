@@ -834,12 +834,12 @@ body .form-input{
     z-index: 1000000;
 }
 #zdcsList span{
-    text-align: raddGroup
+    text-align: right;
 }
 #actionDiv{
     position: absolute;
     height:600px;
-    width: 800px;
+    width: 830px;
     left: 25%;
     top: 20%;
     display: none;
@@ -880,7 +880,7 @@ body .form-input{
     border: none;
     outline: none;
     color: #fff;
-    width: 180px;
+    width: 230px;
     height: 30px;
     padding-left: 10px;
 }

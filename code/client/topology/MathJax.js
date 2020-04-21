@@ -78,7 +78,7 @@
             moduleid:0,
             remark:$('#companyGs').val(),
             id:$("#AlgorithmnameY").attr("tablealgorithmid"),
-            remark2:"",
+            remark2:sessionStorage.src,
             status:"",
             userid:0
         }
@@ -94,8 +94,8 @@
             for(let i=0;i<MathJaxParamLength.length;i++){
                 let obj ={}
                 if(window.bigData.formulaType == 'edit'){
-                    obj.id = MathJaxParamLength.eq(i).attr('formulaid');
-                    obj.algorithmid = MathJaxParamLength.eq(i).attr('formulaModuleId');
+                    obj.id = Number(MathJaxParamLength.eq(i).attr('formulaid')) ;
+                    obj.algorithmid = Number($("#updateSzId").val());
                 }
                 obj.moduleid =0;
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()
@@ -203,11 +203,6 @@ $('body').on('change','.MathJaxInput2',(e) => {
 function ConfirmFields(){
     $(window.filed.inputFieldsTarget).attr("value",window.filed.fieldname)
     $('#fields').fadeToggle(500)
-}
-    //确定选择算子信息确定按钮
-function ConfirmotherFormula(){
-    $(window.filed.inputFieldsTarget).attr("value",window.filed.fieldname)
-    $('#otherFormula').fadeToggle(500)
 }
 
 //逻辑运算新增按钮
@@ -356,7 +351,7 @@ function RelateClose(){
 }
 //规则弹框
 function ruleOpen(){
-    $("#sureRule").fadeToggle(500);
+    $("#sureRule").show();
     $.ajax({
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},
@@ -377,7 +372,7 @@ function ruleOpen(){
 window.ruleOpen = ruleOpen
 //关闭规则弹框
 function RuleClose(){
-    $("#sureRule").fadeToggle(500);
+    $("#sureRule").hide();
 }
 //保存规则（一起新增）
 function ruleSure(){
@@ -477,7 +472,7 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
-                $("#sureRule").fadeToggle(500)
+                $("#sureRule").hide()
                 $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                 toastr.info(`保存成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);

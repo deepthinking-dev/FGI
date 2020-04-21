@@ -97,14 +97,14 @@
                         success: function(data) {
                             let str = '';
                             data.map(s=>{
-                                str +=`<div class="MathJaxParam">
+                                str +=`<div class="MathJaxParam" formulaid="0" formulaModuleId="0">
                                     <div class="width-50">
-                                        <span>参数名</span>
-                                        <input type="text" value="" class="MathJaxInputCs inputButton">
+                                        <span>中文名</span>
+                                        <input type="text" value="" class="MathJaxInputCs inputButton" maxlength="50">
                                     </div>
                                     <div class="width-50">
-                                        <span>变量</span>
-                                        <input type="text"  readonly="readonly" value="${s}" class="MathJaxInput1 inputButton">
+                                        <span>英文名</span>
+                                        <input type="text"  readonly="readonly" value="${s}" class="MathJaxInput1 inputButton" maxlength="20">
                                     </div>
                                     <div class="width-50 width-select">
                                         <span>类型</span>
@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="width-50 isShow1">
                                             <span>取值</span>
-                                            <input type="text" class="MathJaxInput3 inputButton">
+                                            <input type="text" class="MathJaxInput3 inputButton" maxlength="20">
                                     </div>
                                     <div class="width-50 isShow2">
                                             <span>数据项</span>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="width-50">
                                             <span>描述</span>
-                                            <input type="text" class="MathJaxInput4 inputButton">
+                                            <input type="text" class="MathJaxInput4 inputButton" maxlength="500">
                                     </div>
                                 </div>`
                             })
@@ -146,8 +146,8 @@
                     })
                     console.log(data.img,latex)
                     //这两个数据应该存入后端，现在为测试
-                    sessionStorage.setItem('src',data.img)
-                    sessionStorage.setItem('latex',latex)
+                    sessionStorage.setItem('src',data.img);
+                    sessionStorage.setItem('latex',latex);
                     editor.execCommand('inserthtml', '<img class="kfformula" src="'+ data.img +'" data-latex="' + latex + '" />');
                     dialog.close();
 

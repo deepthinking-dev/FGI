@@ -611,12 +611,12 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                 behaviourXmlModel.setRemark(tableAlgorithmcondition.getRemark());
                                 behaviourXmlModel.setParamId(interfaceParamXmlModel.getId());
                                 behavioursXmlModel.getAction().add(behaviourXmlModel);
-                                setInterfaceData(allInterfaceRelevanceList, interfaceParamXmlModel, allInterfaceList,allAlgorithmList, allFuncList,
-                                        allInterfaceParametersList, allInterfaceParamIdList, allConditionList);
                             }
                         });
                         interfaceParamXmlModel.setActions(behavioursXmlModel);
                         interfaceParamsXmlModel.getParam().add(interfaceParamXmlModel);
+                        setInterfaceData(allInterfaceRelevanceList, interfaceParamXmlModel, allInterfaceList,allAlgorithmList, allFuncList,
+                                allInterfaceParametersList, allInterfaceParamIdList, allConditionList);
                     }
                 });
                 interfaceXmlModel.setParams(interfaceParamsXmlModel);

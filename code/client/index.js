@@ -11,6 +11,17 @@ $(function(){
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
     })
+    $('body').on('click','.addLjgx',(e) => {
+        var text =  $(e.target).parent().children("i").text();
+        var val = $("#actionMsgIn").val();
+        $("#actionMsgIn").val(val + " " + text)
+    })
+    $('body').on('click','.addLjgxType',(e) => {
+        var type =  $("#addLjSelect").val();
+        var val = $("#actionMsgIn").val();
+        $("#actionMsgIn").val(val + " " + type)
+    })
+
     $("#selectOutIn").change(()=> {
         if ($("#selectOutIn").val() == "1") {
             $("#actionInDiv").show();
@@ -35,7 +46,8 @@ $(function(){
                                    <option value="assignment">赋值</option>
                                </select>
                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                               </div>
                          `)
                     })
@@ -63,7 +75,8 @@ $(function(){
                                            <option value="assignment">赋值</option>
                                        </select>
                                            <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
                                       </div>
                                     `)
                                 })
@@ -108,6 +121,7 @@ $(function(){
                                                <option value="assignment">赋值</option>
                                            </select>
                                                <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                           </div>
                                  `)
@@ -147,6 +161,7 @@ $(function(){
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
@@ -181,10 +196,12 @@ $(function(){
         if($("#selectOutIn").val() == "1"){
             $("#actionMsgIn").val("");
             var num = $("#actionInDiv div").length;
+            var from_name = $('#addActionButton').attr("from_name");
+            var from_id = $('#addActionButton').attr("from_id");
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
                            <i>${num+1}</i>
-                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
@@ -195,7 +212,8 @@ $(function(){
                            <option value="assignment">赋值</option>
                        </select>
                            <span>表达式</span><input type="text" value="" class="bds_in">
-                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                       </div>
                     `)
         } else {
@@ -223,7 +241,8 @@ $(function(){
                                <option value="assignment">赋值</option>
                            </select>
                                <span>表达式</span><input type="text" value="" class="bds_out">
-                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                           </div>
                         `)
                 }
@@ -306,7 +325,7 @@ $(function(){
                     "interfaceparametersid":$("#addActionButton").attr("in_small"),
                     "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                     "remark": "",
-                    "valuesources": 0,
+                    "valuesources":Number($(this).find(".xwzly_in").attr("resource")),
                     "xh":$(this).find("i").text()
                 };
                 sendDataIn.push(obj)
@@ -362,7 +381,7 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("in_small"),
                         "interfaceroleid": 0,
                         "remark": "",
-                        "valuesources": 0,
+                        "valuesources": Number($(this).find(".xwzly_in").attr("resource")),
                         "xh":$(this).find("i").text()
                     };
                     dataArrIn.push(obj)
@@ -420,6 +439,7 @@ $(function(){
         $("#editDicName").attr("disabled",false);
         $("#editDicDes").attr("disabled",false);
         $("#group").attr("disabled",false)
+        $("#company").attr("disabled",false)
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
@@ -486,18 +506,18 @@ $(function(){
                 "id": 0,
                 "remark": ""
             };
-            obj.parametername = $(s).find('.zdcsCsmc').val() //参数名称
+            obj.parametername = $(s).find('.zdcsCsmc').val() //中文名称
             if(obj.parametername == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写参数名！ </li>`)
-                toastr.info(`请填写参数名！` )
+                $('.noticeList').append(`<li>${getTime()}请填写中文名！ </li>`)
+                toastr.info(`请填写中文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写变量！ </li>`)
-                toastr.info(`请填写变量！` )
+                $('.noticeList').append(`<li>${getTime()}请填写英文名！ </li>`)
+                toastr.info(`请填写英文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
@@ -611,24 +631,24 @@ $(function(){
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
-                    <span style="color:#fff;">参数名</span>
-                    <input class="zdcsCsmc" type="text" value=""> 
+                    <span style="color:#fff;">中文名</span>
+                    <input class="zdcsCsmc" type="text" value="" maxlength="50"> 
                 </i>
                 <i>
-                    <span style="color:#fff;">变量</span>
-                    <input class="variable" type="text" value=""> 
+                    <span style="color:#fff;">英文名</span>
+                    <input class="variable" type="text" value="" maxlength="20"> 
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
                     <select class="zdcsSelect" onchange="changeVarType(event)">
                         <option value="2">常量</option>
-                        <option value="3">对象</option>
+                        <option value="3">模型</option>
                         <option value="1">基本类型</option>
                     </select>
                 </i>  
                 <i>
                     <span style="color:#fff;">取值</span>
-                    <input type="text" value="" class="zdcsText">
+                    <input type="text" value="" class="zdcsText" maxlength="20">
                 </i>  
                 <i>
                    <span style="color:#fff;">输入输出</span>
@@ -647,7 +667,7 @@ $(function(){
     //点击删除模型
     $('body').on('click','.lkr-list-del',(e) => {
         window.bigData.delmoduleId = $(e.target).attr('moduleId')
-        $('#lkrFrameDel').fadeToggle(500)
+        $('#lkrFrameDel').show()
     })
   
     // 点击删除算子
@@ -665,38 +685,6 @@ $(function(){
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
 
-    //点击其他模块
-    $('body').on('click','.otherFormula',(e) => {
-        window.filed.inputFieldsTarget = $(e.target);
-        $.ajax({
-            url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
-            data:{
-                username:null
-            },
-            success: function(data) {
-               let str =``
-               if(data.length>0){
-                    data.map(item=>{
-                        str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
-                                    <td class="algorithmname">${item.algorithmname}</td>
-                                    <td>${item.algorithmtype}</td>
-                                    <td>${item.algorithmfun}</td>
-                                    <td>${item.algorithmauthor}</td>
-                                    
-                                    remark
-                                </tr>`
-                    })
-               }else{
-                   str+= `<div style="text-align: center;">暂无数据</div>`
-               }
-
-
-                $(".otherFormulaList").html(str)
-            }
-        })
-        $('#otherFormula').fadeToggle(500)
-
-    })
       // 点击选择算子信息
     $('body').on('click','.otherFormulaList tr',(e) => {
         window.filed.fieldname = $(e.target).parent('tr').children('.algorithmname').text();
@@ -825,18 +813,18 @@ $(function(){
                         $("#zdcsList").append(`
                              <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                                 <i style="margin-top: 5px">
-                                    <span style="color:#fff;">参数名</span>
+                                    <span style="color:#fff;">中文名</span>
                                     <input class="zdcsCsmc" disabled type="text" value="${t.parametername}">
                                 </i>
                                 <i>
-                                    <span style="color:#fff;">变量</span>
+                                    <span style="color:#fff;">英文名</span>
                                     <input class="variable" type="text" value="${t.varname}">
                                 </i>
                                 <i>
                                     <span style="color:#fff;">类型</span>
                                     <select class="zdcsSelect" disabled>
                                         <option value="2">常量</option>
-                                        <option value="3">对象</option>
+                                        <option value="3">模型</option>
                                         <option value="1">基本类型</option>
                                     </select>
                                 </i>
@@ -857,8 +845,11 @@ $(function(){
                     for(var i=0;i<data.tableFuncs.length;i++){
                         $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
                         $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
-                        if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                        if(data.tableFuncs[i].vartype == 2){
                             $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else if(data.tableFuncs[i].vartype == 3){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsText").eq(i).prev().text("模型名称")
                         } else {
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
@@ -884,7 +875,7 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
-                    $('.Frame').fadeToggle(500)
+                    $('.Frame').show()
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
                     $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
@@ -892,6 +883,12 @@ $(function(){
                     $('#companyGs').attr("disabled","disabled");
                     $('#companyGs').val("");
                     $('#companyGs').val(data.tableAlgorithm.remark);
+                    try{
+                        ue.setContent('');
+                        ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
+                    }catch (e) {
+                        console.log(e);
+                    }
                     $.ajax({
                         url: urlConfig.host + '/group/findAllGroupMessagesByType',
                         type:"get",
@@ -913,11 +910,11 @@ $(function(){
                         data.tableFuncs.map((item)=>{
                             str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
                                         <div class="width-50">
-                                            <span>参数名</span>
+                                            <span>中文名</span>
                                             <input type="text" readonly="readonly" value="${item.parametername}" class="MathJaxInputCs inputButton">
                                         </div>
                                         <div class="width-50">
-                                            <span>变量</span>
+                                            <span>英文名</span>
                                             <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
                                         </div>
                                         <div class="width-50 width-select">
@@ -1200,7 +1197,7 @@ $(function(){
                         }
                     })
 
-                    $(".Logic").fadeToggle(500)
+                    $(".Logic").show()
                 }
             }
         })

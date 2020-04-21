@@ -242,6 +242,13 @@
            </div>
            <div style="margin: 20px 20px;height: 400px;overflow: auto;" id="actionInDiv"></div>
            <div style="margin: 20px 20px;height: 400px;overflow: auto;display: none" id="actionOutDiv"></div>
+           <span style="margin-left: 20px;margin-top: 4px">逻辑关系</span>
+           <select id="addLjSelect">
+               <option>&&</option>
+               <option>||</option>
+               <option>!</option>
+           </select>
+           <button class="addLjgxType" type="button"  style="background: #409eff;color: #fff;margin-left: 15px;height: 20px;border: none;width: 22px">+</button>
            <input type="text" id="actionMsgIn">
            <input type="text" id="actionMsgOut">
            <div style="position: absolute;bottom: 20px;right: 0">
@@ -284,8 +291,8 @@
             <span onclick="RuleClose()" style="cursor: pointer;">X</span>
         </div>
         <div class="ruleContent"> 
-            <li><span>规则名称：</span><input id="ruleName" type="text" placeholder="请输入规则名称"></li>
-            <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px">规则描述：</div><textarea id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
+            <li><span>规则名称：</span><input maxlength="200" id="ruleName" type="text" placeholder="请输入规则名称"></li>
+            <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px">规则描述：</div><textarea maxlength="500" id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
             <li style="margin: 0"><span>分组名称：</span><select id="gzGroupName" type="text" placeholder="请输入规则名称"></select></li>
             <li style="display:none;"><span>备注：</span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
             <button onclick="ruleSure()">确定</button>
@@ -436,32 +443,6 @@
         </form>
         <button class="btn btn-primary mr10 btn-sm pointer" type="button" onclick="uploadSure()">确定</button>
     </div>
-    <!-- 所有公式弹框 -->
-    <div id="otherFormula">
-            <div class="title">
-                <span>算子信息</span>
-                <span onclick="fieldsClose()" style="cursor: pointer;">X</span>
-            </div>
-            <div class="otherFormulaContent">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>算子名称</th>
-                            <th>算子类型</th>
-                            <th>公式预览</th>
-                            <th>算子作者</th>
-                            <!-- <th>算子描述</th> -->
-                        </tr>
-                    </thead>
-                    <tbody class="otherFormulaList" style="height:320px">
-                        
-                    </tbody>
-                </table>                     
-            </div>
-            <div class="frame-foot">
-                <div class="button" onclick='ConfirmotherFormula()'>确定</div>
-            </div>
-        </div>
     <!-- 数据项选择字段信息弹框 -->
     <div id="fields">
         <div class="title">
@@ -495,22 +476,23 @@
         <div class="form-group">
             <div id="authorShow">
                 <input type="text" style="display: none" value="" id="gsStatus">
+                <input type="text" style="display: none" value="" id="updateSzId">
                 <div>
                     <span class="form-span">作者</span>
-                    <input id="gsName" type="text" >
+                    <input id="gsName" type="text" maxlength="20">
                 </div>
                 <div style="margin: 8px 0">
                     <span class="form-span">单位信息</span>
-                    <input type="text" id="companyGs">
+                    <input type="text" id="companyGs" maxlength="100">
                 </div>
                 <div>
                     <span class="form-span">描述</span>
-                    <input id="gsDes" type="text" >
+                    <input id="gsDes" type="text" maxlength="500">
                 </div>
             </div>
             <div>
                 <span class="form-span">算子名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
-                <input id="AlgorithmnameY" type="text" >
+                <input id="AlgorithmnameY" type="text" maxlength="200">
             </div>
             <div>
                 <span class="form-span">分组</span>
@@ -663,11 +645,11 @@
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right;">模型名称：</label>
-                    <input type='text' id='mouldName' class="lkr-input"/>
+                    <input type='text' id='mouldName' maxlength="50" class="lkr-input"/>
                 </div>
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right;">描述：</label>
-                    <textarea style="resize: none" type='text' id='mouldRemark' class="lkr-input"></textarea>
+                    <textarea style="resize: none" type='text'  maxlength="500" id='mouldRemark' class="lkr-input"></textarea>
 
                 </div>
 
@@ -843,7 +825,7 @@
                            </div>
                            <div class="mouldFoot">
                                 <div class="activeTypeName dataManage" onclick="dataModify()">数据管理</div>
-                                <div onclick="gruopEdit()">分组维护</div>
+                                <div class="activeGroupName" onclick="gruopEdit()">分组维护</div>
                             </div>
 
                         </div>
@@ -965,7 +947,7 @@
         </div>
         <div class="groupMain">
             <span style="width: 120px">分组名称</span>
-            <input type="text" value="" id="groupInputName">
+            <input type="text" value="" id="groupInputName" maxlength="100">
         </div>
         <input type="button" id="addGroupYes" value="确定">
         <input type="button" class="cancelGroup" value="取消">
@@ -980,16 +962,16 @@
             <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
                 <div style="margin-left: 30px">
                     <div style="margin: 8px 0">
-                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 30px">
+                        <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 30px" maxlength="20">
                     </div>
                     <div style="margin: 8px 0">
-                        <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px">
+                        <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px" maxlength="100">
                     </div>
                     <div style="margin: 8px 0">
-                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 30px">
+                        <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 30px" maxlength="200">
                     </div>
                     <div style="margin: 8px 0">
-                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px">
+                        <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px" maxlength="500">
                     </div>
                     <div>
                         <span>分组</span><select type="text" id="group" style="width: 350px;height: 30px"></select>
@@ -1224,7 +1206,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         } else if(e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("对象名称")
+            $(e.target).parent().next().find('span').text("模型名称")
             $(e.target).parent().next().append(modelSelectList)
         } else {
             $(e.target).parent().next().find('input').remove();
@@ -1344,7 +1326,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#fgiSource').show();
         $('.addsjyth').show();
         $('#lkrFrame .lkr-button').show()
-        $('#lkrFrame').fadeToggle(500)
+        $('#lkrFrame').show()
+        $("#mouldName").attr("readonly",false);
+        $("#mouldRemark").attr("readonly",false);
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type: "get",
@@ -1435,7 +1419,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
      * 关闭模型二次删除确认框
     */
     function lkrFrameDelClose(){
-        $('#lkrFrameDel').fadeToggle(500)
+        $('#lkrFrameDel').hide()
     }
     /**
      * 关闭新建参数模型框
@@ -1444,7 +1428,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         reseAddMb()
         $("#modulegroup").show();
         $("#modulegroupshow").hide();
-        $('#lkrFrame').fadeToggle(500)
+        $('#lkrFrame').hide()
     }
     function Confirm(){
         let mouldParam = []
@@ -1619,8 +1603,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function addsjyth(){
         $(".dataSourceTbody").append(`<tr>
-            <td class="columnComment"><input type="text" value=""></td>
-            <td class="columnName"><input type="text" value=""></td>
+            <td class="columnComment"><input type="text" value="" maxlength="20"></td>
+            <td class="columnName"><input type="text" value="" maxlength="20"></td>
             <td class="columnType"><select class="">
                                                 <option value="byte">byte</option>
                                                 <option value="short">short</option>
@@ -1636,8 +1620,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                                 <option value="boolean">boolean</option>
                                                 <option value="array">array</option>
                                             </select></td>
-            <td class="tableName"><input type="text" value="-"></td>
-            <td class="columnRemark"><input type="text" value=""></td>
+            <td class="tableName"><input type="text" value="-"  maxlength="20"></td>
+            <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
     }
@@ -1697,7 +1681,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     toastr.info('删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
-                    $('#lkrFrameDel').fadeToggle(500)
+                    $('#lkrFrameDel').hide()
                 }
             }
         })
@@ -1736,9 +1720,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
         reseTabsList( $("#selectedModlue").val());
     })
     function ModuleClose(){
-        $('#dataModulePage').fadeToggle(500)
+        $('#dataModulePage').hide()
     }
     function editAlgorithm(){
+        sessionStorage.src="";
+        sessionStorage.latex="";
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
         $("#companyGs").attr("disabled",false)
@@ -2014,24 +2000,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名</span>
-                                <input class="zdcsCsmc" type="text" value="${t.parametername}">
+                                <span style="color:#fff;">中文名</span>
+                                <input class="zdcsCsmc" type="text" value="${t.parametername}" maxlength="50">
                             </i>
                             <i>
-                                <span style="color:#fff;">变量</span>
-                                <input class="variable" type="text" value="${t.varname}">
+                                <span style="color:#fff;">英文名</span>
+                                <input class="variable" type="text" value="${t.varname}" maxlength="20">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
                                 <select class="zdcsSelect" onchange="changeVarType(event)">
                                     <option value="2">常量</option>
-                                    <option value="3">对象</option>
+                                    <option value="3">模型</option>
                                     <option value="1">基本类型</option>
                                 </select>
                             </i>
                             <i>
                                 <span style="color:#fff;">取值</span>
-                                <input type="text" value="" class="zdcsText">
+                                <input type="text" value="" class="zdcsText" maxlength="20">
                             </i>
                             <i>
                                 <span style="color:#fff;">输入输出</span>
@@ -2053,7 +2039,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             var select = modelSelectList;
                             $("#editDic .zdcsText").eq(i).hide();
                             $(select).val(data.tableFuncs[i].valvalue);
-                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("对象名称")
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("模型名称")
                             $("#editDic .zdcsSelect").eq(i).parent().next().append(select);
                             $("#editDic .zdcsSelect").eq(i).parent().next().find("select").val(data.tableFuncs[i].valvalue)
                         } else {
@@ -2081,6 +2067,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $("#updateSzId").val(s)
                     $.ajax({
                         url: urlConfig.host + '/group/findAllGroupMessagesByType',
                         type:"get",
@@ -2093,6 +2080,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    sessionStorage.src="";
+                    sessionStorage.latex="";
+                    try{
+                        ue.setContent('');
+                        ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
+                    }catch (e) {
+                        console.log(e);
+                    }
                     $("#gsStatus").val("");
                     $("#gsStatus").val(data.tableAlgorithm.status);
                     $("#companyGs").val("");
@@ -2120,12 +2115,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         data.tableFuncs.map((item)=>{
                             str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
                                         <div class="width-50">
-                                            <span>参数名</span>
-                                            <input type="text" value="${item.parametername}" class="MathJaxInputCs inputButton">
+                                            <span>中文名</span>
+                                            <input type="text" value="${item.parametername}" class="MathJaxInputCs inputButton" maxlength="50">
                                         </div>
                                         <div class="width-50">
-                                            <span>变量</span>
-                                            <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
+                                            <span>英文</span>
+                                            <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton" maxlength="20">
                                         </div>
                                         <div class="width-50 width-select">
                                             <span>类型</span>
@@ -2136,7 +2131,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         </div>
                                         <div class="width-50 isShow1">
                                                 <span>取值</span >
-                                                <input type="text" class="MathJaxInput3 inputButton">
+                                                <input type="text" class="MathJaxInput3 inputButton" maxlength="20">
                                         </div>
                                         <div class="width-50 isShow2">
                                             <span>基本类型</span>
@@ -2158,7 +2153,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         </div>
                                         <div class="width-50">
                                                 <span>描述</span>
-                                                <input type="text" class="MathJaxInput4 inputButton" value="${item.remark}">
+                                                <input type="text" class="MathJaxInput4 inputButton" value="${item.remark}" maxlength="500">
                                         </div>
                                     </div>`
                         })
@@ -2442,7 +2437,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
          $("#ruleDes").attr("data",val)
      }
      function closeDeleteZdDiv() {
-         $('#deleteZdDiv').fadeToggle(500)
+         $('#deleteZdDiv').hide()
      }
      function deleteZdYes() {
         $.ajax({
@@ -2455,8 +2450,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
                     toastr.info('删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    //Topology.init();
-                    $('#deleteZdDiv').fadeToggle(500)
+                    $('#deleteZdDiv').hide()
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
@@ -2478,12 +2472,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         if(activeName == "模型库"){
             $(".activeTypeName").text("模型管理")
+            $(".activeGroupName").text("模型分组维护")
         }
         if(activeName == "算法库"){
             $(".activeTypeName").text("算法管理")
+            $(".activeGroupName").text("算法分组维护")
         }
         if(activeName == "规则库"){
             $(".activeTypeName").text("规则管理")
+            $(".activeGroupName").text("规则分组维护")
         }
         $('#algorithmPage .left-list-tilte').removeClass("divactive")
         if($(".mouldFoot div").css('display') == "none"){
@@ -2560,11 +2557,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
-            $('#dataModulePage').fadeToggle(500)
+            $('#dataModulePage').show()
             getModuleList()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
-            $('#dicDiv').fadeToggle(500)
+            $('#dicDiv').show()
             sfWinList();
             $.ajax({
                 url: urlConfig.host + '/module/GetAllModule',
@@ -2579,7 +2576,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
         if($('#flex_tools .liactive').text() == "规则库"){
-            $('#gzDiv').fadeToggle(500)
+            $('#gzDiv').show()
             getGzList()
         }
     }
@@ -3109,7 +3106,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                         table.append(
                             `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
+                            <td title="${s.tableAlgorithm.algorithmauthor}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
                             <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
                              <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.status}</td>

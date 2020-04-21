@@ -360,7 +360,7 @@ var Topology = {
                                 }
                             })
 
-                            var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big;
+                            var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
                             var bigList=[];
                             canvas.data.nodes.map(s=>{
                                 if(s.id == data.from.id){
@@ -380,8 +380,25 @@ var Topology = {
                                     bigInName = s.text;
                                 }
                             })
+                            canvas.data.nodes.map(s=>{
+                                if(s.id == data.to.id){
+                                    fromParmaChinese = s.text
+                                }
+                            })
+                            $.ajax({
+                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                data:{algthId:id_in},
+                                success(response) {
+                                    response.tableFuncs.map(s=>{
+                                       if(s.parametername == fromParmaChinese){
+                                           $('#addActionButton').attr("from_name",s.varname);
+                                           $('#addActionButton').attr("from_id",s.id);
+                                       }
+                                    })
+                                }
+                            })
                             $("#selectOutIn").empty();
-                            $("#selectOutIn").append(`<option value="1">${bigInName}的参数${smallInName}</option><option value="2">${bigOutName}的参数${smallOutName}</option>`)
+                            $("#selectOutIn").append(`<option value="1">${bigInName}的输入参数${smallInName}</option><option value="2">${bigOutName}的输出参数${smallOutName}</option>`)
                             $('#selectOutIn').val('1')
 
                             let out_small = data.from.id.split('---')[0]//输出小矩形uuid

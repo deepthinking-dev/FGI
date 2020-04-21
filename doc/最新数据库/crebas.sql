@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/4/16 15:53:10                           */
+/* Created on:     2020/4/21 11:05:21                           */
 /*==============================================================*/
 
 
@@ -165,6 +165,7 @@ create table Table_ModuleField
    ID                   int not null auto_increment comment '主键ID',
    ModuleID             int not null comment '模型ID',
    FieldName            varchar(20) comment '字段名称',
+   EnglishName          varchar(20) comment '英文名称',
    FieldType            varchar(20) comment '字段类型',
    TableName            varchar(20) comment '数据表名称',
    Remark               varchar(500) comment '备注',

@@ -38,28 +38,31 @@
 		targetProject="src/main/java">
 		<property name="enableSubPackages" value="true" />
 	</javaClientGenerator>
-		<table tableName="Table_Module" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
-		<table tableName="Table_Algorithm" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
-		<table tableName="Table_Role" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
-		<table tableName="Table_Func" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
-		<table tableName="Table_GroupData" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
+<!--		<table tableName="Table_Module" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
+<!--		<table tableName="Table_Algorithm" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
+<!--		<table tableName="Table_Role" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
+<!--		<table tableName="Table_Func" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
+<!--		<table tableName="Table_GroupData" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
 		<!--<table tableName="Table_AlgorithmCondition" >
                <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
            </table>-->
 		<!--<table tableName="Table_InterfaceParameters" ></table>-->
-		<table tableName="Table_InterfaceRole" >
-               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-           </table>
+<!--		<table tableName="Table_InterfaceRole" >-->
+<!--               <generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--           </table>-->
 		<!--<table tableName="Table_OperatorInterface" ></table>-->
+<!--		<table tableName="Table_ModuleField">-->
+<!--			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>-->
+<!--		</table>-->
 	</context>
 </generatorConfiguration>  
