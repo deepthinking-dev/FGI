@@ -42,7 +42,7 @@ create table Table_Algorithm
    AlgorithmGroup       varchar(100) comment '所属组',
    Remark               varchar(500) comment '备注',
    Status               varchar(50) comment '状态',
-   Remark2              varchar(500) comment '备注2',
+   Remark2              text comment '备注2',
    primary key (ID)
 );
 

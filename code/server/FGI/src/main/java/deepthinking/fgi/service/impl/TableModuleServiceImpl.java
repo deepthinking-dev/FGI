@@ -144,6 +144,9 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
                 if(del_data.size()>0){//删除
                     del_data.stream().forEach(field->tableModulefieldMapper.deleteByPrimaryKey(field.getId()));
                 }
+                if(up_data.size()>0){
+                    up_data.forEach(field->tableModulefieldMapper.updateByPrimaryKeySelective(field));
+                }
             }
         }else{
             logger.warn("修改模型 "+module.toString()+" 失败");
