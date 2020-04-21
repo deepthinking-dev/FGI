@@ -581,6 +581,14 @@ var Topology = {
                             // debugger
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
+                            data[0].anchors.map((obj,i) => {
+                                obj.x = 0;
+                                obj.y = 0;
+                            })
+                            data[0].rotatedAnchors.map((obj,i) => {
+                                obj.x = 0;
+                                obj.y = 0
+                            })
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             let nowList =[]
                             canvas.data.nodes.map(now=>{
@@ -682,7 +690,6 @@ var Topology = {
                             })
                             canvas.data.lines.map(item => {
                                 let nodesa = canvas.data.nodes.filter(obj => {
-                                    console.log(obj.id)
                                     if(item.from.id == obj.id) return obj
                                 })[0]
                                 item.from.x = nodesa.rotatedAnchors[2].x
@@ -793,7 +800,14 @@ var Topology = {
                                     data.id = guid()
                                     saveList.uuid = data.id
                                     //window.idStoreData[data.id] = guid()
-                                    
+                                    data.anchors.map((obj,i) => {
+                                        obj.x = 0;
+                                        obj.y = 0;
+                                    })
+                                    data.rotatedAnchors.map((obj,i) => {
+                                        obj.x = 0;
+                                        obj.y = 0
+                                    })
                                 }
 
                                 if(data.data.inNum > 0 || data.data.outNum > 0){                                

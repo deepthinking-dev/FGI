@@ -1191,8 +1191,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
     $('body').on('click','.export',(e) =>{
         $('.noticeList').append(`<li>${getTime()}请先暂存</li>`)
-        toastr.info('检查成功！')
-        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+
     })
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
