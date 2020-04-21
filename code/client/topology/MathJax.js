@@ -641,6 +641,7 @@ function ActionSure(){
                 test.iconRect.y = data.iconRect.y + num.y
                 test.fullIconRect.x = data.fullIconRect.x + num.x
                 test.fullIconRect.y = data.fullIconRect.y + num.y
+                test.textMaxLine = 1
                 test.childStand = {
                     type:"OUT",
                     wz:num,
@@ -897,6 +898,7 @@ function ActionSure(){
                                     test.iconRect.y = test.rect.y  -test.fullIconRect.height
                                     test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
                                     test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.textMaxLine = 1
                                     test.anchors[0].x = test.rect.x
                                     test.anchors[0].y =test.rect.center.y
                                     test.anchors[1].x =0
@@ -955,6 +957,7 @@ function ActionSure(){
                                     test.iconRect.y = test.rect.y  -test.fullIconRect.height
                                     test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
                                     test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                    test.textMaxLine = 1
                                     test.anchors[0].x = 0
                                     test.anchors[0].y =0
                                     test.anchors[1].x =0
