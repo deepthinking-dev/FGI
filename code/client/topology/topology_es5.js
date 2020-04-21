@@ -473,6 +473,7 @@ var Topology = {
                                     $("#addActionButton").attr("resData",true)
                                     try{
                                         resBaseIn.map((t,i)=>{
+                                            debugger
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0" actionId=${t.id}>
                                                    <i>${i+1}</i>
@@ -487,7 +488,7 @@ var Topology = {
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                             `)
@@ -522,6 +523,7 @@ var Topology = {
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                             `)
