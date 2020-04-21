@@ -181,10 +181,12 @@ $(function(){
         if($("#selectOutIn").val() == "1"){
             $("#actionMsgIn").val("");
             var num = $("#actionInDiv div").length;
+            var from_name = $('#addActionButton').attr("from_name");
+            var from_id = $('#addActionButton').attr("from_id");
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
                            <i>${num+1}</i>
-                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
@@ -304,7 +306,7 @@ $(function(){
                     "interfaceparametersid":$("#addActionButton").attr("in_small"),
                     "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                     "remark": "",
-                    "valuesources": 0,
+                    "valuesources":Number($(this).find(".xwzly_in").attr("resource")),
                     "xh":$(this).find("i").text()
                 };
                 sendDataIn.push(obj)
@@ -360,7 +362,7 @@ $(function(){
                         "interfaceparametersid":$("#addActionButton").attr("in_small"),
                         "interfaceroleid": 0,
                         "remark": "",
-                        "valuesources": 0,
+                        "valuesources": Number($(this).find(".xwzly_in").attr("resource")),
                         "xh":$(this).find("i").text()
                     };
                     dataArrIn.push(obj)
@@ -418,6 +420,7 @@ $(function(){
         $("#editDicName").attr("disabled",false);
         $("#editDicDes").attr("disabled",false);
         $("#group").attr("disabled",false)
+        $("#company").attr("disabled",false)
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
@@ -481,16 +484,16 @@ $(function(){
                 "id": 0,
                 "remark": ""
             };
-            obj.parametername = $(s).find('.zdcsCsmc').val() //参数名称
+            obj.parametername = $(s).find('.zdcsCsmc').val() //中文名称
             if(obj.parametername == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写参数名！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请填写中文名！ </li>`)
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}请填写变量！ </li>`)
+                $('.noticeList').append(`<li>${getTime()}请填写英文名！ </li>`)
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
@@ -595,18 +598,18 @@ $(function(){
         $("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
-                    <span style="color:#fff;">参数名</span>
+                    <span style="color:#fff;">中文名</span>
                     <input class="zdcsCsmc" type="text" value=""> 
                 </i>
                 <i>
-                    <span style="color:#fff;">变量</span>
+                    <span style="color:#fff;">英文名</span>
                     <input class="variable" type="text" value=""> 
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
                     <select class="zdcsSelect" onchange="changeVarType(event)">
                         <option value="2">常量</option>
-                        <option value="3">对象</option>
+                        <option value="3">模型</option>
                         <option value="1">基本类型</option>
                     </select>
                 </i>  
@@ -808,18 +811,18 @@ $(function(){
                         $("#zdcsList").append(`
                              <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
                                 <i style="margin-top: 5px">
-                                    <span style="color:#fff;">参数名</span>
+                                    <span style="color:#fff;">中文名</span>
                                     <input class="zdcsCsmc" disabled type="text" value="${t.parametername}">
                                 </i>
                                 <i>
-                                    <span style="color:#fff;">变量</span>
+                                    <span style="color:#fff;">英文名</span>
                                     <input class="variable" type="text" value="${t.varname}">
                                 </i>
                                 <i>
                                     <span style="color:#fff;">类型</span>
                                     <select class="zdcsSelect" disabled>
                                         <option value="2">常量</option>
-                                        <option value="3">对象</option>
+                                        <option value="3">模型</option>
                                         <option value="1">基本类型</option>
                                     </select>
                                 </i>
@@ -840,8 +843,11 @@ $(function(){
                     for(var i=0;i<data.tableFuncs.length;i++){
                         $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
                         $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
-                        if(data.tableFuncs[i].vartype == 2 || data.tableFuncs[i].vartype == 3){
+                        if(data.tableFuncs[i].vartype == 2){
                             $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else if(data.tableFuncs[i].vartype == 3){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsText").eq(i).prev().text("模型名称")
                         } else {
                             $("#editDic .zdcsText").eq(i).hide();
                             let select= $(`
@@ -896,11 +902,11 @@ $(function(){
                         data.tableFuncs.map((item)=>{
                             str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
                                         <div class="width-50">
-                                            <span>参数名</span>
+                                            <span>中文名</span>
                                             <input type="text" readonly="readonly" value="${item.parametername}" class="MathJaxInputCs inputButton">
                                         </div>
                                         <div class="width-50">
-                                            <span>变量</span>
+                                            <span>英文名</span>
                                             <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
                                         </div>
                                         <div class="width-50 width-select">

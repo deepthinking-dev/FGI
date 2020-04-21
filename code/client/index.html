@@ -823,7 +823,7 @@
                            </div>
                            <div class="mouldFoot">
                                 <div class="activeTypeName dataManage" onclick="dataModify()">数据管理</div>
-                                <div onclick="gruopEdit()">分组维护</div>
+                                <div class="activeGroupName" onclick="gruopEdit()">分组维护</div>
                             </div>
 
                         </div>
@@ -1194,7 +1194,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         } else if(e.target.value == "3"){
             $(e.target).parent().next().find('input').remove();
             $(e.target).parent().next().find('select').remove();
-            $(e.target).parent().next().find('span').text("对象名称")
+            $(e.target).parent().next().find('span').text("模型名称")
             $(e.target).parent().next().append(modelSelectList)
         } else {
             $(e.target).parent().next().find('input').remove();
@@ -1932,18 +1932,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $("#zdcsList").append(`
                          <div divId="${t.id}" class="zdcsDiv " style="margin-bottom: 15px">
                             <i style="margin-top: 5px">
-                                <span style="color:#fff;">参数名</span>
+                                <span style="color:#fff;">中文名</span>
                                 <input class="zdcsCsmc" type="text" value="${t.parametername}">
                             </i>
                             <i>
-                                <span style="color:#fff;">变量</span>
+                                <span style="color:#fff;">英文名</span>
                                 <input class="variable" type="text" value="${t.varname}">
                             </i>
                             <i>
                                 <span style="color:#fff;">类型</span>
                                 <select class="zdcsSelect" onchange="changeVarType(event)">
                                     <option value="2">常量</option>
-                                    <option value="3">对象</option>
+                                    <option value="3">模型</option>
                                     <option value="1">基本类型</option>
                                 </select>
                             </i>
@@ -1971,7 +1971,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             var select = modelSelectList;
                             $("#editDic .zdcsText").eq(i).hide();
                             $(select).val(data.tableFuncs[i].valvalue);
-                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("对象名称")
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("模型名称")
                             $("#editDic .zdcsSelect").eq(i).parent().next().append(select);
                             $("#editDic .zdcsSelect").eq(i).parent().next().find("select").val(data.tableFuncs[i].valvalue)
                         } else {
@@ -2038,11 +2038,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         data.tableFuncs.map((item)=>{
                             str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
                                         <div class="width-50">
-                                            <span>参数名</span>
+                                            <span>中文名</span>
                                             <input type="text" value="${item.parametername}" class="MathJaxInputCs inputButton">
                                         </div>
                                         <div class="width-50">
-                                            <span>变量</span>
+                                            <span>英文</span>
                                             <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
                                         </div>
                                         <div class="width-50 width-select">
@@ -2392,12 +2392,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         if(activeName == "模型库"){
             $(".activeTypeName").text("模型管理")
+            $(".activeGroupName").text("模型分组维护")
         }
         if(activeName == "算法库"){
             $(".activeTypeName").text("算法管理")
+            $(".activeGroupName").text("算法分组维护")
         }
         if(activeName == "规则库"){
             $(".activeTypeName").text("规则管理")
+            $(".activeGroupName").text("规则分组维护")
         }
         $('#algorithmPage .left-list-tilte').removeClass("divactive")
         if($(".mouldFoot div").css('display') == "none"){
