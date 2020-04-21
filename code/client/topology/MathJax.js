@@ -92,8 +92,8 @@
             for(let i=0;i<MathJaxParamLength.length;i++){
                 let obj ={}
                 if(window.bigData.formulaType == 'edit'){
-                    obj.id = MathJaxParamLength.eq(i).attr('formulaid');
-                    obj.algorithmid = MathJaxParamLength.eq(i).attr('formulaModuleId');
+                    obj.id = Number(MathJaxParamLength.eq(i).attr('formulaid')) ;
+                    obj.algorithmid = Number($("#updateSzId").val());
                 }
                 obj.moduleid =0;
                 obj.remark = MathJaxParamLength.eq(i).find('.MathJaxInput4').val()

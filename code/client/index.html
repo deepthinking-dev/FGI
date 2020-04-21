@@ -473,6 +473,7 @@
         <div class="form-group">
             <div id="authorShow">
                 <input type="text" style="display: none" value="" id="gsStatus">
+                <input type="text" style="display: none" value="" id="updateSzId">
                 <div>
                     <span class="form-span">作者</span>
                     <input id="gsName" type="text" maxlength="20">
@@ -1984,6 +1985,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $("#updateSzId").val(s)
                     $.ajax({
                         url: urlConfig.host + '/group/findAllGroupMessagesByType',
                         type:"get",
