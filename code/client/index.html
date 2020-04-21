@@ -1338,8 +1338,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type: 1},
             success(data){
                 if(data.length == 0){
-                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
-                    toastr.info('请先添加分组！')
+                    $('.noticeList').append(`<li>${getTime()}请先添加模型分组！</li>`)
+                    toastr.info('请先添加模型分组！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
@@ -1456,8 +1456,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 //     return false
                 // }
                 if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${getTime()}请填写字段英文名称！ </li>`)
-                    toastr.info('请填写字段英文名称！')
+                    $('.noticeList').append(`<li>${getTime()}请填写【模型】字段英文名称！ </li>`)
+                    toastr.info('请填写【模型】字段英文名称！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
@@ -1471,8 +1471,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 //     return false
                 // }
                 if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${getTime()}请填写字段表名！ </li>`)
-                    toastr.info('请填写字段表名！')
+                    $('.noticeList').append(`<li>${getTime()}请填写【模型】字段表名！ </li>`)
+                    toastr.info('请填写【模型】字段表名！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
@@ -1507,8 +1507,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
-                    toastr.info('保存成功！')
+                    $('.noticeList').append(`<li>${getTime()}新增【模型】保存成功！ </li>`)
+                    toastr.info('新增【模型】保存成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1566,8 +1566,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType: "application/json;charset=UTF-8",//指定消息请求类型
                 success: function(data) {
                     $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
-                    toastr.info('修改成功！')
+                    $('.noticeList').append(`<li>${getTime()}【模型】修改成功！ </li>`)
+                    toastr.info('【模型】修改成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
@@ -1679,8 +1679,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success: function(data) {
                 if(data){
                     window.bigData.delmoduleId = ''
-                    $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
-                    toastr.info('删除成功！')
+                    $('.noticeList').append(`<li>${getTime()}【模型】删除成功！ </li>`)
+                    toastr.info('【模型】删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').hide()
@@ -1739,8 +1739,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type:2},
             success(data){
                 if(data.length == 0){
-                    $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
-                    toastr.info('请先添加分组！')
+                    $('.noticeList').append(`<li>${getTime()}请先添加【算法】分组！</li>`)
+                    toastr.info('请先添加【算法】分组！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
@@ -2449,8 +2449,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(data.status == 1){
                     sfWinList()
-                    $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
-                    toastr.info('删除成功！')
+                    $('.noticeList').append(`<li>${getTime()}【算法】字典 删除成功！</li>`)
+                    toastr.info('【算法】字典删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
                 }
