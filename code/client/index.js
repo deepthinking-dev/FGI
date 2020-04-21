@@ -630,12 +630,12 @@ $(function(){
                         sfWinList()
                         // Topology.init();
                         $("#dicDiv").show()
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
+                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg} </li>`)
                         toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         dictionaryShow()
                     } else {
-                        $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
+                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg} </li>`)
                         toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }

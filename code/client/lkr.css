@@ -94,10 +94,10 @@ body{
 }
 .yjl_tools .checkUp i{
     background-image: url(./static/checkUp.png);
-    background-size: 14px 14px;
+    background-size: 12px 12px;
     background-repeat: no-repeat;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     display: inline-block;
     vertical-align: text-bottom;
     top: 0;
@@ -136,10 +136,10 @@ body{
 }
 .yjl_tools .deleteDiv a i{
     background-image: url(./static/delete.png);
-    background-size: 12px 14px;
+    background-size: 12px 12px;
     background-repeat: no-repeat;
     width: 12px;
-    height: 14px;
+    height: 12px;
     display: inline-block;
     vertical-align: text-bottom;
     top: 0;
@@ -178,6 +178,9 @@ body{
     top: 0;
     position: relative;
     left: 5px;
+}
+.moduleSelect{
+    display: none;
 }
 .algorithmFoot{
     width: 100%;
@@ -698,7 +701,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    z-index:10000
+    z-index:999
 }
 #dataModulePage{
     position: absolute;
@@ -750,7 +753,7 @@ body{
     margin: 0 20px
 }
 #editDic{
-    z-index: 10;
+    z-index: 9999;
     position: absolute;
     left: 18%;
     top: 10%;
@@ -770,7 +773,7 @@ body{
 #editDicYes{
     position: absolute;
     bottom: 20px;
-    right: 130px;
+    right: 30px;
     width: 80px;
     background: #409eff;
     color: #fff;

@@ -2019,7 +2019,6 @@ var Topology = {
                 }
             }
         })
-        console.log(deleteBoxId)
     },
     // 恢复
     redo: function () {
