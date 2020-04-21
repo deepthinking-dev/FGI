@@ -2250,7 +2250,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
-                    $("#updateSzId").val(s)
+                    $("#updateSzId").val(s);
+                    $("#dicDiv").hide();
                     $.ajax({
                         url: urlConfig.host + '/group/findAllGroupMessagesByType',
                         type:"get",
