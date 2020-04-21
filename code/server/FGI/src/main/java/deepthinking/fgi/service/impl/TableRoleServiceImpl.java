@@ -152,11 +152,12 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         System.out.println();
         Set<String> transKeySet = transMap.keySet();
         String coo = tableRole.getCoordinate();
-        transKeySet.forEach(key ->{
+        for(String key : transKeySet){
             String replageValue = String.valueOf(transMap.get(key));
-            coo.replace(key, replageValue);
-        });
+            coo = coo.replaceAll(key, replageValue);
+        }
         tableRole.setCoordinate(coo);
+        rule.setCoordinate(coo);
         roleMapper.updateByPrimaryKey(tableRole);
 
         //接口
