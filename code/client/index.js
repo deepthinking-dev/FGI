@@ -599,11 +599,11 @@ $(function(){
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
                     <span style="color:#fff;">中文名</span>
-                    <input class="zdcsCsmc" type="text" value=""> 
+                    <input class="zdcsCsmc" type="text" value="" maxlength="50"> 
                 </i>
                 <i>
                     <span style="color:#fff;">英文名</span>
-                    <input class="variable" type="text" value=""> 
+                    <input class="variable" type="text" value="" maxlength="20"> 
                 </i>
                 <i>
                  <span style="color:#fff;">类型</span>
@@ -615,7 +615,7 @@ $(function(){
                 </i>  
                 <i>
                     <span style="color:#fff;">取值</span>
-                    <input type="text" value="" class="zdcsText">
+                    <input type="text" value="" class="zdcsText" maxlength="20">
                 </i>  
                 <i>
                    <span style="color:#fff;">输入输出</span>
