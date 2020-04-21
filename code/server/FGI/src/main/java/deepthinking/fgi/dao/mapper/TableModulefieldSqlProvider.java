@@ -46,16 +46,16 @@ public class TableModulefieldSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("table_modulefield");
         
-        if (record.getId() != null) {
-            sql.VALUES("ID", "#{id,jdbcType=INTEGER}");
-        }
-        
         if (record.getModuleid() != null) {
             sql.VALUES("ModuleID", "#{moduleid,jdbcType=INTEGER}");
         }
         
         if (record.getFieldname() != null) {
             sql.VALUES("FieldName", "#{fieldname,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnglishname() != null) {
+            sql.VALUES("EnglishName", "#{englishname,jdbcType=VARCHAR}");
         }
         
         if (record.getFieldtype() != null) {
@@ -88,6 +88,7 @@ public class TableModulefieldSqlProvider {
         }
         sql.SELECT("ModuleID");
         sql.SELECT("FieldName");
+        sql.SELECT("EnglishName");
         sql.SELECT("FieldType");
         sql.SELECT("TableName");
         sql.SELECT("Remark");
@@ -126,6 +127,10 @@ public class TableModulefieldSqlProvider {
             sql.SET("FieldName = #{record.fieldname,jdbcType=VARCHAR}");
         }
         
+        if (record.getEnglishname() != null) {
+            sql.SET("EnglishName = #{record.englishname,jdbcType=VARCHAR}");
+        }
+        
         if (record.getFieldtype() != null) {
             sql.SET("FieldType = #{record.fieldtype,jdbcType=VARCHAR}");
         }
@@ -155,6 +160,7 @@ public class TableModulefieldSqlProvider {
         sql.SET("ID = #{record.id,jdbcType=INTEGER}");
         sql.SET("ModuleID = #{record.moduleid,jdbcType=INTEGER}");
         sql.SET("FieldName = #{record.fieldname,jdbcType=VARCHAR}");
+        sql.SET("EnglishName = #{record.englishname,jdbcType=VARCHAR}");
         sql.SET("FieldType = #{record.fieldtype,jdbcType=VARCHAR}");
         sql.SET("TableName = #{record.tablename,jdbcType=VARCHAR}");
         sql.SET("Remark = #{record.remark,jdbcType=VARCHAR}");
@@ -180,6 +186,10 @@ public class TableModulefieldSqlProvider {
         
         if (record.getFieldname() != null) {
             sql.SET("FieldName = #{fieldname,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnglishname() != null) {
+            sql.SET("EnglishName = #{englishname,jdbcType=VARCHAR}");
         }
         
         if (record.getFieldtype() != null) {
