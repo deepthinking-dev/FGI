@@ -1943,8 +1943,25 @@ var Topology = {
     },
     // 撤销
     undo: function () {
-        debugger
         canvas.undo();
+        let arrayList =[]
+        let fuuid1 =""
+        canvas.data.nodes.map(item=>{
+            if(item.childStand){
+                window.Topology.tools[item.childStand.fUUid].children.map((index,i)=>{
+                    fuuid1 =item.childStand.fUUid
+                    let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
+                    if(fuuid == index.uuid){
+                       
+                        arrayList.push(index)
+                        
+                    }
+                })
+            }
+        })
+        // window.Topology.tools[fuuid1].children = []
+        // window.Topology.tools[fuuid1].children  =arrayList
+        console.log(arrayList)
     },
     // 恢复
     redo: function () {
