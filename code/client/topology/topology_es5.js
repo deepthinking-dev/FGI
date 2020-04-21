@@ -870,6 +870,7 @@ var Topology = {
                                                 data2.paddingTop = -4
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.textMaxLine = 1
                                                 data2.childStand = {
                                                     type:"IN",
                                                     wz:num,
@@ -957,6 +958,7 @@ var Topology = {
                                                 data2.paddingTop = -4
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
+                                                data2.textMaxLine = 1
                                                 data2.childStand = {
                                                     type:"OUT",
                                                     wz:num,
