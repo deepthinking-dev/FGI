@@ -866,6 +866,12 @@ $(function(){
                     $('#companyGs').attr("disabled","disabled");
                     $('#companyGs').val("");
                     $('#companyGs').val(data.tableAlgorithm.remark);
+                    try{
+                        ue.setContent('');
+                        ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
+                    }catch (e) {
+                        console.log(e);
+                    }
                     $.ajax({
                         url: urlConfig.host + '/group/findAllGroupMessagesByType',
                         type:"get",

@@ -76,7 +76,7 @@
             moduleid:0,
             remark:$('#companyGs').val(),
             id:$("#AlgorithmnameY").attr("tablealgorithmid"),
-            remark2:"",
+            remark2:sessionStorage.src,
             status:"",
             userid:0
         }

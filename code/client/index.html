@@ -1642,6 +1642,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#dataModulePage').hide()
     }
     function editAlgorithm(){
+        sessionStorage.src="";
+        sessionStorage.latex="";
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
         $("#companyGs").attr("disabled",false)
@@ -1994,6 +1996,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    sessionStorage.src="";
+                    sessionStorage.latex="";
+                    try{
+                        ue.setContent('');
+                        ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
+                    }catch (e) {
+                        console.log(e);
+                    }
                     $("#gsStatus").val("");
                     $("#gsStatus").val(data.tableAlgorithm.status);
                     $("#companyGs").val("");

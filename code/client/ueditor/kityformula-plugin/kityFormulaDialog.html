@@ -146,8 +146,8 @@
                     })
                     console.log(data.img,latex)
                     //这两个数据应该存入后端，现在为测试
-                    sessionStorage.setItem('src',data.img)
-                    sessionStorage.setItem('latex',latex)
+                    sessionStorage.setItem('src',data.img);
+                    sessionStorage.setItem('latex',latex);
                     editor.execCommand('inserthtml', '<img class="kfformula" src="'+ data.img +'" data-latex="' + latex + '" />');
                     dialog.close();
 
