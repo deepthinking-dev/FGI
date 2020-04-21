@@ -1741,7 +1741,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable" style="width:100%;"></table>
+
                                   </div>
                               </div>
                           </div>
@@ -1752,9 +1752,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             data: {moduleGroupName :s.groupname},
                             success(data) {
                                 if(data.length){
-                                    $("#modelListRight .sfGruopTable").eq(index).empty();
+                                    $("#modelListRight .panel-body").eq(index).empty();
                                     data.map(s=>{
-                                        $("#modelListRight .sfGruopTable").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                        $("#modelListRight .panel-body").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
                                     })
                                 }
                             }
@@ -1954,7 +1954,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="moduleGruopRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                   <div class="panel-body">
-                                      <table class="sfGruopTable"  style="width:100%;"></table>
+
                                   </div>
                               </div>
                           </div>
@@ -2536,9 +2536,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         if($(x).text().includes(val)){
                             $(x).show();
-                            $(x).parent().parent().parent().parent().addClass("in")
-                            $(x).parent().parent().parent().parent().css('height',"")
-                            list.push($(x).parent().parent().parent().parent())
+                            $(x).parent().parent().parent().addClass("in")
+                            $(x).parent().parent().parent().css('height',"")
+                            list.push($(x).parent().parent().parent())
                         } else {
                             $(x).hide()
                         }
@@ -2578,9 +2578,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $(s).next().find('.left-list-tilte').each((i,x)=>{
                         if($(x).text().includes(val)){
                             $(x).show();
-                            $(x).parent().parent().parent().parent().addClass("in")
-                            $(x).parent().parent().parent().parent().css('height',"")
-                            list.push($(x).parent().parent().parent().parent())
+                            $(x).parent().parent().parent().addClass("in")
+                            $(x).parent().parent().parent().css('height',"")
+                            list.push($(x).parent().parent().parent())
                         } else {
                             $(x).hide()
                         }
@@ -2722,7 +2722,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="ruleRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                   <div class="panel-body">
-                                       <table class="ruleListTable"></table>
+
                                   </div>
                               </div>
                           </div>
@@ -2733,9 +2733,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         data: {groupName :s.groupname},
                         success(res) {
                             if(res.length){
-                                $("#ruleListRight .ruleListTable").eq(index).empty();
+                                $("#ruleListRight .panel-body").eq(index).empty();
                                 res.map(s=>{
-                                    $("#ruleListRight .ruleListTable").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.rolename}</div></div>`)
+                                    $("#ruleListRight .panel-body").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.rolename}</div></div>`)
                                 })
                             }
                         }
@@ -2993,7 +2993,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                                   </div>
                                                   <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
                                                       <div class="panel-body">
-                                                          <table class="sfGruopTable"></table>
+
                                                       </div>
                                                   </div>
                                               </div>
@@ -3459,7 +3459,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                   </div>
                                   <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
                                       <div class="panel-body">
-                                          <table class="sfGruopTable"></table>
+
                                       </div>
                                   </div>
                               </div>
@@ -3477,7 +3477,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                   </div>
                                   <div id="moduleGruopRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                       <div class="panel-body">
-                                          <table class="sfGruopTable"></table>
+
                                       </div>
                                   </div>
                               </div>
@@ -3485,7 +3485,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             })
                         }
                         if(type == 3){
-                            debugger
                             $("#ruleListRight").empty()
                             data.map((s,index)=>{
                                 $("#ruleListRight").append(`<div class="panel panel-default">
