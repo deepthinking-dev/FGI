@@ -1772,6 +1772,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').hide()
+                    dataModlue()
                 }
             }
         })
@@ -2272,7 +2273,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
-                    sessionStorage.src="";
+                    sessionStorage.src=data.tableAlgorithm.remark2;
                     sessionStorage.latex="";
                     try{
                         ue.setContent('');
@@ -2718,6 +2719,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     toastr.info('【算法】字典删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
+                    dictionaryShow()
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
