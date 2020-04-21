@@ -234,6 +234,7 @@ $(function(){
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
                 $('.noticeList').append(`<li>${getTime()}行为值来源为对象才能赋值！ </li>`)
+                toastr.info(`行为值来源为对象才能赋值！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false
             }
@@ -246,6 +247,7 @@ $(function(){
                 success(res) {
                     if(res == ""){
                         $('.noticeList').append(`<li>${getTime()}非本系统模型，无选择参数！ </li>`)
+                        toastr.info(`非本系统模型，无选择参数！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         return false;
                     }
@@ -425,6 +427,8 @@ $(function(){
             success(data){
                 if(data.length == 0){
                     $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    toastr.info(`请先添加分组！` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
                 $("#group").empty()
@@ -436,12 +440,13 @@ $(function(){
     })
     $('body').on('click','.dicEdit',(e) => {
         $("#editDicTitle").text("修改算法")
-    })
+    }) 
     $('body').on('click','#editDicYes',(e) => {
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
             $('.noticeList').append(`<li>${getTime()}请填写算法名称！ </li>`)
+            toastr.info(`请填写算法名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -485,18 +490,21 @@ $(function(){
             if(obj.parametername == ""){
                 flag = false;
                 $('.noticeList').append(`<li>${getTime()}请填写参数名！ </li>`)
+                toastr.info(`请填写参数名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
                 $('.noticeList').append(`<li>${getTime()}请填写变量！ </li>`)
+                toastr.info(`请填写变量！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
             if(obj.inorout == ""){
                 flag = false;
                 $('.noticeList').append(`<li>${getTime()}请填写输入输出！ </li>`)
+                toastr.info(`请填写输入输出！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
@@ -505,6 +513,7 @@ $(function(){
                 if(obj.valvalue == ""){
                     flag = false;
                     $('.noticeList').append(`<li>${getTime()}请填写取值！ </li>`)
+                    toastr.info(`请填写取值！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             } else if(obj.vartype == "1") {
@@ -531,15 +540,20 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
+                    toastr.info(`保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                        toastr.info(`${data.msg}` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
                         dictionary();
                         sfWinList();
                         $("#dicDiv").show()
                     } else {
                         $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
+                        toastr.info(`${data.msg}` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -581,9 +595,11 @@ $(function(){
                         // Topology.init();
                         $("#dicDiv").show()
                         $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
+                        toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg} </li>`)
+                        toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
@@ -694,6 +710,7 @@ $(function(){
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
             $('.noticeList').append(`<li>${getTime()}至少勾选一个规则！ </li>`)
+            toastr.info(`至少勾选一个规则！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
        }

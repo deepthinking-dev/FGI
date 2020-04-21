@@ -57,11 +57,13 @@
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
             $('.noticeList').append(`<li>${getTime()} 请填写算子名称！</li>`)
+            toastr.info(`请填写算子名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         if($('#MathInput').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 请填写公式！！</li>`)
+            $('.noticeList').append(`<li>${getTime()} 请填写公式！</li>`)
+            toastr.info(`请填写公式！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -130,12 +132,14 @@
                     if(data.status == 1){
                         $(".Frame").hide();
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
+                        toastr.info(`${data.msg}！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         // Topology.init();
                         dictionary()
                         $("#dicDiv").show()
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
+                        toastr.info(`${data.msg}！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
@@ -164,9 +168,12 @@
                         dictionary()
                         // Topology.init();
                         $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                        toastr.info(`保存成功！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     } else {
                         $('.noticeList').append(`<li>${getTime()} ${data.msg}！</li>`)
+                        toastr.info(`${data.msg}！` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -232,6 +239,7 @@ function ConfirmLogic(){
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
         $('.noticeList').append(`<li>${getTime()}请填写逻辑运算名称!</li>`)
+        toastr.info(`请填写逻辑运算名称！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
@@ -243,6 +251,7 @@ function ConfirmLogic(){
         }
     }else{
         $('.noticeList').append(`<li>${getTime()}请至少填写一个</li>`)
+        toastr.info(`请至少填写一个！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false;
     }
@@ -276,6 +285,7 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                    toastr.info(`保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -294,6 +304,7 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     $('.noticeList').append(`<li>${getTime()}保存成功！</li>`)
+                    toastr.info(`保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -321,10 +332,12 @@ function uploadSure(){
         success(data) {
             $("#fileupload").hide();
             $('.noticeList').append(`<li>${getTime()}导入成功！</li>`)
+            toastr.info(`导入成功！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         },
         error(data){
             $('.noticeList').append(`<li>${getTime()}导入失败!</li>`)
+            toastr.info(`导入失败!` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         }
     })
@@ -350,6 +363,8 @@ function ruleOpen(){
         success(res) {
             if(res.length == 0){
                 $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                toastr.info(`请先添加分组!` )
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return
             }
             $("#gzGroupName").empty()
@@ -359,6 +374,7 @@ function ruleOpen(){
         }
     })
 }
+window.ruleOpen = ruleOpen
 //关闭规则弹框
 function RuleClose(){
     $("#sureRule").fadeToggle(500);
@@ -366,6 +382,12 @@ function RuleClose(){
 //保存规则（一起新增）
 function ruleSure(){
      //动作
+    if($("#ruleName").val() == ""){
+        $('.noticeList').append(`<li>${getTime()}请填写规则名称！ </li>`)
+        toastr.info(`请填写规则名称！` )
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        return false
+     }
     editGzType = false;
     $("#currentGzName").text($("#ruleName").val());
     $("#currentGzName").attr("title",$("#ruleName").val())
@@ -443,6 +465,7 @@ function ruleSure(){
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                toastr.info(`修改成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })
@@ -456,6 +479,7 @@ function ruleSure(){
             success: function(data) {
                 $("#sureRule").fadeToggle(500)
                 $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
+                toastr.info(`保存成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })
@@ -469,6 +493,7 @@ function ruleSure(){
         }
     })
 }
+window.ruleSure = ruleSure
 //删除算子
 function ConfirmDelAlgorithm(){
     $.ajax({
@@ -482,6 +507,7 @@ function ConfirmDelAlgorithm(){
             }
             if(data.status == 2){
                 $('.noticeList').append(`<li>${getTime()}${data.msg} </li>`)
+                toastr.info(`${data.msg}` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         }
@@ -504,6 +530,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 $('.noticeList').append(`<li>${getTime()}删除成功 </li>`)
+                toastr.info(`删除成功` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 canvas.data.nodes = [];
                 canvas.data.lines = [];               
@@ -543,6 +570,7 @@ function ActionSure(){
             let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
                 $('.noticeList').append(`<li>${getTime()}请选择参数名称！ </li>`)
+                toastr.info(`请选择参数名称！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false;
             }
@@ -832,6 +860,7 @@ function ActionSure(){
                         if(item.inorout == 0){
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                            toastr.info(`删除成功！` )
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                             window.Topology.dblclickNode.data.inNum --
                             
@@ -890,6 +919,7 @@ function ActionSure(){
                             window.Topology.dblclickNode.data.outNum --
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                            toastr.info(`删除成功！` )
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
 
                             nowList.map((test,R)=>{
@@ -998,6 +1028,7 @@ function ActionSure(){
             data:JSON.stringify(operatorInterfaceDataModel),
             success: function(data) {
                 $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                toastr.info(`修改成功！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
         })

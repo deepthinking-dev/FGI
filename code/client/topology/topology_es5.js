@@ -50,6 +50,7 @@ var Topology = {
         var self = this;
         ww = JSON.stringify(canvas.data)
         $('.noticeList').append(`<li>${getTime()}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
+        toastr.info(`需要保存的json：\n" ${JSON.stringify(canvas.data)}` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
     },
     // 绑定事件
@@ -277,6 +278,7 @@ var Topology = {
                             name: 'rectangle',
                             fillStyle:'rgba(4,44,98,0.58)',
                             strokeStyle: '#4295ec',
+                            hideInput:true
                         }
                     })
                 })
@@ -324,6 +326,7 @@ var Topology = {
                 
                 // 监听画布
                 function onMessage(event, data) {
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1006,6 +1009,7 @@ var Topology = {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
                                         $('.noticeList').append(`<li>${getTime()}操作失败！ </li>`)
+                                        toastr.info(`操作失败！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
@@ -1149,6 +1153,7 @@ var Topology = {
 
                                     } else {
                                         $('.noticeList').append(`<li>${getTime()}输出输入类型不匹配！ </li>`)
+                                        toastr.info(`输出输入类型不匹配！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
@@ -1163,6 +1168,7 @@ var Topology = {
                                     }
                                 } else {
                                     $('.noticeList').append(`<li>${getTime()}只能输出连接输入！ </li>`)
+                                    toastr.info(`只能输出连接输入！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
@@ -1198,6 +1204,11 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            if(data.nodes.length==0){
+                                $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
+                                toastr.info(`请选择要删除的节点或者线！` )
+                                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                            }
                             try {
                                 delete  window.Topology.tools[data.nodes[0].id]
                             }catch (e) {
@@ -1239,6 +1250,7 @@ var Topology = {
                                                             success(data) {
                                                                 if(data == true){
                                                                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                                                                    toastr.info(`删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
@@ -1276,6 +1288,7 @@ var Topology = {
                                         success: function(data) {
                                             if(data == true){
                                                 $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                                                toastr.info(`删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }
@@ -1306,6 +1319,7 @@ var Topology = {
                         case 'dblclick':
 
                             let currId = data.data.sid;
+                            data.hideInput = true
                             $.ajax({
                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                 data:{algthId:currId},
@@ -1892,23 +1906,27 @@ var Topology = {
                 globalActionDatas.splice(i,1)
             }
         })
-        responseActionDatas.map(s=>{
-            if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
-                try {
-                    $.ajax({
-                        url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-                        type:"get",
-                        data: {interfaceRoueId :s.id},
-                        success(data) {}
-                    })
-                } catch (e) {
-
+        if(responseActionDatas && responseActionDatas.length >0){
+            responseActionDatas.map(s=>{
+                if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
+                    try {
+                        $.ajax({
+                            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                            type:"get",
+                            data: {interfaceRoueId :s.id},
+                            success(data) {}
+                        })
+                    } catch (e) {
+    
+                    }
                 }
-            }
-        })
+            })
+        }
+ 
     },
     // 撤销
     undo: function () {
+        debugger
         canvas.undo();
     },
     // 恢复

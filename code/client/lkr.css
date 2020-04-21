@@ -9,62 +9,98 @@ body{
     display: none;
 }
 .yjl_tools{
-    width: 70px;
+    width: 65px;
     /* display: flex; */
     position: absolute;
     top: 0;
     right: 10px;
     color: #45a1e9;
-    height: 100px;
+    height: 200px;
     border: 1px solid #45a1e9;
     z-index: 99999;
 }
 .yjl_tools >div{
     position: relative;
     display: inline-block;
-    width: 65px;
-    height: 30px;
+    width: 55px;
+    height: 20px;
     clear: both;
     margin: 2px 2px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 12px;
     text-align: center;
-    line-height: 30px;
+    line-height: 20px;
    
 }
 .yjl_tools .colorTpye i{
     background-image: url(./static/typeQ.png);
-    background-size: 25px 25px;
+    background-size: 14px 14px;
     background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+    width: 14px;
+    height: 14px;
     display: inline-block;
     vertical-align: text-bottom;
-    top: 2px;
+    top: 0;
     position: relative;
     left: 5px;
 }
 .yjl_tools #btn i{
     background-image: url(./static/fullS.png);
-    background-size: 25px 25px;
+    background-size: 14px 14px;
     background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+    width: 14px;
+    height: 14px;
     display: inline-block;
     vertical-align:text-bottom;
-    top: 2px;
+    top: 0;
     position: relative;
     left: 5px;
 }
 .yjl_tools #saveRule i{
     background-image: url(./static/saveQ.png);
-    background-size: 25px 25px;
+    background-size: 14px 14px;
     background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+    width: 14px;
+    height: 14px;
     display: inline-block;
     vertical-align:text-bottom;
-    top: 2px;
+    top: 0;
+    position: relative;
+    left: 5px;
+}
+.yjl_tools .uploadDiv i{
+    background-image: url(./static/upload.png);
+    background-size: 12px 14px;
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
+    position: relative;
+    left: 5px;
+}
+.yjl_tools .export i{
+    background-image: url(./static/export.png);
+    background-size: 12px 14px;
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
+    position: relative;
+    left: 5px;
+}
+.yjl_tools .checkUp i{
+    background-image: url(./static/checkUp.png);
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
     position: relative;
     left: 5px;
 }
@@ -73,11 +109,57 @@ body{
     padding: 0;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 12px;
     text-align: center;
-    width: 65px;
-    height: 30px;
+    width: 55px;
+    height: 20px;
+    line-height: 20px;
 
+}
+.yjl_tools .menu-a-delete {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 20px;
+    clear: both;
+    margin: 2px 2px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    line-height: 10px;
+}
+.yjl_tools .menu-a-delete a{
+    color: #45a1e9;
+}
+.yjl_tools .menu-a-delete a i{
+    background-image: url(./static/delete.png);
+    background-size: 12px 14px;
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
+    position: relative;
+    left: 5px;
+}
+
+.yjl_tools .menu-a-undo a{
+    position: relative;
+    color: #45a1e9;
+    left: 4px;
+}
+.yjl_tools .menu-a-undo a i{
+    background-image: url(./static/undo.png);
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    top: 0;
+    position: relative;
+    left: 3px;
 }
 .algorithmFoot{
     width: 100%;
@@ -382,6 +464,14 @@ body{
     background: rgba(78,164,253,0.15);
 }
 .lkr-table .dataSourceTbody td input{
+    border: none;
+    background: none;
+    width: 90px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.lkr-table tbody td input {
     border: none;
     background: none;
     width: 90px;
@@ -938,10 +1028,10 @@ body{
     color: #fff;
 }
 #colorDiv{
-    width: 70px;
+    width: 65px;
     height: 390px;
     position: absolute;
-    top:110px;
+    top: 210px;
     right: 10px;
     display: none;
     z-index: 999;

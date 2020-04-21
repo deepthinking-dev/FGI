@@ -309,7 +309,10 @@
                             <input type="checkbox" name="item" id="selectAll"/>
                         </td>
                         <td>
-                            字段名称
+                            中文名称
+                        </td>
+                        <td>
+                            英文名称
                         </td>
                         <td>
                             字段类型
@@ -678,7 +681,10 @@
                         <thead>
                           <tr>
                             <td>
-                                字段名称
+                                中文名称
+                            </td>
+                            <td>
+                                英文名称
                             </td>
                             <td>
                                 字段类型
@@ -767,7 +773,21 @@
                                
                                 <div class="colorTpye">类型<i></i></div>
                                 <button id="btn">全屏<i></i></button>
-                                <div id="saveRule" onclick="ruleOpen()">保存<i></i></div>
+                                <div id="saveRule" onclick="ruleOpen()">暂存<i></i></div>
+                                <div class="uploadDiv" onclick="uploadShow()">导入<i></i></div>
+                                <div class="export">导出<i></i></div>
+                                <div class="checkUp">检查<i></i></div>
+                                <div class="menu-a-delete">
+                                    <a onclick="onDelete()" class="menu-a  menu-a-delete">
+                                        删除<i></i>
+                                    </a>
+                                    
+                                </div>
+                                <div class="menu-a-undo">
+                                    <a onclick="undo()" class="menu-a">
+                                        撤消<i></i>
+                                    </a>
+                                </div>
                                 <!-- <div type="button" class="fullScreen">全屏</div> -->
                             </div>
                             <div class="lkr-bg-canvas">
@@ -782,7 +802,7 @@
                                 <div id="flex_props1_home">
                                     <div>
                                         <div class="sub-title">
-                                            提示：
+                                            完整提示：
                                         </div>
                                         <ul class="noticeList">
                                           
@@ -1044,7 +1064,8 @@
         isAddInOut:false,
         isAddInOutType: 'out',
         editRuleId:'',
-        ruleType:'add'
+        ruleType:'add',
+        isExport: false
     }
     window.filed ={
         inputFieldsTarget:'',
@@ -1140,7 +1161,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
             if((topnNum+boxHeight) >browserHeight){
                 topnNum = browserHeight - boxHeight
-            }
+            } 
             obj.css({  
                 "left":leftNum+"px",  
                 "top":topnNum+"px"  
@@ -1176,8 +1197,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     });
 
-
-
+    $('body').on('click','.checkUp',(e) =>{
+        $('.noticeList').append(`<li>${getTime()}检查成功！</li>`)
+        toastr.info('检查成功！')
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+    })
+    
+    $('body').on('click','.export',(e) =>{
+        $('.noticeList').append(`<li>${getTime()}请先暂存</li>`)
+        toastr.info('检查成功！')
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+    })
     $('body').on('click','.colorTpye',(e) =>{
         $("#colorDiv").fadeToggle(500)
     })
@@ -1257,10 +1287,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 let thStr=``
                 data.modulefields.map(item => {
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
-                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
-                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
-                    <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>                 
-                    <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td class="columnComment"><input type="text" value="${item.fieldname?item.fieldname:''}"></td> 
+                    <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
+                    <td class="columnType"><input type="text" value="${item.fieldtype?item.fieldtype:''}"></td>           
+                    <td class="tableName"><input type="text" value="${item.tablename?item.tablename:''}"></td>
+                    <td class="columnRemark"><input type="text" value="${item.remark?item.remark:''}"></td>
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
@@ -1291,10 +1322,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 let thStr=``
                 data.modulefields.map(item => {
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
-                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
-                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
                     <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                    <td class="columnName">${item.fieldname?item.fieldname:''}</td>
+                    <td class="columnType">${item.fieldtype?item.fieldtype:''}</td> 
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
+                    <td class="columnRemark"></td>
                     </tr>`
                 })
                 $('#addMb tbody').html(thStr)
@@ -1320,6 +1352,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data){
                 if(data.length == 0){
                     $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    toastr.info('请先添加分组！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
                 $("#modulegroup").empty();
@@ -1340,9 +1374,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 let thStr = ''
                 data.map(item => {
                     thStr += `<tr><td><input id='${'chk'+item.COLUMN_NAME}' type="checkbox" name="item" data-id='${item.COLUMN_NAME}'/></td>
+                    <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td>${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
                     <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-                    <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+                    <td><input type="text" value="" readonly="readonly"></td>
                     </tr>`
                 })
                 $('#addSource tbody').html(thStr)
@@ -1416,27 +1451,52 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
         if(window.bigData.frameType == 'add'){
             let flag = true
+            if($("#mouldName").val() == ""){
+                $('.noticeList').append(`<li>${getTime()}请填写模型名称！ </li>`)
+                    toastr.info('请填写模型名称！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                    flag = false
+                    return false
+            }
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
-                if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
+                debugger
+                // if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
+                //     $('.noticeList').append(`<li>${getTime()}请填写字段中文名称！ </li>`)
+                //     toastr.info('请填写字段中文名称！')
+                //     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                //     flag = false
+                //     return false
+                // }
+                if(items.children('.columnEnglish').text() == "" && items.children('.columnEnglish').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写字段英文名称！ </li>`)
+                    toastr.info('请填写字段英文名称！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
-                if(items.children('.columnType').text() == "" && items.children('.columnType').find('input').val() == ""){
-                    $('.noticeList').append(`<li>${getTime()}请填写字段类型！ </li>`)
-                    flag = false
-                    return false
-                }
+                // if(items.children('.columnType').find('select').val() == ""){
+                //     debugger
+                //     $('.noticeList').append(`<li>${getTime()}请选择字段类型！ </li>`)
+                //     toastr.info('请选择字段类型！')
+                //     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                //     flag = false
+                //     return false
+                // }
                 if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写字段表名！ </li>`)
+                    toastr.info('请填写字段表名！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
                 mouldParam.push({
                     fieldname:items.children('.columnName').text()?items.children('.columnName').text() :items.children('.columnName').find('input').val(),
-                    fieldtype:items.children('.columnType').text()?items.children('.columnType').text() :items.children('.columnType').find('input').val(),
-                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val()
+                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():items.children('.columnType').text(),
+                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
+                    englishname:items.children('.columnEnglish').text()?items.children('.columnEnglish').text():items.children('.columnEnglish').find('input').val(),
+                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
+                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val()
                     // id:null,
                     // moduleid:null,
                     // remark:null
@@ -1462,6 +1522,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success: function(data) {
                     $(".moduleContentList").html('')
                     $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
+                    toastr.info('保存成功！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1488,15 +1550,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(items.attr("id")){
                     id = items.attr("id")
                 }
-                let obj = {
-                    fieldname:items.children('.columnName').text(),
-                    fieldtype:items.children('.columnType').text(),
-                    tablename:items.children('.tableName').text(),
-                    id:id,
-                    moduleid:window.bigData.editmoduleId,
-                    // remark:null
-                }
-                mouldParam.push(obj)
+                mouldParam.push({
+                    fieldname:items.children('.columnName').text()?items.children('.columnName').text() :items.children('.columnName').find('input').val(),
+                    fieldtype:items.children('.columnType').text()?items.children('.columnType').text() :items.children('.columnType').find('select').val(),
+                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
+                    englishname:items.children('.columnEnglish').text()?items.children('.columnEnglish').text():items.children('.columnEnglish').find('input').val(),
+                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
+                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val()
+
+                })
             })
 
             let param = {
@@ -1505,7 +1567,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 modulename:$("#mouldName").val(),
                 modulefields:mouldParam,
                 des:$("#mouldRemark").val(),
-                tab:$('#fgiName').val() == '请选择'?'':$('#fgiName').val(),
                 // sqlurl:null,
                 remark:'',
                 // id:null
@@ -1520,6 +1581,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success: function(data) {
                     $(".moduleContentList").html('')
                     $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                    toastr.info('修改成功！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $.ajax({
                         url:urlConfig.host+'/module/GetAllModule',
                         data:'',
@@ -1556,11 +1619,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function addsjyth(){
         $(".dataSourceTbody").append(`<tr>
-            <td class="columnName"><input type="text" value=""></td>
-            <td class="columnType"><input type="text" value=""></td>
             <td class="columnComment"><input type="text" value=""></td>
-         
-            <td class="tableName"><input type="text" value=""></td>
+            <td class="columnName"><input type="text" value=""></td>
+            <td class="columnType"><select class="">
+                                                <option value="byte">byte</option>
+                                                <option value="short">short</option>
+                                                <option value="int">int</option>
+                                                <option value="long">long</option>
+                                                <option value="float">float</option>
+                                                <option value="double">double</option>
+                                                <option value="boolean">boolean</option>
+                                                <option value="char">char</option>
+                                                <option value="date">date</option>
+                                                <option value="string">string</option>
+                                                <option value="BLOB">BLOB</option>
+                                                <option value="boolean">boolean</option>
+                                                <option value="array">array</option>
+                                            </select></td>
+            <td class="tableName"><input type="text" value="-"></td>
+            <td class="columnRemark"><input type="text" value=""></td>
+            
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
     }
    
@@ -1616,6 +1694,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data){
                     window.bigData.delmoduleId = ''
                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                    toastr.info('删除成功！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').fadeToggle(500)
                 }
@@ -1672,6 +1752,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data){
                 if(data.length == 0){
                     $('.noticeList').append(`<li>${getTime()}请先添加分组！</li>`)
+                    toastr.info('请先添加分组！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
                 $("#group").empty()
@@ -1695,7 +1777,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             let items = $(v)
             let flag =true
             let list = $(items).parent().nextAll()
-            if(items.prop('checked')){            
+            if(items.prop('checked') && items.attr('id') != "selectAll"){            
                let addMbTr = $('#addMb tbody tr')
                if(addMbTr.length > 0){
                     for(let s=0;s<addMbTr.length;s++){
@@ -1710,9 +1792,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 if(flag){
                     let obj ={
-                        COLUMN_NAME:list.eq(0).text(),
-                        COLUMN_TYPE:list.eq(1).text(),
-                        COLUMN_COMMENT:list.eq(2).text(),
+                        COLUMN_NAME:list.eq(1).text(),
+                        COLUMN_TYPE:list.eq(2).text(),
+                        COLUMN_COMMENT:list.eq(0).text(),
                         TABLE_NAME:$("#fgiName").val()
                     }
                     modlueList.push(obj)
@@ -1743,11 +1825,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let thStr = ''
         modlueList.map(item => {
             thStr += `<tr>
-            <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
+            <td class="columnName">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+            <td class="columnEnglish">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
             <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
-            <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-           
             <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
+            <td class="columnRemark"><input type="text" value=""></td>
             <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
         })
         $('#addMb tbody').append(thStr)
@@ -2371,11 +2453,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     sfWinList()
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
+                    toastr.info('删除成功！')
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     //Topology.init();
                     $('#deleteZdDiv').fadeToggle(500)
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
+                    toastr.info(`${data.msg}`)
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             }
         })
@@ -2527,6 +2613,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function modifyGz(s) {
         if(editGzType) {
             $('.noticeList').append(`<li>${getTime()}当前编辑的规则需进行保存！ </li>`)
+            toastr.info('当前编辑的规则需进行保存！')
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         $("#gzDiv").hide();
@@ -2668,8 +2756,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success(data) {
                     if(data == "分组名称重复"){
                         $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                        toastr.info(`${data}` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     } else {
                         $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                        toastr.info(`${data}` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
@@ -2729,6 +2821,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 },
                 error(data){
                     $('.noticeList').append(`<li>${getTime()}${data} </li>`)
+                    toastr.info(`${data}` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             })
         } else {
@@ -2742,6 +2836,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 success(data) {
                     if(data){
                         $('.noticeList').append(`<li>${getTime()}修改成功！ </li>`)
+                        toastr.info(`修改成功！` )
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#groupEditDiv").hide();
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -2805,6 +2901,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#ruleDeleteDiv').hide()
                     reloadGroupList();
                     $('.noticeList').append(`<li>${getTime()}删除成功！ </li>`)
+                    toastr.info(`修改成功！` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             }
         })
@@ -2855,6 +2953,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 name: 'rectangle',
                                 fillStyle:'rgba(4,44,98,0.58)',
                                 strokeStyle: '#4295ec',
+                                hideInput:true
                             }
                         })
                     })
@@ -3039,8 +3138,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    toastr.info(`已发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    toastr.info(`取消发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getModuleList()
             }
@@ -3056,8 +3159,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 console.log(data);
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    toastr.info(`已发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    toastr.info(`取消发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getGzList()
             }
@@ -3072,8 +3179,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(status == "发布"){
                     $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
+                    toastr.info(`已发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
                     $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
+                    toastr.info(`取消发布` )
+                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 sfWinList()
             }
@@ -3088,6 +3199,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {id :$("#moduleGroupDeleteYes").attr("deleteId")},
             success(res) {
                 $('.noticeList').append(`<li>${getTime()} ${res} </li>`)
+                toastr.info(`${res} ` )
+                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 $("#moduleGroupDelete").hide();
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',
