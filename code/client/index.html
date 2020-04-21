@@ -31,15 +31,19 @@
             justify-content: space-between;
         }
         .left-list-tilte{
-            height: 100px;
             color: #ffffff;
-            display: flex;
             justify-content: center;
             align-items: center;
             background-image: url(./static/mum1.png);
             background-size: 100% 100%;
             background-repeat: no-repeat;
             margin: 10px 0;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            width: 192px;
+            line-height: 50px;
+            text-align: center;
         }
         i{
             font-style:normal
@@ -839,7 +843,7 @@
                         </div>
                         <div id="showRk" style="display: none">
                             <a class="menu-a" onclick="showRk()">
-                                入口备注
+                                算子备注
                             </a>
                         </div>
                         <div>
@@ -2968,7 +2972,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
-                        div.append(`<div moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div>`)
+                        div.append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
                     })
                 }
             }
@@ -3027,7 +3031,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     var div = $(e.target).children();
                     div.empty()
                     data.map((s,index)=>{
-                        div.append(`<div class="left-list"><div ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                        div.append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
                     })
                 }
             }
