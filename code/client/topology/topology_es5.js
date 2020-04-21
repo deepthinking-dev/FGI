@@ -1963,24 +1963,63 @@ var Topology = {
     // 撤销
     undo: function () {
         canvas.undo();
-        let arrayList =[]
-        let fuuid1 =""
-        canvas.data.nodes.map(item=>{
-            if(item.childStand){
-                window.Topology.tools[item.childStand.fUUid].children.map((index,i)=>{
-                    fuuid1 =item.childStand.fUUid
-                    let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
-                    if(fuuid == index.uuid){
-                       
-                        arrayList.push(index)
-                        
+        let deleteBoxId =""
+        
+        Object.values(window.Topology.tools).map(index=>{
+        
+            index.children.map(child =>{
+                let falg=false;
+                let delId=child.uuid//缓存
+                canvas.data.nodes.map(item=>{//撤销后的
+                    if(item.childStand){
+                        let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
+                        if(delId==fuuid){
+                            falg=true
+                        }
+                    }
+                    
+                })
+                if(!falg){
+                    deleteBoxId=delId
+                    return
+                }
+            })
+            
+        })
+        if(deleteBoxId==""){
+            Object.values(window.Topology.tools).map(index=>{
+                let bigboxid=index.uuid
+                let falg=false;
+                canvas.data.nodes.map(item=>{
+                    if(!item.childStand){//大
+                        if(bigboxid==item.id){
+                            falg=true
+                        }
                     }
                 })
+                if(!falg){
+                    deleteBoxId=bigboxid
+                    return
+                }
+            })
+        }
+        Object.values(window.Topology.tools).map(del=>{
+            let flag=false
+            del.children.map((yDel ,i)=>{
+                if(yDel.uuid ==deleteBoxId){
+                    del.children.splice(i,1)
+                
+                    return
+                }
+            })
+            if(!flag){
+                if(del.uuid==deleteBoxId){
+                   delete window.Topology.tools[del.uuid]
+                   return
+                }
             }
         })
-        // window.Topology.tools[fuuid1].children = []
-        // window.Topology.tools[fuuid1].children  =arrayList
-        console.log(arrayList)
+        console.log(deleteBoxId)
     },
     // 恢复
     redo: function () {
