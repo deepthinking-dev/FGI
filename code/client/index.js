@@ -652,38 +652,6 @@ $(function(){
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
 
-    //点击其他模块
-    $('body').on('click','.otherFormula',(e) => {
-        window.filed.inputFieldsTarget = $(e.target);
-        $.ajax({
-            url:urlConfig.host+'/operatorMaintenance/getAllAlgorithm',
-            data:{
-                username:null
-            },
-            success: function(data) {
-               let str =``
-               if(data.length>0){
-                    data.map(item=>{
-                        str +=`<tr id="${item.id}" moduleId="${item.moduleid}">
-                                    <td class="algorithmname">${item.algorithmname}</td>
-                                    <td>${item.algorithmtype}</td>
-                                    <td>${item.algorithmfun}</td>
-                                    <td>${item.algorithmauthor}</td>
-                                    
-                                    remark
-                                </tr>`
-                    })
-               }else{
-                   str+= `<div style="text-align: center;">暂无数据</div>`
-               }
-
-
-                $(".otherFormulaList").html(str)
-            }
-        })
-        $('#otherFormula').fadeToggle(500)
-
-    })
       // 点击选择算子信息
     $('body').on('click','.otherFormulaList tr',(e) => {
         window.filed.fieldname = $(e.target).parent('tr').children('.algorithmname').text();

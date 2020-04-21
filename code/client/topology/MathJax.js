@@ -197,11 +197,6 @@ function ConfirmFields(){
     $(window.filed.inputFieldsTarget).attr("value",window.filed.fieldname)
     $('#fields').fadeToggle(500)
 }
-    //确定选择算子信息确定按钮
-function ConfirmotherFormula(){
-    $(window.filed.inputFieldsTarget).attr("value",window.filed.fieldname)
-    $('#otherFormula').fadeToggle(500)
-}
 
 //逻辑运算新增按钮
 function addLogic(){
