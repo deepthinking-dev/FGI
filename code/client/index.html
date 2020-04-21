@@ -1591,10 +1591,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
           
         }else{
             let flag = true
+
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 let id=0
-               
+                debugger
                 if(items.attr("id")){
                     id = items.attr("id")
                 }
@@ -1612,15 +1613,22 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     flag = false
                     return false
                 }
+                var types;
+                if(items.children('.columnType').find('select').css("display") == "none"){
+                    types= items.children('.columnType').find('input').val()
+                } else {
+                    types = items.children('.columnType').find('select').val()
+                }
                 mouldParam.push({
                     fieldname:items.children('.columnComment').find('input').val(),
-                    fieldtype:items.children('.columnType').find('select').val(),
+                    fieldtype:types,
                     tablename:items.children('.tableName').find('input').val(),
                     englishname:items.children('.columnName').find('input').val(),
                     remark:items.children('.columnRemark').find('input').val(),
                     id:items.attr("id") || 0,
                     moduleid:items.attr("moduleid") || window.bigData.editmoduleId
                 })
+                console.log(mouldParam);
             })
 
             let param = {
@@ -1764,6 +1772,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').hide()
+                    dataModlue()
                 }
             }
         })
@@ -2265,7 +2274,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
-                    sessionStorage.src="";
+                    sessionStorage.src=data.tableAlgorithm.remark2;
                     sessionStorage.latex="";
                     try{
                         ue.setContent('');

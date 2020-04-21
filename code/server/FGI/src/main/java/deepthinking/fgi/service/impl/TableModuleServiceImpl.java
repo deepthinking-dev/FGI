@@ -95,7 +95,7 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
         if(i==1){
             //获取目前传入的模型关联字段
             List<TableModulefield> list=module.getModulefields();
-            if(list!=null&&list.size()>0){
+            if(list!=null){
                 //获取以前表中的字段
                 TableModulefieldCriteria tableModulefieldCriteria=new TableModulefieldCriteria();
                 tableModulefieldCriteria.createCriteria().andModuleidEqualTo(module.getId());
@@ -106,33 +106,36 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
                 List<TableModulefield> del_data=new ArrayList<>();
                 List<TableModulefield> up_data=new ArrayList<>();
                 if(old_data.size()>0){
-                    for(TableModulefield field:list){
-                        boolean flag=false;
+                    if(list.size()==0){
+                        del_data=old_data;
+                    }else{
+                        for(TableModulefield field:list){
+                            boolean flag=false;
+                            for(TableModulefield old:old_data){
+                                if(field.getId()==old.getId()){
+                                    up_data.add(field);
+                                    flag=true;
+                                    break;
+                                }
+                            }
+                            if(!flag){
+                                add_data.add(field);
+                            }
+                        }
+
                         for(TableModulefield old:old_data){
-                            if(field.getId()==old.getId()){
-                                up_data.add(field);
-                                flag=true;
-                                break;
+                            boolean flag=false;
+                            for(TableModulefield up:up_data){
+                                if(up.getId()==old.getId()){
+                                    flag=true;
+                                    break;
+                                }
+                            }
+                            if(!flag){
+                                del_data.add(old);
                             }
                         }
-                        if(!flag){
-                            add_data.add(field);
-                        }
                     }
-
-                    for(TableModulefield old:old_data){
-                        boolean flag=false;
-                        for(TableModulefield up:up_data){
-                            if(up.getId()==old.getId()){
-                                flag=true;
-                                break;
-                            }
-                        }
-                        if(!flag){
-                            del_data.add(old);
-                        }
-                    }
-
 
                 }else{
                     add_data=list;
