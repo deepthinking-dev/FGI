@@ -1444,7 +1444,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
-                debugger
+
                 // if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
                 //     $('.noticeList').append(`<li>${getTime()}请填写字段中文名称！ </li>`)
                 //     toastr.info('请填写字段中文名称！')
@@ -1452,7 +1452,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 //     flag = false
                 //     return false
                 // }
-                if(items.children('.columnEnglish').text() == "" && items.children('.columnEnglish').find('input').val() == ""){
+                if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${getTime()}请填写字段英文名称！ </li>`)
                     toastr.info('请填写字段英文名称！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1475,14 +1475,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     return false
                 }
                 mouldParam.push({
-                    fieldname:items.children('.columnName').text()?items.children('.columnName').text() :items.children('.columnName').find('input').val(),
+                    fieldname:items.children('.columnComment').text()?items.children('.columnComment').text() :items.children('.columnComment').find('input').val(),
                     fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():items.children('.columnType').text(),
                     tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
-                    englishname:items.children('.columnEnglish').text()?items.children('.columnEnglish').text():items.children('.columnEnglish').find('input').val(),
-                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
-                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val()
-                    // id:null,
-                    // moduleid:null,
+                    englishname:items.children('.columnName').text()?items.children('.columnName').text():items.children('.columnName').find('input').val(),
+                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val(),
+                    // id:items.attr("id"),
+                    // moduleid:items.attr("moduleid")
                     // remark:null
                 })
             })
@@ -1535,13 +1534,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     id = items.attr("id")
                 }
                 mouldParam.push({
-                    fieldname:items.children('.columnName').text()?items.children('.columnName').text() :items.children('.columnName').find('input').val(),
-                    fieldtype:items.children('.columnType').text()?items.children('.columnType').text() :items.children('.columnType').find('select').val(),
-                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
-                    englishname:items.children('.columnEnglish').text()?items.children('.columnEnglish').text():items.children('.columnEnglish').find('input').val(),
-                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
-                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val()
-
+                    fieldname:items.children('.columnComment').find('input').val()?items.children('.columnComment').find('input').val() :items.children('.columnComment').find('input').val(),
+                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():items.children('.columnType').find('input').val(),
+                    tablename:items.children('.tableName').find('input').val()?items.children('.tableName').find('input').val():items.children('.tableName').find('input').val(),
+                    englishname:items.children('.columnName').find('input').val()?items.children('.columnName').find('input').val():items.children('.columnName').find('input').val(),
+                    remark:items.children('.columnRemark').find('input').val()?items.children('.columnRemark').find('input').val():items.children('.columnRemark').find('input').val(),
+                    id:items.attr("id") || 0,
+                    moduleid:items.attr("moduleid") || window.bigData.editmoduleId
                 })
             })
 
@@ -1811,8 +1810,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let thStr = ''
         modlueList.map(item => {
             thStr += `<tr>
-            <td class="columnName">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
-            <td class="columnEnglish">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
+            <td class="columnComment">${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
+            <td class="columnName">${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
             <td class="columnType">${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
             <td class="tableName">${item.TABLE_NAME?item.TABLE_NAME:''}</td>
             <td class="columnRemark"><input type="text" value=""></td>
