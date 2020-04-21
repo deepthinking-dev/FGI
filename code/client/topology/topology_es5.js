@@ -1355,7 +1355,11 @@ var Topology = {
                         //     Store.set('locked', data);
                         //     break;
                         case 'dblclick':
-
+                            $("#topo_canvas textarea").attr({"readonly":"readonly"}).css({
+                                "z-index":"-10",
+                                "background": "none",
+                                "border": "none"
+                            })
                             let currId = data.data.sid;
                             data.hideInput = true
                             $.ajax({
