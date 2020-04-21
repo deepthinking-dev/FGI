@@ -11,6 +11,17 @@ $(function(){
     $('body').on('click','.editDicClose',(e) => {
         $("#editDic").hide();
     })
+    $('body').on('click','.addLjgx',(e) => {
+        var text =  $(e.target).parent().children("i").text();
+        var val = $("#actionMsgIn").val();
+        $("#actionMsgIn").val(val + " " + text)
+    })
+    $('body').on('click','.addLjgxType',(e) => {
+        var type =  $("#addLjSelect").val();
+        var val = $("#actionMsgIn").val();
+        $("#actionMsgIn").val(val + " " + type)
+    })
+
     $("#selectOutIn").change(()=> {
         if ($("#selectOutIn").val() == "1") {
             $("#actionInDiv").show();
@@ -35,7 +46,8 @@ $(function(){
                                    <option value="assignment">赋值</option>
                                </select>
                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                               </div>
                          `)
                     })
@@ -63,7 +75,8 @@ $(function(){
                                            <option value="assignment">赋值</option>
                                        </select>
                                            <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
                                       </div>
                                     `)
                                 })
@@ -108,6 +121,7 @@ $(function(){
                                                <option value="assignment">赋值</option>
                                            </select>
                                                <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                           </div>
                                  `)
@@ -147,6 +161,7 @@ $(function(){
                                                    <option value="assignment">赋值</option>
                                                </select>
                                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
@@ -197,7 +212,8 @@ $(function(){
                            <option value="assignment">赋值</option>
                        </select>
                            <span>表达式</span><input type="text" value="" class="bds_in">
-                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                       </div>
                     `)
         } else {
@@ -225,7 +241,8 @@ $(function(){
                                <option value="assignment">赋值</option>
                            </select>
                                <span>表达式</span><input type="text" value="" class="bds_out">
-                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                           </div>
                         `)
                 }

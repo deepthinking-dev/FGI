@@ -356,7 +356,7 @@ function ruleOpen(){
 }
 //关闭规则弹框
 function RuleClose(){
-    $("#sureRule").fadeToggle(500);
+    $("#sureRule").hide();
 }
 //保存规则（一起新增）
 function ruleSure(){
@@ -449,7 +449,7 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
-                $("#sureRule").fadeToggle(500)
+                $("#sureRule").hide()
                 $('.noticeList').append(`<li>${getTime()}保存成功！ </li>`)
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }

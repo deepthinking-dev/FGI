@@ -242,6 +242,13 @@
            </div>
            <div style="margin: 20px 20px;height: 400px;overflow: auto;" id="actionInDiv"></div>
            <div style="margin: 20px 20px;height: 400px;overflow: auto;display: none" id="actionOutDiv"></div>
+           <span style="margin-left: 20px;margin-top: 4px">逻辑关系</span>
+           <select id="addLjSelect">
+               <option>&&</option>
+               <option>||</option>
+               <option>!</option>
+           </select>
+           <button class="addLjgxType" type="button"  style="background: #409eff;color: #fff;margin-left: 15px;height: 20px;border: none;width: 22px">+</button>
            <input type="text" id="actionMsgIn">
            <input type="text" id="actionMsgOut">
            <div style="position: absolute;bottom: 20px;right: 0">
@@ -1632,7 +1639,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         reseTabsList( $("#selectedModlue").val());
     })
     function ModuleClose(){
-        $('#dataModulePage').fadeToggle(500)
+        $('#dataModulePage').hide()
     }
     function editAlgorithm(){
         $(".Frame").fadeToggle(500);
@@ -2336,7 +2343,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
          $("#ruleDes").attr("data",val)
      }
      function closeDeleteZdDiv() {
-         $('#deleteZdDiv').fadeToggle(500)
+         $('#deleteZdDiv').hide()
      }
      function deleteZdYes() {
         $.ajax({
@@ -2347,8 +2354,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     sfWinList()
                     $('.noticeList').append(`<li>${getTime()} 删除成功！</li>`)
-                    //Topology.init();
-                    $('#deleteZdDiv').fadeToggle(500)
+                    $('#deleteZdDiv').hide()
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
