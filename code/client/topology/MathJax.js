@@ -1062,7 +1062,7 @@ function ruleAddButtonS(){
         data:{algthId:data.data.sid},
         success: function(data) {
             let str =`<div class="actionInfo" data-title="xin">
-                    <input value="输出" class="actionSelected1">  
+                    <input value="输出" class="actionSelected1" disabled>  
                     <input value="" class="varNameInput" style="display: none;">   
                     <select class="varNameInput1">
                     </select>
