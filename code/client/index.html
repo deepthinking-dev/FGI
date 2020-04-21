@@ -3505,58 +3505,33 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             })
                         }
                         if(type == 1){
-                            $("#modelListRight").empty()
-                            data.map((s, index) => {
-                                $("#modelListRight").append(`<div class="panel panel-default">
-                                  <div class="panel-heading" role="tab">
-                                      <h4 class="panel-title">
-                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                      </h4>
-                                  </div>
-                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                      <div class="panel-body">
+                            $.ajax({
+                                url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                                type: "get",
+                                data: {type: 1},
+                                success(data) {
+                                    $("#modelListRight").empty()
+                                    data.map((s, index) => {
+                                        $("#modelListRight").append(`<div class="panel panel-default">
+                                                  <div class="panel-heading" role="tab">
+                                                      <h4 class="panel-title">
+                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
+                                                      </h4>
+                                                  </div>
+                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
+                                                      <div class="panel-body">
 
-                                      </div>
-                                  </div>
-                              </div>
-                              `)
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              `)
+                                    })
+                                }
                             })
-                        }
-                        if(type == 2){
-                            $("#sfGruopListRight").empty()
-                            data.map((s,index)=>{
-                                $("#sfGruopListRight").append(`<div class="panel panel-default">
-                                  <div class="panel-heading" role="tab">
-                                      <h4 class="panel-title">
-                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruopRight${index}" aria-expanded="true">${s.groupname}</a>
-                                      </h4>
-                                  </div>
-                                  <div id="moduleGruopRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                      <div class="panel-body">
-
-                                      </div>
-                                  </div>
-                              </div>
-                              `)
-                            })
-                        }
-                        if(type == 3){
-                            $("#ruleListRight").empty()
-                            data.map((s,index)=>{
-                                $("#ruleListRight").append(`<div class="panel panel-default">
-                                      <div class="panel-heading" role="tab">
-                                          <h4 class="panel-title">
-                                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ruleRight${index}" aria-expanded="true">${s.groupname}</a>
-                                          </h4>
-                                      </div>
-                                      <div id="ruleRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                          <div class="panel-body">
-
-                                          </div>
-                                      </div>
-                                  </div>
-                                  `)
-                            })
+                        } else if(type == 2){
+                            dictionary()
+                        } else if(type == 3){
+                            ruleGroupShow()
                         }
                     }
                 })
