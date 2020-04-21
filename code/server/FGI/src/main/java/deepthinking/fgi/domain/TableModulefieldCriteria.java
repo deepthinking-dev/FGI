@@ -384,6 +384,76 @@ public class TableModulefieldCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andEnglishnameIsNull() {
+            addCriterion("EnglishName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameIsNotNull() {
+            addCriterion("EnglishName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameEqualTo(String value) {
+            addCriterion("EnglishName =", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameNotEqualTo(String value) {
+            addCriterion("EnglishName <>", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameGreaterThan(String value) {
+            addCriterion("EnglishName >", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameGreaterThanOrEqualTo(String value) {
+            addCriterion("EnglishName >=", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameLessThan(String value) {
+            addCriterion("EnglishName <", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameLessThanOrEqualTo(String value) {
+            addCriterion("EnglishName <=", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameLike(String value) {
+            addCriterion("EnglishName like", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameNotLike(String value) {
+            addCriterion("EnglishName not like", value, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameIn(List<String> values) {
+            addCriterion("EnglishName in", values, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameNotIn(List<String> values) {
+            addCriterion("EnglishName not in", values, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameBetween(String value1, String value2) {
+            addCriterion("EnglishName between", value1, value2, "englishname");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishnameNotBetween(String value1, String value2) {
+            addCriterion("EnglishName not between", value1, value2, "englishname");
+            return (Criteria) this;
+        }
+
         public Criteria andFieldtypeIsNull() {
             addCriterion("FieldType is null");
             return (Criteria) this;

@@ -3,8 +3,18 @@ package deepthinking.fgi.dao.mapper;
 import deepthinking.fgi.domain.TableModulefield;
 import deepthinking.fgi.domain.TableModulefieldCriteria;
 import java.util.List;
-
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TableModulefieldMapper {
@@ -45,11 +55,11 @@ public interface TableModulefieldMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_modulefield (ID, ModuleID, ",
-        "FieldName, FieldType, ",
+        "insert into table_modulefield (ModuleID, FieldName, ",
+        "EnglishName, FieldType, ",
         "TableName, Remark)",
-        "values (#{id,jdbcType=INTEGER}, #{moduleid,jdbcType=INTEGER}, ",
-        "#{fieldname,jdbcType=VARCHAR}, #{fieldtype,jdbcType=VARCHAR}, ",
+        "values (#{moduleid,jdbcType=INTEGER}, #{fieldname,jdbcType=VARCHAR}, ",
+        "#{englishname,jdbcType=VARCHAR}, #{fieldtype,jdbcType=VARCHAR}, ",
         "#{tablename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
@@ -76,6 +86,7 @@ public interface TableModulefieldMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
         @Result(column="FieldName", property="fieldname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="EnglishName", property="englishname", jdbcType=JdbcType.VARCHAR),
         @Result(column="FieldType", property="fieldtype", jdbcType=JdbcType.VARCHAR),
         @Result(column="TableName", property="tablename", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
@@ -90,7 +101,7 @@ public interface TableModulefieldMapper {
      */
     @Select({
         "select",
-        "ID, ModuleID, FieldName, FieldType, TableName, Remark",
+        "ID, ModuleID, FieldName, EnglishName, FieldType, TableName, Remark",
         "from table_modulefield",
         "where ID = #{id,jdbcType=INTEGER}"
     })
@@ -98,6 +109,7 @@ public interface TableModulefieldMapper {
         @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="ModuleID", property="moduleid", jdbcType=JdbcType.INTEGER),
         @Result(column="FieldName", property="fieldname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="EnglishName", property="englishname", jdbcType=JdbcType.VARCHAR),
         @Result(column="FieldType", property="fieldtype", jdbcType=JdbcType.VARCHAR),
         @Result(column="TableName", property="tablename", jdbcType=JdbcType.VARCHAR),
         @Result(column="Remark", property="remark", jdbcType=JdbcType.VARCHAR)
@@ -141,6 +153,7 @@ public interface TableModulefieldMapper {
         "update table_modulefield",
         "set ModuleID = #{moduleid,jdbcType=INTEGER},",
           "FieldName = #{fieldname,jdbcType=VARCHAR},",
+          "EnglishName = #{englishname,jdbcType=VARCHAR},",
           "FieldType = #{fieldtype,jdbcType=VARCHAR},",
           "TableName = #{tablename,jdbcType=VARCHAR},",
           "Remark = #{remark,jdbcType=VARCHAR}",
