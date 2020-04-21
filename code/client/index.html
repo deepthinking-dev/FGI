@@ -990,7 +990,6 @@
             <div id="zdcsList"></div>
         </div>
         <button id="editDicYes">确定</button>
-        <button class="closeEditDic">取消</button>
     </div>
     <!-- <div id="colorDiv">
         <ul>
@@ -1590,10 +1589,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
           
         }else{
+            let flag = true
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 let id=0
-                let flag = true
+               
                 if(items.attr("id")){
                     id = items.attr("id")
                 }
@@ -1867,7 +1867,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         let itemh = $(addMbTr).eq(s)
                         let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
                         let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
-                        if( list.eq(0).text() == fieldname && $("#fgiName").val() == tableName){
+                        if( list.eq(1).text() == fieldname && $("#fgiName").val() == tableName){
                             flag = false
                             break;
                         }
@@ -1889,14 +1889,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         let itemh = $(addMbTr).eq(s)
                         let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
                         let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
-                        if( list.eq(0).text() == fieldname && $("#fgiName").val() == tableName){
+                        if( list.eq(1).text() == fieldname && $("#fgiName").val() == tableName){
                             $(addMbTr).eq(s).remove();
                         }
                     }
                 }
                 if( window.bigData.editmoduledata.length > 0){
                     window.bigData.editmoduledata.map((item,i)=>{
-                        if(list.eq(0).text() == item.fieldname && $("#fgiName").val() == item.tableName){
+                        if(list.eq(1).text() == item.fieldname && $("#fgiName").val() == item.tableName){
                             window.bigData.editmoduledata.splice(i,1)
                         }
                     })
@@ -1922,6 +1922,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
 
     function delTab(event){
+
+        if( window.bigData.editmoduledata.length > 0){
+            window.bigData.editmoduledata.map((item,i)=>{
+                if($(event.target).parents('tr').children(".columnName").text() == item.fieldname && $(event.target).parents('tr').children(".tableName").text()  == item.tableName){
+                    window.bigData.editmoduledata.splice(i,1)
+                }
+            })
+        }
         $(event.target).parents('tr').remove();
     }
     function AlgorithmConfirm(){
@@ -2103,7 +2111,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#editDicYes").attr("editId",s)
         $("#group").attr("disabled",false)
         $("#editDicTitle").text("修改算法")
-        $("#dicDiv").hide()
+        $("#dicDiv").show()
         $("#companyGs").attr("disabled",false)
         $("#groupGs").attr("disabled",false)
         $.ajax({
@@ -2975,7 +2983,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     $("#addGroupYes").click(()=>{
         if($("#groupInputName").val() == ""){
-            $('.noticeList').append(`<li>${getTime()}分组名称不能为空！ </li>`)
+            $('.noticeList').append(`<li>${getTime()}【规则】分组名称不能为空！ </li>`)
+            toastr.info(`【规则】分组名称不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         var tableGroupdata = {
