@@ -1713,7 +1713,23 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                           </div>
                           `)
+                        $.ajax({
+                            url: urlConfig.host + '/module/GetModuleByGroupName',
+                            type:"get",
+                            data: {moduleGroupName :s.groupname},
+                            success(data) {
+                                if(data.length){
+                                    $("#modelListRight .sfGruopTable").eq(index).empty();
+                                    data.map(s=>{
+                                        $("#modelListRight .sfGruopTable").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                    })
+                                }
+                            }
+                        })
                 })
+
+
+
             }
         })
     }
@@ -1842,6 +1858,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#AlgorithmnameY").val("");
             $("#MathInput").val("");
             $(".MathJaxEdit").empty();
+            $("#companyGs").val("")
             $("#gsName").attr("disabled",false);
             $("#gsDes").attr("disabled",false);
             $('#AlgorithmnameY').attr("disabled",false);
@@ -1909,6 +1926,54 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                           </div>
                           `)
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName :s.groupname},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    $("#sfGruopListRight .sfGruopTable").eq(index).empty();
+                                        window.addAlgorithm({
+                                            name: 'rectangle',
+                                            icon: 'icon-rectangle',
+                                            id:s.tableAlgorithm.id,
+                                            type:"tableAlgorithm",
+                                            data: {
+                                                id:s.tableAlgorithm.id,
+                                                text: s.tableAlgorithm.algorithmname,
+                                                rect: {
+                                                    width: 200,
+                                                    height: 100
+                                                },
+                                                parentId:s.tableAlgorithm.id,
+                                                font: {
+                                                    fontFamily: 'Arial',
+                                                    color: 'aqua',
+                                                    textBaseline: 'top'
+                                                },
+                                                data:{
+                                                    inNum:s.inNum,
+                                                    outNum:s.outNum,
+                                                    index:index,
+                                                    sid:s.tableAlgorithm.index
+                                                },
+                                                children:[],
+                                                paddingLeft: 10,
+                                                paddingRight: 10,
+                                                paddingTop: 10,
+                                                paddingBottom: 10,
+                                                borderRadius: 0.1,
+                                                name: 'rectangle',
+                                                fillStyle:'rgba(4,44,98,0.58)',
+                                                strokeStyle: '#4295ec',
+                                                hideInput:true
+                                            }
+                                        })
+                                })
+                            }
+                        }
+                    })
                 })
             }
         })
@@ -2411,13 +2476,73 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".logicUl").append($(".logicLi:first").clone());
     }
     $("#searchName").bind('input propertychange',function(s){
-        let val = $("#searchName").val()
-        $('.left-list-tilte').each((i,s)=>{
-            if($(s).text().includes(val)){
-                $(s).show()
-            } else {
-                $(s).hide()
-            }
+        let val = $("#searchName").val();
+        if(val == "") return;
+        var list=[];
+        if($('.liactive').text() == "模型库"){
+            $('#modelPageDiv .panel-heading').each((i,s)=>{
+                if($(s).children().children().text().includes(val)){
+                    $(s).next().addClass("in");
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        $(x).show()
+
+                    })
+                } else {
+                    // $(s).next().removeClass("in");
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        if($(x).text().includes(val)){
+                            $(x).show();
+                            $(x).parent().parent().parent().parent().addClass("in")
+                            list.push($(x).parent().parent().parent().parent())
+                        } else {
+                            $(x).hide()
+                        }
+                    })
+                }
+            })
+
+        } else if($('.liactive').text() == "算法库"){
+            $('#algorithmPage .panel-heading').each((i,s)=>{
+                if($(s).children().children().text().includes(val)){
+                    $(s).next().addClass("in");
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        $(x).show()
+                    })
+                } else {
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        if($(x).text().includes(val)){
+                            $(x).show();
+                            $(x).parent().parent().parent().parent().addClass("in")
+                            list.push($(x).parent().parent().parent().parent())
+                        } else {
+                            $(x).hide()
+                        }
+                    })
+                }
+            })
+        } else {
+            $('#ruleMde .panel-heading').each((i,s)=>{
+                if($(s).children().children().text().includes(val)){
+                    $(s).next().addClass("in");
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        $(x).show()
+                    })
+                } else {
+                    $(s).next().find('.left-list-tilte').each((i,x)=>{
+                        if($(x).text().includes(val)){
+                            $(x).show();
+                            $(x).parent().parent().parent().parent().addClass("in")
+                            list.push($(x).parent().parent().parent().parent())
+                        } else {
+                            $(x).hide()
+                        }
+                    })
+                }
+            })
+        }
+
+        list.map(s=>{
+            s.addClass("in")
         })
     });
      function closeActionDiv() {
@@ -2548,11 +2673,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                               </div>
                               <div id="ruleRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
                                   <div class="panel-body">
-
+                                       <table class="ruleListTable"></table>
                                   </div>
                               </div>
                           </div>
                           `)
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName :s.groupname},
+                        success(res) {
+                            if(res.length){
+                                $("#ruleListRight .ruleListTable").eq(index).empty();
+                                res.map(s=>{
+                                    $("#ruleListRight .ruleListTable").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.rolename}</div></div>`)
+                                })
+                            }
+                        }
+                    })
                 })
             }
         })
@@ -2741,6 +2879,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupInputName").val("")
     })
     $("#addGroupYes").click(()=>{
+        if($("#groupInputName").val() == ""){
+            $('.noticeList').append(`<li>${getTime()}分组名称不能为空！ </li>`)
+            return false;
+        }
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
             "grouptype":Number($("#groupInputName").attr("type")),

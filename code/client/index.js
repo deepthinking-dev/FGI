@@ -13,13 +13,24 @@ $(function(){
     })
     $('body').on('click','.addLjgx',(e) => {
         var text =  $(e.target).parent().children("i").text();
-        var val = $("#actionMsgIn").val();
-        $("#actionMsgIn").val(val + " " + text)
+        if($("#selectOutIn").val() == 1){
+            var val = $("#actionMsgIn").val();
+            $("#actionMsgIn").val(val + " " + text)
+        } else {
+            var val = $("#actionMsgOut").val();
+            $("#actionMsgOut").val(val + " " + text)
+        }
+
     })
     $('body').on('click','.addLjgxType',(e) => {
         var type =  $("#addLjSelect").val();
-        var val = $("#actionMsgIn").val();
-        $("#actionMsgIn").val(val + " " + type)
+        if($("#selectOutIn").val() == 1){
+            var val = $("#actionMsgIn").val();
+            $("#actionMsgIn").val(val + " " + type)
+        } else {
+            var val = $("#actionMsgOut").val();
+            $("#actionMsgOut").val(val + " " + type)
+        }
     })
 
     $("#selectOutIn").change(()=> {
