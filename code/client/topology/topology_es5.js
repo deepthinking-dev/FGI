@@ -1235,7 +1235,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            if(data.nodes.length==0){
+                            if(data.nodes.length==0 && data.lines.length == 0){
                                 $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
                                 toastr.info(`请选择要删除的节点或者线！` )
                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);

@@ -723,7 +723,7 @@ $(function(){
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
-                    $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
+                    $('#ruleName').val(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
                     $("#currentGzName").attr("title",data.tableRole.rolename)

@@ -763,16 +763,19 @@
                                 <div class="uploadDiv" onclick="uploadShow()">导入<i></i></div>
                                 <div class="export">导出<i></i></div>
                                 <div class="checkUp">检查<i></i></div>
-                                <div class="menu-a-delete">
-                                    <a onclick="onDelete()" class="menu-a  menu-a-delete">
+                                <div class="deleteDiv">
+                                    <a onclick="onDelete()">
                                         删除<i></i>
                                     </a>
                                     
                                 </div>
-                                <div class="menu-a-undo">
+                                <div class="undoDiv">
                                     <a onclick="undo()" class="menu-a">
                                         撤消<i></i>
                                     </a>
+                                </div>
+                                <div class="clearCanvas">
+                                        清空<i></i>
                                 </div>
                                 <!-- <div type="button" class="fullScreen">全屏</div> -->
                             </div>
@@ -788,7 +791,7 @@
                                 <div id="flex_props1_home">
                                     <div>
                                         <div class="sub-title">
-                                            完整提示：
+                                            提示：
                                         </div>
                                         <ul class="noticeList">
                                           
@@ -1200,6 +1203,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
         canvas.lock(2)
         canvas.scale(1)
     })
+    
+    $('body').on('click','.clearCanvas',(e) =>{
+        canvas.data.nodes = []
+        canvas.data.lines = []
+        window.Topology.Tools = []
+        canvas.render();
+    })
     function changeVarType(e){
         if(e.target.value == "2"){
             $(e.target).parent().next().find('input').remove();
@@ -1238,7 +1248,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     $('body').on('click','.lkr-list-edit',(e) => {
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).attr('moduleId')
-        $("#dataModulePage").hide()
+        $("#dataModulePage").show()
         $('#lkrFrame').fadeToggle(500)
         $('.addsjyth').show();
         $("#lkrFrame .lkr-button").show();
@@ -2569,7 +2579,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 url: urlConfig.host + '/module/GetAllModule',
                 type: "get",
                 success(res){
-                    modelSelectList=`<select class="moduleTypeSelect">`;
+                    modelSelectList=`<select class="moduleTypeSelect" onmousedown="if(this.options.length>4){this.size=4}" οnblur="this.size=0" οnchange="this.size=0">`;
                     res.map(s=>{
                         modelSelectList+=`<option value="${s.modulename}">${s.modulename}</option>`
                     })
@@ -2626,7 +2636,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
-                    $('#ruleName').val(data.tableRole.rolename).attr({"disabled":"disabled"})
+                    $('#ruleName').val(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
                     $("#currentGzName").attr("title",data.tableRole.rolename)
@@ -3136,12 +3146,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {modelId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
-                    toastr.info(`已发布` )
+                    $('.noticeList').append(`<li>${getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
-                    toastr.info(`取消发布` )
+                    $('.noticeList').append(`<li>${getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getModuleList()
@@ -3157,12 +3167,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 console.log(data);
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
-                    toastr.info(`已发布` )
+                    $('.noticeList').append(`<li>${getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
-                    toastr.info(`取消发布` )
+                    $('.noticeList').append(`<li>${getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 getGzList()
@@ -3177,12 +3187,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {algthId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    $('.noticeList').append(`<li>${getTime()} 已发布</li>`)
-                    toastr.info(`已发布` )
+                    $('.noticeList').append(`<li>${getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    $('.noticeList').append(`<li>${getTime()} 取消发布</li>`)
-                    toastr.info(`取消发布` )
+                    $('.noticeList').append(`<li>${getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
+                    toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
                 sfWinList()

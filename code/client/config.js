@@ -5,7 +5,7 @@ env = {
     production:'http://'+window.location.hostname +":"+productionPORT
 }
   
-let currentEnv = 'production';
+let currentEnv = 'development';
 
 var urlConfig = {
     host:`${env[currentEnv]}`,
