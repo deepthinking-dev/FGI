@@ -474,7 +474,7 @@
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
-            <span>公式编辑</span>
+            <span id="editDicTitle">公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="form-group">
@@ -1835,6 +1835,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         ue.setContent('');
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
+        $("#editDicTitle").text("公式编辑")
         $("#companyGs").attr("disabled",false)
         $("#groupGs").attr("disabled",false)
         AlgorithmConfirm()
@@ -2595,6 +2596,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                 }
+                dictionaryShow()
             }
         })
     }

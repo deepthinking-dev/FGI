@@ -1,7 +1,12 @@
 
     function FrameClose(){
+        if(window.bigData.formulaType=="add" || window.bigData.formulaType=="edit"){
+             $("#dicDiv").show()
+        }else{
+            $("#dicDiv").hide()
+        }
         $(".Frame").attr("style","display:none;");
-        $("#dicDiv").show()
+     
     }
     function LogicClose(){
         $(".Logic").attr("style","display:none;");
