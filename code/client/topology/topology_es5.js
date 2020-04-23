@@ -279,9 +279,10 @@ var Topology = {
                             paddingBottom: 10,
                             borderRadius: 0.1,
                             name: 'rectangle',
-                            fillStyle:'rgba(4,44,98,0.58)',
+                            fillStyle:'red',
                             strokeStyle: '#4295ec',
-                            hideInput:true
+                            hideInput:true,
+                            bkType:0
                         }
                     })
                 })
@@ -653,6 +654,8 @@ var Topology = {
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
                                             item.textMaxLine = 1
+                                            // item.bkType = 0
+                                            // item.fillStyle = "red"
                                         }else{                                         
                                             out_num ++                                            
                                             item.rect.x = data[0].rect.x +data[0].rect.width
@@ -695,6 +698,8 @@ var Topology = {
                                             item.rotatedAnchors[2].y = item.rect.center.y
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
+                                            // item.bkType = 0
+                                            // item.fillStyle = "red"
                                         }
                                         canvas.render()                                       
                                     }
@@ -851,13 +856,63 @@ var Topology = {
                                                 if(item.vartype == 3){
                                                     type ="对象"
                                                 }
+                                                
+                                                switch (type) {
+                                                    case '常量':
+                                                        fillStyle = '#0eff23';
+                                                        break;
+                                                    case '对象':
+                                                        fillStyle = '#ff00e7';
+                                                        break;
+                                                    case 'int':
+                                                        fillStyle = 'red';
+                                                        break;
+                                                    case 'byte':
+                                                        fillStyle = '#ff7749';
+                                                        break;
+                                                    case 'long':
+                                                        fillStyle = '#a4ff59';
+                                                        break;
+                                                    case 'short':
+                                                        fillStyle = '#fb61ff';
+                                                        break;
+                                                    case 'float':
+                                                        fillStyle = 'blue';
+                                                        break;
+                                                    case 'double':
+                                                        fillStyle = 'green';
+                                                        break;
+                                                    case 'boolean':
+                                                        fillStyle = 'aqua';
+                                                        break;
+                                                    case 'number':
+                                                        fillStyle = 'orange';
+                                                        break;
+                                                    case 'char':
+                                                        fillStyle = '#7cc6ff';
+                                                        break;
+                                                    case 'date':
+                                                        fillStyle = '#ff4286';
+                                                        break;
+                                                    case 'string':
+                                                        fillStyle = '#00c1ff';
+                                                        break;
+                                                    case 'blob':
+                                                        fillStyle = '#6a46ff';
+                                                        break;
+                                                    case 'array':
+                                                        fillStyle = '#ffe964';
+                                                        break;
+                                                }
+                                               
                                                 let UUid =  guid()
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
                                                 data2.text = item.parametername;
                                                 // data2.text = ""   
-                                                
+                                                data2.bkType = 0
+                                                data2.fillStyle = fillStyle
                                                 data2.rect.ex = data1.rect.x + num.x;
                                                 data2.rect.ey = data1.rect.y + num.y;
                                                 data2.rect.x = data1.rect.x + num.x;
@@ -939,13 +994,61 @@ var Topology = {
                                                 if(item.vartype == 3){
                                                     type ="对象"
                                                 }
+                                                switch (type) {
+                                                    case '常量':
+                                                        fillStyle = '#0eff23';
+                                                        break;
+                                                    case '对象':
+                                                        fillStyle = '#ff00e7';
+                                                        break;
+                                                    case 'int':
+                                                        fillStyle = 'red';
+                                                        break;
+                                                    case 'byte':
+                                                        fillStyle = '#ff7749';
+                                                        break;
+                                                    case 'long':
+                                                        fillStyle = '#a4ff59';
+                                                        break;
+                                                    case 'short':
+                                                        fillStyle = '#fb61ff';
+                                                        break;
+                                                    case 'float':
+                                                        fillStyle = 'blue';
+                                                        break;
+                                                    case 'double':
+                                                        fillStyle = 'green';
+                                                        break;
+                                                    case 'boolean':
+                                                        fillStyle = 'aqua';
+                                                        break;
+                                                    case 'number':
+                                                        fillStyle = 'orange';
+                                                        break;
+                                                    case 'char':
+                                                        fillStyle = '#7cc6ff';
+                                                        break;
+                                                    case 'date':
+                                                        fillStyle = '#ff4286';
+                                                        break;
+                                                    case 'string':
+                                                        fillStyle = '#00c1ff';
+                                                        break;
+                                                    case 'blob':
+                                                        fillStyle = '#6a46ff';
+                                                        break;
+                                                    case 'array':
+                                                        fillStyle = '#ffe964';
+                                                        break;
+                                                }
                                                 let UUid =  guid()
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
                                                 data2.text = item.parametername;
                                                 // data2.text = ""   
-                                                
+                                                data2.bkType = 0
+                                                data2.fillStyle = fillStyle
                                                 data2.rect.ex = data1.rect.x + num.x;
                                                 data2.rect.ey = data1.rect.y + num.y;
                                                 data2.rect.x = data1.rect.x + num.x;
@@ -959,6 +1062,7 @@ var Topology = {
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                 data2.textMaxLine = 1
+                                                
                                                 data2.childStand = {
                                                     type:"OUT",
                                                     wz:num,

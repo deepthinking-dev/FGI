@@ -775,7 +775,10 @@
                                     </a>
                                 </div>
                                 <div class="clearCanvas">
-                                        清空<i></i>
+                                    清空<i></i>
+                                </div>
+                                <div class="newBuilt">
+                                    新建<i></i>
                                 </div>
                                 <!-- <div type="button" class="fullScreen">全屏</div> -->
                             </div>
@@ -1191,7 +1194,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
         toastr.info('检查成功！')
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
     })
-    
+
+    $('body').on('click','.newBuilt',(e) =>{
+       window.open(window.location.href)
+    })
     $('body').on('click','.export',(e) =>{
         window.bigData.isExportButton = true
        if(window.bigData.isExportId == "") {

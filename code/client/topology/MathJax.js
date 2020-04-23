@@ -592,6 +592,7 @@ function ActionSure(){
             if(!uuid){
 
                 let xinguid = guid()
+                let typeIn  =""
                 $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
                 let heights = 10               
@@ -602,7 +603,7 @@ function ActionSure(){
                         x:-widths,
                         y:(heights*data.data.inNum)+10*(data.data.inNum- 1)  
                     }
-                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
@@ -616,18 +617,65 @@ function ActionSure(){
                         y:(heights*data.data.outNum)+10*(data.data.outNum-1)
                     }
                     window.bigData.isAddInOutType = "out"
-                    let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     test.id = xinguid+"---" +typeIn;
                 }
-
+                switch (typeIn) {
+                    case '常量':
+                        fillStyle = '#0eff23';
+                        break;
+                    case '对象':
+                        fillStyle = '#ff00e7';
+                        break;
+                    case 'int':
+                        fillStyle = 'red';
+                        break;
+                    case 'byte':
+                        fillStyle = '#ff7749';
+                        break;
+                    case 'long':
+                        fillStyle = '#a4ff59';
+                        break;
+                    case 'short':
+                        fillStyle = '#fb61ff';
+                        break;
+                    case 'float':
+                        fillStyle = 'blue';
+                        break;
+                    case 'double':
+                        fillStyle = 'green';
+                        break;
+                    case 'boolean':
+                        fillStyle = 'aqua';
+                        break;
+                    case 'number':
+                        fillStyle = 'orange';
+                        break;
+                    case 'char':
+                        fillStyle = '#7cc6ff';
+                        break;
+                    case 'date':
+                        fillStyle = '#ff4286';
+                        break;
+                    case 'string':
+                        fillStyle = '#00c1ff';
+                        break;
+                    case 'blob':
+                        fillStyle = '#6a46ff';
+                        break;
+                    case 'array':
+                        fillStyle = '#ffe964';
+                        break;
+                }
                 test.rect.x = data.rect.x + num.x
                 test.rect.y = data.rect.y + num.y
                 test.rect.width = widths
                 test.rect.height = heights
-
+                test.bkType = 0
+                test.fillStyle = fillStyle
                 test.rect.ex = data.rect.ex + num.x
                 test.rect.ey = data.rect.ey + num.y
                 test.rect.center.x = data.rect.center.x + num.x
@@ -639,7 +687,7 @@ function ActionSure(){
                 test.textRect.width = 0
                 test.textRect.height = 0
                 test.paddingTopNum = 0
-                test.paddingTop = 0
+                test.paddingTop = -4
                 test.fullTextRect.x = data.fullTextRect.x + num.x
                 test.fullTextRect.y = data.fullTextRect.y + num.y
                 test.iconRect.x = data.iconRect.x + num.x
