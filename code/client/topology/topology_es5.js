@@ -950,7 +950,13 @@ var Topology = {
                                                 }) 
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
-
+                                                if(data.data.inNum  > data.data.outNum){
+                                                    // debugger
+                                                    if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
+                                                        data.rect.ey = data.rect.ey + heights+15
+                                                        data.rect.height = data.rect.height + heights+15
+                                                    }
+                                                }
 
 
                                                 obj = {
@@ -1088,7 +1094,12 @@ var Topology = {
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
 
-
+                                                if(data.data.outNum > data.data.inNum){
+                                                    if(data.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
+                                                        data.rect.ey = data.rect.ey + heights+15
+                                                        data.rect.height = data.rect.height + heights+15
+                                                    }
+                                                }
 
                                                 obj = {
                                                     id:item.id,
