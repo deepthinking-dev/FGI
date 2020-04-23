@@ -708,9 +708,9 @@ body{
 }
 #dicDiv{
     position: absolute;
-    left: 30%;
-    top: 15%;
-    width: 700px;
+    left: 20%;
+    top: 12%;
+    width: 1000px;
     height: 700px;
     display: none;
     background-image: url(./static/FrameBg.png);
@@ -720,9 +720,9 @@ body{
 }
 #dataModulePage{
     position: absolute;
-    left: 30%;
-    top: 15%;
-    width: 700px;
+    left: 20%;
+    top: 12%;
+    width: 1000px;
     height: 700px;
     display: none;
     background-image: url(./static/FrameBg.png);
@@ -819,7 +819,7 @@ body{
 #gzTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect,#parentGroup{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -840,7 +840,7 @@ body{
     height: 39px;
     padding-left: 10px;
 }
-.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option,#gzGroupName option,#groupGs option,.moduleTypeSelect option,#addLjSelect option{
+.zdcsSelect option,.zdcsTypeSelect option,.zdcsExport option,#selectedModlue option,.MathJaxInput2 option,.MathJaxSelect option,.actionSelected1 option,.varNameInput option,.actionSelected2 option,#actionDiv option,#actionSelectParma option,#actionSelectName option,.varNameInput option,.varNameInput1 option,#group option,#modulegroup option,#gzGroupName option,#groupGs option,.moduleTypeSelect option,#addLjSelect option,#parentGroup option{
     background-color: rgb(22, 65, 144);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -906,28 +906,7 @@ body{
     line-height: 30px;
     margin-right: 10px;
 }
-#dicDiv span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    vertical-align: top;
-    line-height: 40px;
-    margin-right: 20px;
-}
-#dataModulePage span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    vertical-align: top;
-    line-height: 40px;
-    margin-right: 20px;
-}
+
 #groupDiv span{
     text-align: right;
     font-size: 16px;
@@ -1002,6 +981,7 @@ body{
     top: 10px;
     left: 20px;
     text-align: center;
+    margin-right: 50px;
 }
 #groupDiv .title{
     position: absolute;
@@ -1159,6 +1139,10 @@ body{
     width: 200px;
     height: 40px;
 }
+#parentGroup{
+    width: 200px;
+    height: 40px;
+}
 #addGroupYes{
     background: #409eff;
     width: 80px;
@@ -1204,6 +1188,14 @@ body{
 .sfGruopTable th{
     text-align: center;
 }
+.mxGruopTable td,th{
+    border: 1px solid #77CDFE;
+    overflow: hidden;
+}
+.mxGruopTable th{
+    text-align: center;
+}
+
 .ruleWinList td,th{
     border: 1px solid #77CDFE;
 }
