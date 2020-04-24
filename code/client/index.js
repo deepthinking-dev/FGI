@@ -687,7 +687,7 @@ $(function(){
         $('#lkrFrameDel').show()
     })
   
-    // 点击删除算子
+    // 点击删除算法
     $('body').on('click','.lkr-list-delAlgorithm',(e) => {
         window.bigData.delAlgorithmId = $(e.target).data('id')
         $('#lkrAlgorithm').fadeToggle(500)
@@ -696,13 +696,13 @@ $(function(){
         window.filed.inputFieldsTarget = $(e.target)
         $('#fields').fadeToggle(500)
     })
-     // 点击删除算子
+     // 点击删除算法
      $('body').on('click','.fieldsList tr',(e) => {
         window.filed.fieldname = $(e.target).parent('tr').children('.fieldname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor"); 
     })
 
-      // 点击选择算子信息
+      // 点击选择算法信息
     $('body').on('click','.otherFormulaList tr',(e) => {
         window.filed.fieldname = $(e.target).parent('tr').children('.algorithmname').text();
         $(e.target).parent('tr').addClass("backcolor").siblings("tr").removeClass("backcolor");
@@ -801,8 +801,8 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                $("#editDicTitle").text("算子详情")
-                window.bigData.formulaType = "" 
+                $(".gsTitle").text("算法详情")
+                window.bigData.formulaType = "";
                 $("#dicDiv").hide()
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
@@ -1233,8 +1233,6 @@ $(function(){
         let AlgorithmId= $(e.target).attr('algorithmid')
         showMsg(AlgorithmId)
     })
-
-
 })
 
 

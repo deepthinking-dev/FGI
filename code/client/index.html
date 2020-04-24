@@ -212,7 +212,7 @@
     <div id="ruleAct">
         <div class="head-hidden" style="width: 100%;height: 50px;overflow: hidden;z-index: 99;position: relative;"></div>
         <div class="ruleInfo">           
-            <span class="ActTitle">算子详情</span>
+            <span class="ActTitle">算法详情</span>
             <div class="ActContont">
                 <div style="margin: 5px 20px;display:flex;">
                     <label style="line-height: 20px;width: 70px;text-align: left">作者：</label>
@@ -285,7 +285,7 @@
 <!--       入口备注-->
        <div id="rkDiv">
            <div style="text-align: center;margin: 25px 0">
-                <p style="color:#fff;">算子备注</p>
+                <p style="color:#fff;">算法备注</p>
            </div>
            <textarea id="bzMsg"></textarea>
            <div style="position: absolute;bottom: 20px;right: 0">
@@ -350,11 +350,11 @@
         
         
     </div>
-    <!-- 新建/编辑算子 -->
+    <!-- 新建/编辑算法 -->
     <div class="lkr-frame" id='AddAlgorithm'>
         <div class="lkr-frame-div" style="height: 350px;">
             <div class="lkr-frame-tilte">
-                新建/编辑算子
+                新建/编辑算法
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
@@ -367,7 +367,7 @@
 <!--                    <textarea id="szDes"  type='text' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>-->
 <!--                </div>-->
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">算子类型：</label>
+                    <label style="line-height: 10px;width: 100px;">算法类型：</label>
                     <select id="sfType" class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>算法公式</option>
                         <option>逻辑运算</option>
@@ -394,7 +394,7 @@
             </div>
         </div>
     </div>
-    <!-- 算子确认删除框 -->
+    <!-- 算法确认删除框 -->
     <div class="lkr-frame" id='lkrRule'>
             <div class="lkr-frame-div" style="height: 150px;">
                 <div class="lkr-frame-content">
@@ -478,7 +478,7 @@
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
-            <span id="editDicTitle">公式编辑</span>
+            <span class="gsTitle">公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="form-group">
@@ -499,7 +499,7 @@
                 </div>
             </div>
             <div>
-                <span class="form-span">算子名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+                <span class="form-span">算法名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="AlgorithmnameY" type="text" maxlength="200">
             </div>
             <div>
@@ -591,12 +591,12 @@
             <div class="button closeLjButton" onclick='ConfirmLogic()'>确定</div>
         </div>
     </div>
-    <!-- 算子确认删除框 -->
+    <!-- 算法确认删除框 -->
     <div class="lkr-frame" id='lkrAlgorithm'>
         <div class="lkr-frame-div" style="height: 150px;">
             <div class="lkr-frame-content">
                 <h3>
-                    确认删除此算子?
+                    确认删除此算法?
                 </h3>
                 
             </div>
@@ -856,7 +856,7 @@
                         </div>
                         <div id="showRk" style="display: none">
                             <a class="menu-a" onclick="showRk()">
-                                算子备注
+                                算法备注
                             </a>
                         </div>
                         <div>
@@ -2018,7 +2018,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
-            data: {type :1},
+            data: {type:1},
             success(data) {
                 var treeData=[]
                 data.map(s=>{
@@ -2049,7 +2049,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
-        $("#editDicTitle").text("公式编辑")
+        $(".gsTitle").text("公式编辑")
         $("#companyGs").attr("disabled",false)
         $("#groupGs").attr("disabled",false)
         AlgorithmConfirm()
@@ -2244,80 +2244,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     }
     function dictionary(){
-        $("#dicTable").text("");
-        $("#dataModulePage").hide();
-        $("#AddAlgorithm").hide();
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type:2},
-            success(data) {
-                $("#sfGruopListRight").empty()
-                data.map((s,index)=>{
-                    $("#sfGruopListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruopRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="moduleGruopRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                    $.ajax({
-                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                        type:"get",
-                        data: {groupName :s.groupname},
-                        success(data) {
-                            if(data.length){
-                                data.map((s,index)=>{
-                                    $("#sfGruopListRight .sfGruopTable").eq(index).empty();
-                                        window.addAlgorithm({
-                                            name: 'rectangle',
-                                            icon: 'icon-rectangle',
-                                            id:s.tableAlgorithm.id,
-                                            type:"tableAlgorithm",
-                                            data: {
-                                                id:s.tableAlgorithm.id,
-                                                text: s.tableAlgorithm.algorithmname,
-                                                rect: {
-                                                    width: 200,
-                                                    height: 100
-                                                },
-                                                parentId:s.tableAlgorithm.id,
-                                                font: {
-                                                    fontFamily: 'Arial',
-                                                    color: 'aqua',
-                                                    textBaseline: 'top'
-                                                },
-                                                data:{
-                                                    inNum:s.inNum,
-                                                    outNum:s.outNum,
-                                                    index:index,
-                                                    sid:s.tableAlgorithm.index
-                                                },
-                                                children:[],
-                                                paddingLeft: 10,
-                                                paddingRight: 10,
-                                                paddingTop: 10,
-                                                paddingBottom: 10,
-                                                borderRadius: 0.1,
-                                                name: 'rectangle',
-                                                fillStyle:'rgba(4,44,98,0.58)',
-                                                strokeStyle: '#4295ec',
-                                                hideInput:true
-                                            }
-                                        })
-                                })
-                            }
-                        }
-                    })
-                })
-            }
-        })
+        dictionaryShow()
     }
     //模型列表刷新
     function getModuleList(){
@@ -2489,6 +2416,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    $(".gsTitle").text("公式编辑")
                     sessionStorage.src=data.tableAlgorithm.remark2;
                     sessionStorage.latex="";
                     try{
@@ -2891,7 +2819,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
      }
     $('#flex_tools span').click((e)=>{
-        $('#flex_tools span').removeClass("liactive")
+        $('#flex_tools span').removeClass("liactive");
+        $("#groupDiv").hide();
         $("#searchName").val("");
         var activeName;
         if(e.target.localName == "i"){
@@ -3104,8 +3033,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type :type},
             success(data) {
                 if(data.length){
-                    $("#parentGroup").empty();
-                    $("#parentGroup").append(`<option value="0">无</option>`)
                     $("#groupTable").append(`<thead>
                     <th style="width: 220px">分组名称</th>
                     <th style="width: 220px">操作</th>
@@ -3120,7 +3047,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                        $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
                     })
                 }
             }
@@ -3137,8 +3063,21 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
         $("#groupInputName").val("")
-        $("#parentGroup").val("0")
+        var type = $("#groupInputName").attr("type");
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:type},
+            success(data) {
+                $("#parentGroup").empty();
+                $("#parentGroup").append(`<option value="0">无</option>`)
+                data.map(s=>{
+                    $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
+                })
+            }
+        })
     })
+
     $("#addGroupYes").click(()=>{
         if($("#groupInputName").val() == ""){
             $('.noticeList').append(`<li>${getTime()}【规则】分组名称不能为空！ </li>`)
@@ -3185,7 +3124,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                             `<tr>
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
@@ -3241,7 +3180,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                             `<tr>
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
@@ -3268,6 +3207,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".groupTitle").text("修改分组")
         $("#groupInputName").attr("modifyId",s)
         $("#groupInputName").val(td.parent().prev().text())
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:$("#groupInputName").attr("type")},
+            success(data) {
+                $("#parentGroup").empty();
+                $("#parentGroup").append(`<option value="0">无</option>`)
+                data.map(s=>{
+                    $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
+                })
+                $("#parentGroup").val(pid)
+            }
+        })
     }
     $(".groupDivClose").click(()=>{
         $("#groupDiv").hide()
@@ -3445,7 +3397,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     `<tr>
                             <td style="width: 220px">${s.groupname}</td>
                             <td style="width: 220px">
-                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
@@ -3453,29 +3405,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             })
                         }
                         if(type == 1){
-                            $.ajax({
-                                url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                                type: "get",
-                                data: {type: 1},
-                                success(data) {
-                                    $("#modelListRight").empty()
-                                    data.map((s, index) => {
-                                        $("#modelListRight").append(`<div class="panel panel-default">
-                                                  <div class="panel-heading" role="tab">
-                                                      <h4 class="panel-title">
-                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                                      </h4>
-                                                  </div>
-                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                                      <div class="panel-body">
-
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              `)
-                                    })
-                                }
-                            })
+                            dataModlue()
                         } else if(type == 2){
                             dictionary()
                         } else if(type == 3){
