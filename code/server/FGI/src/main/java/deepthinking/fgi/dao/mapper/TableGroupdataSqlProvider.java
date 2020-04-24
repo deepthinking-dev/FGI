@@ -1,11 +1,12 @@
 package deepthinking.fgi.dao.mapper;
 
-import deepthinking.fgi.domain.TableGroupdata;
-import deepthinking.fgi.domain.TableGroupdataCriteria.Criteria;
-import deepthinking.fgi.domain.TableGroupdataCriteria.Criterion;
-import deepthinking.fgi.domain.TableGroupdataCriteria;
 import java.util.List;
 import java.util.Map;
+
+import deepthinking.fgi.domain.TableGroupdata;
+import deepthinking.fgi.domain.TableGroupdataCriteria;
+import deepthinking.fgi.domain.TableGroupdataCriteria.Criteria;
+import deepthinking.fgi.domain.TableGroupdataCriteria.Criterion;
 import org.apache.ibatis.jdbc.SQL;
 
 public class TableGroupdataSqlProvider {
@@ -54,6 +55,10 @@ public class TableGroupdataSqlProvider {
             sql.VALUES("groupType", "#{grouptype,jdbcType=INTEGER}");
         }
         
+        if (record.getParentid() != null) {
+            sql.VALUES("parentId", "#{parentid,jdbcType=INTEGER}");
+        }
+        
         return sql.toString();
     }
 
@@ -72,6 +77,7 @@ public class TableGroupdataSqlProvider {
         }
         sql.SELECT("groupName");
         sql.SELECT("groupType");
+        sql.SELECT("parentId");
         sql.FROM("table_groupdata");
         applyWhere(sql, example, false);
         
@@ -107,6 +113,10 @@ public class TableGroupdataSqlProvider {
             sql.SET("groupType = #{record.grouptype,jdbcType=INTEGER}");
         }
         
+        if (record.getParentid() != null) {
+            sql.SET("parentId = #{record.parentid,jdbcType=INTEGER}");
+        }
+        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -124,6 +134,7 @@ public class TableGroupdataSqlProvider {
         sql.SET("id = #{record.id,jdbcType=INTEGER}");
         sql.SET("groupName = #{record.groupname,jdbcType=VARCHAR}");
         sql.SET("groupType = #{record.grouptype,jdbcType=INTEGER}");
+        sql.SET("parentId = #{record.parentid,jdbcType=INTEGER}");
         
         TableGroupdataCriteria example = (TableGroupdataCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -146,6 +157,10 @@ public class TableGroupdataSqlProvider {
         
         if (record.getGrouptype() != null) {
             sql.SET("groupType = #{grouptype,jdbcType=INTEGER}");
+        }
+        
+        if (record.getParentid() != null) {
+            sql.SET("parentId = #{parentid,jdbcType=INTEGER}");
         }
         
         sql.WHERE("id = #{id,jdbcType=INTEGER}");
