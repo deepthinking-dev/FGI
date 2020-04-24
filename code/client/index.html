@@ -14,6 +14,7 @@
     <link href="./lkr.css" rel="stylesheet">
     <link href="./LogicMath.css" rel="stylesheet">
     <link href="./toastr.css" rel="stylesheet">
+    <link href="plugins/tree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
     <!-- <link href="css/lanrenzhijia.css" type="text/css" rel="stylesheet" /> -->
     <!-- 矢量图标库 -->
     <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
@@ -61,6 +62,9 @@
         #editor .edui-editor-imagescale{
             display: none !important;
         }
+        .ztree li span{
+            color: #45a1e9;
+        }
     </style>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
@@ -71,6 +75,7 @@
     <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/addKityFormulaDialog.js"></script>
     <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/getKfContent.js"></script>
     <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/defaultFilterFix.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/tree/js/tree.all.min.js"></script>
         <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
         <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
@@ -384,9 +389,8 @@
         <div class="addButtonModlue" style="position: relative;top:70px;margin:0 15px">
             <button class="addModlue" onclick="addModule()">新增</button>
             <div style="height: 520px;overflow: auto">
-                <div class="panel-group" id="moduleGruopList" role="moduleGruopList" aria-multiselectable="true">
-
-                </div>
+                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                <table class="mxGruopTable" style="float: left;"></table>
             </div>
         </div>
     </div>
@@ -817,9 +821,7 @@
                             </div>
                             <!-- 模型库页-->
                             <div id="modelPageDiv" class='lkr-page'>
-                                <div class="panel-group" id="modelListRight" role="modelListRight" aria-multiselectable="true">
-
-                                </div>
+                                <ul id="moduleTree" class="ztree"></ul>
                             </div>
                             <!-- 规则库页-->
                            <div id="ruleMde" class='lkr-page' style="display: none;">
@@ -829,7 +831,8 @@
                            </div>
                             <!--算法库页-->
                            <div id="algorithmPage" class='lkr-page' style="display: none">
-                               <div class="panel-group" id="sfGruopListRight" role="sfGruopListRight" aria-multiselectable="true">
+                               <ul id="sfTree" class="ztree" style="height: 150px"></ul>
+                               <div id="sfGruopListRight" style="height: 500px;overflow: auto">
 
                                </div>
                            </div>
@@ -924,15 +927,14 @@
       <div id="dicDiv">
               <div class="title">
                   <span>算法信息</span>
-                  <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
+                  <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 50px">X</span>
               </div>
               <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
-                      <div class="panel-group" id="sfGruopList" role="sfGruopList" aria-multiselectable="true">
-
-                      </div>
+                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                      <table class="sfGruopTable" style="float: left;"></table>
                   </div>
               </div>
       </div>
@@ -956,6 +958,8 @@
             <span class="closeGroupEditDiv" style="float: right;cursor: pointer">X</span>
         </div>
         <div class="groupMain">
+            <span style="width: 120px;margin-bottom: 15px">父分组名称</span>
+            <select type="text" value="" id="parentGroup" maxlength="100"></select>
             <span style="width: 120px">分组名称</span>
             <input type="text" value="" id="groupInputName" maxlength="100">
         </div>
@@ -1036,6 +1040,25 @@
     var resCurrentLineData={
         dataIn:"",
         dataOut:""
+    };
+    var setting={
+        check: {
+
+        },
+        callback:{
+            onClick:treeClick
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",//节点id名
+                pIdKey: "pid",//父节点id名
+                rootPId: 0//默认根节点为0
+            }
+        },
+        // view: {
+        //     showLine: false
+        // }
     };
     var idStoreData={
             
@@ -1548,9 +1571,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
                     englishname:items.children('.columnName').text()?items.children('.columnName').text():items.children('.columnName').find('input').val(),
                     remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val(),
-                    // id:items.attr("id"),
-                    // moduleid:items.attr("moduleid")
-                    // remark:null
                 })
             })
             let param = {
@@ -1565,33 +1585,31 @@ Date.prototype.Format = function (fmt) { // author: meizz
             console.log(param)
             if(flag){
                 $.ajax({
-                url:urlConfig.host+'/module/addModule',
-                type:'post',
-                dataType: 'json',
-                data:JSON.stringify(param),
-                contentType: "application/json;charset=UTF-8",//指定消息请求类型
-                success: function(data) {
-                    $(".moduleContentList").html('')
-                    $('.noticeList').append(`<li>${getTime()}新增【模型】保存成功！ </li>`)
-                    toastr.info('新增【模型】保存成功！')
-                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    $.ajax({
-                        url:urlConfig.host+'/module/GetAllModule',
-                        data:'',
-                        success: function(data) {
-                            if(data){
-                                $("#modulegroup").val("")
-                                $("#mouldName").val("")
-                                $("#mouldRemark").val("")
-                                $('#addMb tbody').html('')
+                    url:urlConfig.host+'/module/addModule',
+                    type:'post',
+                    dataType: 'json',
+                    data:JSON.stringify(param),
+                    contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                    success: function(data) {
+                        $(".moduleContentList").html('')
+                        $('.noticeList').append(`<li>${getTime()}新增【模型】保存成功！ </li>`)
+                        toastr.info('新增【模型】保存成功！')
+                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        $.ajax({
+                            url:urlConfig.host+'/module/GetAllModule',
+                            data:'',
+                            success: function(data) {
+                                if(data){
+                                    $("#modulegroup").val("")
+                                    $("#mouldName").val("")
+                                    $("#mouldRemark").val("")
+                                    $('#addMb tbody').html('')
+                                }
                             }
-                        }
-                    })
-                    $('#lkrFrame').fadeToggle(500)
-                    $("#dataModulePage").show()
-                    getModuleList()
-                    dataModlue()
-                }
+                        })
+                        $('#lkrFrame').fadeToggle(500)
+                        $("#dataModulePage").show()
+                    }
                }) 
             }
           
@@ -1645,7 +1663,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 des:$("#mouldRemark").val(),
                 // sqlurl:null,
                 remark:'',
-                // id:null
             }
             console.log(param)
             if(flag){
@@ -1666,14 +1683,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             success: function(data) {
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
-                                getModuleList()
-                                dataModlue()
+                                freshClick("modelWinTree")
                             }
                         })
                     }
                 })
             }
-            
+
         }
     }
     function reseTabs(){
@@ -1783,50 +1799,163 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
-
+    function freshClick(treeId) {
+        var tObj=$.fn.zTree.getZTreeObj(treeId);
+        var selectedNode=tObj.getSelectedNodes()[0];
+        $("#"+selectedNode.tId+"_a").click();
+    }
+    //树节点点击
+    function treeClick(event, treeId, node) {
+        if(node.type == 1){
+            $.ajax({
+                url: urlConfig.host + '/module/GetModuleByGroupName',
+                type:"get",
+                data: {moduleGroupName:node.name},
+                success(data) {
+                    $("#dataModulePage .mxGruopTable").empty();
+                    if(data.length){
+                        $("#dataModulePage .mxGruopTable").append(`<thead>
+                            <th style="width: 150px">模型名称</th>
+                            <th style="width: 150px">描述</th>
+                            <th style="width: 150px">状态</th>
+                            <th style="width: 200px">操作</th>
+                            </thead>`)
+                        data.map(s=>{
+                            var img,title;
+                            if(s.status == "未发布"){
+                                img = "static/fabu.png";
+                                title = "发布";
+                            } else {
+                                img = "static/cancelFb.png";
+                                title = "取消发布";
+                            }
+                            $("#dataModulePage .mxGruopTable").append(
+                                `<tr>
+                            <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
+                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
+                            <td style="width: 150px">${s.status}</td>
+                            <td style="width: 150px">
+                                <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                        })
+                    }
+                }
+            })
+        }
+        if(node.type == 2){
+            if(node.right == 2){
+                $.ajax({
+                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                    type:"get",
+                    data: {groupName :node.name},
+                    success(data) {
+                        $("#sfGruopListRight").empty();
+                        if(data.length){
+                            data.map((s,index)=>{
+                                window.addAlgorithm({
+                                    name: 'rectangle',
+                                    icon: 'icon-rectangle',
+                                    id:s.tableAlgorithm.id,
+                                    type:"tableAlgorithm",
+                                    data: {
+                                        id:s.tableAlgorithm.id,
+                                        text: s.tableAlgorithm.algorithmname,
+                                        rect: {
+                                            width: 200,
+                                            height: 100
+                                        },
+                                        parentId:s.tableAlgorithm.id,
+                                        font: {
+                                            fontFamily: 'Arial',
+                                            color: 'aqua',
+                                            textBaseline: 'top'
+                                        },
+                                        data:{
+                                            inNum:s.inNum,
+                                            outNum:s.outNum,
+                                            index:index,
+                                            sid:s.tableAlgorithm.index
+                                        },
+                                        children:[],
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                        paddingTop: 10,
+                                        paddingBottom: 10,
+                                        borderRadius: 0.1,
+                                        name: 'rectangle',
+                                        fillStyle:'rgba(4,44,98,0.58)',
+                                        strokeStyle: '#4295ec',
+                                        hideInput:true
+                                    }
+                                })
+                            })
+                        }
+                    }
+                })
+            } else {
+                $.ajax({
+                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                    type:"get",
+                    data: {groupName:node.name},
+                    success(data) {
+                        $("#dicDiv .sfGruopTable").empty()
+                        if(data.length){
+                            $("#dicDiv .sfGruopTable").append(`<thead>
+                            <th style="width: 120px">作者</th>
+                            <th style="width: 120px">算法名称</th>
+                            <th style="width: 120px">算法描述</th>
+                            <th style="width: 120px">状态</th>
+                            <th style="width: 150px">操作</th>
+                            </thead>`)
+                            data.map(s=>{
+                                var img,title;
+                                if(s.tableAlgorithm.status == "未发布"){
+                                    img = "static/fabu.png";
+                                    title = "发布";
+                                } else {
+                                    img = "static/cancelFb.png";
+                                    title = "取消发布";
+                                }
+                                $("#dicDiv .sfGruopTable").append(
+                                    `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                            <td title="${s.tableAlgorithm.algorithmauthor}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
+                            <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
+                            <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.status}</td>
+                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
+                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="${title}" src="${img}" onclick="publishSf('${s.tableAlgorithm.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    }
     function dataModlue(){
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type :1},
+            success(data) {
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                })
+                $.fn.zTree.init($("#moduleTree"),setting, treeData);
+            }
+        })
         $("#modelPageDiv").show();
         $("#ruleMde").hide();
         $("#algorithmPage").hide();
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type: "get",
-            data: {type: 1},
-            success(data) {
-                $("#modelListRight").empty()
-                data.map((s, index) => {
-                    $("#modelListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                  <div class="panel-body">
-
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                        $.ajax({
-                            url: urlConfig.host + '/module/GetModuleByGroupName',
-                            type:"get",
-                            data: {moduleGroupName :s.groupname},
-                            success(data) {
-                                if(data.length){
-                                    $("#modelListRight .panel-body").eq(index).empty();
-                                    data.map(s=>{
-                                        $("#modelListRight .panel-body").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
-                                    })
-                                }
-                            }
-                        })
-                })
-
-
-
-            }
-        })
     }
     $("#selectedModlue").change((e)=>{
       
@@ -2121,24 +2250,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
-            data: {type:1},
+            data: {type :1},
             success(data) {
-                $("#moduleGruopList").empty()
-                data.map((s,index)=>{
-                    $("#moduleGruopList").append(` <div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruop${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="moduleGruop${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                  <div class="panel-body">
-                                      <table class="sfGruopTable"  style="width:100%;"></table>
-                                  </div>
-                              </div>
-                          </div>
-                          `)
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
                 })
+                $.fn.zTree.init($("#modelWinTree"),setting, treeData);
             }
         })
     }
@@ -2148,7 +2266,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#ruleMde").hide();
         $("#algorithmPage").show();
         $(".dataManage").text("算法管理")
-        dictionary()
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:2},
+            success(data) {
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
+                })
+                $.fn.zTree.init($("#sfTree"),setting, treeData);
+            }
+        })
     }
 
     //删除字典信息
@@ -2615,44 +2744,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function addLogic(){
         $(".logicUl").append($(".logicLi:first").clone());
     }
+
     $("#searchName").bind('input propertychange',function(s){
         let val = $("#searchName").val();
-        if(val == ""){
-            $('#modelPageDiv .panel-collapse').each((i,s)=>{
-                $(s).removeClass("in");
-            })
-            $('#algorithmPage .panel-collapse').each((i,s)=>{
-                $(s).removeClass("in");
-            })
-            $('#ruleMde .panel-collapse').each((i,s)=>{
-                $(s).removeClass("in");
-            })
-            return false;
-        }
-        var list=[];
         if($('.liactive').text() == "模型库"){
-            $('#modelPageDiv .panel-heading').each((i,s)=>{
-                if($(s).children().children().text().includes(val)){
-                    $(s).next().addClass("in");
-                    $(s).next().css('height',"")
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        $(x).show()
-                    })
+            $("#tree a").each((i,s)=>{
+                if($(s).attr("title").includes(val)){
+                    $(s).show()
                 } else {
-                    // $(s).next().removeClass("in");
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        if($(x).text().includes(val)){
-                            $(x).show();
-                            $(x).parent().parent().parent().addClass("in")
-                            $(x).parent().parent().parent().css('height',"")
-                            list.push($(x).parent().parent().parent())
-                        } else {
-                            $(x).hide()
-                        }
-                    })
+                    $(s).hide()
                 }
             })
-
         } else if($('.liactive').text() == "算法库"){
             $('#algorithmPage .panel-heading').each((i,s)=>{
                 if($(s).children().children().text().includes(val)){
@@ -2695,10 +2797,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
             })
         }
-
-        list.map(s=>{
-            s.addClass("in")
-        })
     });
      function closeActionDiv() {
          $("#actionDiv").hide()
@@ -2884,22 +2982,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {type:2},
             success(data) {
-                $("#sfGruopList").empty()
-                data.map((s,index)=>{
-                    $("#sfGruopList").append(` <div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruopWin${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="moduleGruopWin${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-                                      <table class="sfGruopTable"  style="width:100%;"></table>
-                                  </div>
-                              </div>
-                          </div>
-                          `)
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
                 })
+                $.fn.zTree.init($("#sfWinTree"),setting, treeData);
             }
         })
     }
@@ -3004,7 +3091,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type :type},
             success(data) {
                 if(data.length){
-                   $("#groupTable").append(`<thead>
+                    $("#parentGroup").empty();
+                    $("#parentGroup").append(`<option value="0">无</option>`)
+                    $("#groupTable").append(`<thead>
                     <th style="width: 220px">分组名称</th>
                     <th style="width: 220px">操作</th>
                     `)
@@ -3013,11 +3102,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             `<tr>
                             <td style="width: 220px">${s.groupname}</td>
                             <td style="width: 220px">
-                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
                        `)
+                        $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
                     })
                 }
             }
@@ -3034,6 +3124,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
         $("#groupInputName").val("")
+        $("#parentGroup").val("0")
     })
     $("#addGroupYes").click(()=>{
         if($("#groupInputName").val() == ""){
@@ -3045,7 +3136,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
             "grouptype":Number($("#groupInputName").attr("type")),
-            "id": 0
+            "id": 0,
+            "parentid": $("#parentGroup").val()
         }
         if($(".groupTitle").text() == "新增分组"){
             $.ajax({
@@ -3088,29 +3180,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     })
                                 }
                                 if($("#groupInputName").attr("type") == 1){
-                                    $.ajax({
-                                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                                        type: "get",
-                                        data: {type: 1},
-                                        success(data) {
-                                            $("#modelListRight").empty()
-                                            data.map((s, index) => {
-                                                $("#modelListRight").append(`<div class="panel panel-default">
-                                                  <div class="panel-heading" role="tab">
-                                                      <h4 class="panel-title">
-                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                                      </h4>
-                                                  </div>
-                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                                      <div class="panel-body">
-
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              `)
-                                            })
-                                        }
-                                    })
+                                    dataModlue()
                                 } else if($("#groupInputName").attr("type") == 2){
                                     dictionary()
                                 } else if($("#groupInputName").attr("type") == 3){
@@ -3168,29 +3238,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             }
                         })
                         if($("#groupInputName").attr("type") == 1){
-                            $.ajax({
-                                url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                                type: "get",
-                                data: {type: 1},
-                                success(data) {
-                                    $("#modelListRight").empty()
-                                    data.map((s, index) => {
-                                        $("#modelListRight").append(`<div class="panel panel-default">
-                                                  <div class="panel-heading" role="tab">
-                                                      <h4 class="panel-title">
-                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                                      </h4>
-                                                  </div>
-                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                                      <div class="panel-body">
-                                                          <table class="sfGruopTable"></table>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              `)
-                                    })
-                                }
-                            })
+                            dataModlue()
                         } else if($("#groupInputName").attr("type") == 2){
                             dictionary()
                         } else if($("#groupInputName").attr("type") == 3){
@@ -3201,12 +3249,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     })
-    function modifyGroupShow(td,s) {
-        var tableGroupdata = {
-            "groupname": $("#groupInputName").val(),
-            "grouptype":Number($("#groupInputName").attr("type")),
-            "id": s
-        }
+    function modifyGroupShow(td,s,pid) {
+        $("#parentGroup").val(pid)
         $("#groupEditDiv").show()
         $(".groupTitle").text("修改分组")
         $("#groupInputName").attr("modifyId",s)
