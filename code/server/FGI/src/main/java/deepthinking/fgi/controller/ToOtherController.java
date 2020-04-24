@@ -33,7 +33,7 @@ public class ToOtherController {
     @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "类型", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "id", value = "数据ID", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "status", value = "状态值", dataType = "string", paramType = "query", required = true)})
-    boolean updateDataStatus(String type,int id,String status){
+    public boolean updateDataStatus(String type,int id,String status){
         return toOtherService.updateDataStatus(type,id,status);
     }
 
