@@ -755,9 +755,9 @@ body{
 }
 #gzDiv{
     position: absolute;
-    left: 30%;
-    top: 15%;
-    width: 670px;
+    left: 20%;
+    top: 12%;
+    width: 1000px;
     height: 700px;
     display: none;
     background-image: url(./static/FrameBg.png);
@@ -817,6 +817,12 @@ body{
     border: 1px solid #77CDFE;
 }
 #gzTable th{
+    text-align: center;
+}
+.gzGruopTable td,th{
+    border: 1px solid #77CDFE;
+}
+.gzGruopTable th{
     text-align: center;
 }
 #editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect,#parentGroup{
@@ -929,17 +935,7 @@ body{
     line-height: 40px;
     margin-right: 20px;
 }
-#gzDiv span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    vertical-align: top;
-    line-height: 40px;
-    margin-right: 20px;
-}
+
 #editDic .title{
     position: absolute;
     width: 100%;
