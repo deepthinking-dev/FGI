@@ -801,7 +801,7 @@ $(function(){
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
-                $(".gsTitle").text("算法详情")
+                $("#editDicTitle").text("算法详情")
                 window.bigData.formulaType = "";
                 $("#dicDiv").hide()
                 $("#editDicYes").hide()
@@ -896,6 +896,7 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
+                    $(".gsTitle").text("算法详情")
                     $('.Frame').show()
                     $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
                     $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
