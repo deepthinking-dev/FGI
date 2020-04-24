@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/4/21 11:05:21                           */
+/* Created on:     2020/4/23 10:59:05                           */
 /*==============================================================*/
 
 
@@ -43,6 +43,8 @@ create table Table_Algorithm
    Remark               varchar(500) comment '备注',
    Status               varchar(50) comment '状态',
    Remark2              text comment '备注2',
+   Remark3              varchar(500) comment '备注3',
+   Remark4              varchar(500) comment '备注4',
    primary key (ID)
 );
 
@@ -98,6 +100,7 @@ create table Table_GroupData
    id                   int not null auto_increment comment 'ID',
    groupName            varchar(100) comment '组名称同类型下不能重复',
    groupType            int comment '类型:模型，算法，规则',
+   parentId             int comment '父ID',
    primary key (id)
 );
 

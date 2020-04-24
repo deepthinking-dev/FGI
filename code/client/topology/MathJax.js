@@ -11,7 +11,7 @@
     function LogicClose(){
         $(".Logic").attr("style","display:none;");
     }
-    //选择算子类型
+    //选择算法类型
     function selectFormula(){
         var formulatype = document.getElementById('formulaType').value
         if(formulatype == 1){
@@ -58,11 +58,11 @@
             })
         }
     })
-    //提交算子信息及公式编辑
+    //提交算法信息及公式编辑
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 【算法】请填写算子名称！</li>`)
-            toastr.info(`【算法】请填写算子名称！` )
+            $('.noticeList').append(`<li>${getTime()} 【算法】请填写算法名称！</li>`)
+            toastr.info(`【算法】请填写算法名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -227,7 +227,7 @@ function removeLogic(event){
 
 }
 
-//提交算子信息及逻辑运算
+//提交算法信息及逻辑运算
 function ConfirmLogic(){
     let tableAl ={
         algorithmauthor:$("#ljName").val(),
@@ -505,7 +505,7 @@ function ruleSure(){
     })
 }
 window.ruleSure = ruleSure
-//删除算子
+//删除算法
 function ConfirmDelAlgorithm(){
     $.ajax({
         url:urlConfig.host+'/operatorMaintenance/delAlgorithmById',

@@ -326,7 +326,7 @@ body .form-input{
 .logicForm ul li button{
     margin-left: 15px;
 }
-/* 算子类型选择弹框 */
+/* 算法类型选择弹框 */
 #suanfaType{
     position: fixed;
     z-index: 999;
@@ -965,10 +965,12 @@ body .form-input{
 }
 .sfGruopTable{
     table-layout: fixed;
-    width: 100%;
     width: 650px;
 }
 .ruleWinList{
     table-layout: fixed;
     width: 100%;
+}
+.gzGruopTable{
+    width: 650px;
 }

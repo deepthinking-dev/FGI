@@ -207,12 +207,12 @@
         }
     </script>
 </head>
-<body> 
+<body>
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="head-hidden" style="width: 100%;height: 50px;overflow: hidden;z-index: 99;position: relative;"></div>
         <div class="ruleInfo">           
-            <span class="ActTitle">算子详情</span>
+            <span class="ActTitle">算法详情</span>
             <div class="ActContont">
                 <div style="margin: 5px 20px;display:flex;">
                     <label style="line-height: 20px;width: 70px;text-align: left">作者：</label>
@@ -285,7 +285,7 @@
 <!--       入口备注-->
        <div id="rkDiv">
            <div style="text-align: center;margin: 25px 0">
-                <p style="color:#fff;">算子备注</p>
+                <p style="color:#fff;">算法备注</p>
            </div>
            <textarea id="bzMsg"></textarea>
            <div style="position: absolute;bottom: 20px;right: 0">
@@ -350,11 +350,11 @@
         
         
     </div>
-    <!-- 新建/编辑算子 -->
+    <!-- 新建/编辑算法 -->
     <div class="lkr-frame" id='AddAlgorithm'>
         <div class="lkr-frame-div" style="height: 350px;">
             <div class="lkr-frame-tilte">
-                新建/编辑算子
+                新建/编辑算法
                 <span style="cursor: pointer;" onclick='AlgorithmClose()'>x</span>
             </div>
             <div class="lkr-frame-content">
@@ -367,7 +367,7 @@
 <!--                    <textarea id="szDes"  type='text' class="lkr-input" style="flex:1;margin-left: 10px;"></textarea>-->
 <!--                </div>-->
                 <div style="margin: 15px 0;display: flex;align-items: center;">
-                    <label style="line-height: 10px;width: 100px;">算子类型：</label>
+                    <label style="line-height: 10px;width: 100px;">算法类型：</label>
                     <select id="sfType" class="lkr-select" style="flex: 1;margin-left: 10px;">
                         <option>算法公式</option>
                         <option>逻辑运算</option>
@@ -394,7 +394,7 @@
             </div>
         </div>
     </div>
-    <!-- 算子确认删除框 -->
+    <!-- 算法确认删除框 -->
     <div class="lkr-frame" id='lkrRule'>
             <div class="lkr-frame-div" style="height: 150px;">
                 <div class="lkr-frame-content">
@@ -478,7 +478,7 @@
     <!-- 公式编辑 -->
     <div class="Frame">
         <div class="title">
-            <span id="editDicTitle">公式编辑</span>
+            <span class="gsTitle">公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
         </div>
         <div class="form-group">
@@ -499,7 +499,7 @@
                 </div>
             </div>
             <div>
-                <span class="form-span">算子名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+                <span class="form-span">算法名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input id="AlgorithmnameY" type="text" maxlength="200">
             </div>
             <div>
@@ -591,12 +591,12 @@
             <div class="button closeLjButton" onclick='ConfirmLogic()'>确定</div>
         </div>
     </div>
-    <!-- 算子确认删除框 -->
+    <!-- 算法确认删除框 -->
     <div class="lkr-frame" id='lkrAlgorithm'>
         <div class="lkr-frame-div" style="height: 150px;">
             <div class="lkr-frame-content">
                 <h3>
-                    确认删除此算子?
+                    确认删除此算法?
                 </h3>
                 
             </div>
@@ -829,11 +829,15 @@
                             </div>
                             <!-- 模型库页-->
                             <div id="modelPageDiv" class='lkr-page'>
-                                <ul id="moduleTree" class="ztree"></ul>
+                                <ul id="moduleTree" class="ztree" style="height: 150px"></ul>
+                                <div id="moduleListRight" style="height: 500px;overflow: auto">
+
+                                </div>
                             </div>
                             <!-- 规则库页-->
                            <div id="ruleMde" class='lkr-page' style="display: none;">
-                               <div class="panel-group" id="ruleListRight" role="ruleListRight" aria-multiselectable="true">
+                               <ul id="ruleTree" class="ztree" style="height: 150px"></ul>
+                               <div id="ruleListRight" style="height: 500px;overflow: auto">
 
                                </div>
                            </div>
@@ -860,7 +864,7 @@
                         </div>
                         <div id="showRk" style="display: none">
                             <a class="menu-a" onclick="showRk()">
-                                算子备注
+                                算法备注
                             </a>
                         </div>
                         <div>
@@ -916,24 +920,23 @@
     </div>
        <!-- 规则详情信息弹窗 -->
        <div id="gzDiv">
-           <div class="title">
+           <div class="title" style="height: 50px;line-height: 40px">
                <span>规则信息</span>
-               <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;">X</span>
+               <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;margin-right: 50px">X</span>
            </div>
            <div style="position: relative;top:40px;margin: 0 auto;margin-left:15px">
                <input type="button" value="导入规则" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
            </div>
            <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                <div style="height: 480px;overflow: auto">
-                   <div class="panel-group" id="ruleGruopList" role="ruleGruopList" aria-multiselectable="true">
-
-                   </div>
+                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                   <table class="gzGruopTable" style="float: left;"></table>
                </div>
            </div>
        </div>
       <!-- 字典信息弹窗 -->
       <div id="dicDiv">
-              <div class="title">
+              <div class="title" style="height: 50px;line-height: 40px">
                   <span>算法信息</span>
                   <span class="dicDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 50px">X</span>
               </div>
@@ -1064,9 +1067,9 @@
                 rootPId: 0//默认根节点为0
             }
         },
-        // view: {
-        //     showLine: false
-        // }
+        view:{
+            showLine:false
+        }
     };
     var idStoreData={
             
@@ -1839,30 +1842,45 @@ Date.prototype.Format = function (fmt) { // author: meizz
     //树节点点击
     function treeClick(event, treeId, node) {
         if(node.type == 1){
-            $.ajax({
-                url: urlConfig.host + '/module/GetModuleByGroupName',
-                type:"get",
-                data: {moduleGroupName:node.name},
-                success(data) {
-                    $("#dataModulePage .mxGruopTable").empty();
-                    if(data.length){
-                        $("#dataModulePage .mxGruopTable").append(`<thead>
+            if(node.right == 1){
+                $.ajax({
+                    url: urlConfig.host + '/module/GetModuleByGroupName',
+                    type:"get",
+                    data: {moduleGroupName:node.name},
+                    success(data) {
+                        $("#moduleListRight").empty()
+                        if(data.length){
+                            data.map((s,index)=>{
+                                $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                            })
+                        }
+                    }
+                })
+            } else {
+                $.ajax({
+                    url: urlConfig.host + '/module/GetModuleByGroupName',
+                    type:"get",
+                    data: {moduleGroupName:node.name},
+                    success(data) {
+                        $("#dataModulePage .mxGruopTable").empty();
+                        if(data.length){
+                            $("#dataModulePage .mxGruopTable").append(`<thead>
                             <th style="width: 150px">模型名称</th>
                             <th style="width: 150px">描述</th>
                             <th style="width: 150px">状态</th>
                             <th style="width: 200px">操作</th>
                             </thead>`)
-                        data.map(s=>{
-                            var img,title;
-                            if(s.status == "未发布"){
-                                img = "static/fabu.png";
-                                title = "发布";
-                            } else {
-                                img = "static/cancelFb.png";
-                                title = "取消发布";
-                            }
-                            $("#dataModulePage .mxGruopTable").append(
-                                `<tr>
+                            data.map(s=>{
+                                var img,title;
+                                if(s.status == "未发布"){
+                                    img = "static/fabu.png";
+                                    title = "发布";
+                                } else {
+                                    img = "static/cancelFb.png";
+                                    title = "取消发布";
+                                }
+                                $("#dataModulePage .mxGruopTable").append(
+                                    `<tr>
                             <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
                             <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
                             <td style="width: 150px">${s.status}</td>
@@ -1873,10 +1891,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                        })
+                            })
+                        }
                     }
-                }
-            })
+                })
+            }
         }
         if(node.type == 2){
             if(node.right == 2){
@@ -1910,7 +1929,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                             inNum:s.inNum,
                                             outNum:s.outNum,
                                             index:index,
-                                            sid:s.tableAlgorithm.index
+                                            sid:s.tableAlgorithm.id
                                         },
                                         children:[],
                                         paddingLeft: 10,
@@ -1971,16 +1990,73 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 })
             }
         }
+        if(node.type == 3){
+            if(node.right == 3){
+                $.ajax({
+                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                    type:"get",
+                    data: {groupName:node.name},
+                    success(data) {
+                        $("#ruleListRight").empty()
+                        if(data.length){
+                            data.map((s,index)=>{
+                                $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                            })
+                        }
+                    }
+                })
+            } else {
+                $.ajax({
+                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                    type:"get",
+                    data: {groupName:node.name},
+                    success(data) {
+                        $("#gzDiv .gzGruopTable").empty()
+                        if(data.length){
+                            $("#gzDiv .gzGruopTable").append(`<thead>
+                    <th style="width: 150px">规则名称</th>
+                    <th style="width: 150px">描述</th>
+                    <th style="width: 150px">状态</th>
+                    <th style="width: 180px">操作</th>
+                    </thead>`)
+                            data.map(s=>{
+                                var img,title;
+                                if(s.status == "未发布"){
+                                    img = "static/fabu.png";
+                                    title = "发布";
+                                } else {
+                                    img = "static/cancelFb.png";
+                                    title = "取消发布";
+                                }
+                                $("#gzDiv .gzGruopTable").append(
+                                    `<tr>
+                            <td title="${s.rolename}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.rolename}</td>
+                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.des}</td>
+                            <td style="width: 150px">${s.status}</td>
+                            <td style="width: 180px">
+                                <img class="lkr-list-ediRule" ruleId="${s.id}" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                <img onclick="deleteRuleById(${s.id})" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                <img title="${title}" src="${img}" onclick="publishRule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 10px">
+                                <img title="导出" src="static/download.png" onclick="downloadRule(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
+                            })
+                        }
+                    }
+                })
+            }
+        }
     }
     function dataModlue(){
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
-            data: {type :1},
+            data: {type:1},
             success(data) {
                 var treeData=[]
                 data.map(s=>{
-                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
                 })
                 $.fn.zTree.init($("#moduleTree"),setting, treeData);
             }
@@ -2007,7 +2083,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
-        $("#editDicTitle").text("公式编辑")
+        $(".gsTitle").text("公式编辑")
         $("#companyGs").attr("disabled",false)
         $("#groupGs").attr("disabled",false)
         AlgorithmConfirm()
@@ -2202,80 +2278,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     }
     function dictionary(){
-        $("#dicTable").text("");
-        $("#dataModulePage").hide();
-        $("#AddAlgorithm").hide();
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type:2},
-            success(data) {
-                $("#sfGruopListRight").empty()
-                data.map((s,index)=>{
-                    $("#sfGruopListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#moduleGruopRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="moduleGruopRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                    $.ajax({
-                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                        type:"get",
-                        data: {groupName :s.groupname},
-                        success(data) {
-                            if(data.length){
-                                data.map((s,index)=>{
-                                    $("#sfGruopListRight .sfGruopTable").eq(index).empty();
-                                        window.addAlgorithm({
-                                            name: 'rectangle',
-                                            icon: 'icon-rectangle',
-                                            id:s.tableAlgorithm.id,
-                                            type:"tableAlgorithm",
-                                            data: {
-                                                id:s.tableAlgorithm.id,
-                                                text: s.tableAlgorithm.algorithmname,
-                                                rect: {
-                                                    width: 200,
-                                                    height: 100
-                                                },
-                                                parentId:s.tableAlgorithm.id,
-                                                font: {
-                                                    fontFamily: 'Arial',
-                                                    color: 'aqua',
-                                                    textBaseline: 'top'
-                                                },
-                                                data:{
-                                                    inNum:s.inNum,
-                                                    outNum:s.outNum,
-                                                    index:index,
-                                                    sid:s.tableAlgorithm.index
-                                                },
-                                                children:[],
-                                                paddingLeft: 10,
-                                                paddingRight: 10,
-                                                paddingTop: 10,
-                                                paddingBottom: 10,
-                                                borderRadius: 0.1,
-                                                name: 'rectangle',
-                                                fillStyle:'rgba(4,44,98,0.58)',
-                                                strokeStyle: '#4295ec',
-                                                hideInput:true
-                                            }
-                                        })
-                                })
-                            }
-                        }
-                    })
-                })
-            }
-        })
+        dictionaryShow()
     }
     //模型列表刷新
     function getModuleList(){
@@ -2447,6 +2450,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                         }
                     })
+                    $(".gsTitle").text("公式编辑")
                     sessionStorage.src=data.tableAlgorithm.remark2;
                     sessionStorage.latex="";
                     try{
@@ -2780,7 +2784,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     $("#searchName").bind('input propertychange',function(s){
         let val = $("#searchName").val();
         if($('.liactive').text() == "模型库"){
-            $("#tree a").each((i,s)=>{
+            $("#moduleTree a").each((i,s)=>{
                 if($(s).attr("title").includes(val)){
                     $(s).show()
                 } else {
@@ -2788,44 +2792,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
             })
         } else if($('.liactive').text() == "算法库"){
-            $('#algorithmPage .panel-heading').each((i,s)=>{
-                if($(s).children().children().text().includes(val)){
-                    $(s).next().addClass("in");
-                    $(s).next().css('height',"")
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        $(x).show()
-                    })
+            $("#sfTree a").each((i,s)=>{
+                if($(s).attr("title").includes(val)){
+                    $(s).show()
                 } else {
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        if($(x).text().includes(val)){
-                            $(x).show();
-                            list.push($(x).parent().parent().parent())
-                            $(x).parent().parent().parent().css('height',"")
-                        } else {
-                            $(x).hide()
-                        }
-                    })
+                    $(s).hide()
                 }
             })
         } else {
-            $('#ruleMde .panel-heading').each((i,s)=>{
-                if($(s).children().children().text().includes(val)){
-                    $(s).next().addClass("in");
-                    $(s).next().css('height',"")
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        $(x).show()
-                    })
+            $("#ruleTree a").each((i,s)=>{
+                if($(s).attr("title").includes(val)){
+                    $(s).show()
                 } else {
-                    $(s).next().find('.left-list-tilte').each((i,x)=>{
-                        if($(x).text().includes(val)){
-                            $(x).show();
-                            $(x).parent().parent().parent().addClass("in")
-                            $(x).parent().parent().parent().css('height',"")
-                            list.push($(x).parent().parent().parent())
-                        } else {
-                            $(x).hide()
-                        }
-                    })
+                    $(s).hide()
                 }
             })
         }
@@ -2874,7 +2853,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
      }
     $('#flex_tools span').click((e)=>{
-        $('#flex_tools span').removeClass("liactive")
+        $('#flex_tools span').removeClass("liactive");
+        $("#groupDiv").hide();
         $("#searchName").val("");
         var activeName;
         if(e.target.localName == "i"){
@@ -2915,28 +2895,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     //获取规则详情
     function getGzList() {
-        $("#gzTable").empty();
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
             data: {type:3},
             success(data) {
-                $("#ruleGruopList").empty()
-                data.map((s,index)=>{
-                    $("#ruleGruopList").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ruleWin${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="ruleWin${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-                                       <table class="ruleWinList"></table>
-                                  </div>
-                              </div>
-                          </div>
-                          `)
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
                 })
+                $.fn.zTree.init($("#gzWinTree"),setting, treeData);
             }
         })
     }
@@ -2950,35 +2918,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {type:3},
             success(data) {
-                $("#ruleListRight").empty()
-                data.map((s,index)=>{
-                    $("#ruleListRight").append(`<div class="panel panel-default">
-                              <div class="panel-heading" role="tab">
-                                  <h4 class="panel-title">
-                                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ruleRight${index}" aria-expanded="true">${s.groupname}</a>
-                                  </h4>
-                              </div>
-                              <div id="ruleRight${index}" class="panel-collapse collapse" groupname="${s.groupname}" index="${index}">
-                                  <div class="panel-body">
-
-                                  </div>
-                              </div>
-                          </div>
-                          `)
-                    $.ajax({
-                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-                        type:"get",
-                        data: {groupName :s.groupname},
-                        success(res) {
-                            if(res.length){
-                                $("#ruleListRight .panel-body").eq(index).empty();
-                                res.map(s=>{
-                                    $("#ruleListRight .panel-body").eq(index).append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.rolename}</div></div>`)
-                                })
-                            }
-                        }
-                    })
+                var treeData=[]
+                data.map(s=>{
+                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
                 })
+                $.fn.zTree.init($("#ruleTree"),setting, treeData);
             }
         })
     }
@@ -3123,8 +3067,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type :type},
             success(data) {
                 if(data.length){
-                    $("#parentGroup").empty();
-                    $("#parentGroup").append(`<option value="0">无</option>`)
                     $("#groupTable").append(`<thead>
                     <th style="width: 220px">分组名称</th>
                     <th style="width: 220px">操作</th>
@@ -3139,7 +3081,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                        $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
                     })
                 }
             }
@@ -3156,8 +3097,21 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
         $("#groupInputName").val("")
-        $("#parentGroup").val("0")
+        var type = $("#groupInputName").attr("type");
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:type},
+            success(data) {
+                $("#parentGroup").empty();
+                $("#parentGroup").append(`<option value="0">无</option>`)
+                data.map(s=>{
+                    $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
+                })
+            }
+        })
     })
+
     $("#addGroupYes").click(()=>{
         if($("#groupInputName").val() == ""){
             $('.noticeList').append(`<li>${getTime()}【规则】分组名称不能为空！ </li>`)
@@ -3204,7 +3158,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                             `<tr>
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
@@ -3260,7 +3214,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                             `<tr>
                                                 <td style="width: 220px">${s.groupname}</td>
                                                 <td style="width: 220px">
-                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                                                 </td>
                                             </tr>
@@ -3287,6 +3241,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".groupTitle").text("修改分组")
         $("#groupInputName").attr("modifyId",s)
         $("#groupInputName").val(td.parent().prev().text())
+        $.ajax({
+            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+            type:"get",
+            data: {type:$("#groupInputName").attr("type")},
+            success(data) {
+                $("#parentGroup").empty();
+                $("#parentGroup").append(`<option value="0">无</option>`)
+                data.map(s=>{
+                    $("#parentGroup").append(`<option value="${s.id}">${s.groupname}</option>`)
+                })
+                $("#parentGroup").val(pid)
+            }
+        })
     }
     $(".groupDivClose").click(()=>{
         $("#groupDiv").hide()
@@ -3368,170 +3335,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     })
-    //模型右侧手风琴展开
-    $('#modelListRight').on('show.bs.collapse', function (e) {
-        $.ajax({
-            url: urlConfig.host + '/module/GetModuleByGroupName',
-            type:"get",
-            data: {moduleGroupName :$(e.target).attr("groupname")},
-            success(data) {
-                if(data.length){
-                    var div = $(e.target).children();
-                    div.empty()
-                    data.map((s,index)=>{
-                        div.append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
-                    })
-                }
-            }
-        })
-    })
-    //模型弹窗手风琴展开
-    $('#moduleGruopList').on('show.bs.collapse', function (e) {
-        $.ajax({
-            url: urlConfig.host + '/module/GetModuleByGroupName',
-            type:"get",
-            data: {moduleGroupName :$(e.target).attr("groupname")},
-            success(data) {
-                if(data.length){
-                    var table = $(e.target).children().children();
-                    table.empty()
-                    table.append(`<thead>
-                    <th style="width: 150px">模型名称</th>
-                    <th style="width: 150px">描述</th>
-                    <th style="width: 150px">状态</th>
-                    <th style="width: 200px">操作</th>
-                    </thead>`)
-                    data.map(s=>{
-                        var img,title;
-                        if(s.status == "未发布"){
-                            img = "static/fabu.png";
-                            title = "发布";
-                        } else {
-                            img = "static/cancelFb.png";
-                            title = "取消发布";
-                        }
-                        table.append(
-                            `<tr>
-                            <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
-                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
-                            <td style="width: 150px">${s.status}</td>
-                            <td style="width: 150px">
-                                <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
-                    })
-                }
-            }
-        })
-    })
-    //规则右侧手风琴展开
-    $('#ruleListRight').on('show.bs.collapse', function (e) {
-        $.ajax({
-            url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-            type:"get",
-            data: {groupName :$(e.target).attr("groupname")},
-            success(data) {
-                if(data.length){
-                    var div = $(e.target).children();
-                    div.empty()
-                    data.map((s,index)=>{
-                        div.append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
-                    })
-                }
-            }
-        })
-    })
 
-    //规则弹窗手风琴展开
-    $('#ruleGruopList').on('show.bs.collapse', function (e) {
-        $.ajax({
-            url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-            type:"get",
-            data: {groupName :$(e.target).attr("groupname")},
-            success(data) {
-                if(data.length){
-                    var table = $(e.target).children().children();
-                    table.empty()
-                    table.append(`<thead>
-                    <th style="width: 150px">规则名称</th>
-                    <th style="width: 150px">描述</th>
-                    <th style="width: 150px">状态</th>
-                    <th style="width: 180px">操作</th>
-                    </thead>`)
-                    data.map(s=>{
-                        var img,title;
-                        if(s.status == "未发布"){
-                            img = "static/fabu.png";
-                            title = "发布";
-                        } else {
-                            img = "static/cancelFb.png";
-                            title = "取消发布";
-                        }
-                        table.append(
-                            `<tr>
-                            <td title="${s.rolename}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.rolename}</td>
-                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.des}</td>
-                            <td style="width: 150px">${s.status}</td>
-                            <td style="width: 180px">
-                                <img class="lkr-list-ediRule" ruleId="${s.id}" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img onclick="deleteRuleById(${s.id})" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishRule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 10px">
-                                <img title="导出" src="static/download.png" onclick="downloadRule(${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
-                    })
-                }
-            }
-        })
-    })
-    //算法手风琴点击标签页
-    function accordion(e) {
-        $.ajax({
-            url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-            type:"get",
-            data: {groupName:$(e.target).attr("groupname")},
-            success(data) {
-                if(data.length){
-                    var table = $(e.target).children().children();
-                    table.empty()
-                    table.append(`<thead>
-                    <th style="width: 120px">作者</th>
-                    <th style="width: 120px">算法名称</th>
-                    <th style="width: 120px">算法描述</th>
-                    <th style="width: 120px">状态</th>
-                    <th style="width: 150px">操作</th>
-                    </thead>`)
-                    data.map(s=>{
-                        var img,title;
-                        if(s.tableAlgorithm.status == "未发布"){
-                            img = "static/fabu.png";
-                            title = "发布";
-                        } else {
-                            img = "static/cancelFb.png";
-                            title = "取消发布";
-                        }
-                        table.append(
-                            `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
-                            <td title="${s.tableAlgorithm.algorithmauthor}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
-                            <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
-                            <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
-                             <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.status}</td>
-                            <td style="width: 150px" algorithmid="${s.tableAlgorithm.id}">
-                                <img title="修改" src="static/edit.png" onclick="editZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img title="删除" src="static/delete.png" onclick="deleteZd(${s.tableAlgorithm.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishSf('${s.tableAlgorithm.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
-                    })
-                }
-            }
-        })
-    }
     function deleteRuleById(s) {
         window.bigData.delRuleId = s;
         $("#ruleDeleteDiv").show()
@@ -3627,7 +3431,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     `<tr>
                             <td style="width: 220px">${s.groupname}</td>
                             <td style="width: 220px">
-                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
                             </td>
                         </tr>
@@ -3635,29 +3439,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             })
                         }
                         if(type == 1){
-                            $.ajax({
-                                url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                                type: "get",
-                                data: {type: 1},
-                                success(data) {
-                                    $("#modelListRight").empty()
-                                    data.map((s, index) => {
-                                        $("#modelListRight").append(`<div class="panel panel-default">
-                                                  <div class="panel-heading" role="tab">
-                                                      <h4 class="panel-title">
-                                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#modelListRight${index}" aria-expanded="true">${s.groupname}</a>
-                                                      </h4>
-                                                  </div>
-                                                  <div id="modelListRight${index}" class="panel-collapse collapse" groupname="${s.groupname}">
-                                                      <div class="panel-body">
-
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              `)
-                                    })
-                                }
-                            })
+                            dataModlue()
                         } else if(type == 2){
                             dictionary()
                         } else if(type == 3){

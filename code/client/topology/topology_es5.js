@@ -356,8 +356,8 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                            let id_in;//输入端算子id
-                            let id_out;//输出端算子id
+                            let id_in;//输入端算法id
+                            let id_out;//输出端算法id
                             $("#actionMsgIn").val("");
                             $("#actionMsgIn").show();
                             $("#actionMsgOut").hide();
@@ -764,7 +764,7 @@ var Topology = {
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
                          
-                            //去掉重复id的node（一个算子在一套规则中只能出现一次）
+                            //去掉重复id的node（一个算法在一套规则中只能出现一次）
                             // function unique(arr){         
                             //     for(var i=0; i<arr.length; i++){
                             //         for(var j=i+1; j<arr.length; j++){
@@ -772,7 +772,7 @@ var Topology = {
                             //                 arr.splice(j,1);  
                             //                 self.banAdd = false                                         
                             //                 j--;
-                            //                 $('.noticeList').append(`<li>${getTime()}同一个规则算子不能重复！ </li>`)
+                            //                 $('.noticeList').append(`<li>${getTime()}同一个规则算法不能重复！ </li>`)
                             //             }
                             //         }
                             //     }

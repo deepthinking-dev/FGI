@@ -1,8 +1,9 @@
 package deepthinking.fgi.dao.mapper;
 
+import java.util.List;
+
 import deepthinking.fgi.domain.TableGroupdata;
 import deepthinking.fgi.domain.TableGroupdataCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -55,8 +56,10 @@ public interface TableGroupdataMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into table_groupdata (groupName, groupType)",
-        "values (#{groupname,jdbcType=VARCHAR}, #{grouptype,jdbcType=INTEGER})"
+        "insert into table_groupdata (groupName, groupType, ",
+        "parentId)",
+        "values (#{groupname,jdbcType=VARCHAR}, #{grouptype,jdbcType=INTEGER}, ",
+        "#{parentid,jdbcType=INTEGER})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(TableGroupdata record);
@@ -81,7 +84,8 @@ public interface TableGroupdataMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="groupName", property="groupname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="groupType", property="grouptype", jdbcType=JdbcType.INTEGER)
+        @Result(column="groupType", property="grouptype", jdbcType=JdbcType.INTEGER),
+        @Result(column="parentId", property="parentid", jdbcType=JdbcType.INTEGER)
     })
     List<TableGroupdata> selectByExample(TableGroupdataCriteria example);
 
@@ -93,14 +97,15 @@ public interface TableGroupdataMapper {
      */
     @Select({
         "select",
-        "id, groupName, groupType",
+        "id, groupName, groupType, parentId",
         "from table_groupdata",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="groupName", property="groupname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="groupType", property="grouptype", jdbcType=JdbcType.INTEGER)
+        @Result(column="groupType", property="grouptype", jdbcType=JdbcType.INTEGER),
+        @Result(column="parentId", property="parentid", jdbcType=JdbcType.INTEGER)
     })
     TableGroupdata selectByPrimaryKey(Integer id);
 
@@ -140,7 +145,8 @@ public interface TableGroupdataMapper {
     @Update({
         "update table_groupdata",
         "set groupName = #{groupname,jdbcType=VARCHAR},",
-          "groupType = #{grouptype,jdbcType=INTEGER}",
+          "groupType = #{grouptype,jdbcType=INTEGER},",
+          "parentId = #{parentid,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableGroupdata record);
