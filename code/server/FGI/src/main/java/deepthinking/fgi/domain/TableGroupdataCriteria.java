@@ -383,6 +383,66 @@ public class TableGroupdataCriteria {
             addCriterion("groupType not between", value1, value2, "grouptype");
             return (Criteria) this;
         }
+
+        public Criteria andParentidIsNull() {
+            addCriterion("parentId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidIsNotNull() {
+            addCriterion("parentId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidEqualTo(Integer value) {
+            addCriterion("parentId =", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidNotEqualTo(Integer value) {
+            addCriterion("parentId <>", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidGreaterThan(Integer value) {
+            addCriterion("parentId >", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("parentId >=", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidLessThan(Integer value) {
+            addCriterion("parentId <", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidLessThanOrEqualTo(Integer value) {
+            addCriterion("parentId <=", value, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidIn(List<Integer> values) {
+            addCriterion("parentId in", values, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidNotIn(List<Integer> values) {
+            addCriterion("parentId not in", values, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidBetween(Integer value1, Integer value2) {
+            addCriterion("parentId between", value1, value2, "parentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentidNotBetween(Integer value1, Integer value2) {
+            addCriterion("parentId not between", value1, value2, "parentid");
+            return (Criteria) this;
+        }
     }
 
     /**

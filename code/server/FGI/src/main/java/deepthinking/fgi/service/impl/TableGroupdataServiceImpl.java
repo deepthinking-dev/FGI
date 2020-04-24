@@ -1,7 +1,6 @@
 package deepthinking.fgi.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import deepthinking.fgi.Enum.GroupType;
 import deepthinking.fgi.dao.mapper.TableAlgorithmMapper;
 import deepthinking.fgi.dao.mapper.TableGroupdataMapper;
 import deepthinking.fgi.dao.mapper.TableModuleMapper;

@@ -1,6 +1,7 @@
 package deepthinking.fgi.dao.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.domain.TableRoleCriteria;
@@ -229,4 +230,19 @@ public interface TableRoleMapper {
         "where ID = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TableRole record);
+
+    @Select({
+            "select",
+            "ID, RoleName, Des, Status,Remark2",
+            "from table_role",
+            "where Status = #{status}"
+    })
+    @Results({
+            @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="RoleName", property="rolename", jdbcType=JdbcType.VARCHAR),
+            @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
+            @Result(column="Status", property="status", jdbcType=JdbcType.VARCHAR),
+            @Result(column="Remark2", property="dataurl", jdbcType=JdbcType.VARCHAR)
+    })
+    List<Map<String,Object>> selectInfoByStatus(String status);
 }
