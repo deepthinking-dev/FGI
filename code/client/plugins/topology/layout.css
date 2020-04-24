@@ -104,6 +104,23 @@ body {
     width: 100%;
     height: 75vh;
 }
+#canvasList{
+    position: absolute;
+    width: calc(100% - 150px);
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid red;
+}
+#canvasList ul{
+    margin: 0;
+    color: #fff;
+    font-size: 14px;
+    list-style: none;
+}
+#canvasList ul li{
+    margin: 0 10px;
+    float: left;
+}
 .tools .title{
     font-weight:bold;
     font-size: 1rem;

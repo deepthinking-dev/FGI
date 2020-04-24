@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="renderer" content="webkit"/>
+        <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+        <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                border: none;
+            }
+            #topo_canvas{
+                width: 100%;
+                height: 100vh;
+                border: none;
+                background-image: url(./static/lkr.png);
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+                box-shadow: 0 0 10px 10px rgba(0,0,0,0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="canvas" id="topo_canvas"></div>
+    </body>
+    <script src="config.js"></script>
+
+    <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
+    <script src="./plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+    <script src="./plugins/topology/topology.bundle.js"></script>
+    <script src='index.js'></script>
+    <script src="topology/topology_es5.js"></script>
+    <script src="topology/MathJax.js"></script>
+   <script>
+       window.Topology.init()
+       editGzType = false;
+    var globalActionDatas = [];
+    var modelSelectList;
+    var deleteLineDataId;
+    var currentActionInput;
+    var responseActionDatas;
+    var refreshId;
+    var resCurrentLineData={
+        dataIn:"",
+        dataOut:""
+    };
+    // var setting={
+    //     check: {
+
+    //     },
+    //     callback:{
+    //         onClick:treeClick
+    //     },
+    //     data: {
+    //         simpleData: {
+    //             enable: true,
+    //             idKey: "id",//节点id名
+    //             pIdKey: "pid",//父节点id名
+    //             rootPId: 0//默认根节点为0
+    //         }
+    //     },
+    //     // view: {
+    //     //     showLine: false
+    //     // }
+    // };
+    // var idStoreData={
+            
+        // }
+    window.bigData = {
+        mouldParam:[],
+        actionTab:'基础模块',
+        delmoduleId:'',
+        editmoduleId:'',
+        frameType:'add',
+        editmoduledata:[],
+        delAlgorithmId:'',
+        editAlgorithmId:'',
+        editFormula:'',
+        formulaType:'add',
+        formulaModuleId:'',
+        isAddInOut:false,
+        isAddInOutType: 'out',
+        editRuleId:'',
+        ruleType:'add',
+        isExportId: '',
+        isExportButton:false
+    }
+    window.filed ={
+        inputFieldsTarget:'',
+        fieldname:''
+    }
+   </script>
+</html>

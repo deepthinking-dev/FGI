@@ -39,6 +39,7 @@ var Topology = {
     // 对象的最初入口
     init: function () {
         var self = this;
+        // debugger
         //绑定事件
         self.bindEvent();
         self.initCanvas();
@@ -324,10 +325,19 @@ var Topology = {
                     "scale": 1,
                     "locked": 0
                 };
-                var canvasOptions = {on: onMessage};
-                canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
-             
+               
+                var canvasOptions = {
+                    on: onMessage
+                };
                 
+                let canvasId = parent.canvasId
+                canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
+                // window.onload = function(){
+                //     let canvas1 = parent.document.getElementById('' + canvasId).contentWindow
+                //     let embadBig = canvas1.document.getElementById('topo_canvas')
+                //     canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
+                // }
+             
                 // 监听画布
                 function onMessage(event, data) {
                     console.log(event,data)
@@ -477,7 +487,6 @@ var Topology = {
                                     $("#addActionButton").attr("resData",true)
                                     try{
                                         resBaseIn.map((t,i)=>{
-                                            debugger
                                             $("#actionInDiv").append(`
                                               <div style="margin: 10px 0" actionId=${t.id}>
                                                    <i>${i+1}</i>
@@ -589,7 +598,6 @@ var Topology = {
                             canvas.lock(0)
                             break;
                         case 'moveNodes':
-                            // debugger
                             let widthsa = data[0].rect.width
                             let heightsa = data[0].rect.height
                             data[0].anchors.map((obj,i) => {
@@ -951,7 +959,6 @@ var Topology = {
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
                                                 if(data.data.inNum  > data.data.outNum){
-                                                    debugger
                                                     if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
                                                         data.rect.ey = data.rect.ey + heights+15
                                                         data.rect.height = data.rect.height + heights+15

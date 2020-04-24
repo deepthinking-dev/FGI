@@ -739,6 +739,11 @@
 <!--                            </ul>-->
                         </nav>
                         <div class="flex lkr-flex" id="main_canvas" >
+                            <div id="canvasList">
+                                <ul>
+                                    <li class="canvasLi">canvas0<span>X</span></li>
+                                </ul>
+                            </div>
                             <div id="colorDiv">
                                 <ul>
                                     <li style="background: #0eff23">常量</li>
@@ -788,9 +793,12 @@
                             </div>
                             <div class="lkr-bg-canvas">
                                 <div id="flex_canvas">
-                                    <div class="canvas" id="topo_canvas"></div>
+                                    <div id="topo_canvas">
 
+                                    </div>
                                 </div>
+                                
+                                <!-- <iframe src="./canvas.html"  id="canvas0" style=" width: 100%; height: 75vh;border: none;"></iframe> -->
                             </div>
                         </div>
                         <div class="props" id="flex_props1">
@@ -1019,7 +1027,7 @@
     </div> -->
 
 <script src="config.js"></script>
-<!-- jQuery 3.3.1 -->
+
 <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
 <script src="./plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="./plugins/topology/topology.bundle.js"></script>
@@ -1219,8 +1227,33 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
 
     $('body').on('click','.newBuilt',(e) =>{
-       window.open(window.location.href)
+    //    window.open(window.location.href)
+        let leg = $('.lkr-bg-canvas').children().length -1
+            leg++
+            let canvas_id = "canvas"+leg
+            window.canvasId = canvas_id
+        var c="<iframe src='./canvas.html' id='canvas"+leg+"' style='width: 100%; height: 75vh;border: none;'></iframe>"
+        $(".lkr-bg-canvas").append(c)
+        $('.lkr-bg-canvas').children().hide();
+        $('#'+canvas_id).show()
+        $('#canvasList ul').append(`<li class="canvasLi">${canvas_id} <span>X</span></li>`)
+        // window.Topology.init();
+        
+
+        // window.onload = function(){
+        //     debugger
+        //     let canvas1 = document.getElementById('' + canvas_id).contentWindow
+        //     let embadBig = canvas1.document.getElementById('topo_canvas')
+        //     canvas = new Le5leTopology.Topology(embadBig, canvasOptions);
+        // }
     })
+    $('body').on('click','.canvasLi',(e) =>{
+        $('.lkr-bg-canvas').children().hide();
+        let idC = $(e.target).text() 
+        $('#'+idC).show()
+        window.canvasId = idC
+    })
+
     $('body').on('click','.export',(e) =>{
         window.bigData.isExportButton = true
        if(window.bigData.isExportId == "") {
@@ -1619,7 +1652,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 let id=0
-                debugger
                 if(items.attr("id")){
                     id = items.attr("id")
                 }
