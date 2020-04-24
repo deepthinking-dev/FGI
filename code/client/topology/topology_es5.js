@@ -951,7 +951,7 @@ var Topology = {
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
                                                 if(data.data.inNum  > data.data.outNum){
-                                                    // debugger
+                                                    debugger
                                                     if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
                                                         data.rect.ey = data.rect.ey + heights+15
                                                         data.rect.height = data.rect.height + heights+15
@@ -2090,7 +2090,7 @@ var Topology = {
     },
     // 撤销
     undo: function () {
-        canvas.undo();
+        // canvas.undo();
         let deleteBoxId =""
         
         Object.values(window.Topology.tools).map(index=>{
@@ -2106,7 +2106,7 @@ var Topology = {
                         }
                     }
                     
-                })
+                }) 
                 if(!falg){
                     deleteBoxId=delId
                     return
@@ -2136,7 +2136,19 @@ var Topology = {
             del.children.map((yDel ,i)=>{
                 if(yDel.uuid ==deleteBoxId){
                     del.children.splice(i,1)
-                
+                    canvas.data.nodes.map(item=>{
+
+                        if(item.id == del.uuid){
+                            if(item.rect.height > 100){
+                                debugger
+                                item.rect.ey = (item.rect.ey -20)
+                                item.rect.height = (item.rect.height - 20)
+                            }else{
+                                item.rect.height =100
+                            }
+                            canvas.render()
+                        }
+                    })
                     return
                 }
             })
@@ -2147,6 +2159,7 @@ var Topology = {
                 }
             }
         })
+        canvas.undo();
     },
     // 恢复
     redo: function () {
