@@ -23,7 +23,64 @@
         </style>
     </head>
     <body>
-        <div class="canvas" id="topo_canvas"></div>
+        <div id="flex_canvas">
+            <div class="canvas" id="topo_canvas"></div>
+        </div>
+         <!--右键菜单定义-->
+         <div class="context-menus" id="canvas_menus" style="display: none">
+            <div disabled>
+                <a onclick="onTops()" class="menu-a-disabled" disabled>
+                    新增自定义属性
+                </a>
+            </div>
+            <div id="showRk" style="display: none">
+                <a class="menu-a" onclick="showRk()">
+                    算法备注
+                </a>
+            </div>
+            <div>
+                <a class="menu-a" id="showAllmag">
+                    查看详情
+                </a>
+            </div>
+            <div class="line"></div>
+            <div>
+                <a onclick="onCombine()" class="menu-a-disabled" id="menu_combine" disabled>
+                    组合
+                </a>
+            </div>
+            <div>
+                <a onclick="onUncombine()" class="menu-a-disabled" id="menu_unCombine" disabled
+                style="display: none">
+                    取消组合
+                </a>
+            </div>
+            <div>
+                <a onclick="onLock()" class="menu-a-disabled" id="menu_lock" disabled>
+                    锁定
+                </a>
+            </div>
+            <div class="line"></div>
+            <div>
+                <a onclick="onDelete()" class="menu-a  menu-a-delete">
+                    删除
+                </a>
+            </div>
+            <div class="line"></div>
+            <div>
+                <a onclick="undo()" class="menu-a">
+                    撤消
+                    <span class="ml50">Ctrl + Z</span>
+                </a>
+            </div>
+            <div>
+                <a onclick="redo()" class="menu-a">
+                    恢复
+                    <span class="ml50">Ctrl + Shift+ Z</span>
+                </a>
+            </div>
+            <div class="line"></div>
+        </div>
     </body>
     <script src="config.js"></script>
 

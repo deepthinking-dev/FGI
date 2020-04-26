@@ -187,10 +187,18 @@ var Topology = {
             }
             window.lineDiv = false;
             //显示右键菜单
-            $("#canvas_menus").css({
-                "left": document.body.scrollLeft + event.clientX, "top":
-                    document.body.scrollTop + event.clientY
-            }).show();
+            if(window.canvasNowId == "canvas0"){
+                $("#canvas_menus").css({
+                    "left": document.body.scrollLeft + event.clientX, "top":
+                        document.body.scrollTop + event.clientY
+                }).show();
+            }else{
+                parent.$("#canvas_menus").css({
+                    "left": document.body.scrollLeft + event.clientX, "top":
+                        document.body.scrollTop + event.clientY
+                }).show();
+            }
+           
             return false;
         });
         // 保存画布数据
@@ -1355,11 +1363,21 @@ var Topology = {
                             }
                             break;
                         case 'delete':
-                            if(data.nodes.length==0 && data.lines.length == 0){
-                                $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
-                                toastr.info(`请选择要删除的节点或者线！` )
-                                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                            debugger
+                            if(window.canvasNowId == "canvas0"){
+                                if(data.nodes.length==0 && data.lines.length == 0){
+                                    $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
+                                    toastr.info(`请选择要删除的节点或者线！` )
+                                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                }
+                            }else{
+                                if( window.frames[canvasNowId].contentWindow.data.nodes.length==0 &&  window.frames[canvasNowId].contentWindow.data.lines.length == 0){
+                                    $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
+                                    toastr.info(`请选择要删除的节点或者线！` )
+                                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                }
                             }
+                            
                             try {
                                 delete  window.Topology.tools[data.nodes[0].id]
                             }catch (e) {
@@ -2103,6 +2121,7 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
+        debugger
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
@@ -2137,7 +2156,7 @@ var Topology = {
             index.children.map(child =>{
                 let falg=false;
                 let delId=child.uuid//缓存
-                canvas.data.nodes.map(item=>{//撤销后的
+                canvas.data.nodes.map(item=>{//撤销后的  
                     if(item.childStand){
                         let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
                         if(delId==fuuid){
