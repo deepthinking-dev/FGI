@@ -39,7 +39,6 @@ var Topology = {
     // 对象的最初入口
     init: function () {
         var self = this;
-        // debugger
         //绑定事件
         self.bindEvent();
         self.initCanvas();
@@ -82,7 +81,12 @@ var Topology = {
         });
         // 隐藏显示
         $("body").click(function (event) {
-            $("#canvas_menus").css("display", "none");
+            if(window.canvasNowId =="canvas0"){
+                $("#canvas_menus").css("display", "none");
+            }else{
+                parent.$("#canvas_menus").css("display", "none");
+            }
+           
         });
         // 隐藏显示
         $(document).click(function (e) {
@@ -210,14 +214,6 @@ var Topology = {
             </div>`);
         }
         if(option.type== "规则"){
-            // $("#rulePage").append(`<div class="left-list">
-            //         <input type="radio" name="exportGz" value=${option.id} class="ruleCheckbox" data-id='${option.id}'>
-            //         <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
-            //         <div class="left-list-event">
-            //         <div class='lkr-list-ediRule lkr-edit' data-id='${option.id}' data-moduleid='${option.moduleid}'>编辑规则</div>
-            //         <div class='lkr-list-delRule lkr-del' data-id='${option.id}' data-moduleid='${option.moduleid}'>删除规则</div>
-            //     </div>
-            //     </div>`);
             $("#rulePage").append(`<div class="left-list">
                     <div class="left-list-tilte" title=${option.data.text}>${option.data.text}</div>
                 </div>
@@ -763,22 +759,6 @@ var Topology = {
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
-                         
-                            //去掉重复id的node（一个算法在一套规则中只能出现一次）
-                            // function unique(arr){         
-                            //     for(var i=0; i<arr.length; i++){
-                            //         for(var j=i+1; j<arr.length; j++){
-                            //             if(arr[i].id==arr[j].id){         //第一个等同于第二个，splice方法删除第二个
-                            //                 arr.splice(j,1);  
-                            //                 self.banAdd = false                                         
-                            //                 j--;
-                            //                 $('.noticeList').append(`<li>${getTime()}同一个规则算法不能重复！ </li>`)
-                            //             }
-                            //         }
-                            //     }
-                            //     return arr;
-                            // }
-                            // unique(canvas.data.nodes)
                             break;
                         case 'addNode':
 
@@ -803,10 +783,6 @@ var Topology = {
                                 name:data.text,
                                 children:[]
                             }
-                         
-                            //存储编辑区数据
-                            // unique(canvas.data.nodes)
-                            // self.saveNode = unique(canvas.data.nodes)
                             locked = data.locked;
                             self.initNode(); 
 
@@ -1516,11 +1492,20 @@ var Topology = {
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
                                                     let nowLists = []
-                                                    if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
-                                                        nowLists = self.tools[data.id].children
+                                                    if(window.canvasNowId == "canvas0"){
+                                                        if(self.tools[data.id].children.length > dataAl.tableFuncs.length){
+                                                            nowLists = self.tools[data.id].children
+                                                        }else{
+                                                            nowLists = dataAl.tableFuncs
+                                                        }
                                                     }else{
-                                                        nowLists = dataAl.tableFuncs
+                                                        if( parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children.length > dataAl.tableFuncs.length){
+                                                            nowLists =   parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children
+                                                        }else{
+                                                            nowLists = dataAl.tableFuncs
+                                                        }
                                                     }
+                                                    
                                                     if(item.id == data.id&&item.tableInterfaceparametersList.length >= nowLists.length){
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
@@ -1574,8 +1559,14 @@ var Topology = {
                                                 })
                                             }
                                         })
-                                    }else{                                                      
-                                    window.Topology.tools[data.id].children.map((index,t) =>{
+                                    }else{  
+                                        let NewTools = []  
+                                        if(window.canvasNowId == "canvas0"){
+                                            NewTools = self.tools[data.id].children
+                                        }else{
+                                            NewTools =  parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children
+                                        }                                                  
+                                        NewTools.map((index,t) =>{
                                         if(index.remark == "xin"){
                                             str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                 if(index.inorout == 1){
@@ -1633,12 +1624,12 @@ var Topology = {
                                     dataAl.tableFuncs.map(item => {
                                         lstr1 += `<option value="${item.parametername}">${item.parametername}</option>`
                                     })
-                                    window.Topology.tools[data.id].children.map((index,t)=>{
+                                    NewTools.map((index,t)=>{
                                         if(index.remark == "xin"){
-                                            $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
+                                            parent.$('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                             setTimeout(function () {
-                                                $('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
-                                                $('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.parametername+"']").attr("selected",true);
+                                                parent.$('.ruleContentDiv .actionInfo').eq(t).find('.actionSelected1').find("option[value='"+index.inorout+"']").attr("selected",true);
+                                                parent.$('.ruleContentDiv .actionInfo').eq(t).find('.varNameInput1').find("option[value='"+index.parametername+"']").attr("selected",true);
                                             }, 100);
                                             
                                         }
@@ -2188,7 +2179,6 @@ var Topology = {
 
                         if(item.id == del.uuid){
                             if(item.rect.height > 100){
-                                debugger
                                 item.rect.ey = (item.rect.ey -20)
                                 item.rect.height = (item.rect.height - 20)
                             }else{

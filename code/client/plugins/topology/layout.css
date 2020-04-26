@@ -97,10 +97,10 @@ body {
 }
 #canvasList{
     position: absolute;
-    width: calc(100% - 150px);
+    width: calc(100% - 85px);
     height: 30px;
     line-height: 30px;
-    border: 1px solid red;
+    border: 1px solid #45a1e9;
     z-index: 9999;
 }
 #canvasList ul{
@@ -113,8 +113,11 @@ body {
     width: 100%;
     height: 30px;
 }
+#canvasList ul li.pageson{
+    background-color: #3781c0;
+}
 #canvasList ul li{
-    margin: 0 10px;
+    padding: 0 10px;
     float: left;
 }
 #canvasList ul li span{

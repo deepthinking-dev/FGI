@@ -741,7 +741,7 @@
                         <div class="flex lkr-flex" id="main_canvas" >
                             <div id="canvasList">
                                 <ul>
-                                    <li class="canvasLi">canvas0</li>
+                                    <li class="pageson"><span class="canvasLi">canvas0</span></li>
                                 </ul>
                             </div>
                             <div id="colorDiv">
@@ -1248,11 +1248,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#'+canvas_id).show()
         $('#'+canvas_id)[0].contentWindow.canvasNowId = canvas_id
         window.canvasNowId = canvas_id
-        $('#canvasList ul').append(`<li><span class="canvasLi">${canvas_id}</span> <i class="delCanvas">X</i></li>`)
+        if( $('#canvasList ul li').length == 1){
+            $('#canvasList ul li').eq(0).removeClass('pageson');
+        }else{
+            $('#canvasList ul li').siblings().removeClass('pageson');
+        }
+       
+        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi">${canvas_id}</span> <i class="delCanvas">X</i></li>`)
     })
     $('body').on('click','.canvasLi',(e) =>{
         $('.lkr-bg-canvas').children().hide();
         let idC = $(e.target).text() 
+        $(e.target).parent("li").siblings().removeClass('pageson');
+        $(e.target).parent("li").addClass('pageson');
         if(idC == "canvas0"){
             $("#flex_canvas").show();
             window.canvasNowId ="canvas0"

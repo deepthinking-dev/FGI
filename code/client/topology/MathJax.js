@@ -570,7 +570,6 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(){
-    debugger
     //双击的大模块数据
     let data,test,childList;
     if(window.canvasNowId == "canvas0"){
@@ -626,7 +625,6 @@ function ActionSure(){
                     if(typeIn== "基本类型"){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
-                    window.bigData.isAddInOutType = "in";
                     test.id = xinguid+ "---" +typeIn;
                     
                 }else{
@@ -635,7 +633,6 @@ function ActionSure(){
                         x:data.rect.width,
                         y:(heights*data.data.outNum)+10*(data.data.outNum-1)
                     }
-                    window.bigData.isAddInOutType = "out"
                     typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
                         typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
@@ -748,35 +745,31 @@ function ActionSure(){
                     })
                 }
                 test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
-
+                let flag 
                 if(window.canvasNowId == "canvas0"){
-                     window.bigData.isAddInOut = true;
+                    flag = canvas.addNode(test)
+                    canvas.lockNodes([test], true)
                 }else{
-                    var cwins = window.frames[canvasNowId].contentWindow;
-                    cwins.bigData.isAddInOut = true;
+                    flag = window.frames[canvasNowId].contentWindow.canvas.addNode(test)
+                    window.frames[canvasNowId].contentWindow.canvas.lockNodes([test], true)
                 }
               
 
-                let flag = canvas.addNode(test)
-                canvas.lockNodes([test], true)
                 if(flag){
-                    if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
-                        if(data.data.inNum  > data.data.outNum){
-                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
-                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
-                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
-                            }
-                        }
-                    }else{
-                        if(data.data.outNum > data.data.inNum){
+                    if(data.data.outNum > data.data.inNum){
+                        if(window.canvasNowId == "canvas0"){
                             if( window.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
                                 window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
                                 window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
                             }
+                        }else{
+                            if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey + heights+15
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height + heights+15
+                            }
                         }
+                        
                     }
-                }else{
-                    window.bigData.isAddInOut = false
                 }
 
 
@@ -846,7 +839,6 @@ function ActionSure(){
     //判断修改，新增，删除数据
     for(let i =0;i< actionInfoNum.length ;i++){
         let UPFlag = false
-        let childList =window.Topology.tools[data.id].children
         for(var c = 0;c<childList.length;c++){
             let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
             if(childList[c].uuid == clyId){
@@ -923,7 +915,16 @@ function ActionSure(){
         }
         
     }
-    canvas.data.nodes.map(now=>{
+    var canvasData
+    if(window.canvasNowId == "canvas0"){
+        canvasData = canvas.data.nodes
+        //修改本地缓存数据
+        window.Topology.tools[data.id].children =nowNodesList
+    }else{
+        canvasData= window.frames[canvasNowId].contentWindow.canvas.data.nodes
+        window.frames[canvasNowId].contentWindow.Topology.tools[data.id].children =nowNodesList
+    }
+    canvasData.map(now=>{
         if(now.id.includes(data.id)){
             nowList.push(now)
         }
@@ -939,18 +940,23 @@ function ActionSure(){
                     nowList.splice(i,1);
                 }
             }
-            canvas.data.nodes.map((item1,i) => {
+            canvasData.map((item1,i) => {
                 if(item1.childStand){
                     let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
                     let in_num = -1 
                     let out_num = -1 
                     if(Del1UUid == Del2UUid){                       
                         if(item.inorout == 0){
-                            canvas.data.nodes.splice(i,1); 
+                            canvasData.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
                             toastr.info(`【算法参数】删除成功！` )
                             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                            window.Topology.dblclickNode.data.inNum --
+                            if(window.canvasNowId == "canvas0"){
+                                window.Topology.dblclickNode.data.inNum --
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                            }
+                           
                             
                             nowList.map((test,R)=>{
                                 
@@ -999,13 +1005,32 @@ function ActionSure(){
                                     
                                 }
                             })
-                            if( window.Topology.dblclickNode.rect.height > 100){
+                            if(window.canvasNowId == "canvas0"){
+                                if( window.Topology.dblclickNode.rect.height > 100){
                                 
-                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                            }                                                 
+                                    window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                    window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                }else{
+                                    window.Topology.dblclickNode.rect.height = 100
+                                }
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                                if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
+                                
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
+                                }else{
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
+                                }
+                            }
+                                                                            
                         }else{
-                            window.Topology.dblclickNode.data.outNum --
+                            if(window.canvasNowId == "canvas0"){
+                                window.Topology.dblclickNode.data.outNum --
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum --
+                            }
+                           
                             canvas.data.nodes.splice(i,1); 
                             $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
                             toastr.info(`【算法参数】删除成功！` )
@@ -1061,12 +1086,23 @@ function ActionSure(){
                                 }
                                 
                             })
-                            if( window.Topology.dblclickNode.rect.height > 100){
+                            if(window.canvasNowId == "canvas0"){
+                                if( window.Topology.dblclickNode.rect.height > 100){
                                 
-                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey - 20
-                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height -20
+                                    window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                    window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                                }else{
+                                    window.Topology.dblclickNode.rect.height = 100
+                                }
                             }else{
-                                window.Topology.dblclickNode.rect.height = 100
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                                if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
+                                
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
+                                }else{
+                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
+                                }
                             }
                         }     
                     }
@@ -1074,8 +1110,7 @@ function ActionSure(){
             })
         })
     }
-    //修改本地缓存数据
-    window.Topology.tools[data.id].children =nowNodesList
+    
     //修改小接口显示的内容
     nowList.map(item =>{
         if(item.childStand){
@@ -1142,7 +1177,13 @@ function ActionClose(){
 
 //加
 function ruleAddButtonS(){
-    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    let data;
+    if(window.canvasNowId == "canvas0"){
+         data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    }else{
+        cwin = window.frames[canvasNowId].contentWindow;
+        data = JSON.parse(JSON.stringify(cwin.Topology.dblclickNode))
+    }
     $.ajax({
         url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
         data:{algthId:data.data.sid},
@@ -1171,6 +1212,7 @@ function ruleAddButtonS(){
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)
+                                $(e.target).parent().attr("data-name",item.varname)
                             }
                             
                             if(item.vartype == "2"){
@@ -1178,23 +1220,27 @@ function ruleAddButtonS(){
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)
+                                $(e.target).parent().attr("data-name",item.varname)
                             }
                             if(item.vartype == "3"){
                                 $(e.target).parent().children('.actionSelected2').val("对象")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)
+                                $(e.target).parent().attr("data-name",item.varname)
                             }
                             if(item.vartype == ""){
                                 $(e.target).parent().children('.actionSelected2').val("")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)
+                                $(e.target).parent().attr("data-name",item.varname)
                             }             
                        }else if($(e.target).val()== "请选择"){
                             $(e.target).parent().children('.actionSelected2').val("")
                             $(e.target).parent().children('#varTypeInput').val("")
                             $(e.target).parent().children('.varNameInput').val("")
+                            $(e.target).parent().attr("")
                             $(e.target).parent().attr("")
                        }
                     })
