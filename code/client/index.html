@@ -1255,10 +1255,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
                     "width":"1505px",
-                    "height":"725px",
-                    "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
+                    "height":"675px",
+                    "zIndex":"0",
                     "border-radius": "8px"
                 })
+                parent.$(".navbar-default").show();
+                document.getElementById(window.canvasNowId).style.height="75vh";
+                document.getElementById(window.canvasNowId).style.width="100%";
+                document.getElementById(window.canvasNowId).style.zIndex="2";
+                document.getElementById(window.canvasNowId).style.left="10px";
+                document.getElementById(window.canvasNowId).style.top="30px";
             }
         }
         
@@ -1274,7 +1280,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let leg = $('.lkr-bg-canvas').children().length -1
             leg++
         let canvas_id = "canvas"+leg
-        var c="<iframe src='./canvas.html' id='canvas"+leg+"' style='width: 100%; height: 75vh;border: none;'></iframe>"
+        var c="<iframe src='./canvas.html' id='canvas"+leg+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
         $(".lkr-bg-canvas").append(c)
         $('.lkr-bg-canvas').children().hide();
         $('#'+canvas_id).show()
