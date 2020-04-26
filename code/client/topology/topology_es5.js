@@ -340,7 +340,7 @@ var Topology = {
              
                 // 监听画布
                 function onMessage(event, data) {
-                   
+
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -358,10 +358,10 @@ var Topology = {
                         case 'line':
                             let id_in;//输入端算法id
                             let id_out;//输出端算法id
-                            $("#actionMsgIn").val("");
-                            $("#actionMsgIn").show();
-                            $("#actionMsgOut").hide();
-                            $("#addActionButton").attr({
+                            parent.$("#actionMsgIn").val("");
+                            parent.$("#actionMsgIn").show();
+                            parent.$("#actionMsgOut").hide();
+                            parent.$("#addActionButton").attr({
                                 actionRelation:"",
                                 preActionRelation:""
                             })
@@ -409,23 +409,23 @@ var Topology = {
                                            $('#addActionButton').attr("from_id",s.id);
                                        }
                                     })
-                                    $("#actionInDiv .xwzly_in").each((i,s)=>{
+                                    parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
                                         $(s).val($('#addActionButton').attr("from_name"));
                                         $(s).attr($('#addActionButton').attr("from_id"))
                                     })
                                 }
                             })
-                            $("#selectOutIn").empty();
-                            $("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
-                            $('#selectOutIn').val('1')
+                            parent.$("#selectOutIn").empty();
+                            parent.$("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
+                            parent.$('#selectOutIn').val('1')
 
                             let out_small = data.from.id.split('---')[0]//输出小矩形uuid
                             let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
-                            $("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
+                            parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
                             window.lineDiv = true;
                             deleteLineDataId = out_small + "AND" + in_small;
-                            $("#actionInDiv").empty();
-                            $("#actionOutDiv").empty();
+                            parent.$("#actionInDiv").empty();
+                            parent.$("#actionOutDiv").empty();
 
                             var localData = true;//使用本地缓存数据
                             var responseCurrentData = false;
@@ -441,8 +441,8 @@ var Topology = {
                                     }
                                 })
                                 if(responseCurrentData){
-                                    $("#actionMsgIn").val(responseCurrentData.actionRelation)
-                                    $("#addActionButton").attr({
+                                    parent.$("#actionMsgIn").val(responseCurrentData.actionRelation)
+                                    parent.$("#addActionButton").attr({
                                         actionRelation:responseCurrentData.actionRelation,
                                         preActionRelation:responseCurrentData.preActionRelation
                                     })
@@ -484,30 +484,30 @@ var Topology = {
                                     }
                                     resCurrentLineData.dataIn = resInAll;
                                     resCurrentLineData.dataOut = resOutAll;
-                                    $("#addActionButton").attr("resData",true)
+                                    parent.$("#addActionButton").attr("resData",true)
                                     try{
                                         resBaseIn.map((t,i)=>{
-                                            $("#actionInDiv").append(`
-                                              <div style="margin: 10px 0" actionId=${t.id}>
-                                                   <i>${i+1}</i>
-                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
-                                                   <span>行为</span><select class="xwSelect_in">
-                                                   <option value=">">></option>
-                                                   <option value="<"><</option>
-                                                   <option value="=">=</option>
-                                                   <option value=">=">>=</option>
-                                                   <option value="<="><=</option>
-                                                   <option value="!=">!=</option>
-                                                   <option value="assignment">赋值</option>
-                                               </select>
-                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                              </div>
+                                            parent.$("#actionInDiv").append(`
+                                                  <div style="margin: 10px 0" actionId=${t.id}>
+                                                       <i>${i+1}</i>
+                                                       <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                       <span>行为</span><select class="xwSelect_in">
+                                                       <option value=">">></option>
+                                                       <option value="<"><</option>
+                                                       <option value="=">=</option>
+                                                       <option value=">=">>=</option>
+                                                       <option value="<="><=</option>
+                                                       <option value="!=">!=</option>
+                                                       <option value="assignment">赋值</option>
+                                                   </select>
+                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                  </div>
                                             `)
                                         })
                                         resBaseIn.map((t,i)=>{
-                                            $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                            parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
                                         })
                                     } catch (e) {
                                         console.log(e);
@@ -518,31 +518,31 @@ var Topology = {
                                 globalActionDatas.map(s=>{
                                     if(s.id == out_small + "AND" + in_small){
                                         try{
-                                            $("#actionMsgIn").val("");
-                                            $("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                                            parent.$("#actionMsgIn").val("");
+                                            parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
                                             var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
                                             lineDatas.map((t,i)=>{
-                                                $("#actionInDiv").append(`
-                                              <div style="margin: 10px 0">
-                                                    <i>${i+1}</i>
-                                                   <span>行为值来源</span><input class="xwzly_in" disabled>
-                                                   <span>行为</span><select class="xwSelect_in">
-                                                   <option value=">">></option>
-                                                   <option value="<"><</option>
-                                                   <option value="=">=</option>
-                                                   <option value=">=">>=</option>
-                                                   <option value="<="><=</option>
-                                                   <option value="!=">!=</option>
-                                                   <option value="assignment">赋值</option>
-                                               </select>
-                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                              </div>
+                                                parent.$("#actionInDiv").append(`
+                                                  <div style="margin: 10px 0">
+                                                        <i>${i+1}</i>
+                                                       <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                       <span>行为</span><select class="xwSelect_in">
+                                                       <option value=">">></option>
+                                                       <option value="<"><</option>
+                                                       <option value="=">=</option>
+                                                       <option value=">=">>=</option>
+                                                       <option value="<="><=</option>
+                                                       <option value="!=">!=</option>
+                                                       <option value="assignment">赋值</option>
+                                                   </select>
+                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                  </div>
                                             `)
                                             })
                                             lineDatas.map((t,i)=>{
-                                                $('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                                parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
                                             })
                                         } catch (e) {
                                             console.log(e);
@@ -552,10 +552,10 @@ var Topology = {
                             }
                             setTimeout(()=>{
                                 if(window.lineDiv){
-                                    $('#actionDiv').show();
+                                    parent.$('#actionDiv').show();
                                 }
                             },300)
-                            $('#actionInDiv').show();
+                            parent.$('#actionInDiv').show();
                             selected = {
                                 "type": event,
                                 "data": data
@@ -1183,9 +1183,9 @@ var Topology = {
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
                                         canvas.data.lines.splice(i,1)
-                                        $('.noticeList').append(`<li>${getTime()}【算法连线】操作失败！ </li>`)
-                                        toastr.info(`【算法连线】操作失败！` )
-                                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法连线】操作失败！ </li>`)
+                                        parent.toastr.info(`【算法连线】操作失败！` )
+                                        parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
                                             selected = null;
@@ -1327,9 +1327,9 @@ var Topology = {
                                         }
 
                                     } else {
-                                        $('.noticeList').append(`<li>${parent.getTime()}【算法连线】输出输入类型不匹配！ </li>`)
-                                        toastr.info(`【算法连线】输出输入类型不匹配！` )
-                                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法连线】输出输入类型不匹配！ </li>`)
+                                        parent.toastr.info(`【算法连线】输出输入类型不匹配！` )
+                                        parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
                                                 canvas.data.lines.splice(i,1)
@@ -1342,9 +1342,9 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    $('.noticeList').append(`<li>${getTime()}【算法连线】只能输出连接输入！ </li>`)
-                                    toastr.info(`【算法连线】只能输出连接输入！` )
-                                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                    parent.$('.noticeList').append(`<li>${getTime()}【算法连线】只能输出连接输入！ </li>`)
+                                    parent.toastr.info(`【算法连线】只能输出连接输入！` )
+                                    parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
                                             canvas.data.lines.splice(i,1)
