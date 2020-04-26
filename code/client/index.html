@@ -1211,25 +1211,57 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     })
     document.addEventListener("fullscreenchange", function( event ) {
-        if (document.fullscreenElement) {
+        if(window.canvasNowId == "canvas0"){
+            if (document.fullscreenElement) {
             $('#topo_canvas').css({
                 "background-color":"#fff",
                 "background-image": "url('./static/bigbg.jpg')",
                 "background-size": "100% 100%",
                 "background-repeat": "no-repeat",
-            })
-        } else {
-            $('#topo_canvas').css({
-                "background-color":"#fff",
-                "background-image": "url('./static/lkr.png')",
-                "background-size": "100% 100%",
-                "background-repeat": "no-repeat",
-                "width":"1505px",
-                "height":"725px",
-                "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
-                "border-radius": "8px"
-            })
+                })
+            } else {
+                $('#topo_canvas').css({
+                    "background-color":"#fff",
+                    "background-image": "url('./static/lkr.png')",
+                    "background-size": "100% 100%",
+                    "background-repeat": "no-repeat",
+                    "width":"1505px",
+                    "height":"725px",
+                    "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
+                    "border-radius": "8px"
+                })
+            }
+        }else{
+            if (document.fullscreenElement) {
+                $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
+                    "background-color":"#fff",
+                    "background-image": "url('./static/bigbg.jpg')",
+                    "background-size": "100% 100%",
+                    "background-repeat": "no-repeat",
+                    "z-index":"99999999",
+                    "position": "absolute"
+                })
+                document.getElementById(window.canvasNowId).style.height=window.screen.height+"px";
+                document.getElementById(window.canvasNowId).style.width=document.documentElement.clientWidth+"px";
+                document.getElementById(window.canvasNowId).style.zIndex="9999999";
+	            document.getElementById(window.canvasNowId).style.position="absolute"
+                document.getElementById(window.canvasNowId).style.left="-10px";
+                document.getElementById(window.canvasNowId).style.top="-10px";
+                parent.$(".navbar-default").hide();
+            } else {
+                $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
+                    "background-color":"#fff",
+                    "background-image": "url('./static/lkr.png')",
+                    "background-size": "100% 100%",
+                    "background-repeat": "no-repeat",
+                    "width":"1505px",
+                    "height":"725px",
+                    "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
+                    "border-radius": "8px"
+                })
+            }
         }
+        
     });
 
     $('body').on('click','.checkUp',(e) =>{
