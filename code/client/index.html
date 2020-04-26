@@ -1843,6 +1843,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#lkrFrameDel').hide()
                     dataModlue()
                     freshClick("modelWinTree")
+                    freshClick("moduleTree")
                 }
             }
         })
@@ -2855,6 +2856,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('#deleteZdDiv').hide()
                     dictionaryShow()
                     freshClick("sfWinTree")
+                    freshClick("sfTree")
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)

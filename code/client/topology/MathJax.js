@@ -578,6 +578,7 @@ function ConfirmDelRule(){
                 getGzList()
                 ruleGroupShow()
                 freshClick("gzWinTree")
+                freshClick("ruleTree")
             }
         }
     })
