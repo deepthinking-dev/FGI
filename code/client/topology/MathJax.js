@@ -394,31 +394,49 @@ function ruleSure(){
     $("#currentGzDes").text($("#ruleRemark").val());
     $("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
-    window.globalActionDatas.map(item=>{
-       let obj ={
-           actionRelation:item.dataIn.interfaceRoleDataModels.actionRelation,
-           preActionRelation:item.dataOut.interfaceRoleDataModels.preActionRelation,
-           des:'',
-           id:0,
-           interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
-           parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
-           preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
-           preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
-           remark:"",
-           roleid:0,
-       }
-       obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
-      algorithmRuleDataList.push(obj)
-   })
+
     //参数借口
     let operatorInterfaceDataModels = [] 
     let childList ,coordinate;
+    debugger
     if(window.canvasNowId == "canvas0"){
         childList = Object.values(window.Topology.tools)
         coordinate =JSON.stringify(canvas.data)
+        window.globalActionDatas.map(item=>{
+            let obj ={
+                actionRelation:item.dataIn.interfaceRoleDataModels.actionRelation,
+                preActionRelation:item.dataOut.interfaceRoleDataModels.preActionRelation,
+                des:'',
+                id:0,
+                interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+                parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+                preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+                preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
+                remark:"",
+                roleid:0,
+            }
+            obj.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
+            algorithmRuleDataList.push(obj)
+        })
    }else{
         childList = Object.values(window.frames[canvasNowId].contentWindow.Topology.tools);
         coordinate = JSON.stringify(window.frames[canvasNowId].contentWindow.canvas.data)
+        window.frames[canvasNowId].contentWindow.globalActionDatas.map(item=>{
+            let objs ={
+                actionRelation:item.dataIn.interfaceRoleDataModels.actionRelation,
+                preActionRelation:item.dataOut.interfaceRoleDataModels.preActionRelation,
+                des:'',
+                id:0,
+                interfaceID: item.dataIn.interfaceRoleDataModels.interfaceID,
+                parametersID:item.dataIn.interfaceRoleDataModels.parametersID,
+                preInterfaceID:item.dataIn.interfaceRoleDataModels.preInterfaceID,
+                preParametersID:item.dataIn.interfaceRoleDataModels.preParametersID,
+                remark:"",
+                roleid:0,
+            }
+            objs.algorithmconditions =  item.dataIn.interfaceRoleDataModels.algorithmconditions.concat(item.dataOut.interfaceRoleDataModels.algorithmconditions)
+            algorithmRuleDataList.push(objs)
+        })
    }
    childList.map(item=>{
         // let bigList = []
@@ -559,6 +577,8 @@ function ConfirmDelRule(){
                 canvas.render();
                 getGzList()
                 ruleGroupShow()
+                freshClick("gzWinTree")
+                freshClick("ruleTree")
             }
         }
     })
