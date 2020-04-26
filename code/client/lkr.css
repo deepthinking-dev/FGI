@@ -741,6 +741,18 @@ body{
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
+#groupTreeDiv{
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    width: 500px;
+    height: 500px;
+    display: none;
+    background-image: url(./static/FrameBg.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    z-index: 999999;
+}
 #groupEditDiv{
     position: absolute;
     left: 30%;
@@ -993,6 +1005,16 @@ body{
     left: 20px;
     text-align: center;
 }
+#groupTreeDiv .title span{
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    text-align: center;
+    width: 100px;
+}
+
 #groupEditDiv .title{
     position: absolute;
     width: 100%;
@@ -1152,6 +1174,18 @@ body{
     right: 120px;
 }
 .cancelGroup{
+    background: #f56c6c;
+    width: 80px;
+    color: #fff;
+    margin:15px 0;
+    margin-left: 20px;
+    border: none;
+    height: 30px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.cancelGroupTree{
     background: #f56c6c;
     width: 80px;
     color: #fff;
