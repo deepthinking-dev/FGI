@@ -559,6 +559,7 @@ function ConfirmDelRule(){
                 canvas.render();
                 getGzList()
                 ruleGroupShow()
+                freshClick("gzWinTree")
             }
         }
     })

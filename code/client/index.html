@@ -1842,6 +1842,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     getModuleList()
                     $('#lkrFrameDel').hide()
                     dataModlue()
+                    freshClick("modelWinTree")
                 }
             }
         })
@@ -2853,6 +2854,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
                     dictionaryShow()
+                    freshClick("sfWinTree")
                 }
                 if(data.status == 2){
                     $('.noticeList').append(`<li>${getTime()} ${data.msg}</li>`)
