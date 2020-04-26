@@ -127,9 +127,7 @@ var Topology = {
             self.down_png();
         });
         // 画布右键属性
-        console.log(parent === self);
-        console.log(parent === window);
-        console.log(self === window);
+
         $("#flex_canvas").bind("contextmenu", function () {
             //设置右键菜单
             if (selNodes != null) {
@@ -347,7 +345,6 @@ var Topology = {
              
                 // 监听画布
                 function onMessage(event, data) {
-
                     switch (event) {
                         case 'node':
                             selNodes = [data];
