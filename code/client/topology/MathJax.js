@@ -371,10 +371,6 @@ function ruleOpen(){
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return
             }
-            $("#gzGroupName").empty()
-            res.map(s=>{
-                $("#gzGroupName").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-            })
         }
     })
 }

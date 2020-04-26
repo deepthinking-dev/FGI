@@ -466,10 +466,7 @@ $(function(){
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
-                $("#group").empty()
-                data.map(s=>{
-                    $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                })
+                $("#group").val("")
             }
         })
     })
@@ -748,6 +745,8 @@ $(function(){
                     $("#currentGzName").attr("title",data.tableRole.rolename)
                     $("#currentGzDes").text(data.tableRole.des);
                     $("#currentGzDes").attr("title",data.tableRole.des);
+                    $('#gzGroupName').val(data.tableRole.rolegroup)
+
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     if(window.canvasNowId == "canvas0"){
@@ -810,19 +809,10 @@ $(function(){
                 $("#dicDiv").hide()
                 $("#editDicYes").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
-                    $.ajax({
-                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                        type:"get",
-                        data: {type:2},
-                        success(resss){
-                            $("#group").empty()
-                            resss.map(s=>{
-                                $("#group").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                            })
-                            $("#group").val(data.tableAlgorithm.algorithmgroup)
-                            $("#group").attr("disabled",true)
-                        }
-                    })
+                    $("#group").val("")
+                    $("#group").val(data.tableAlgorithm.algorithmgroup)
+                    $("#group").attr("disabled",true)
+
                     $("#editAuthor").val("");
                     $("#editDicName").val("");
                     $("#editDicDes").val("");
@@ -915,19 +905,9 @@ $(function(){
                     }catch (e) {
                         console.log(e);
                     }
-                    $.ajax({
-                        url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                        type:"get",
-                        data: {type:2},
-                        success(resss){
-                            $("#groupGs").empty()
-                            resss.map(s=>{
-                                $("#groupGs").append(`<option value="${s.groupname}">${s.groupname}</option>`)
-                            })
-                            $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
-                            $("#groupGs").attr("disabled",true)
-                        }
-                    })
+                    $("#groupGs").val("")
+                    $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                    $("#groupGs").attr("disabled",true)
                     $('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
                     window.bigData.formulaType = '';
