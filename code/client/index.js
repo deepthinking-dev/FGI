@@ -33,19 +33,19 @@ $(function(){
         }
     })
 
-    $("#selectOutIn").change(()=> {
-        if ($("#selectOutIn").val() == "1") {
-            $("#actionInDiv").show();
-            $("#actionOutDiv").hide();
-            $("#actionMsgIn").show();
-            $("#actionMsgOut").hide();
-                if ($("#addActionButton").attr("resData")) {//后台返回数据
-                    $("#actionInDiv").empty();
-                    $("#actionMsgIn").val($("#addActionButton").attr("actionRelation"))
-                    var from_name = $("#addActionButton").attr("from_name");
-                    var from_id = $("#addActionButton").attr("from_id");
+    parent.$("#selectOutIn").change(()=> {
+        if (parent.$("#selectOutIn").val() == "1") {
+            parent.$("#actionInDiv").show();
+            parent.$("#actionOutDiv").hide();
+            parent.$("#actionMsgIn").show();
+            parent.$("#actionMsgOut").hide();
+                if (parent.$("#addActionButton").attr("resData")) {//后台返回数据
+                    parent.$("#actionInDiv").empty();
+                    parent.$("#actionMsgIn").val(parent.$("#addActionButton").attr("actionRelation"))
+                    var from_name = parent.$("#addActionButton").attr("from_name");
+                    var from_id = parent.$("#addActionButton").attr("from_id");
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
-                        $("#actionInDiv").append(`
+                        parent.$("#actionInDiv").append(`
                               <div style="margin: 10px 0">
                                    <i>${i+1}</i>
                                    <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
@@ -65,38 +65,38 @@ $(function(){
                          `)
                     })
                     resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t, i) => {
-                        $('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                        parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
                     })
                 } else {
-                    var from_name = $("#addActionButton").attr("from_name");
-                    var from_id = $("#addActionButton").attr("from_id");
+                    var from_name = parent.$("#addActionButton").attr("from_name");
+                    var from_id = parent.$("#addActionButton").attr("from_id");
                     globalActionDatas.map(s => {
-                        if (s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")) {
+                        if (s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")) {
                             try {
                                 var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                                $("#actionInDiv").empty();
+                                parent.$("#actionInDiv").empty();
                                 lineDatas.map((t,i) => {
-                                    $("#actionInDiv").append(`
-                                      <div style="margin: 10px 0">
-                                           <i>${i+1}</i>
-                                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
-                                           <span>行为</span><select class="xwSelect_in">
-                                           <option value=">">></option>
-                                           <option value="<"><</option>
-                                           <option value="=">=</option>
-                                           <option value=">=">>=</option>
-                                           <option value="<="><=</option>
-                                           <option value="!=">!=</option>
-                                           <option value="assignment">赋值</option>
-                                       </select>
-                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
-                                      </div>
+                                    parent.$("#actionInDiv").append(`
+                                          <div style="margin: 10px 0">
+                                               <i>${i+1}</i>
+                                               <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                                               <span>行为</span><select class="xwSelect_in">
+                                               <option value=">">></option>
+                                               <option value="<"><</option>
+                                               <option value="=">=</option>
+                                               <option value=">=">>=</option>
+                                               <option value="<="><=</option>
+                                               <option value="!=">!=</option>
+                                               <option value="assignment">赋值</option>
+                                           </select>
+                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
+                                          </div>
                                     `)
                                 })
                                 lineDatas.map((t, i) => {
-                                    $('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                                    parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
                                 })
                             } catch (e) {
 
@@ -105,24 +105,24 @@ $(function(){
                     })
                 }
         } else {
-            $("#actionInDiv").hide();
-            $("#actionOutDiv").show();
-            $("#actionMsgIn").hide();
-            $("#actionMsgOut").show();
-            if($("#addActionButton").attr("resData")){//后台数据
-                $("#actionMsgOut").val($("#addActionButton").attr("preActionRelation"))
-                    if($("#addActionButton").attr("resData")){
+            parent.$("#actionInDiv").hide();
+            parent.$("#actionOutDiv").show();
+            parent.$("#actionMsgIn").hide();
+            parent.$("#actionMsgOut").show();
+            if(parent.$("#addActionButton").attr("resData")){//后台数据
+                parent.$("#actionMsgOut").val(parent.$("#addActionButton").attr("preActionRelation"))
+                    if(parent.$("#addActionButton").attr("resData")){
                         $.ajax({
                             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                            data:{algthId:$("#addActionButton").attr("id_out")},
+                            data:{algthId:parent.$("#addActionButton").attr("id_out")},
                             success(res) {
                                 let optionx = "";
                                 res.tableFuncs.map(s => {
                                     optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                                 })
-                                $("#actionOutDiv").empty();
+                                parent.$("#actionOutDiv").empty();
                                 resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
-                                    $("#actionOutDiv").append(`
+                                    parent.$("#actionOutDiv").append(`
                                           <div style="margin: 10px 0">
                                                <i>${i+1}</i>
                                                <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
@@ -142,7 +142,7 @@ $(function(){
                                  `)
                                 })
                                 resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
-                                    $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                                    parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
                                 })
                             }
                         })
@@ -150,19 +150,19 @@ $(function(){
             } else {
                 $.ajax({
                     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                    data:{algthId:$("#addActionButton").attr("id_out")},
+                    data:{algthId:parent.$("#addActionButton").attr("id_out")},
                     success(res) {
                         let optionx = "";
                         res.tableFuncs.map(s=>{
                             optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                         })
-                        $("#actionOutDiv").empty();
+                        parent.$("#actionOutDiv").empty();
                         globalActionDatas.map(s=>{
-                            if(s.id == $("#addActionButton").attr("out_small") + "AND" +$("#addActionButton").attr("in_small")){
+                            if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
                                 try {
                                     var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
                                     lineDatas.map((t,i)=>{
-                                        $("#actionOutDiv").append(`
+                                        parent.$("#actionOutDiv").append(`
                                                <div style="margin: 10px 0">
                                                    <i>${i+1}</i>
                                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
@@ -182,8 +182,8 @@ $(function(){
                                     `)
                                     })
                                     lineDatas.map((t,i)=>{
-                                        $('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
-                                        $('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                                        parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                        parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
                                     })
                                 }catch (e) {
 
@@ -387,46 +387,64 @@ $(function(){
                 success(res) {}
             })
         } else{//新增动作
-                var dataArrIn = [];
-                $('#actionInDiv div').each(function () {
-                    let obj = {
-                        "behavior": $(this).find(".xwSelect_in").val(),
-                        "expression": $(this).find(".bds_in").val(),
-                        "id": 0,
-                        "interfaceparametersid":$("#addActionButton").attr("in_small"),
-                        "interfaceroleid": 0,
-                        "remark": "",
-                        "valuesources": Number($(this).find(".xwzly_in").attr("resource")),
-                        "xh":$(this).find("i").text()
-                    };
-                    dataArrIn.push(obj)
-                })
+            var dataArrIn = [];
+            parent.$('#actionInDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_in").val(),
+                    "expression": $(this).find(".bds_in").val(),
+                    "id": 0,
+                    "interfaceparametersid":parent.$("#addActionButton").attr("in_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources": Number($(this).find(".xwzly_in").attr("resource")),
+                    "xh":$(this).find("i").text()
+                };
+                dataArrIn.push(obj)
+            })
+            if(window.canvasNowId == "canvas0"){
                 globalActionDatas.map(s=>{
-                    if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
                         s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArrIn;
-                        s.dataIn.interfaceRoleDataModels.actionRelation = $("#actionMsgIn").val();
+                        s.dataIn.interfaceRoleDataModels.actionRelation = parent.$("#actionMsgIn").val();
                     }
                 })
-                var dataArrOut = [];
-                $('#actionOutDiv div').each(function () {
-                    let obj = {
-                        "behavior": $(this).find(".xwSelect_out").val(),
-                        "expression": $(this).find(".bds_out").val(),
-                        "id": 0,
-                        "interfaceparametersid":$("#addActionButton").attr("out_small"),
-                        "interfaceroleid": 0,
-                        "remark": "",
-                        "valuesources":Number($(this).find(".xwzly_out").val()),
-                        "xh":$(this).find("i").text()
-                    };
-                    dataArrOut.push(obj)
+            } else {
+                window.frames[canvasNowId].contentWindow.globalActionDatas.map(s=>{
+                    if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
+                        s.dataIn.interfaceRoleDataModels.algorithmconditions = dataArrIn;
+                        s.dataIn.interfaceRoleDataModels.actionRelation = parent.$("#actionMsgIn").val();
+                    }
                 })
+            }
+            var dataArrOut = [];
+            parent.$('#actionOutDiv div').each(function () {
+                let obj = {
+                    "behavior": $(this).find(".xwSelect_out").val(),
+                    "expression": $(this).find(".bds_out").val(),
+                    "id": 0,
+                    "interfaceparametersid":parent.$("#addActionButton").attr("out_small"),
+                    "interfaceroleid": 0,
+                    "remark": "",
+                    "valuesources":Number($(this).find(".xwzly_out").val()),
+                    "xh":$(this).find("i").text()
+                };
+                dataArrOut.push(obj)
+            })
+            if(window.canvasNowId == "canvas0"){
                 globalActionDatas.map(s=>{
-                    if(s.id == $("#addActionButton").attr("out_small") + "AND" + $("#addActionButton").attr("in_small")){
+                    if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
                         s.dataOut.interfaceRoleDataModels.algorithmconditions = dataArrOut;
-                        s.dataOut.interfaceRoleDataModels.preActionRelation = $("#actionMsgOut").val();
+                        s.dataOut.interfaceRoleDataModels.preActionRelation = parent.$("#actionMsgOut").val();
                     }
                 })
+            } else {
+                window.frames[canvasNowId].contentWindow.globalActionDatas.map(s=>{
+                    if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
+                        s.dataOut.interfaceRoleDataModels.algorithmconditions = dataArrOut;
+                        s.dataOut.interfaceRoleDataModels.preActionRelation = parent.$("#actionMsgOut").val();
+                    }
+                })
+            }
         }
     })
     $('body').on('click','.addDicClose',(e) => {

@@ -405,13 +405,13 @@ var Topology = {
                                 success(response) {
                                     response.tableFuncs.map(s=>{
                                        if(s.parametername == fromParmaChinese){
-                                           $('#addActionButton').attr("from_name",s.varname);
-                                           $('#addActionButton').attr("from_id",s.id);
+                                           parent.$('#addActionButton').attr("from_name",s.varname);
+                                           parent.$('#addActionButton').attr("from_id",s.id);
                                        }
                                     })
                                     parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
-                                        $(s).val($('#addActionButton').attr("from_name"));
-                                        $(s).attr($('#addActionButton').attr("from_id"))
+                                        parent.$(s).val(parent.$('#addActionButton').attr("from_name"));
+                                        parent.$(s).attr(parent.$('#addActionButton').attr("from_id"))
                                     })
                                 }
                             })
