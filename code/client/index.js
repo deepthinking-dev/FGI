@@ -750,7 +750,12 @@ $(function(){
                     $("#currentGzDes").attr("title",data.tableRole.des);
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
-                    canvas.open(JSON.parse(ruleData))
+                    if(window.canvasNowId == "canvas0"){
+                        canvas.open(JSON.parse(ruleData))
+                   }else{
+                        window.frames[canvasNowId].contentWindow.canvas.open(JSON.parse(ruleData))
+                   }
+                   
                     window.Topology.isClickAction = []
                     window.Topology.tools = {}
                     window.bigData.ruleType = "edit"
@@ -781,7 +786,6 @@ $(function(){
                                 }
                                 saveList.children.push(hx)
                             })
-                            // idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                             window.Topology.isClickAction.push(obj)
                             window.Topology.tools[item.id] = saveList
                         })

@@ -781,6 +781,8 @@ var Topology = {
                             // unique(canvas.data.nodes)
                             break;
                         case 'addNode':
+
+                            
                             selNodes = [data];
                             selected = {
                                 "type": event,
@@ -824,7 +826,6 @@ var Topology = {
                                     }
                                     data.id = guid()
                                     saveList.uuid = data.id
-                                    //window.idStoreData[data.id] = guid()
                                     data.anchors.map((obj,i) => {
                                         obj.x = 0;
                                         obj.y = 0;
@@ -1130,6 +1131,12 @@ var Topology = {
                                                                         
                                     }
                                     self.tools[data.id] = saveList
+                                    if(window.canvasNowId == "canvas0"){
+                                        self.tools[data.id] = saveList
+                                    }else{
+                                       parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id] = saveList
+                                    }
+                                   
                                     // push(saveList)
                                     console.log(canvas.data.nodes)
                                     canvas.render();
@@ -1320,7 +1327,7 @@ var Topology = {
                                         }
 
                                     } else {
-                                        $('.noticeList').append(`<li>${getTime()}【算法连线】输出输入类型不匹配！ </li>`)
+                                        $('.noticeList').append(`<li>${parent.getTime()}【算法连线】输出输入类型不匹配！ </li>`)
                                         toastr.info(`【算法连线】输出输入类型不匹配！` )
                                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
@@ -1451,7 +1458,7 @@ var Topology = {
                                         url:urlConfig.host+'/algorithmRule/delTableOperatorinterface',
                                         contentType: "application/json;charset=UTF-8",
                                         data:{
-                                            operatorinterfaceId:window.idStoreData[index.id]
+                                            operatorinterfaceId:index.id
                                         },
                                         success: function(data) {
                                             if(data == true){
@@ -1567,8 +1574,8 @@ var Topology = {
                                                 })
                                             }
                                         })
-                                    }else{                                                    
-                                    self.tools[data.id].children.map((index,t) =>{
+                                    }else{                                                      
+                                    window.Topology.tools[data.id].children.map((index,t) =>{
                                         if(index.remark == "xin"){
                                             str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                 if(index.inorout == 1){
@@ -1606,7 +1613,7 @@ var Topology = {
                                                 </div>`              
                                         }
                                     })
-                                    $('.ruleContentDiv').html(str)
+                                    parent.$('.ruleContentDiv').html(str)
                                     dataAl.tableFuncs.map((s,i)=>{
                                         $('.actionSelected1').eq(i).find("option[value='"+s.inorout+"']").attr("selected",true);
                                         $('.actionSelected2').eq(i).find("option[value='"+s.vartype+"']").attr("selected",true);              
@@ -1626,7 +1633,7 @@ var Topology = {
                                     dataAl.tableFuncs.map(item => {
                                         lstr1 += `<option value="${item.parametername}">${item.parametername}</option>`
                                     })
-                                    self.tools[data.id].children.map((index,t)=>{
+                                    window.Topology.tools[data.id].children.map((index,t)=>{
                                         if(index.remark == "xin"){
                                             $('.ruleContentDiv .actionInfo').eq(t).find(".varNameInput1").html(lstr1)
                                             setTimeout(function () {
@@ -1640,9 +1647,17 @@ var Topology = {
                                     }
                                 }
                             })
-                           
-                            $('#ruleAct').show();
-                           self.dblclickNode = data
+                            if(window.canvasNowId == "canvas0"){
+                                    $('#ruleAct').show();
+                                    self.dblclickNode = data
+                            }else{
+                                    $('#ruleAct', parent.document).show()
+                                    window.Topology.dblclickNode = data
+                                    // $('#'+window.canvasNowId)[0].contentWindow.Topology.dblclickNode = data
+                                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.dblclickNode = data
+                            }
+                            
+                         
                         break;
                     }
 
@@ -1979,24 +1994,49 @@ var Topology = {
     },
     // 拖动node开始时设定该图形的参数
     onDragStart: function (event, node) {
-        Topology.addInlist = []
-        Topology.addOutlist = []
-        $.ajax({
-            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-            data:{algthId:node.id},
-            success: function(data) {
-                console.log(data);
-                data.tableFuncs.map((item) =>{
-                    if(item.inorout == 0){
-                        Topology.addInlist.push(item)
-                    }else{
-                        Topology.addOutlist.push(item)
-                    }
+
+        if(window.canvasNowId =="canvas0"){
+            Topology.addInlist = []
+            Topology.addOutlist = []
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:node.id},
+                success: function(data) {
+                    console.log(data);
+                    data.tableFuncs.map((item) =>{
+                        if(item.inorout == 0){
+                            Topology.addInlist.push(item)
+                        }else{
+                            Topology.addOutlist.push(item)
+                        }
+            
+                    })
+                }
+            })
+            event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
+        }else{
+            $('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist =[]
+            $('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist =[]
+            $.ajax({
+                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                data:{algthId:node.id},
+                success: function(data) {
+                    console.log(data);
+                    data.tableFuncs.map((item) =>{
+                        
+                        if(item.inorout == 0){
+                           
+                            $('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist.push(item)
+                        }else{
+                            $('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist.push(item)
+                        }
+            
+                    })
+                }
+            })
+            event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
+        }
         
-                })
-            }
-        })
-        event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
     },
     // 置顶
     onTops: function () {

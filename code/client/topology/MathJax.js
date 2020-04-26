@@ -416,7 +416,15 @@ function ruleSure(){
    })
     //参数借口
     let operatorInterfaceDataModels = [] 
-    Object.values(window.Topology.tools).map(item=>{
+    let childList ,coordinate;
+    if(window.canvasNowId == "canvas0"){
+        childList = Object.values(window.Topology.tools)
+        coordinate =JSON.stringify(canvas.data)
+   }else{
+        childList = Object.values(window.frames[canvasNowId].contentWindow.Topology.tools);
+        coordinate = JSON.stringify(window.frames[canvasNowId].contentWindow.canvas.data)
+   }
+   childList.map(item=>{
         // let bigList = []
         let objF = {
             algorithmID:item.id,
@@ -441,7 +449,7 @@ function ruleSure(){
     })
     //规则本身信息
     let tableRole={   
-        coordinate:JSON.stringify(canvas.data),
+        coordinate:coordinate,
         des:$("#ruleRemark").val(),
         entrancenote:$("#ruleDes").attr("data")?$("#ruleDes").attr("data"):"",
         id:0,
@@ -548,7 +556,6 @@ function ConfirmDelRule(){
                 window.bigData.ruleType = "add"
                 window.bigData.isExportId = ''
                 window.Topology.tools = {}
-                window.idStoreData ={}
                 $("#currentGzName").text("").attr({title:""})
                 $("#currentGzDes").text("").attr({title:""})
                 $("#ruleDeleteDiv").hide()
@@ -567,10 +574,26 @@ function ruleDelClose(){
 
 //动作确定
 function ActionSure(){
+    debugger
     //双击的大模块数据
-    let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
-    //拷贝大模块数据变成小接口数据
-    let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
+    let data,test,childList;
+    if(window.canvasNowId == "canvas0"){
+         data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+        //拷贝大模块数据变成小接口数据
+         test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
+         childList  =window.Topology.tools[data.id].children
+    }else{
+        cwin = window.frames[canvasNowId].contentWindow;
+         data = JSON.parse(JSON.stringify(cwin.Topology.dblclickNode))
+        //拷贝大模块数据变成小接口数据
+         test = JSON.parse(JSON.stringify(cwin.Topology.dblclickNode)),num = {}
+         childList =cwin.Topology.tools[data.id].children
+    }
+
+
+    // let data = JSON.parse(JSON.stringify(window.Topology.dblclickNode))
+    // //拷贝大模块数据变成小接口数据
+    // let test = JSON.parse(JSON.stringify(window.Topology.dblclickNode)),num = {}
     //接口参数的个数
     let actionInfoNum = $('.ruleContentDiv .actionInfo')
     //当前大模块的小接口节点数据
@@ -729,7 +752,14 @@ function ActionSure(){
                     })
                 }
                 test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
-                window.bigData.isAddInOut = true;
+
+                if(window.canvasNowId == "canvas0"){
+                     window.bigData.isAddInOut = true;
+                }else{
+                    var cwins = window.frames[canvasNowId].contentWindow;
+                    cwins.bigData.isAddInOut = true;
+                }
+              
 
                 let flag = canvas.addNode(test)
                 canvas.lockNodes([test], true)
@@ -880,7 +910,8 @@ function ActionSure(){
             AddList.push(obj)
         }
     }
-    let childList =window.Topology.tools[data.id].children
+
+
     for(let m=0;m<childList.length;m++){
         let delFlag = false
         for(let n=0;n<UPdataList.length;n++){

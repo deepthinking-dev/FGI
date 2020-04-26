@@ -741,7 +741,7 @@
                         <div class="flex lkr-flex" id="main_canvas" >
                             <div id="canvasList">
                                 <ul>
-                                    <li class="canvasLi">canvas0<span>X</span></li>
+                                    <li class="canvasLi">canvas0</li>
                                 </ul>
                             </div>
                             <div id="colorDiv">
@@ -1052,6 +1052,7 @@
         dataIn:"",
         dataOut:""
     };
+    var canvasNowId = "canvas0"
     var setting={
         check: {
 
@@ -1071,9 +1072,6 @@
             showLine:false
         }
     };
-    var idStoreData={
-            
-        }
     window.bigData = {
         mouldParam:[],
         actionTab:'基础模块',
@@ -1230,33 +1228,53 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
 
     $('body').on('click','.newBuilt',(e) =>{
-    //    window.open(window.location.href)
         let leg = $('.lkr-bg-canvas').children().length -1
             leg++
-            let canvas_id = "canvas"+leg
-            window.canvasId = canvas_id
+        let canvas_id = "canvas"+leg
         var c="<iframe src='./canvas.html' id='canvas"+leg+"' style='width: 100%; height: 75vh;border: none;'></iframe>"
         $(".lkr-bg-canvas").append(c)
         $('.lkr-bg-canvas').children().hide();
         $('#'+canvas_id).show()
-        $('#canvasList ul').append(`<li class="canvasLi">${canvas_id} <span>X</span></li>`)
-        // window.Topology.init();
-        
-
-        // window.onload = function(){
-        //     debugger
-        //     let canvas1 = document.getElementById('' + canvas_id).contentWindow
-        //     let embadBig = canvas1.document.getElementById('topo_canvas')
-        //     canvas = new Le5leTopology.Topology(embadBig, canvasOptions);
-        // }
+        $('#'+canvas_id)[0].contentWindow.canvasNowId = canvas_id
+        window.canvasNowId = canvas_id
+        $('#canvasList ul').append(`<li><span class="canvasLi">${canvas_id}</span> <i class="delCanvas">X</i></li>`)
     })
     $('body').on('click','.canvasLi',(e) =>{
         $('.lkr-bg-canvas').children().hide();
         let idC = $(e.target).text() 
-        $('#'+idC).show()
-        window.canvasId = idC
+        if(idC == "canvas0"){
+            $("#flex_canvas").show();
+            window.canvasNowId ="canvas0"
+        }else{
+            $('#'+idC).show()
+            window.canvasNowId = idC
+            // $('#'+idC)[0].contentWindow.canvasNowId = idC
+        }
+        
     })
-
+    
+    $('body').on('click','.delCanvas',(e) =>{
+        let delID = $(e.target).prev().text(); 
+        let showId =$(e.target).parent("li").prev().find("span").text()
+        $(e.target).parent("li").remove();
+        var iframe = $('#' + delID).prop('contentWindow');    
+        $('#' + delID).attr('src', 'about:blank');       
+        try{ 
+            iframe.document.write(''); 
+            iframe.document.clear(); 
+        }catch(e){} 
+        $('#' + delID).remove(); 
+        $('.lkr-bg-canvas').children().hide();
+        let leg = $('.lkr-bg-canvas').children().length
+        if(leg > 1){
+            $('#'+showId).show()
+            window.canvasNowId =showId
+        }else{
+            $("#flex_canvas").show();
+             window.canvasNowId ="canvas0"
+        }
+    
+    })
     $('body').on('click','.export',(e) =>{
         window.bigData.isExportButton = true
        if(window.bigData.isExportId == "") {
@@ -3023,7 +3041,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                                 saveList.children.push(hx)
                             })
-                            // idStoreData[item.algorithmID+"tableAlgorithm"] = item.id
                             window.Topology.isClickAction.push(obj)
                             window.Topology.tools[item.id] = saveList
                         })
