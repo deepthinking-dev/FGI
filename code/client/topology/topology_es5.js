@@ -127,13 +127,16 @@ var Topology = {
             self.down_png();
         });
         // 画布右键属性
+        console.log(parent === self);
+        console.log(parent === window);
+        console.log(self === window);
         $("#flex_canvas").bind("contextmenu", function () {
             //设置右键菜单
             if (selNodes != null) {
                 $("#showRk").show();
-                var selectId = selNodes[0].id;
-                var index = selectId.indexOf("tableAlgorithm")
-                window.selectId = selectId.slice(0,index);
+
+                var selectId = selNodes[0].data.sid;
+                window.selectId = selectId;
                 //置顶
                 $("#menu_top").removeClass("menu-a-disabled");
                 $("#menu_top").addClass("menu-a");
@@ -1355,6 +1358,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            debugger
                             if(data.nodes.length==0 && data.lines.length == 0){
                                 $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
                                 toastr.info(`请选择要删除的节点或者线！` )
