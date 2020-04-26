@@ -158,7 +158,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         }
         tableRole.setCoordinate(coo);
         rule.setCoordinate(coo);
-        roleMapper.updateByPrimaryKey(tableRole);
+        roleMapper.updateByPrimaryKeySelective(tableRole);
 
         //接口
         tableOperatorinterfaceList.forEach(tableOperatorinterface -> {
