@@ -3104,7 +3104,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + s
     }
     function uploadShow() {
-        $("#fileupload").show()
+        $("#fileupload").show();
+        $('#fileupload input').val("")
     }
     function gruopEdit() {
         var type;
