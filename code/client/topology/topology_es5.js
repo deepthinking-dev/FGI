@@ -132,9 +132,14 @@ var Topology = {
             //设置右键菜单
             if (selNodes != null) {
                 $("#showRk").show();
-
                 var selectId = selNodes[0].data.sid;
-                window.selectId = selectId;
+                if(window.canvasNowId == "canvas0"){
+                    window.selectId = selectId;
+                }else{
+                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.selectId = selectId;
+                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes = selNodes;
+                }
+               
                 //置顶
                 $("#menu_top").removeClass("menu-a-disabled");
                 $("#menu_top").addClass("menu-a");
@@ -777,14 +782,6 @@ var Topology = {
                                 "data": data
                             };
                        
-                            if(window.bigData.isAddInOut){
-                                if(window.bigData.isAddInOutType == "in"){
-                                    window.Topology.dblclickNode.data.inNum ++   
-                                }else{
-                                    window.Topology.dblclickNode.data.outNum ++                         
-                                }
-                                
-                            }
                             self.banAdd = true
                             let saveList ={
                                 id :data.id,
@@ -1365,25 +1362,39 @@ var Topology = {
                         case 'delete':
                             if(window.canvasNowId == "canvas0"){
                                 if(data.nodes.length==0 && data.lines.length == 0){
-                                    $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
+                                    $('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                 }
-                            }else {
-                                if (window.frames[canvasNowId].contentWindow.data.nodes.length == 0 && window.frames[canvasNowId].contentWindow.data.lines.length == 0) {
-                                    $('.noticeList').append(`<li>${getTime()}请选择要删除的节点或者线！ </li>`)
-                                    toastr.info(`请选择要删除的节点或者线！`)
+                            }else{
+                                data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
+                                if(data.nodes.length==0 && data.lines.length == 0){
+                                    $('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
+                                    toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                 }
                             }
                             try {
-                                delete  window.Topology.tools[data.nodes[0].id]
+                                if(window.canvasNowId == "canvas0"){
+                                    delete  window.Topology.tools[data.nodes[0].id]
+                                }else{
+                                    delete  parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.nodes[0].id]
+                                }
+                              
                             }catch (e) {
                                 console.log(e);
                             }
 
                             data.nodes.map(index=>{
-                                let length=canvas.data.nodes.length;
+                                let length , canvas ;
+                                if(window.canvasNowId == "canvas0"){
+                                    length=window.canvas.data.nodes.length;
+                                    canvas = window.canvas
+                                }else{
+                                    length=parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.nodes.length;
+                                    canvas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas
+                                }
+                               
                                 let deletedata =[];
                                 let deleteLine = []
                                 //删除大方块同时删除大方块的子元素（小方块）
@@ -1437,11 +1448,18 @@ var Topology = {
                                             canvas.data.nodes.splice(i,1);
                                             canvas.render();
                                         }
-                                    })
-                                   
-                                        
+                                    })   
                                 })
-                              
+                                if(window.canvasNowId == "canvas0"){
+                                   
+                                }else{
+                                    canvas.data.nodes.map((_iddel,i)=>{
+                                        if(data.nodes[0].id==_iddel.id){
+                                            canvas.data.nodes.splice(i,1);
+                                            canvas.render();
+                                        }
+                                    }) 
+                                }
                                 if(window.bigData.ruleType == "edit"){
                                     //从数据库删除大方块的数据
                                     $.ajax({
@@ -1495,16 +1513,24 @@ var Topology = {
                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                                 data:{algthId:currId},
                                 success: function(dataAl) {
-                                    $(".actionSelected2").empty();
-                                    $('.ruleActionZZ').text(dataAl.tableAlgorithm.algorithmauthor)
-                                    $('.ruleActionMC').text(dataAl.tableAlgorithm.algorithmname)
-                                    $('.ruleActionMS').text(dataAl.tableAlgorithm.des)
-                                    let str =``    
-                                    if( window.bigData.ruleType == "edit"){
+                                    parent.$(".actionSelected2").empty();
+                                    parent.$('.ruleActionZZ').text(dataAl.tableAlgorithm.algorithmauthor)
+                                    parent.$('.ruleActionMC').text(dataAl.tableAlgorithm.algorithmname)
+                                    parent.$('.ruleActionMS').text(dataAl.tableAlgorithm.des)
+                                    let str =`` ;
+                                    let ruleType ,editRuleId
+                                    if(window.canvasNowId == "canvas0"){
+                                        ruleType = window.bigData.ruleType
+                                        editRuleId = window.bigData.editRuleId 
+                                   }else{
+                                        ruleType = parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.ruleType
+                                        editRuleId =parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.editRuleId
+                                   }  
+                                    if(ruleType  == "edit"){
                                         $.ajax({
                                             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
                                             type:"get",
-                                            data: {Id: window.bigData.editRuleId},
+                                            data: {Id: editRuleId},
                                             success(datagz) {
                                                 datagz.operatorInterfaceDataModels.map(item=>{
                                                     let nowLists = []
@@ -1545,7 +1571,7 @@ var Topology = {
                                                                         </div>`     
                                                                 }
 
-                                                                $('.ruleContentDiv').html(str)
+                                                                parent.$('.ruleContentDiv').html(str)
                                                             })
                                                         })
                                                        
@@ -2119,7 +2145,6 @@ var Topology = {
     },
     // 删除
     onDelete: function (e) {
-        debugger
         canvas.delete();
         globalActionDatas.map((s,i)=>{
             if(s.id == deleteLineDataId){
@@ -2147,9 +2172,16 @@ var Topology = {
     // 撤销
     undo: function () {
         // canvas.undo();
-        let deleteBoxId =""
-        
-        Object.values(window.Topology.tools).map(index=>{
+        let deleteBoxId ="";
+        let childList , canvas ;
+        if(window.canvasNowId == "canvas0"){
+            childList = Object.values(window.Topology.tools)
+            canvas = window.canvas
+        }else{
+            childList = Object.values(window.frames[canvasNowId].contentWindow.Topology.tools);
+            canvas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas
+        }
+        childList.map(index=>{
         
             index.children.map(child =>{
                 let falg=false;
@@ -2171,7 +2203,7 @@ var Topology = {
             
         })
         if(deleteBoxId==""){
-            Object.values(window.Topology.tools).map(index=>{
+            childList.map(index=>{
                 let bigboxid=index.uuid
                 let falg=false;
                 canvas.data.nodes.map(item=>{
@@ -2187,7 +2219,7 @@ var Topology = {
                 }
             })
         }
-        Object.values(window.Topology.tools).map(del=>{
+        childList.map(del=>{
             let flag=false
             del.children.map((yDel ,i)=>{
                 if(yDel.uuid ==deleteBoxId){
@@ -2209,7 +2241,11 @@ var Topology = {
             })
             if(!flag){
                 if(del.uuid==deleteBoxId){
-                   delete window.Topology.tools[del.uuid]
+                    if(window.canvasNowId == "canvas0"){
+                       delete window.Topology.tools[del.uuid]
+                    }else{
+                        delete window.frames[canvasNowId].contentWindow.Topology.tools[del.uuid]
+                    }
                    return
                 }
             }
