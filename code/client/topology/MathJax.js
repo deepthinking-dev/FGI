@@ -654,7 +654,7 @@ function ActionSure(){
     let nowList =[]
 
     let currId = data.data.sid;
-    if(actionInfoNum.length  > data.data.inNum){
+    // if(actionInfoNum.length  > data.data.outNum){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
@@ -689,14 +689,18 @@ function ActionSure(){
                 }else{
                     if(window.canvasNowId == "canvas0"){
                         window.Topology.dblclickNode.data.outNum ++
-                       
+                        num = {
+                            x:data.rect.width,
+                            y:(heights*window.Topology.dblclickNode.data.outNum)+10*(window.Topology.dblclickNode.data.outNum-1)
+                        }
                     }else{
-                        window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum++   
+                        window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum ++   
+                        num = {
+                            x:data.rect.width,
+                            y:(heights*window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum)+10*(window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum-1)
+                        }
                     }
-                    num = {
-                        x:data.rect.width,
-                        y:(heights*data.data.outNum)+10*(data.data.outNum-1)
-                    }
+                    
                     typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
                         typeIn =parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
@@ -809,14 +813,15 @@ function ActionSure(){
                     })
                 }
                 test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
+                console.log( test.rect,"999999999999999999999")
                 let flag 
                 if(window.canvasNowId == "canvas0"){
-                    window.Topology.dblclickNode.data.outNum ++
+                    // window.Topology.dblclickNode.data.outNum ++
                     flag = canvas.addNode(test)
                     canvas.lockNodes([test], true)
                    
                 }else{
-                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum++
+                    // window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum++
                     flag = window.frames[canvasNowId].contentWindow.canvas.addNode(test)
                     window.frames[canvasNowId].contentWindow.canvas.lockNodes([test], true)
 
@@ -843,7 +848,7 @@ function ActionSure(){
             }
         }
 
-    }
+    // }
     // let isFlag = false
     let nowNodesList =[]
     let lsList = []
@@ -912,7 +917,6 @@ function ActionSure(){
                 clyId = clyId.substr((clyId.indexOf('---')-36),36)
             } 
             let childUUid = childList[c].uuid.substr((childList[c].uuid.indexOf('---')-36),36)
-            console.log(clyId,childUUid,"5555555555555555555555555555555555555555555")
             if(childUUid == clyId){
                 UPdataList.push(childList[c])
                 UPFlag = true
@@ -987,13 +991,15 @@ function ActionSure(){
         }
         
     }
-    var canvasData
+    var canvasData,canvasLine
     if(window.canvasNowId == "canvas0"){
         canvasData = canvas.data.nodes
+        canvasLine =canvas.data.lines
         //修改本地缓存数据
         window.Topology.tools[data.id].children =nowNodesList
     }else{
         canvasData= window.frames[canvasNowId].contentWindow.canvas.data.nodes
+        canvasLine =window.frames[canvasNowId].contentWindow.canvas.data.lines
         window.frames[canvasNowId].contentWindow.Topology.tools[data.id].children =nowNodesList
     }
     canvasData.map(now=>{
@@ -1003,7 +1009,6 @@ function ActionSure(){
     })
 
     lsList = UPdataList.concat(AddList)
-    console.log(DelList,"777777777777")
     DelList.map(item=>{
         let Del1UUid = item.uuid.split('---')[0]
         for(let i = nowList.length - 1;i >=0 ;i--){
@@ -1103,7 +1108,8 @@ function ActionSure(){
                             window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum --
                         }
                        
-                        canvas.data.nodes.splice(i,1); 
+                        canvasData.splice(i,1); 
+                        canvas.render();
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
                         parent.toastr.success(`【算法参数】删除成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
@@ -1180,6 +1186,27 @@ function ActionSure(){
                 }
             }
         })
+        if(canvasLine){
+             //删除大方块同时删除与大方块的子元素有关的线
+            canvasLine.map((line,j)=>{
+                let fromId,toId;
+                if(line.from.id.indexOf("---") != -1){
+                    fromId = line.from.id.substr((line.from.id.indexOf('---')-36),36)
+                }else{
+                    fromId = line.from.id
+                }
+                if(line.to.id.indexOf("---") != -1){
+                    toId = line.to.id.substr((line.to.id.indexOf('---')-36),36)
+                }else{
+                    toId = line.to.id
+                }
+                if(fromId == Del1UUid || toId == Del1UUid ){
+                    canvasLine.splice(j,1);
+                    canvas.render();
+                }  
+            })
+        }
+         
     })
     
     //修改小接口显示的内容
