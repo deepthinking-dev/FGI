@@ -1,32 +1,32 @@
 
     function FrameClose(){
         if(window.bigData.formulaType=="add" || window.bigData.formulaType=="edit"){
-             $("#dicDiv").show()
+            parent.$("#dicDiv").show()
         }else{
-            $("#dicDiv").hide()
+            parent.$("#dicDiv").hide()
         }
-        $(".Frame").attr("style","display:none;");
+        parent.$(".Frame").attr("style","display:none;");
      
     }
     function LogicClose(){
-        $(".Logic").attr("style","display:none;");
+        parent.$(".Logic").attr("style","display:none;");
     }
     //选择算法类型
     function selectFormula(){
         var formulatype = document.getElementById('formulaType').value
         if(formulatype == 1){
-            $(".Logic").attr("style","display:none;");
-            $(".Frame").attr("style","display:block;");          
-            $("#suanfaType").css('display', "none");
+            parent.$(".Logic").attr("style","display:none;");
+            parent.$(".Frame").attr("style","display:block;");          
+            parent.$("#suanfaType").css('display', "none");
         }
         if(formulatype == 2){
-            $(".Frame").attr("style","display:none;");
-            $(".Logic").attr("style","display:block;");
-            $("#suanfaType").css('display', "none");
+            parent.$(".Frame").attr("style","display:none;");
+            parent.$(".Logic").attr("style","display:block;");
+            parent.$("#suanfaType").css('display', "none");
        }
     }
     function fieldsClose(){
-        $("#fields").attr("style","display:none;");
+        parent.$("#fields").attr("style","display:none;");
     }
     //选择变量类型
     $('body').on('change','.MathJaxInput2',(e) => {
@@ -53,7 +53,7 @@
                                     remark
                                 </tr>`
                     })
-                    $(".fieldsList").html(str) 
+                    parent.$(".fieldsList").html(str) 
                 }
             })
         }
@@ -61,15 +61,15 @@
     //提交算法信息及公式编辑
     function ConfirmFrame(){
         if($('#AlgorithmnameY').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 【算法】请填写算法名称！</li>`)
-            toastr.info(`【算法】请填写算法名称！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
+            parent.toastr.info(`【算法】请填写算法名称！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         if($('#MathInput').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 【算法】请填写公式！</li>`)
-            toastr.info(`【算法】请填写公式！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写公式！</li>`)
+            parent.toastr.info(`【算法】请填写公式！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             return false;
         }
         let tableAl ={
@@ -138,18 +138,18 @@
                 data:JSON.stringify(param),
                 success: function(data) {
                     if(data.status == 1){
-                        $(".Frame").hide();
-                        $('.noticeList').append(`<li>${getTime()} 【算法】${data.msg}！</li>`)
-                        toastr.info(`【算法】${data.msg}！` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$(".Frame").hide();
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！</li>`)
+                        parent.toastr.info(`【算法】${data.msg}！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         // Topology.init();
                         dictionary()
                         $("#dicDiv").show()
 
                     } else {
-                        $('.noticeList').append(`<li>${getTime()} 【算法】${data.msg}！</li>`)
-                        toastr.info(`【算法】${data.msg}！` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！</li>`)
+                        parent.toastr.info(`【算法】${data.msg}！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -176,13 +176,13 @@
                         $(".Frame").hide();
                         dictionary()
                         // Topology.init();
-                        $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
-                        toastr.info(`【算法】保存成功！` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
+                        parent.toastr.info(`【算法】保存成功！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     } else {
-                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg}！</li>`)
-                        toastr.info(`【算法】${data.msg}！` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg}！</li>`)
+                        parent.toastr.info(`【算法】${data.msg}！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -242,9 +242,9 @@ function ConfirmLogic(){
     let formula=""
     let logicLi = $('.logicLi')
     if(($('#LogicName').val()).trim() == ''){
-        $('.noticeList').append(`<li>${getTime()}【算法】请填写逻辑运算名称!</li>`)
-        toastr.info(`【算法】请填写逻辑运算名称！` )
-        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】请填写逻辑运算名称!</li>`)
+        parent.toastr.info(`【算法】请填写逻辑运算名称！` )
+        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         return false;
     }
     if(logicLi.length > 0){
@@ -254,9 +254,9 @@ function ConfirmLogic(){
             formula += obj+ " and ";
         }
     }else{
-        $('.noticeList').append(`<li>${getTime()}【算法】请至少填写一个</li>`)
-        toastr.info(`【算法】请至少填写一个！` )
-        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】请至少填写一个</li>`)
+        parent.toastr.info(`【算法】请至少填写一个！` )
+        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         return false;
     }
 
@@ -288,10 +288,10 @@ function ConfirmLogic(){
             data:JSON.stringify(param),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
-                    toastr.info(`【算法】保存成功！` )
-                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    $(".Logic").attr("style","display:none;");
+                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
+                    parent.toastr.info(`【算法】保存成功！` )
+                    parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                    parent.$(".Logic").attr("style","display:none;");
                     // Topology.init();
                     dictionary()
                 }
@@ -307,10 +307,10 @@ function ConfirmLogic(){
             data:JSON.stringify(tableAl),
             success: function(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！</li>`)
-                    toastr.info(`【算法】保存成功！` )
-                    $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    $(".Logic").attr("style","display:none;");
+                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
+                    parent.toastr.info(`【算法】保存成功！` )
+                    parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                    parent.$(".Logic").attr("style","display:none;");
                     // Topology.init();
                     dictionary()
                 }
@@ -334,15 +334,15 @@ function uploadSure(){
 　　　　 processData: false,
 　　　　 contentType: false,
         success(data) {
-            $("#fileupload").hide();
-            $('.noticeList').append(`<li>${getTime()}导入成功！</li>`)
-            toastr.info(`导入成功！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            parent.$("#fileupload").hide();
+            parent.$('.noticeList').append(`<li>${parent.getTime()}导入成功！</li>`)
+            parent.toastr.info(`导入成功！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         },
         error(data){
-            $('.noticeList').append(`<li>${getTime()}导入失败!</li>`)
-            toastr.info(`导入失败!` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            parent.$('.noticeList').append(`<li>${parent.getTime()}导入失败!</li>`)
+            parent.toastr.info(`导入失败!` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         }
     })
 }
@@ -351,7 +351,7 @@ function uploadSure(){
 function selectSure(){
     let str = $('.selectRelation option:selected').text();
     $('#'+window.currentId).text(str)
-    $("#selectRela").hide();
+    parent.$("#selectRela").hide();
 
 }
 //选择关系关闭按钮
@@ -366,9 +366,9 @@ function ruleOpen(){
         data:{type:3},
         success(res) {
             if(res.length == 0){
-                $('.noticeList').append(`<li>${getTime()}请先添加【规则】分组！</li>`)
-                toastr.info(`请先添加【规则】分组!` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent.$('.noticeList').append(`<li>${parent.getTime()}请先添加【规则】分组！</li>`)
+                parent.toastr.info(`请先添加【规则】分组!` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 return
             }
         }
@@ -383,16 +383,16 @@ function RuleClose(){
 function ruleSure(){
      //动作
     if($("#ruleName").val() == ""){
-        $('.noticeList').append(`<li>${getTime()}请填写规则名称！ </li>`)
-        toastr.info(`请填写规则名称！` )
-        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        parent.$('.noticeList').append(`<li>${parent.getTime()}请填写规则名称！ </li>`)
+        parent.toastr.info(`请填写规则名称！` )
+        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         return false
      }
     editGzType = false;
-    $("#currentGzName").text($("#ruleName").val());
-    $("#currentGzName").attr("title",$("#ruleName").val())
-    $("#currentGzDes").text($("#ruleRemark").val());
-    $("#currentGzDes").attr("title",$("#ruleRemark").val());
+   parent.$("#currentGzName").text($("#ruleName").val());
+   parent.$("#currentGzName").attr("title",$("#ruleName").val())
+   parent.$("#currentGzDes").text($("#ruleRemark").val());
+   parent.$("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
 
     //参数借口
@@ -480,8 +480,19 @@ function ruleSure(){
         operatorInterfaceDataModels:operatorInterfaceDataModels,
         tableRole:tableRole
       }
-    if(window.bigData.ruleType == "edit"){
-        tableRole.id = window.bigData.editRuleId
+    let ruleType
+    if(window.canvasNowId == "canvas0"){
+        ruleType =window.bigData.ruleType
+
+    }else{
+        ruleType =window.frames[canvasNowId].contentWindow.bigData.ruleType
+    }
+    if(ruleType == "edit"){
+        if(window.canvasNowId == "canvas0"){
+            tableRole.id = window.bigData.editRuleId           
+        }else{
+            tableRole.id = window.frames[canvasNowId].contentWindow.bigData.editRuleId
+        }
         $.ajax({
             type:"post",
             dataType: "json",
@@ -489,11 +500,16 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(tableRole),
             success: function(data) {
-                $("#sureRule").fadeToggle(500)
-                $('.noticeList').append(`<li>${getTime()}【规则】修改成功！ </li>`)
-                toastr.info(`【规则】修改成功！` )
-                window.bigData.isExportId = data.tableRole.id
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent.$("#sureRule").fadeToggle(500)
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
+                parent.toastr.info(`【规则】修改成功！` )
+               
+                if(window.canvasNowId == "canvas0"){
+                    window.bigData.isExportId = data.tableRole.id
+                }else{
+                    window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
+                }
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             }
         })
     }else{
@@ -504,14 +520,27 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
-                $("#sureRule").hide()
-                $('.noticeList').append(`<li>${getTime()}【规则】保存成功！ </li>`)
-                toastr.info(`【规则】保存成功！` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                window.bigData.isExportId = data.tableRole.id
-                if( window.bigData.isExportButton){
+                parent.$("#sureRule").hide()
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】保存成功！ </li>`)
+                parent.toastr.info(`【规则】保存成功！` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                let isExportButton
+                if(window.canvasNowId == "canvas0"){
+                    window.bigData.isExportId = data.tableRole.id
+                    isExportButton = window.bigData.isExportButton
+                }else{
+                    window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
+                    isExportButton = window.frames[canvasNowId].contentWindow.bigData.isExportButton
+                }
+               
+                if(isExportButton){
                     location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + data.tableRole.id
-                    window.bigData.isExportButton = false
+                    if(window.canvasNowId == "canvas0"){
+                        window.bigData.isExportButton = false
+                    }else{
+                        window.frames[canvasNowId].contentWindow.bigData.isExportButton = false
+                    }
+                   
                 }
               
             }
@@ -535,13 +564,13 @@ function ConfirmDelAlgorithm(){
         success: function(data) {
             if(data.status == 1){
                 window.bigData.delAlgorithmId = ''
-                $('#lkrAlgorithm').fadeToggle(500)
+                parent.$('#lkrAlgorithm').fadeToggle(500)
                 window.getAllData('/operatorMaintenance/getAllAlgorithm',{id:'id',Tname:'tableAlgorithm',name:'algorithmname'},'tableAlgorithm',{username:null})
             }
             if(data.status == 2){
-                $('.noticeList').append(`<li>${getTime()}【算法】${data.msg} </li>`)
-                toastr.info(`【算法】${data.msg}` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent. $('.noticeList').append(`<li>${parent.getTime()}【算法】${data.msg} </li>`)
+                parent.toastr.info(`【算法】${data.msg}` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             }
         }
     })
@@ -562,9 +591,9 @@ function ConfirmDelRule(){
         success: function(data) {
             if(data == true){
                 window.bigData.delRuleId = ''
-                $('.noticeList').append(`<li>${getTime()}【算法】删除成功 </li>`)
-                toastr.info(`【算法】删除成功` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功 </li>`)
+                parent.toastr.info(`【算法】删除成功` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 canvas.data.nodes = [];
                 canvas.data.lines = [];               
                 window.bigData.ruleType = "add"
@@ -617,33 +646,33 @@ function ActionSure(){
     let currId = data.data.sid;
     if(actionInfoNum.length  > data.data.inNum){
         for(let i =0;i< actionInfoNum.length ;i++){
-            let varName =  $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+            let varName =  parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                $('.noticeList').append(`<li>${getTime()}请选择【算法】参数名称！ </li>`)
-                toastr.info(`请选择【算法】参数名称！` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent.$('.noticeList').append(`<li>${parent.getTime()}请选择【算法】参数名称！ </li>`)
+                parent.toastr.info(`请选择【算法】参数名称！` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 return false;
             }
             //有uuid说明这个小接口已存在
-            let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
+            let uuid = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
               //没得uuid，说明要新增小接口
             if(!uuid){
 
                 let xinguid = guid()
                 let typeIn  =""
-                $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
+                parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid",xinguid)
                 let widths = 20
                 let heights = 10               
                
-                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                if(parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     data.data.inNum ++
                     num = {
                         x:-widths,
-                        y:(heights*data.data.inNum)+10*(data.data.inNum- 1)  
+                        y:(heights*data.data.inNum)+10*(data.data.inNum)  
                     }
-                    typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
-                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                        typeIn =parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     test.id = xinguid+ "---" +typeIn;
                     
@@ -651,11 +680,11 @@ function ActionSure(){
                     data.data.outNum ++
                     num = {
                         x:data.rect.width,
-                        y:(heights*data.data.outNum)+10*(data.data.outNum-1)
+                        y:(heights*data.data.outNum)+10*(data.data.outNum)
                     }
-                    typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+                    typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
-                        typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                        typeIn =parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
                     }
                     test.id = xinguid+"---" +typeIn;
                 }
@@ -740,12 +769,12 @@ function ActionSure(){
                         ex:data.rect.ex,
                         ey:data.rect.ey
                     },
-                    text:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                    text:parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
                     fid:data.data.sid,
                     fUUid: data.id,
-                    canshuId: $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    canshuId: parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
                 }
-                if($('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
+                if(parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     test.anchors.map((obj,i) => {
                         obj.x = data.anchors[i].x-185 + num.x
                         obj.y = data.anchors[i].y-85 + num.y
@@ -764,7 +793,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
+                test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
                 let flag 
                 if(window.canvasNowId == "canvas0"){
                     flag = canvas.addNode(test)
@@ -802,35 +831,35 @@ function ActionSure(){
     let lsList = []
     //数据处理成需要的格式
     for(let i =0;i< actionInfoNum.length ;i++){
-        let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+        let id = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
         if(id){
             id =id
         }else{
             id =""
         }
-        let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+        let typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
         if(typeIn== "基本类型"){
-            typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+            typeIn =parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
         }
-        let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+        let varName = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
         if(varName){
             varName = varName
         }else{
-            varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+            varName = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
-        test.text = $('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
+        test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
         canvas.render();
-        let uuid = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+        let uuid = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
         if(uuid.indexOf('---') == -1){
-            uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+            uuid= parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
         }else{
             uuid = uuid
         }
-        let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+        let inorout = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
         if(inorout){
             inorout =inorout
         }else{
-            inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+            inorout =parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
         }
           
         if(inorout == "输入" || inorout== "0"){
@@ -842,11 +871,11 @@ function ActionSure(){
            id:id,
            uuid:uuid,
            algorithmid:currId,
-           varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
-           vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
-           valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+           varname:parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
+           vartype:parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+           valvalue:parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
            inorout:inorout,
-           remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
+           remark:parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
            parametername:varName
        }
        lsList.push(obj)
@@ -860,7 +889,7 @@ function ActionSure(){
     for(let i =0;i< actionInfoNum.length ;i++){
         let UPFlag = false
         for(var c = 0;c<childList.length;c++){
-            let clyId = $('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+            let clyId = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
             if(childList[c].uuid == clyId){
                 UPdataList.push(childList[c])
                 UPFlag = true
@@ -870,33 +899,33 @@ function ActionSure(){
             
         }
         if(!UPFlag){
-            let id = $('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+            let id = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
             if(id){
                 id =id
             }else{
                 id =""
             }
-            let typeIn = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
+            let typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
             if(typeIn== "基本类型"){
-                typeIn =$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
+                typeIn =parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val();
             }
-            let varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
+            let varName = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput').val()
             if(varName){
                 varName = varName
             }else{
-                varName = $('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
+                varName = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             }
             let uuid = ''
             if(id){
-                uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
+                uuid=parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
             }else{
-                uuid=$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
+                uuid=parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
             }
-            let inorout = $('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
+            let inorout = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val()
             if(inorout){
                 inorout =inorout
             }else{
-                inorout =$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
+                inorout =parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1 option:selected').val()
             }
             
             if(inorout == "输入"){
@@ -908,11 +937,11 @@ function ActionSure(){
                 id:id,
                 uuid:uuid,
                 algorithmid:currId,
-                varname:$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
-                vartype:$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
-                valvalue:$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
+                varname:parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-name"),
+                vartype:parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val(),
+                valvalue:parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
                 inorout:inorout,
-                remark:$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
+                remark:parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-title"),
                 parametername:varName
             }
             AddList.push(obj)
@@ -968,9 +997,9 @@ function ActionSure(){
                     if(Del1UUid == Del2UUid){                       
                         if(item.inorout == 0){
                             canvasData.splice(i,1); 
-                            $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
-                            toastr.info(`【算法参数】删除成功！` )
-                            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
+                            parent.toastr.info(`【算法参数】删除成功！` )
+                            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                             if(window.canvasNowId == "canvas0"){
                                 window.Topology.dblclickNode.data.inNum --
                             }else{
@@ -1052,9 +1081,9 @@ function ActionSure(){
                             }
                            
                             canvas.data.nodes.splice(i,1); 
-                            $('.noticeList').append(`<li>${getTime()}【算法参数】删除成功！ </li>`)
-                            toastr.info(`【算法参数】删除成功！` )
-                            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
+                            parent.toastr.info(`【算法参数】删除成功！` )
+                            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
 
                             nowList.map((test,R)=>{
                                 
@@ -1146,16 +1175,32 @@ function ActionSure(){
         
     })
     //修改接口参数，从数据库修改删除
+    let ruleType
+    if(window.canvasNowId == "canvas0"){
+        ruleType =window.bigData.ruleType
+    }else{
+        ruleType =window.frames[canvasNowId].contentWindow.bigData.ruleType
+    }
+    if(ruleType== "edit"){
+        let interfaceName,roleID,childList
+        if(window.canvasNowId == "canvas0"){
+            interfaceName =window.Topology.dblclickNode.text
+            roleID= window.bigData.editRuleId
+            childList = window.Topology.tools[window.Topology.dblclickNode.id]
+        }else{
+            interfaceName =window.frames[canvasNowId].contentWindow.Topology.dblclickNode.text
+            roleID= window.frames[canvasNowId].contentWindow.bigData.editRuleId
+            childList = window.frames[canvasNowId].contentWindow.Topology.tools[window.frames[canvasNowId].contentWindow.Topology.dblclickNode.id]
+        }
 
-    if(window.bigData.ruleType == "edit"){
         let operatorInterfaceDataModel ={
             algorithmID:data.data.sid,
             id:data.id ,
-            interfaceName:window.Topology.dblclickNode.text,
-            roleID:window.bigData.editRuleId,
+            interfaceName:interfaceName,
+            roleID:roleID,
             tableInterfaceparametersList:[]
         }
-        window.Topology.tools[window.Topology.dblclickNode.id].children.map(index=>{
+        childList.children.map(index=>{
             let CsObj = {
                 id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
                 inorout:index.inorout,
@@ -1172,9 +1217,9 @@ function ActionSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(operatorInterfaceDataModel),
             success: function(data) {
-                $('.noticeList').append(`<li>${getTime()}【算法参数】修改成功！ </li>`)
-                toastr.info(`【算法参数】修改成功！` )
-                $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
+                parent.toastr.info(`【算法参数】修改成功！` )
+                parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             }
         })
     }
@@ -1223,7 +1268,7 @@ function ruleAddButtonS(){
                     data.tableFuncs.map(item => {
                        lstr1 += `<option>${item.parametername}</option>`
                     })
-                  $('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
+                    parent.$('.ruleContentDiv .actionInfo').eq(actionInfoNum).find(".varNameInput1").html(lstr1)
                   $('body').off("change").on('change','.varNameInput1',(e) => {
                     data.tableFuncs.map(item => {
                        if($(e.target).val()== item.parametername){

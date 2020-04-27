@@ -267,8 +267,8 @@ $(function(){
     $('body').on('click','.bds_out',(e) => {
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
-                $('.noticeList').append(`<li>${getTime()}【算法】行为值来源为对象才能赋值！ </li>`)
-                toastr.info(`【算法】行为值来源为对象才能赋值！` )
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】行为值来源为对象才能赋值！ </li>`)
+                parent.toastr.info(`【算法】行为值来源为对象才能赋值！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false
             }
@@ -280,8 +280,8 @@ $(function(){
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
                 success(res) {
                     if(res == ""){
-                        $('.noticeList').append(`<li>${getTime()}【算法】非本系统模型，无选择参数！ </li>`)
-                        toastr.info(`【算法】非本系统模型，无选择参数！` )
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】非本系统模型，无选择参数！ </li>`)
+                        parent.toastr.info(`【算法】非本系统模型，无选择参数！` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         return false;
                     }
@@ -479,8 +479,8 @@ $(function(){
             data: {type:2},
             success(data){
                 if(data.length == 0){
-                    $('.noticeList').append(`<li>${getTime()}请先添加【算法】分组！</li>`)
-                    toastr.info(`请先添加【算法】分组！` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()}请先添加【算法】分组！</li>`)
+                    parent.toastr.info(`请先添加【算法】分组！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
                 }
@@ -495,8 +495,8 @@ $(function(){
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
-            $('.noticeList').append(`<li>${getTime()}【算法】请填写算法名称！ </li>`)
-            toastr.info(`【算法】请填写算法名称！` )
+            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】请填写算法名称！ </li>`)
+            parent.toastr.info(`【算法】请填写算法名称！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
@@ -539,22 +539,22 @@ $(function(){
             obj.parametername = $(s).find('.zdcsCsmc').val() //中文名称
             if(obj.parametername == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写中文名！ </li>`)
-                toastr.info(`【算法字典】请填写中文名！` )
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法字典】请填写中文名！ </li>`)
+                parent.toastr.info(`【算法字典】请填写中文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.varname = $(s).find('.variable').val()//输入输出
             if(obj.varname == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写英文名！ </li>`)
-                toastr.info(`【算法字典】请填写英文名！` )
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法字典】请填写英文名！ </li>`)
+                parent.toastr.info(`【算法字典】请填写英文名！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.inorout = $(s).find('.zdcsExport').val()//输入输出
             if(obj.inorout == ""){
                 flag = false;
-                $('.noticeList').append(`<li>${getTime()}【算法字典】请填写输入输出！ </li>`)
-                toastr.info(`【算法字典】请填写输入输出！` )
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法字典】请填写输入输出！ </li>`)
+                parent.toastr.info(`【算法字典】请填写输入输出！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             }
             obj.vartype = $(s).find('.zdcsSelect').val()//变量类型
@@ -562,8 +562,8 @@ $(function(){
                 obj.valvalue = $(s).find('.zdcsText').val()//变量类型值
                 if(obj.valvalue == ""){
                     flag = false;
-                    $('.noticeList').append(`<li>${getTime()}【算法字典】请填写取值！ </li>`)
-                    toastr.info(`【算法字典】请填写取值！` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法字典】请填写取值！ </li>`)
+                    parent.toastr.info(`【算法字典】请填写取值！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 }
             } else if(obj.vartype == "1") {
@@ -589,12 +589,12 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    $('.noticeList').append(`<li>${getTime()}【算法】保存成功！ </li>`)
-                    toastr.info(`【算法】保存成功！` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！ </li>`)
+                    parent.toastr.info(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
-                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
-                        toastr.info(`${data.msg}` )
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}${data.msg}！ </li>`)
+                        parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
                         dictionary();
@@ -602,8 +602,8 @@ $(function(){
                         $("#dicDiv").show()
                         dictionaryShow()
                     } else {
-                        $('.noticeList').append(`<li>${getTime()}${data.msg}！ </li>`)
-                        toastr.info(`${data.msg}` )
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}${data.msg}！ </li>`)
+                        parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
                 }
@@ -643,16 +643,16 @@ $(function(){
                 success(data) {
                     if(data.status == 1){
                         sfWinList()
-                        $("#dicDiv").show()
-                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg} </li>`)
-                        toastr.info(`${data.msg}` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$("#dicDiv").show()
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
+                        parent.toastr.info(`${data.msg}` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         dictionaryShow()
                         freshClick("sfWinTree")
                     } else {
-                        $('.noticeList').append(`<li>${getTime()}【算法】 ${data.msg} </li>`)
-                        toastr.info(`${data.msg}` )
-                        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
+                        parent.toastr.info(`${data.msg}` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     }
                 }
             })
@@ -660,7 +660,7 @@ $(function(){
 
     })
     $('body').on('click','#addZdcs',(e) => {
-        $("#zdcsList").append(`
+        parent.$("#zdcsList").append(`
              <div class="zdcsDiv" style="margin-bottom: 15px">
                 <i>
                     <span style="color:#fff;">中文名</span>
@@ -699,17 +699,17 @@ $(function(){
     //点击删除模型
     $('body').on('click','.lkr-list-del',(e) => {
         window.bigData.delmoduleId = $(e.target).attr('moduleId')
-        $('#lkrFrameDel').show()
+        parent.$('#lkrFrameDel').show()
     })
   
     // 点击删除算法
     $('body').on('click','.lkr-list-delAlgorithm',(e) => {
         window.bigData.delAlgorithmId = $(e.target).data('id')
-        $('#lkrAlgorithm').fadeToggle(500)
+        parent.$('#lkrAlgorithm').fadeToggle(500)
     })
     $('body').on('click','.inputFields',(e) => {
         window.filed.inputFieldsTarget = $(e.target)
-        $('#fields').fadeToggle(500)
+        parent.$('#fields').fadeToggle(500)
     })
      // 点击删除算法
      $('body').on('click','.fieldsList tr',(e) => {
@@ -729,8 +729,8 @@ $(function(){
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
-            $('.noticeList').append(`<li>${getTime()}至少勾选一个规则！ </li>`)
-            toastr.info(`至少勾选一个规则！` )
+            parent.$('.noticeList').append(`<li>${parent.getTime()}至少勾选一个规则！ </li>`)
+            parent.toastr.info(`至少勾选一个规则！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
        }
@@ -924,25 +924,25 @@ $(function(){
                         }
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
-                    $(".gsTitle").text("算法详情")
-                    $('.Frame').show()
-                    $("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
-                    $("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
-                    $('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
-                    $('#MathInput').attr("disabled","disabled");
-                    $('#companyGs').attr("disabled","disabled");
-                    $('#companyGs').val("");
-                    $('#companyGs').val(data.tableAlgorithm.remark);
+                    parent.$(".gsTitle").text("算法详情")
+                    parent.$('.Frame').show()
+                    parent.$("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
+                    parent.$("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    parent.$('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
+                    parent.$('#MathInput').attr("disabled","disabled");
+                    parent.$('#companyGs').attr("disabled","disabled");
+                    parent.$('#companyGs').val("");
+                    parent.$('#companyGs').val(data.tableAlgorithm.remark);
                     try{
                         ue.setContent('');
                         ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
                     }catch (e) {
                         console.log(e);
                     }
-                    $("#groupGs").val("")
-                    $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
-                    $("#groupGs").attr("disabled",true)
-                    $('.closeGsButton').hide();
+                    parent.$("#groupGs").val("")
+                    parent.$("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                    parent.$("#groupGs").attr("disabled",true)
+                    parent.$('.closeGsButton').hide();
                     window.bigData.editFormula = data.tableAlgorithm.algorithmfun;
                     window.bigData.formulaType = '';
                     if(data.tableFuncs.length>0){
@@ -1015,12 +1015,12 @@ $(function(){
                     }
 
                 }else if(data.tableAlgorithm.algorithmtype == 3){
-                    $('.addButton').hide();
-                    $(".closeLjButton").hide();
+                    parent.$('.addButton').hide();
+                    parent. $(".closeLjButton").hide();
                     window.bigData.formulaType = '';
-                    $('#LogicName').val(data.tableAlgorithm.algorithmname).attr({"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"});
-                    $("#ljName").val(data.tableAlgorithm.algorithmauthor).attr("disabled","disabled");
-                    $('#ljDes').val(data.tableAlgorithm.des).attr("disabled","disabled");
+                    parent.$('#LogicName').val(data.tableAlgorithm.algorithmname).attr({"tableAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"});
+                    parent.$("#ljName").val(data.tableAlgorithm.algorithmauthor).attr("disabled","disabled");
+                    parent.$('#ljDes').val(data.tableAlgorithm.des).attr("disabled","disabled");
                     let algorithmfun = data.tableAlgorithm.algorithmfun;
                     $.ajax({
                         url:urlConfig.host+'/module/getModuleColumns',
@@ -1244,11 +1244,11 @@ $(function(){
     }
     $('body').on('dblclick','.dbclickAlgorithm',(e) => {
         if($('#dictordySpan').hasClass('addDicClose')) {
-            $(".addDicClose").attr("class","editDicClose");
+            parent.$(".addDicClose").attr("class","editDicClose");
         }
-        $("#dataModulePage").hide();
-        $("#lkrFrame").hide();
-        $("#dicDiv").hide();
+        parent.$("#dataModulePage").hide();
+        parent.$("#lkrFrame").hide();
+        parent.$("#dicDiv").hide();
         let AlgorithmId= $(e.target).attr('algorithmid')
         showMsg(AlgorithmId)
     })

@@ -49,8 +49,8 @@ var Topology = {
     saveKnowledgeMap: function (id) {
         var self = this;
         ww = JSON.stringify(canvas.data)
-        $('.noticeList').append(`<li>${getTime()}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
-        toastr.info(`需要保存的json：\n" ${JSON.stringify(canvas.data)}` )
+        parent.$('.noticeList').append(`<li>${parent.getTime()}"需要保存的json：\n" ${JSON.stringify(canvas.data)}</li>`)
+        parent.toastr.info(`需要保存的json：\n" ${JSON.stringify(canvas.data)}` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
     },
     // 绑定事件
@@ -1362,14 +1362,14 @@ var Topology = {
                         case 'delete':
                             if(window.canvasNowId == "canvas0"){
                                 if(data.nodes.length==0 && data.lines.length == 0){
-                                    $('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                 }
                             }else{
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
                                 if(data.nodes.length==0 && data.lines.length == 0){
-                                    $('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                 }
@@ -1427,7 +1427,7 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
-                                                                    $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
+                                                                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
                                                                     toastr.info(`【算法】删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
@@ -1472,8 +1472,8 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
-                                                $('.noticeList').append(`<li>${getTime()}【算法】删除成功！ </li>`)
-                                                toastr.info(`【算法】删除成功！` )
+                                                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
+                                                parent.toastr.info(`【算法】删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }
@@ -1542,7 +1542,7 @@ var Topology = {
                                                         }
                                                     }else{
                                                         if( parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children.length > dataAl.tableFuncs.length){
-                                                            nowLists =   parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children
+                                                            nowLists = parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id].children
                                                         }else{
                                                             nowLists = dataAl.tableFuncs
                                                         }
