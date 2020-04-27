@@ -183,7 +183,7 @@
                         dictionary()
                         // Topology.init();
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
-                        parent.toastr.info(`【算法】保存成功！` )
+                        parent.toastr.success(`【算法】保存成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg}！</li>`)
@@ -295,7 +295,7 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
-                    parent.toastr.info(`【算法】保存成功！` )
+                    parent.toastr.success(`【算法】保存成功！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     parent.$(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -314,7 +314,7 @@ function ConfirmLogic(){
             success: function(data) {
                 if(data.status == 1){
                     parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
-                    parent.toastr.info(`【算法】保存成功！` )
+                    parent.toastr.success(`【算法】保存成功！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                     parent.$(".Logic").attr("style","display:none;");
                     // Topology.init();
@@ -346,12 +346,12 @@ function uploadSure(){
 　　　　 contentType: false,
         success(data) {
             parent.$("#fileupload").hide();
-            parent.$('.noticeList').append(`<li>${parent.getTime()}导入成功！</li>`)
-            parent.toastr.info(`导入成功！` )
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 导入成功！</li>`)
+            parent.toastr.success(`导入成功！` )
             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         },
         error(data){
-            parent.$('.noticeList').append(`<li>${parent.getTime()}导入失败!</li>`)
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 导入失败!</li>`)
             parent.toastr.info(`导入失败!` )
             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         }
@@ -377,7 +377,7 @@ function ruleOpen(){
         data:{type:3},
         success(res) {
             if(res.length == 0){
-                parent.$('.noticeList').append(`<li>${parent.getTime()}请先添加【规则】分组！</li>`)
+                parent.$('.noticeList').append(`<li>${parent.getTime()} 请先添加【规则】分组！</li>`)
                 parent.toastr.info(`请先添加【规则】分组!` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 return
@@ -393,14 +393,14 @@ function RuleClose(){
 //保存规则（一起新增）
 function ruleSure(){
     if($("#gzGroupName").val() == ""){
-        $('.noticeList').append(`<li>${parent.getTime()}分组不能为空！ </li>`)
+        $('.noticeList').append(`<li>${parent.getTime()} 分组不能为空！ </li>`)
         toastr.info(`分组不能为空！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false
     }
      //动作
     if($("#ruleName").val() == ""){
-        parent.$('.noticeList').append(`<li>${parent.getTime()}请填写规则名称！ </li>`)
+        parent.$('.noticeList').append(`<li>${parent.getTime()} 请填写规则名称！ </li>`)
         parent.toastr.info(`请填写规则名称！` )
         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         return false
@@ -519,7 +519,7 @@ function ruleSure(){
             success: function(data) {
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
-                parent.toastr.info(`【规则】修改成功！` )
+                parent.toastr.success(`【规则】修改成功！` )
 
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id
@@ -539,7 +539,7 @@ function ruleSure(){
             success: function(data) {
                 parent.$("#sureRule").hide()
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】保存成功！ </li>`)
-                parent.toastr.info(`【规则】保存成功！` )
+                parent.toastr.success(`【规则】保存成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 let isExportButton
                 if(window.canvasNowId == "canvas0"){
@@ -609,7 +609,7 @@ function ConfirmDelRule(){
             if(data == true){
                 window.bigData.delRuleId = ''
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功 </li>`)
-                parent.toastr.info(`【算法】删除成功` )
+                parent.toastr.success(`【算法】删除成功` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 canvas.data.nodes = [];
                 canvas.data.lines = [];               
@@ -665,7 +665,7 @@ function ActionSure(){
         for(let i =0;i< actionInfoNum.length ;i++){
             let varName =  parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
             if(varName =="请选择"){
-                parent.$('.noticeList').append(`<li>${parent.getTime()}请选择【算法】参数名称！ </li>`)
+                parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择【算法】参数名称！ </li>`)
                 parent.toastr.info(`请选择【算法】参数名称！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 return false;
@@ -1018,7 +1018,7 @@ function ActionSure(){
                         if(item.inorout == 0){
                             canvasData.splice(i,1); 
                             parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
-                            parent.toastr.info(`【算法参数】删除成功！` )
+                            parent.toastr.success(`【算法参数】删除成功！` )
                             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                             if(window.canvasNowId == "canvas0"){
                                 window.Topology.dblclickNode.data.inNum --
@@ -1102,7 +1102,7 @@ function ActionSure(){
                            
                             canvas.data.nodes.splice(i,1); 
                             parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
-                            parent.toastr.info(`【算法参数】删除成功！` )
+                            parent.toastr.success(`【算法参数】删除成功！` )
                             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
 
                             nowList.map((test,R)=>{
@@ -1238,7 +1238,7 @@ function ActionSure(){
             data:JSON.stringify(operatorInterfaceDataModel),
             success: function(data) {
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
-                parent.toastr.info(`【算法参数】修改成功！` )
+                parent.toastr.success(`【算法参数】修改成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             }
         })

@@ -479,7 +479,7 @@ $(function(){
             data: {type:2},
             success(data){
                 if(data.length == 0){
-                    parent.$('.noticeList').append(`<li>${parent.getTime()}请先添加【算法】分组！</li>`)
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 请先添加【算法】分组！</li>`)
                     parent.toastr.info(`请先添加【算法】分组！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     return
@@ -596,10 +596,10 @@ $(function(){
                 contentType:"application/json",
                 success(data) {
                     parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！ </li>`)
-                    parent.toastr.info(`【算法】保存成功！` )
+                    parent.toastr.success(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
-                        parent.$('.noticeList').append(`<li>${parent.getTime()}${data.msg}！ </li>`)
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
                         parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
@@ -608,7 +608,7 @@ $(function(){
                         $("#dicDiv").show()
                         dictionaryShow()
                     } else {
-                        parent.$('.noticeList').append(`<li>${parent.getTime()}${data.msg}！ </li>`)
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
                         parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     }
@@ -735,7 +735,7 @@ $(function(){
     //点击导出
     $('body').on('click','#export',(e) => {
         if($("input[class='ruleCheckbox']:checked").length == 0){
-            parent.$('.noticeList').append(`<li>${parent.getTime()}至少勾选一个规则！ </li>`)
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 至少勾选一个规则！ </li>`)
             parent.toastr.info(`至少勾选一个规则！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;

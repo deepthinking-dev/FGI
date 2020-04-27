@@ -1355,7 +1355,7 @@ var Topology = {
                         case 'delete':
                             if(window.canvasNowId == "canvas0"){
                                 if(data.nodes.length==0 && data.lines.length == 0){
-                                    parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     return
@@ -1365,7 +1365,7 @@ var Topology = {
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
 
                                 if( data.nodes == null && data.lines.length == 0){
-                                    parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                     return
@@ -1425,7 +1425,7 @@ var Topology = {
                                                             success(data) {
                                                                 if(data == true){
                                                                     parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
-                                                                    toastr.info(`【算法】删除成功！` )
+                                                                    toastr.success(`【算法】删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
@@ -1470,7 +1470,7 @@ var Topology = {
                                         success: function(data) {
                                             if(data == true){
                                                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
-                                                parent.toastr.info(`【算法】删除成功！` )
+                                                parent.toastr.success(`【算法】删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }
