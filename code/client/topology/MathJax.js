@@ -685,7 +685,7 @@ function ActionSure(){
                     data.data.outNum ++
                     num = {
                         x:data.rect.width,
-                        y:(heights*data.data.outNum)+10*(data.data.outNum)
+                        y:(heights*data.data.outNum)+10*(data.data.outNum-1)
                     }
                     typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){
@@ -801,13 +801,16 @@ function ActionSure(){
                 test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
                 let flag 
                 if(window.canvasNowId == "canvas0"){
+                    window.Topology.dblclickNode.data.outNum ++
                     flag = canvas.addNode(test)
                     canvas.lockNodes([test], true)
+                   
                 }else{
+                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum++
                     flag = window.frames[canvasNowId].contentWindow.canvas.addNode(test)
                     window.frames[canvasNowId].contentWindow.canvas.lockNodes([test], true)
+
                 }
-              
 
                 if(flag){
                     if(data.data.outNum > data.data.inNum){
