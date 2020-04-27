@@ -16,7 +16,7 @@
         var formulatype = document.getElementById('formulaType').value
         if(formulatype == 1){
             parent.$(".Logic").attr("style","display:none;");
-            parent.$(".Frame").attr("style","display:block;");          
+            parent.$(".Frame").attr("style","display:block;");
             parent.$("#suanfaType").css('display', "none");
         }
         if(formulatype == 2){
@@ -53,13 +53,19 @@
                                     remark
                                 </tr>`
                     })
-                    parent.$(".fieldsList").html(str) 
+                    parent.$(".fieldsList").html(str)
                 }
             })
         }
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
+        if($('#groupGs').val() == ""){
+            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
+            toastr.info(`【算法】分组不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
         if($('#AlgorithmnameY').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
             parent.toastr.info(`【算法】请填写算法名称！` )
@@ -386,6 +392,12 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
+    if($("#gzGroupName").val() == ""){
+        $('.noticeList').append(`<li>${parent.getTime()}分组不能为空！ </li>`)
+        toastr.info(`分组不能为空！` )
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        return false
+    }
      //动作
     if($("#ruleName").val() == ""){
         parent.$('.noticeList').append(`<li>${parent.getTime()}请填写规则名称！ </li>`)
@@ -494,7 +506,7 @@ function ruleSure(){
     }
     if(ruleType == "edit"){
         if(window.canvasNowId == "canvas0"){
-            tableRole.id = window.bigData.editRuleId           
+            tableRole.id = window.bigData.editRuleId
         }else{
             tableRole.id = window.frames[canvasNowId].contentWindow.bigData.editRuleId
         }
@@ -508,7 +520,7 @@ function ruleSure(){
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
                 parent.toastr.info(`【规则】修改成功！` )
-               
+
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id
                 }else{
@@ -537,7 +549,7 @@ function ruleSure(){
                     window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
                     isExportButton = window.frames[canvasNowId].contentWindow.bigData.isExportButton
                 }
-               
+
                 if(isExportButton){
                     location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + data.tableRole.id
                     if(window.canvasNowId == "canvas0"){
@@ -545,7 +557,7 @@ function ruleSure(){
                     }else{
                         window.frames[canvasNowId].contentWindow.bigData.isExportButton = false
                     }
-                   
+
                 }
               
             }
@@ -659,7 +671,7 @@ function ActionSure(){
                 return false;
             }
             //有uuid说明这个小接口已存在
-            let uuid = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")    
+            let uuid = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
               //没得uuid，说明要新增小接口
             if(!uuid){
 
@@ -673,7 +685,7 @@ function ActionSure(){
                     data.data.inNum ++
                     num = {
                         x:-widths,
-                        y:(heights*data.data.inNum)+10*(data.data.inNum)  
+                        y:(heights*data.data.inNum)+10*(data.data.inNum)
                     }
                     typeIn = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected2').val();
                     if(typeIn== "基本类型"){

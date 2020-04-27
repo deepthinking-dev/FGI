@@ -1618,7 +1618,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function Confirm(){
         let mouldParam = []
-
+        if($("#modulegroup").val() == ""){
+            toastr.info('模型所属组不能为空！')
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
         if(window.bigData.frameType == 'add'){
             let flag = true
             if($("#mouldName").val() == ""){
