@@ -769,14 +769,19 @@ $(function(){
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     if(window.canvasNowId == "canvas0"){
                         canvas.open(JSON.parse(ruleData))
+                        window.Topology.isClickAction = []
+                        window.Topology.tools = {}
+                        window.bigData.ruleType = "edit"
+                        window.bigData.editRuleId = data.tableRole.id;
                    }else{
                         window.frames[canvasNowId].contentWindow.canvas.open(JSON.parse(ruleData))
+                        window.frames[canvasNowId].contentWindow.Topology.isClickAction = []
+                        window.frames[canvasNowId].contentWindow.Topology.tools = {}
+                        window.frames[canvasNowId].contentWindow.bigData.ruleType = "edit"
+                        window.frames[canvasNowId].contentWindow.bigData.editRuleId = data.tableRole.id;
                    }
                    
-                    window.Topology.isClickAction = []
-                    window.Topology.tools = {}
-                    window.bigData.ruleType = "edit"
-                    window.bigData.editRuleId = data.tableRole.id;
+                  
                     responseActionDatas = data.interfaceRoleDataModels
                     if(data.operatorInterfaceDataModels){
                         data.operatorInterfaceDataModels.map(item=>{
@@ -803,8 +808,14 @@ $(function(){
                                 }
                                 saveList.children.push(hx)
                             })
-                            window.Topology.isClickAction.push(obj)
-                            window.Topology.tools[item.id] = saveList
+                            if(window.canvasNowId == "canvas0"){
+                                window.Topology.isClickAction.push(obj)
+                                window.Topology.tools[item.id] = saveList
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.isClickAction.push(obj)
+                                window.frames[canvasNowId].contentWindow.Topology.tools[item.id] = saveList
+                            }
+                           
                         })
                     }
                 }
@@ -814,7 +825,12 @@ $(function(){
     })
 
     $("#showAllmag").on("click",()=>{
-        showMsg(window.selectId)
+        if(window.canvasNowId == "canvas0"){
+            showMsg(window.selectId)
+        }else{
+            showMsg(window.frames[canvasNowId].contentWindow.selectId)
+        }
+        
     })
     function showMsg(AlgorithmId){
         $.ajax({
