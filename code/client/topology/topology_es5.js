@@ -1116,6 +1116,7 @@ var Topology = {
                                         self.tools[data.id] = saveList
                                     }else{
                                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id] = saveList
+                                       parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes =[data]
                                     }
                                    
                                     // push(saveList)
@@ -1127,9 +1128,7 @@ var Topology = {
                         case 'resizeNodes':
                             var child = []     
                             canvas.data.nodes.map(item => {
-                                // if(item.id != data[0].id){
                                 if(item.id.indexOf(data[0].id) == 0){
-                                    // selNodes.push(item)
                                     child.push(item)
                                 
                                 }
@@ -1144,17 +1143,11 @@ var Topology = {
                                     canvas.render()
                                 }
                             }
-                            // canvas.resizeNodes(0,0)
                         break
                         case 'lockNodes':
                            if(data.nodes[0].childStand){
-                            canvas.lockNodes([data],true)
+                                canvas.lockNodes([data],true)
                            }
-                            // data.nodes.map(item =>{
-                            //     if(item.id.includes("in")){
-                            //         canvas.lockNodes([data],true)
-                            //     }
-                            // })
                            
                         break
                         case 'addLine':
@@ -1365,13 +1358,17 @@ var Topology = {
                                     parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                    return
                                 }
                             }else{
+                                console.log(parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes)
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
-                                if(data.nodes.length==0 && data.lines.length == 0){
+
+                                if( data.nodes == null && data.lines.length == 0){
                                     parent.$('.noticeList').append(`<li>${parent.getTime()}请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                    return
                                 }
                             }
                             try {
