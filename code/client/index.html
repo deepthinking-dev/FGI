@@ -3162,15 +3162,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
 
     $("#addGroupYes").click(()=>{
-        if($("#groupInputName").val() == $("#parentGroup").val()){
-            $('.noticeList').append(`<li>${getTime()}【规则】父分组名称和分组名称不能相同！ </li>`)
-            toastr.info(`【规则】父分组名称和分组名称不能相同！！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false;
-        }
         if($("#groupInputName").val() == ""){
             $('.noticeList').append(`<li>${getTime()}【规则】分组名称不能为空！ </li>`)
             toastr.info(`【规则】分组名称不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
+        if($("#groupInputName").val() == $("#parentGroup").val()){
+            $('.noticeList').append(`<li>${getTime()}【规则】父分组名称和分组名称不能相同！ </li>`)
+            toastr.info(`【规则】父分组名称和分组名称不能相同！！` )
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
