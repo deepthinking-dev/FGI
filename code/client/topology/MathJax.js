@@ -60,6 +60,12 @@
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
+        if($('#groupGs').val() == ""){
+            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
+            toastr.info(`【算法】分组不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
         if($('#AlgorithmnameY').val() == ""){
             $('.noticeList').append(`<li>${getTime()} 【算法】请填写算法名称！</li>`)
             toastr.info(`【算法】请填写算法名称！` )
@@ -386,9 +392,15 @@ function RuleClose(){
 }
 //保存规则（一起新增）
 function ruleSure(){
+    if($("#gzGroupName").val() == ""){
+        $('.noticeList').append(`<li>${parent.getTime()}分组不能为空！ </li>`)
+        toastr.info(`分组不能为空！` )
+        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        return false
+    }
      //动作
     if($("#ruleName").val() == ""){
-        $('.noticeList').append(`<li>${getTime()}请填写规则名称！ </li>`)
+        $('.noticeList').append(`<li>${parent.getTime()}请填写规则名称！ </li>`)
         toastr.info(`请填写规则名称！` )
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
         return false
