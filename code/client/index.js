@@ -595,8 +595,6 @@ $(function(){
                 dataType: "json",
                 contentType:"application/json",
                 success(data) {
-                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！ </li>`)
-                    parent.toastr.success(`【算法】保存成功！` )
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
                         parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
