@@ -1889,9 +1889,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     $('.noticeList').append(`<li>${parent.getTime()}【模型】删除成功！ </li>`)
                     parent.toastr.success('【模型】删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-                    getModuleList()
                     $('#lkrFrameDel').hide()
-                    dataModlue()
                     freshClick("modelWinTree")
                     freshClick("moduleTree")
                 }
@@ -2899,12 +2897,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             success(data) {
                 if(data.status == 1){
-                    sfWinList()
                     $('.noticeList').append(`<li>${parent.getTime()}【算法】字典 删除成功！</li>`)
                     parent.toastr.success('【算法】字典删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
-                    dictionaryShow()
                     freshClick("sfWinTree")
                     freshClick("sfTree")
                 }

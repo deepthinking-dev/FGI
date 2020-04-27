@@ -615,7 +615,6 @@ function ConfirmDelRule(){
                 $("#ruleDeleteDiv").hide()
                 $('#gzDiv').show()
                 canvas.render();
-                getGzList()
                 ruleGroupShow()
                 freshClick("gzWinTree")
                 freshClick("ruleTree")
