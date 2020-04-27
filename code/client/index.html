@@ -389,7 +389,7 @@
         <div class="addButtonModlue" style="position: relative;top:70px;margin:0 15px">
             <button class="addModlue" onclick="addModule()">新增</button>
             <div style="height: 520px;overflow: auto">
-                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
                 <table class="mxGruopTable" style="float: left;"></table>
             </div>
         </div>
@@ -929,7 +929,7 @@
            </div>
            <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                <div style="height: 480px;overflow: auto">
-                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
                    <table class="gzGruopTable" style="float: left;"></table>
                </div>
            </div>
@@ -944,7 +944,7 @@
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
-                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left;overflow: auto"></ul>
                       <table class="sfGruopTable" style="float: left;"></table>
                   </div>
               </div>
@@ -3133,7 +3133,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     data.map(s=>{
                         $("#groupTable").append(
                             `<tr>
-                            <td style="width: 220px">${s.groupname}</td>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                             <td style="width: 220px">
                                <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3211,7 +3211,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     data.map(s=>{
                                         $("#groupTable").append(
                                             `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3267,7 +3267,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     data.map(s=>{
                                         $("#groupTable").append(
                                             `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3487,7 +3487,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             data.map(s=>{
                                 $("#groupTable").append(
                                     `<tr>
-                            <td style="width: 220px">${s.groupname}</td>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                             <td style="width: 220px">
                                <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">

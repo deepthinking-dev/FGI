@@ -974,3 +974,13 @@ body .form-input{
 .gzGruopTable{
     width: 650px;
 }
+#groupTable{
+    table-layout: fixed;
+    width: 440px;
+}
+#groupTable td{
+    width: 220px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
