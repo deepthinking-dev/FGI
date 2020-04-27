@@ -324,6 +324,11 @@ function uploadClose(){
 }
 //确定导入文件按钮
 function uploadSure(){
+    if($(".inputfile")[0].files[0] == undefined){
+        $('.noticeList').append(`<li>${getTime()}【规则】文件不能为空！</li>`)
+        toastr.info(`【规则】文件不能为空！` )
+        return false;
+    }
     var formData = new FormData();
     formData.append("file",$(".inputfile")[0].files[0]);
     $.ajax({
