@@ -520,12 +520,6 @@ function ruleSure(){
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
                 parent.toastr.success(`【规则】修改成功！` )
-
-                if(window.canvasNowId == "canvas0"){
-                    window.bigData.isExportId = data.tableRole.id
-                }else{
-                    window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
-                }
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             }
         })
@@ -694,7 +688,12 @@ function ActionSure(){
                     test.id = xinguid+ "---" +typeIn;
                     
                 }else{
-                    data.data.outNum ++
+                    if(window.canvasNowId == "canvas0"){
+                        window.Topology.dblclickNode.data.outNum ++
+                       
+                    }else{
+                        window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum++   
+                    }
                     num = {
                         x:data.rect.width,
                         y:(heights*data.data.outNum)+10*(data.data.outNum-1)
@@ -910,7 +909,12 @@ function ActionSure(){
         let UPFlag = false
         for(var c = 0;c<childList.length;c++){
             let clyId = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
-            if(childList[c].uuid == clyId){
+            if(clyId.indexOf('---') != -1){
+                clyId = clyId.substr((clyId.indexOf('---')-36),36)
+            } 
+            let childUUid = childList[c].uuid.substr((childList[c].uuid.indexOf('---')-36),36)
+            console.log(clyId,childUUid,"5555555555555555555555555555555555555555555")
+            if(childUUid == clyId){
                 UPdataList.push(childList[c])
                 UPFlag = true
                 break;
@@ -1000,185 +1004,184 @@ function ActionSure(){
     })
 
     lsList = UPdataList.concat(AddList)
-    if(DelList.length > 0){
-        DelList.map(item=>{
-            let Del1UUid = item.uuid.split('---')[0]
-            for(let i = nowList.length - 1;i >=0 ;i--){
-                let nowUUid =nowList[i].id.substr((nowList[i].id.indexOf('---')-36),36)
-                if(nowUUid ==Del1UUid){
-                    nowList.splice(i,1);
+    console.log(DelList,"777777777777")
+    DelList.map(item=>{
+        let Del1UUid = item.uuid.split('---')[0]
+        for(let i = nowList.length - 1;i >=0 ;i--){
+            let nowUUid =nowList[i].id.substr((nowList[i].id.indexOf('---')-36),36)
+            if(nowUUid ==Del1UUid){
+                nowList.splice(i,1);
+            }
+        }
+        canvasData.map((item1,i) => {
+            if(item1.childStand){
+                let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
+                let in_num = -1 
+                let out_num = -1 
+                if(Del1UUid == Del2UUid){                       
+                    if(item.inorout == 0){
+                        canvasData.splice(i,1); 
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
+                        parent.toastr.success(`【算法参数】删除成功！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                        if(window.canvasNowId == "canvas0"){
+                            window.Topology.dblclickNode.data.inNum --
+                        }else{
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                        }
+                       
+                        
+                        nowList.map((test,R)=>{
+                            
+                            if(test.childStand){
+                                if(test.id.indexOf("IN") !=-1){   
+                                in_num ++                                       
+                                test.rect.width = 20
+                                test.rect.height = 10  
+                                test.rect.x = data.rect.x-test.rect.width
+                                test.rect.y = data.rect.y + in_num*20 + 10                            
+                                test.rect.ex = test.rect.x  + test.rect.width
+                                test.rect.ey = test.rect.y + test.rect.height
+                                test.rect.center.x = test.rect.x+ test.rect.width/2
+                                test.rect.center.y =test.rect.y  + test.rect.height/2
+                                test.textRect.x = test.rect.x - 5
+                                test.textRect.y =  test.rect.y
+                                test.textRect.width = 10
+                                test.textRect.height = 5
+                                test.paddingTopNum = 0
+                                test.paddingTop = 0
+                                test.fullIconRect.height = 4
+                                test.fullTextRect.x = test.rect.ex - test.textRect.height - 5
+                                test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                test.iconRect.x = test.rect.ex - test.textRect.height- 5
+                                test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
+                                test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                test.textMaxLine = 1
+                                test.anchors[0].x = test.rect.x
+                                test.anchors[0].y =test.rect.center.y
+                                test.anchors[1].x =0
+                                test.anchors[1].y = 0   
+                                test.anchors[2].x = 0
+                                test.anchors[2].y = 0                                                                                           
+                                test.anchors[3].x =0
+                                test.anchors[3].y = 0
+                                test.rotatedAnchors[0].x = test.rect.x
+                                test.rotatedAnchors[0].y =test.rect.center.y
+                                test.rotatedAnchors[1].x = 0
+                                test.rotatedAnchors[1].y =0
+                                test.rotatedAnchors[2].x = 0
+                                test.rotatedAnchors[2].y = 0
+                                test.rotatedAnchors[3].x =0
+                                test.rotatedAnchors[3].y =0
+                                }
+                                
+                            }
+                        })
+                        if(window.canvasNowId == "canvas0"){
+                            if( window.Topology.dblclickNode.rect.height > 100){
+                            
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                            }else{
+                                window.Topology.dblclickNode.rect.height = 100
+                            }
+                        }else{
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                            if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
+                            
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
+                            }
+                        }
+                                                                        
+                    }else{
+                        if(window.canvasNowId == "canvas0"){
+                            window.Topology.dblclickNode.data.outNum --
+                        }else{
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum --
+                        }
+                       
+                        canvas.data.nodes.splice(i,1); 
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
+                        parent.toastr.success(`【算法参数】删除成功！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+
+                        nowList.map((test,R)=>{
+                            
+                            if(test.childStand){
+                                if(test.id.indexOf("OUT") !=-1){
+                                out_num ++
+                                test.rect.x = data.rect.ex 
+                                test.rect.y = data.rect.y + out_num*20 + 10
+                                test.rect.width = 20
+                                test.rect.height = 10                                
+                                test.rect.ex = test.rect.x  + test.rect.width
+                                test.rect.ey = test.rect.y + test.rect.height
+                                test.rect.center.x = test.rect.x+ test.rect.width/2
+                                test.rect.center.y =test.rect.y  + test.rect.height/2
+                                test.textRect.x = test.rect.x- 5
+                                test.textRect.y =  test.rect.y
+                                test.textRect.width = 10
+                                test.textRect.height = 5
+                                test.paddingTopNum = 0
+                                test.paddingTop = 0
+                                test.fullIconRect.height = 4
+                                test.fullTextRect.x = test.rect.ex - test.textRect.height- 5
+                                test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
+                                test.iconRect.x = test.rect.ex - test.textRect.height- 5
+                                test.iconRect.y = test.rect.y  -test.fullIconRect.height
+                                test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
+                                test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
+                                test.textMaxLine = 1
+                                test.anchors[0].x = 0
+                                test.anchors[0].y =0
+                                test.anchors[1].x =0
+                                test.anchors[1].y = 0   
+                                test.anchors[2].x = test.rect.ex
+                                test.anchors[2].y = test.rect.center.y                                                                                            
+                                test.anchors[3].x =0
+                                test.anchors[3].y = 0
+                                test.rotatedAnchors[0].x = 0
+                                test.rotatedAnchors[0].y =0
+
+                                test.rotatedAnchors[1].x = 0
+                                test.rotatedAnchors[1].y =0
+
+                                test.rotatedAnchors[2].x = test.rect.ex
+                                test.rotatedAnchors[2].y = test.rect.center.y
+
+                                test.rotatedAnchors[3].x =0
+                                test.rotatedAnchors[3].y =0
+                                }
+                            }
+                            
+                        })
+                        if(window.canvasNowId == "canvas0"){
+                            if( window.Topology.dblclickNode.rect.height > 100){
+                            
+                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
+                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
+                            }else{
+                                window.Topology.dblclickNode.rect.height = 100
+                            }
+                        }else{
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
+                            if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
+                            
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
+                            }else{
+                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
+                            }
+                        }
+                    }     
                 }
             }
-            canvasData.map((item1,i) => {
-                if(item1.childStand){
-                    let Del2UUid = item1.id.substr((item1.id.indexOf('---')-36),36)
-                    let in_num = -1 
-                    let out_num = -1 
-                    if(Del1UUid == Del2UUid){                       
-                        if(item.inorout == 0){
-                            canvasData.splice(i,1); 
-                            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
-                            parent.toastr.success(`【算法参数】删除成功！` )
-                            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-                            if(window.canvasNowId == "canvas0"){
-                                window.Topology.dblclickNode.data.inNum --
-                            }else{
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
-                            }
-                           
-                            
-                            nowList.map((test,R)=>{
-                                
-                                if(test.childStand){
-                                    if(test.id.indexOf("IN") !=-1){   
-                                    in_num ++                                       
-                                    test.rect.width = 20
-                                    test.rect.height = 10  
-                                    test.rect.x = data.rect.x-test.rect.width
-                                    test.rect.y = data.rect.y + in_num*20 + 10                            
-                                    test.rect.ex = test.rect.x  + test.rect.width
-                                    test.rect.ey = test.rect.y + test.rect.height
-                                    test.rect.center.x = test.rect.x+ test.rect.width/2
-                                    test.rect.center.y =test.rect.y  + test.rect.height/2
-                                    test.textRect.x = test.rect.x - 5
-                                    test.textRect.y =  test.rect.y
-                                    test.textRect.width = 10
-                                    test.textRect.height = 5
-                                    test.paddingTopNum = 0
-                                    test.paddingTop = 0
-                                    test.fullIconRect.height = 4
-                                    test.fullTextRect.x = test.rect.ex - test.textRect.height - 5
-                                    test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
-                                    test.iconRect.x = test.rect.ex - test.textRect.height- 5
-                                    test.iconRect.y = test.rect.y  -test.fullIconRect.height
-                                    test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
-                                    test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
-                                    test.textMaxLine = 1
-                                    test.anchors[0].x = test.rect.x
-                                    test.anchors[0].y =test.rect.center.y
-                                    test.anchors[1].x =0
-                                    test.anchors[1].y = 0   
-                                    test.anchors[2].x = 0
-                                    test.anchors[2].y = 0                                                                                           
-                                    test.anchors[3].x =0
-                                    test.anchors[3].y = 0
-                                    test.rotatedAnchors[0].x = test.rect.x
-                                    test.rotatedAnchors[0].y =test.rect.center.y
-                                    test.rotatedAnchors[1].x = 0
-                                    test.rotatedAnchors[1].y =0
-                                    test.rotatedAnchors[2].x = 0
-                                    test.rotatedAnchors[2].y = 0
-                                    test.rotatedAnchors[3].x =0
-                                    test.rotatedAnchors[3].y =0
-                                    }
-                                    
-                                }
-                            })
-                            if(window.canvasNowId == "canvas0"){
-                                if( window.Topology.dblclickNode.rect.height > 100){
-                                
-                                    window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                    window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                }else{
-                                    window.Topology.dblclickNode.rect.height = 100
-                                }
-                            }else{
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
-                                if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
-                                
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
-                                }else{
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
-                                }
-                            }
-                                                                            
-                        }else{
-                            if(window.canvasNowId == "canvas0"){
-                                window.Topology.dblclickNode.data.outNum --
-                            }else{
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum --
-                            }
-                           
-                            canvas.data.nodes.splice(i,1); 
-                            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】删除成功！ </li>`)
-                            parent.toastr.success(`【算法参数】删除成功！` )
-                            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-
-                            nowList.map((test,R)=>{
-                                
-                                if(test.childStand){
-                                    if(test.id.indexOf("OUT") !=-1){
-                                    out_num ++
-                                    test.rect.x = data.rect.ex 
-                                    test.rect.y = data.rect.y + out_num*20 + 10
-                                    test.rect.width = 20
-                                    test.rect.height = 10                                
-                                    test.rect.ex = test.rect.x  + test.rect.width
-                                    test.rect.ey = test.rect.y + test.rect.height
-                                    test.rect.center.x = test.rect.x+ test.rect.width/2
-                                    test.rect.center.y =test.rect.y  + test.rect.height/2
-                                    test.textRect.x = test.rect.x- 5
-                                    test.textRect.y =  test.rect.y
-                                    test.textRect.width = 10
-                                    test.textRect.height = 5
-                                    test.paddingTopNum = 0
-                                    test.paddingTop = 0
-                                    test.fullIconRect.height = 4
-                                    test.fullTextRect.x = test.rect.ex - test.textRect.height- 5
-                                    test.fullTextRect.y =  test.rect.y  -test.fullIconRect.height
-                                    test.iconRect.x = test.rect.ex - test.textRect.height- 5
-                                    test.iconRect.y = test.rect.y  -test.fullIconRect.height
-                                    test.fullIconRect.x =  test.rect.ex - test.textRect.height- 5
-                                    test.fullIconRect.y = test.rect.y  -test.fullIconRect.height
-                                    test.textMaxLine = 1
-                                    test.anchors[0].x = 0
-                                    test.anchors[0].y =0
-                                    test.anchors[1].x =0
-                                    test.anchors[1].y = 0   
-                                    test.anchors[2].x = test.rect.ex
-                                    test.anchors[2].y = test.rect.center.y                                                                                            
-                                    test.anchors[3].x =0
-                                    test.anchors[3].y = 0
-                                    test.rotatedAnchors[0].x = 0
-                                    test.rotatedAnchors[0].y =0
-
-                                    test.rotatedAnchors[1].x = 0
-                                    test.rotatedAnchors[1].y =0
-
-                                    test.rotatedAnchors[2].x = test.rect.ex
-                                    test.rotatedAnchors[2].y = test.rect.center.y
-
-                                    test.rotatedAnchors[3].x =0
-                                    test.rotatedAnchors[3].y =0
-                                    }
-                                }
-                                
-                            })
-                            if(window.canvasNowId == "canvas0"){
-                                if( window.Topology.dblclickNode.rect.height > 100){
-                                
-                                    window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey -15
-                                    window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height - 15
-                                }else{
-                                    window.Topology.dblclickNode.rect.height = 100
-                                }
-                            }else{
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.inNum --
-                                if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height > 100){
-                                
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey -15
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height - 15
-                                }else{
-                                    window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = 100
-                                }
-                            }
-                        }     
-                    }
-                }
-            })
         })
-    }
+    })
     
     //修改小接口显示的内容
     nowList.map(item =>{
@@ -1220,9 +1223,16 @@ function ActionSure(){
             roleID:roleID,
             tableInterfaceparametersList:[]
         }
+
         childList.children.map(index=>{
+            let uuid
+            if(index.uuid.indexOf('---') !=-1){
+                uuid = index.uuid.substr((index.uuid.indexOf('---')-36),36)
+            }else{
+                uuid = index.uuid
+            }
             let CsObj = {
-                id:index.uuid.substr((index.uuid.indexOf('---')-36),36),
+                id:uuid,
                 inorout:index.inorout,
                 interfaceid:data.id,
                 parametersname:index.varname,
@@ -1230,6 +1240,7 @@ function ActionSure(){
             }
             operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
         })
+        console.log(operatorInterfaceDataModel,"99999999999")
         $.ajax({
             type:"post",
             dataType: "json",
