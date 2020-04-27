@@ -2172,85 +2172,36 @@ var Topology = {
     // 撤销
     undo: function () {
         // canvas.undo();
-        let deleteBoxId ="";
-        let childList , canvas ;
+        let childList , canvas , cachesLists ,delList;
         if(window.canvasNowId == "canvas0"){
             childList = Object.values(window.Topology.tools)
             canvas = window.canvas
+              //获取撤销的数据
+            cachesLists =window.canvas.caches.list[window.canvas.caches.list.length-1]
+            delList = cachesLists.nodes.slice(window.canvas.caches.index-1,window.canvas.caches.index) 
         }else{
             childList = Object.values(window.frames[canvasNowId].contentWindow.Topology.tools);
             canvas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas
+            //获取撤销的数据
+            cachesLists =window.frames[canvasNowId].contentWindow.canvas.caches.list[window.frames[canvasNowId].contentWindow.canvas.caches.list.length-1]
+            delList = cachesLists.nodes.slice(window.frames[canvasNowId].contentWindow.canvas.caches.index-1,window.frames[canvasNowId].contentWindow.canvas.caches.index) 
         }
-        childList.map(index=>{
-        
-            index.children.map(child =>{
-                let falg=false;
-                let delId=child.uuid//缓存
-                canvas.data.nodes.map(item=>{//撤销后的  
-                    if(item.childStand){
-                        let fuuid = item.id.substr((item.id.indexOf('---')-36),36)
-                        if(delId==fuuid){
-                            falg=true
-                        }
-                    }
-                    
-                }) 
-                if(!falg){
-                    deleteBoxId=delId
-                    return
-                }
-            })
-            
-        })
-        if(deleteBoxId==""){
-            childList.map(index=>{
-                let bigboxid=index.uuid
-                let falg=false;
-                canvas.data.nodes.map(item=>{
-                    if(!item.childStand){//大
-                        if(bigboxid==item.id){
-                            falg=true
-                        }
+        childList.map((item,j)=>{
+            let delUUid = delList[0].id.substr((delList[0].id.indexOf('---')-36),36)
+            if(item.children){
+                item.children.map((child,i)=>{
+                    if(child.uuid == delUUid){
+                        item.children.splice(i,1)
                     }
                 })
-                if(!falg){
-                    deleteBoxId=bigboxid
-                    return
-                }
-            })
-        }
-        childList.map(del=>{
-            let flag=false
-            del.children.map((yDel ,i)=>{
-                if(yDel.uuid ==deleteBoxId){
-                    del.children.splice(i,1)
-                    canvas.data.nodes.map(item=>{
-
-                        if(item.id == del.uuid){
-                            if(item.rect.height > 100){
-                                item.rect.ey = (item.rect.ey -20)
-                                item.rect.height = (item.rect.height - 20)
-                            }else{
-                                item.rect.height =100
-                            }
-                            canvas.render()
-                        }
-                    })
-                    return
-                }
-            })
-            if(!flag){
-                if(del.uuid==deleteBoxId){
-                    if(window.canvasNowId == "canvas0"){
-                       delete window.Topology.tools[del.uuid]
-                    }else{
-                        delete window.frames[canvasNowId].contentWindow.Topology.tools[del.uuid]
-                    }
-                   return
+            }else{
+                if(item.uuid == delUUid){
+                    childList.splice(j,1)
                 }
             }
         })
         canvas.undo();
+        canvas.render()
     },
     // 恢复
     redo: function () {
