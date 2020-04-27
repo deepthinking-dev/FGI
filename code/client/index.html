@@ -3155,11 +3155,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupEditDiv").show();
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
-        $("#groupInputName").val("")
+        $("#groupInputName").val("");
+        $("#parentGroup").attr("parentid","");
+        $("#parentGroup").val("");
         var type = $("#groupInputName").attr("type");
     })
 
     $("#addGroupYes").click(()=>{
+        if($("#groupInputName").val() == $("#parentGroup").val()){
+            $('.noticeList').append(`<li>${getTime()}【规则】父分组名称和分组名称不能相同！ </li>`)
+            toastr.info(`【规则】父分组名称和分组名称不能相同！！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
         if($("#groupInputName").val() == ""){
             $('.noticeList').append(`<li>${getTime()}【规则】分组名称不能为空！ </li>`)
             toastr.info(`【规则】分组名称不能为空！` )
@@ -3170,7 +3178,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             "groupname": $("#groupInputName").val(),
             "grouptype":Number($("#groupInputName").attr("type")),
             "id": 0,
-            "parentid": $("#parentGroup").attr("parentid")
+            "parentid": $("#parentGroup").attr("parentid") || 0
         }
         if($(".groupTitle").text() == "新增分组"){
             $.ajax({
@@ -3283,18 +3291,22 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     })
     function modifyGroupShow(td,s,pid) {
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type:$("#groupInputName").attr("type")},
-            success(data) {
-               data.map(s=>{
-                   if(s.id == pid){
-                       $("#parentGroup").val(s.groupname)
-                   }
-               })
-            }
-        })
+        if(pid == 0){
+            $("#parentGroup").val("")
+        } else {
+            $.ajax({
+                url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                type:"get",
+                data: {type:$("#groupInputName").attr("type")},
+                success(data) {
+                    data.map(s=>{
+                        if(s.id == pid){
+                            $("#parentGroup").val(s.groupname)
+                        }
+                    })
+                }
+            })
+        }
         $("#parentGroup").attr("parentid",pid)
         $("#groupEditDiv").show()
         $(".groupTitle").text("修改分组")
