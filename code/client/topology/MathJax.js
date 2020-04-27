@@ -146,7 +146,7 @@
                     if(data.status == 1){
                         parent.$(".Frame").hide();
                         parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！</li>`)
-                        parent.toastr.info(`【算法】${data.msg}！` )
+                        parent.toastr.success(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         // Topology.init();
                         dictionary()

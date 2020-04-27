@@ -1691,7 +1691,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     success: function(data) {
                         $(".moduleContentList").html('')
                         $('.noticeList').append(`<li>${parent.getTime()} 新增【模型】保存成功！ </li>`)
-                        parent.toastr.info('新增【模型】保存成功！')
+                        parent.toastr.success('新增【模型】保存成功！')
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $.ajax({
                             url:urlConfig.host+'/module/GetAllModule',
@@ -1772,7 +1772,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     success: function(data) {
                         $(".moduleContentList").html('')
                         $('.noticeList').append(`<li>${parent.getTime()}【模型】修改成功！ </li>`)
-                        parent.toastr.info('【模型】修改成功！')
+                        parent.toastr.success('【模型】修改成功！')
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $.ajax({
                             url:urlConfig.host+'/module/GetAllModule',
@@ -1887,7 +1887,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data){
                     window.bigData.delmoduleId = ''
                     $('.noticeList').append(`<li>${parent.getTime()}【模型】删除成功！ </li>`)
-                    parent.toastr.info('【模型】删除成功！')
+                    parent.toastr.success('【模型】删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     getModuleList()
                     $('#lkrFrameDel').hide()
@@ -2901,7 +2901,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data.status == 1){
                     sfWinList()
                     $('.noticeList').append(`<li>${parent.getTime()}【算法】字典 删除成功！</li>`)
-                    parent.toastr.info('【算法】字典删除成功！')
+                    parent.toastr.success('【算法】字典删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
                     dictionaryShow()
@@ -3252,8 +3252,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 contentType:"application/json",
                 success(data) {
                     if(data){
-                        parent.$('.noticeList').append(`<li>${parent.getTime()}修改成功！ </li>`)
-                        parent.toastr.info(`修改成功！` )
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} 修改成功！ </li>`)
+                        parent.toastr.success(`修改成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#groupEditDiv").hide();
                         $.ajax({
@@ -3337,7 +3337,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(data == "删除成功"){
                     $('#ruleDeleteDiv').hide()
                     reloadGroupList();
-                    parent.$('.noticeList').append(`<li>${parent.getTime()}删除成功！ </li>`)
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 删除成功！ </li>`)
                     parent.toastr.success(`修改成功！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
