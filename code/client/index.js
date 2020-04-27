@@ -867,7 +867,7 @@ $(function(){
                                 </i>
                                 <i>
                                     <span style="color:#fff;">英文名</span>
-                                    <input class="variable" type="text" value="${t.varname}">
+                                    <input class="variable" disabled type="text" value="${t.varname}">
                                 </i>
                                 <i>
                                     <span style="color:#fff;">类型</span>

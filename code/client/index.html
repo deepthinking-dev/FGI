@@ -389,7 +389,7 @@
         <div class="addButtonModlue" style="position: relative;top:70px;margin:0 15px">
             <button class="addModlue" onclick="addModule()">新增</button>
             <div style="height: 520px;overflow: auto">
-                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
                 <table class="mxGruopTable" style="float: left;"></table>
             </div>
         </div>
@@ -929,7 +929,7 @@
            </div>
            <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                <div style="height: 480px;overflow: auto">
-                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
                    <table class="gzGruopTable" style="float: left;"></table>
                </div>
            </div>
@@ -944,7 +944,7 @@
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
                   <div style="height: 520px;overflow: auto">
-                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left"></ul>
+                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left;overflow: auto"></ul>
                       <table class="sfGruopTable" style="float: left;"></table>
                   </div>
               </div>
@@ -3133,7 +3133,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     data.map(s=>{
                         $("#groupTable").append(
                             `<tr>
-                            <td style="width: 220px">${s.groupname}</td>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                             <td style="width: 220px">
                                <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3155,7 +3155,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupEditDiv").show();
         $(".groupTitle").text("新增分组")
         $("#groupInputName").attr("modifyId","")
-        $("#groupInputName").val("")
+        $("#groupInputName").val("");
+        $("#parentGroup").attr("parentid","");
+        $("#parentGroup").val("");
         var type = $("#groupInputName").attr("type");
     })
 
@@ -3166,11 +3168,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
+        if($("#groupInputName").val() == $("#parentGroup").val()){
+            $('.noticeList').append(`<li>${getTime()}【规则】父分组名称和分组名称不能相同！ </li>`)
+            toastr.info(`【规则】父分组名称和分组名称不能相同！！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
             "grouptype":Number($("#groupInputName").attr("type")),
             "id": 0,
-            "parentid": $("#parentGroup").attr("parentid")
+            "parentid": $("#parentGroup").attr("parentid") || 0
         }
         if($(".groupTitle").text() == "新增分组"){
             $.ajax({
@@ -3203,7 +3211,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     data.map(s=>{
                                         $("#groupTable").append(
                                             `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3259,7 +3267,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     data.map(s=>{
                                         $("#groupTable").append(
                                             `<tr>
-                                                <td style="width: 220px">${s.groupname}</td>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                                                 <td style="width: 220px">
                                                    <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                                    <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
@@ -3283,18 +3291,22 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     })
     function modifyGroupShow(td,s,pid) {
-        $.ajax({
-            url: urlConfig.host + '/group/findAllGroupMessagesByType',
-            type:"get",
-            data: {type:$("#groupInputName").attr("type")},
-            success(data) {
-               data.map(s=>{
-                   if(s.id == pid){
-                       $("#parentGroup").val(s.groupname)
-                   }
-               })
-            }
-        })
+        if(pid == 0){
+            $("#parentGroup").val("")
+        } else {
+            $.ajax({
+                url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                type:"get",
+                data: {type:$("#groupInputName").attr("type")},
+                success(data) {
+                    data.map(s=>{
+                        if(s.id == pid){
+                            $("#parentGroup").val(s.groupname)
+                        }
+                    })
+                }
+            })
+        }
         $("#parentGroup").attr("parentid",pid)
         $("#groupEditDiv").show()
         $(".groupTitle").text("修改分组")
@@ -3475,7 +3487,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             data.map(s=>{
                                 $("#groupTable").append(
                                     `<tr>
-                            <td style="width: 220px">${s.groupname}</td>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
                             <td style="width: 220px">
                                <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
                                <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
