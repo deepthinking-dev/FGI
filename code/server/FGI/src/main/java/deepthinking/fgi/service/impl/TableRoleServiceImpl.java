@@ -956,65 +956,73 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             tableOperatorinterface.setInterfacename(operatorInterfaceDataModel.getInterfaceName());
             tableOperatorinterface.setAlgorithmid(operatorInterfaceDataModel.getAlgorithmID());
             tableOperatorinterface.setRoleid(operatorInterfaceDataModel.getRoleID());
-            operatorinterfaceMapper.updateByPrimaryKeySelective(tableOperatorinterface);
-
-            TableInterfaceparametersCriteria tableInterfaceparametersCriteria=new TableInterfaceparametersCriteria();
-            tableInterfaceparametersCriteria.createCriteria().andInterfaceidEqualTo(operatorInterfaceDataModel.getId());
-            List<TableInterfaceparameters> oldData=interfaceparametersMapper.selectByExample(tableInterfaceparametersCriteria);
             List<TableInterfaceparameters> interfaceparameters=operatorInterfaceDataModel.getTableInterfaceparametersList();
-            if(oldData.size()>0){
-                List<TableInterfaceparameters> addPara=new ArrayList<>();
-                List<TableInterfaceparameters> updataPara=new ArrayList<>();
-                List<TableInterfaceparameters> deletedataPara=new ArrayList<>();
-                if(interfaceparameters.size()==0){
-                    deletedataPara=oldData;
-                }else{
-                    for(TableInterfaceparameters para:interfaceparameters){
-                        boolean flag=false;
-                        for(TableInterfaceparameters old:oldData){
-                            if(para.getId().equals(old.getId())){//修改
-                                updataPara.add(para);
-                                flag=true;
-                                break;
-                            }
-                        }
-                        if(!flag){
-                            addPara.add(para);
-                        }
-                    }
-                    for(TableInterfaceparameters old:oldData){
-                        boolean flag=false;
-                        for(TableInterfaceparameters updte:updataPara){
-                            if(old.getId().equals(updte.getId())){
-                                flag=true;
-                                break;
-                            }
-                        }
-                        if(!flag){
-                            deletedataPara.add(old);
-                        }
-                    }
-                }
-                //修改
-                updataPara.forEach(data->interfaceparametersMapper.updateByPrimaryKeySelective(data));
-                //删除
-                deletedataPara.forEach(data->{
-                    //还需删除该接口参数的连线
-                    TableInterfaceroleCriteria tableInterfaceroleCriteria=new TableInterfaceroleCriteria();
-                    tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
-                    tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
-                    List<TableInterfacerole> interfaceroles=interfaceroleMapper.selectByExample(tableInterfaceroleCriteria);
-                    if(interfaceroles.size()>0){
-                        interfaceroles.forEach(interfacerole->{
-                            delOneInterfaceRole(interfacerole.getId().toString());
-                        });
-                    }
-                    interfaceparametersMapper.deleteByPrimaryKey(data.getId());
-                });
-                //新增
-                addPara.forEach(data->interfaceparametersMapper.insert(data));
-            }else{
+            //首先查询是否新增
+            TableOperatorinterface tableOperatorinterface_pd=operatorinterfaceMapper.selectByPrimaryKey(tableOperatorinterface.getId());
+            if(tableOperatorinterface_pd==null){//新增
+                operatorinterfaceMapper.insert(tableOperatorinterface);
                 interfaceparameters.forEach(interfaceparameter->interfaceparametersMapper.insert(interfaceparameter));
+            }else{
+                operatorinterfaceMapper.updateByPrimaryKeySelective(tableOperatorinterface);
+
+                TableInterfaceparametersCriteria tableInterfaceparametersCriteria=new TableInterfaceparametersCriteria();
+                tableInterfaceparametersCriteria.createCriteria().andInterfaceidEqualTo(operatorInterfaceDataModel.getId());
+                List<TableInterfaceparameters> oldData=interfaceparametersMapper.selectByExample(tableInterfaceparametersCriteria);
+
+                if(oldData.size()>0){
+                    List<TableInterfaceparameters> addPara=new ArrayList<>();
+                    List<TableInterfaceparameters> updataPara=new ArrayList<>();
+                    List<TableInterfaceparameters> deletedataPara=new ArrayList<>();
+                    if(interfaceparameters.size()==0){
+                        deletedataPara=oldData;
+                    }else{
+                        for(TableInterfaceparameters para:interfaceparameters){
+                            boolean flag=false;
+                            for(TableInterfaceparameters old:oldData){
+                                if(para.getId().equals(old.getId())){//修改
+                                    updataPara.add(para);
+                                    flag=true;
+                                    break;
+                                }
+                            }
+                            if(!flag){
+                                addPara.add(para);
+                            }
+                        }
+                        for(TableInterfaceparameters old:oldData){
+                            boolean flag=false;
+                            for(TableInterfaceparameters updte:updataPara){
+                                if(old.getId().equals(updte.getId())){
+                                    flag=true;
+                                    break;
+                                }
+                            }
+                            if(!flag){
+                                deletedataPara.add(old);
+                            }
+                        }
+                    }
+                    //修改
+                    updataPara.forEach(data->interfaceparametersMapper.updateByPrimaryKeySelective(data));
+                    //删除
+                    deletedataPara.forEach(data->{
+                        //还需删除该接口参数的连线
+                        TableInterfaceroleCriteria tableInterfaceroleCriteria=new TableInterfaceroleCriteria();
+                        tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
+                        tableInterfaceroleCriteria.or().andParametersidEqualTo(data.getId());
+                        List<TableInterfacerole> interfaceroles=interfaceroleMapper.selectByExample(tableInterfaceroleCriteria);
+                        if(interfaceroles.size()>0){
+                            interfaceroles.forEach(interfacerole->{
+                                delOneInterfaceRole(interfacerole.getId().toString());
+                            });
+                        }
+                        interfaceparametersMapper.deleteByPrimaryKey(data.getId());
+                    });
+                    //新增
+                    addPara.forEach(data->interfaceparametersMapper.insert(data));
+                }else{
+                    interfaceparameters.forEach(interfaceparameter->interfaceparametersMapper.insert(interfaceparameter));
+                }
             }
             return operatorInterfaceDataModel;
         }catch (Exception e){
