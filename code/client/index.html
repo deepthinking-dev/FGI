@@ -3059,7 +3059,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     window.Topology.tools = {}
                     window.bigData.ruleType = "edit"
                     window.bigData.editRuleId = data.tableRole.id;
-                    responseActionDatas = data.interfaceRoleDataModels
+                    if(window.canvasNowId == "canvas0"){
+                        responseActionDatas = data.interfaceRoleDataModels
+                    }else{
+                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
+                    }
                     if(data.operatorInterfaceDataModels){
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {

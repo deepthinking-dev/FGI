@@ -368,6 +368,7 @@ var Topology = {
                             let id_in;//输入端算法id
                             let id_out;//输出端算法id
                             parent.$("#actionMsgIn").val("");
+                            parent.$("#actionMsgOut").val("");
                             parent.$("#actionMsgIn").show();
                             parent.$("#actionMsgOut").hide();
                             parent.$("#addActionButton").attr({
@@ -518,6 +519,29 @@ var Topology = {
                                         resBaseIn.map((t,i)=>{
                                             parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
                                         })
+                                        resBaseOut.map((t,i)=>{
+                                            parent.$("#actionOutDiv").append(`
+                                                  <div style="margin: 10px 0" actionId=${t.id}>
+                                                       <i>${i+1}</i>
+                                                       <span>行为值来源</span><input class="xwzly_out" disabled>
+                                                       <span>行为</span><select class="xwSelect_out">
+                                                       <option value=">">></option>
+                                                       <option value="<"><</option>
+                                                       <option value="=">=</option>
+                                                       <option value=">=">>=</option>
+                                                       <option value="<="><=</option>
+                                                       <option value="!=">!=</option>
+                                                       <option value="assignment">赋值</option>
+                                                   </select>
+                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                  </div>
+                                            `)
+                                        })
+                                        resBaseOut.map((t,i)=>{
+                                            parent.$('#actionDiv .xwSelect_out').eq(i).val(t.behavior)
+                                        })
                                     } catch (e) {
                                         console.log(e);
                                     }
@@ -529,29 +553,54 @@ var Topology = {
                                         try{
                                             parent.$("#actionMsgIn").val("");
                                             parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                                            parent.$("#actionMsgOut").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
                                             var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                            var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
                                             lineDatas.map((t,i)=>{
                                                 parent.$("#actionInDiv").append(`
-                                                  <div style="margin: 10px 0">
-                                                        <i>${i+1}</i>
-                                                       <span>行为值来源</span><input class="xwzly_in" disabled>
-                                                       <span>行为</span><select class="xwSelect_in">
-                                                       <option value=">">></option>
-                                                       <option value="<"><</option>
-                                                       <option value="=">=</option>
-                                                       <option value=">=">>=</option>
-                                                       <option value="<="><=</option>
-                                                       <option value="!=">!=</option>
-                                                       <option value="assignment">赋值</option>
-                                                   </select>
-                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                                  </div>
-                                            `)
+                                                     <div style="margin: 10px 0">
+                                                           <i>${i+1}</i>
+                                                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                           <span>行为</span><select class="xwSelect_in">
+                                                           <option value=">">></option>
+                                                           <option value="<"><</option>
+                                                           <option value="=">=</option>
+                                                           <option value=">=">>=</option>
+                                                           <option value="<="><=</option>
+                                                           <option value="!=">!=</option>
+                                                           <option value="assignment">赋值</option>
+                                                            </select>
+                                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                     </div>
+                                                `)
                                             })
                                             lineDatas.map((t,i)=>{
                                                 parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                                            })
+                                            lineDatasOut.map((t,i)=>{
+                                                parent.$("#actionOutDiv").append(`
+                                                     <div style="margin: 10px 0">
+                                                           <i>${i+1}</i>
+                                                           <span>行为值来源</span><input class="xwzly_out" disabled>
+                                                           <span>行为</span><select class="xwSelect_out">
+                                                           <option value=">">></option>
+                                                           <option value="<"><</option>
+                                                           <option value="=">=</option>
+                                                           <option value=">=">>=</option>
+                                                           <option value="<="><=</option>
+                                                           <option value="!=">!=</option>
+                                                           <option value="assignment">赋值</option>
+                                                            </select>
+                                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                     </div>
+                                                `)
+                                            })
+                                            lineDatasOut.map((t,i)=>{
+                                                parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
                                             })
                                         } catch (e) {
                                             console.log(e);

@@ -562,7 +562,11 @@ function ruleSure(){
         type:"get",
         data: {Id:window.bigData.editRuleId},
         success(data) {
-            responseActionDatas = data.interfaceRoleDataModels
+            if(window.canvasNowId == "canvas0"){
+                responseActionDatas = data.interfaceRoleDataModels
+            }else{
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
+            }
         }
     })
 }

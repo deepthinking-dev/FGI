@@ -967,12 +967,17 @@ body .form-input{
     table-layout: fixed;
     width: 650px;
 }
+.mxGruopTable{
+    table-layout: fixed;
+    width: 650px;
+}
 .ruleWinList{
     table-layout: fixed;
     width: 100%;
 }
 .gzGruopTable{
     width: 650px;
+    table-layout: fixed;
 }
 #groupTable{
     table-layout: fixed;
