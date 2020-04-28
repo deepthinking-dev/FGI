@@ -996,6 +996,23 @@ var Topology = {
                                                     fUUid: data.id,
                                                     canshuId:item.id
                                                 }
+                                              
+                                                // data2.anchors[0].x = data2.rect.x
+                                                // data2.anchors[0].y =data2.rect.center.y 
+                                                // data2.anchors[1].x =0
+                                                // data2.anchors[1].y = 0   
+                                                // data2.anchors[2].x = 0
+                                                // data2.anchors[2].y = 0                                                                                          
+                                                // data2.anchors[3].x =0
+                                                // data2.anchors[3].y = 0
+                                                // data2.rotatedAnchors[0].x = data2.rect.x
+                                                // data2.rotatedAnchors[0].y =data2.rect.center.y 
+                                                // data2.rotatedAnchors[1].x = 0
+                                                // data2.rotatedAnchors[1].y =0
+                                                // data2.rotatedAnchors[2].x = 0
+                                                // data2.rotatedAnchors[2].y = 0
+                                                // data2.rotatedAnchors[3].x =0
+                                                // data2.rotatedAnchors[3].y =0
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
                                                     obj.y = data1.anchors[i].y-85 + num.y
@@ -1006,6 +1023,7 @@ var Topology = {
                                                 }) 
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
+                                                canvas.render()
                                                 if(data.data.inNum  > data.data.outNum){
                                                     if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
                                                         data.rect.ey = data.rect.ey + heights+15
@@ -1139,6 +1157,22 @@ var Topology = {
                                                     fUUid: data.id,
                                                     canshuId:item.id
                                                 }
+                                                // data2.anchors[0].x = 0
+                                                // data2.anchors[0].y = 0 
+                                                // data2.anchors[1].x =0
+                                                // data2.anchors[1].y = 0   
+                                                // data2.anchors[2].x = data2.rect.ex
+                                                // data2.anchors[2].y = data2.rect.center.y                                                                                           
+                                                // data2.anchors[3].x =0
+                                                // data2.anchors[3].y = 0
+                                                // data2.rotatedAnchors[0].x = 0
+                                                // data2.rotatedAnchors[0].y =0
+                                                // data2.rotatedAnchors[1].x = 0
+                                                // data2.rotatedAnchors[1].y =0
+                                                // data2.rotatedAnchors[2].x = data2.rect.ex
+                                                // data2.rotatedAnchors[2].y = data2.rect.center.y 
+                                                // data2.rotatedAnchors[3].x =0
+                                                // data2.rotatedAnchors[3].y =0
                                                 data2.anchors.map((obj,i) => {
                                                     obj.x = data1.anchors[i].x-185 + num.x
                                                     obj.y = data1.anchors[i].y-85 + num.y
@@ -1149,7 +1183,7 @@ var Topology = {
                                                 }) 
                                                 canvas.addNode(data2)
                                                 canvas.lockNodes([data2],true)   
-
+                                                canvas.render()
                                                 if(data.data.outNum > data.data.inNum){
                                                     if(data.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
                                                         data.rect.ey = data.rect.ey + heights+15
