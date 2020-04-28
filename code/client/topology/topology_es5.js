@@ -1159,7 +1159,7 @@ var Topology = {
                                         canvas.data.lines.splice(i,1)
                                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法连线】操作失败！ </li>`)
                                         parent.toastr.info(`【算法连线】操作失败！` )
-                                        parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                                         canvas.render();
                                         setTimeout(function () {
                                             selected = null;
@@ -1303,7 +1303,7 @@ var Topology = {
                                     } else {
                                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法连线】输出输入类型不匹配！ </li>`)
                                         parent.toastr.info(`【算法连线】输出输入类型不匹配！` )
-                                        parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                                         canvas.data.lines.map((item,i) => {
                                             if(item.id == data.id){
                                                 canvas.data.lines.splice(i,1)
@@ -1316,9 +1316,9 @@ var Topology = {
                                         })
                                     }
                                 } else {
-                                    parent.$('.noticeList').append(`<li>${getTime()}【算法连线】只能输出连接输入！ </li>`)
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法连线】只能输出连接输入！ </li>`)
                                     parent.toastr.info(`【算法连线】只能输出连接输入！` )
-                                    parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+                                    parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                                     canvas.data.lines.map((item,i) => {
                                         if(item.id == data.id){
                                             canvas.data.lines.splice(i,1)
