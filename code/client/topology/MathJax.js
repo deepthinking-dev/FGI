@@ -831,19 +831,16 @@ function ActionSure(){
                 }
 
                 if(flag){
-                    if(data.data.outNum > data.data.inNum){
-                        if(window.canvasNowId == "canvas0"){
-                            if( window.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
-                                window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+15
-                                window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+15
-                            }
-                        }else{
-                            if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey + heights+15
-                                window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height + heights+15
-                            }
+                    if(window.canvasNowId == "canvas0"){
+                        if( window.Topology.dblclickNode.rect.height < (heights*(window.Topology.dblclickNode.data.outNum+1) +10*(window.Topology.dblclickNode.data.outNum+1))){
+                            window.Topology.dblclickNode.rect.ey = window.Topology.dblclickNode.rect.ey + heights+10
+                            window.Topology.dblclickNode.rect.height = window.Topology.dblclickNode.rect.height + heights+10
                         }
-                        
+                    }else{
+                        if( window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height < (heights*(window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum+1) +10*(window.frames[canvasNowId].contentWindow.Topology.dblclickNode.data.outNum+1))){
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.ey + heights+10
+                            window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height = window.frames[canvasNowId].contentWindow.Topology.dblclickNode.rect.height + heights+10
+                        }
                     }
                 }
 
