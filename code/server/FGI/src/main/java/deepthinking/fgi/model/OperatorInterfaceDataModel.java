@@ -14,7 +14,7 @@ public class OperatorInterfaceDataModel {
     private int RoleID;
     @ApiModelProperty(value = "算子ID")
     private int AlgorithmID;
-    @ApiModelProperty(value = "接口名称ID")
+    @ApiModelProperty(value = "接口名称")
     private String InterfaceName;
     @ApiModelProperty(value = "接口参数信息表")
     private List<TableInterfaceparameters> tableInterfaceparametersList;
