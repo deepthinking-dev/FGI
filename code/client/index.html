@@ -1738,6 +1738,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         })
                         $('#lkrFrame').fadeToggle(500)
                         $("#dataModulePage").show()
+                        freshClick("modelWinTree")
+                        freshClick("moduleTree")
                     }
                }) 
             }
@@ -1810,6 +1812,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
                                 freshClick("modelWinTree")
+                                freshClick("moduleTree")
                             }
                         })
                     }
@@ -1927,8 +1930,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function freshClick(treeId) {
         var tObj=$.fn.zTree.getZTreeObj(treeId);
-        var selectedNode=tObj.getSelectedNodes()[0];
-        $("#"+selectedNode.tId+"_a").click();
+        if(tObj){
+            var selectedNode=tObj.getSelectedNodes()[0];
+            $("#"+selectedNode.tId+"_a").click();
+        }
     }
     //树节点点击
     function treeClick(event, treeId, node) {
@@ -2176,6 +2181,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#modelPageDiv").show();
         $("#ruleMde").hide();
         $("#algorithmPage").hide();
+        $("#moduleListRight").empty()
     }
     $("#selectedModlue").change((e)=>{
       
@@ -2422,6 +2428,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $.fn.zTree.init($("#sfTree"),setting, treeData);
             }
         })
+        $("#sfGruopListRight").empty()
     }
 
     //删除字典信息
@@ -2860,7 +2867,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                 }
-                dictionaryShow()
+
             }
         })
     }
@@ -3013,14 +3020,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $.fn.zTree.init($("#ruleTree"),setting, treeData);
             }
         })
+        $("#ruleListRight").empty()
     }
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
             $('#dataModulePage').show()
             getModuleList()
+            $('#dataModulePage .mxGruopTable').empty()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').show()
+            $('#dicDiv .sfGruopTable').empty()
             sfWinList();
             $.ajax({
                 url: urlConfig.host + '/module/GetAllModule',
@@ -3037,6 +3047,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if($('#flex_tools .liactive').text() == "规则库"){
             $('#gzDiv').show()
             getGzList()
+            $('#gzDiv .gzGruopTable').empty()
         }
     }
     //算法弹窗列表
@@ -3447,7 +3458,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                getModuleList()
+                freshClick("modelWinTree")
             }
         })
     }
@@ -3467,7 +3478,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                getGzList()
+                freshClick("gzWinTree")
             }
         })
     }
@@ -3487,7 +3498,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                sfWinList()
+                freshClick("sfWinTree")
             }
         })
     }

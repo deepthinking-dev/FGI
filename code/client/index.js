@@ -773,10 +773,9 @@ $(function(){
                         parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
-                        dictionary();
+                        freshClick("sfTree")
                         sfWinList();
                         $("#dicDiv").show()
-                        dictionaryShow()
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
                         parent.toastr.info(`${data.msg}` )
@@ -823,8 +822,8 @@ $(function(){
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
                         parent.toastr.info(`${data.msg}` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-                        dictionaryShow()
                         freshClick("sfWinTree")
+                        freshClick("sfTree")
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
                         parent.toastr.info(`${data.msg}` )
