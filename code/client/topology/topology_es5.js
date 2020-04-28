@@ -331,7 +331,7 @@ var Topology = {
                 var data = {
                     "nodes": [],
                     "lines": [],
-                    "lineName": "curve",
+                    "lineName": "line",
                     "fromArrowType": "",
                     "toArrowType": "triangleSolid",
                     "scale": 1,
@@ -357,6 +357,7 @@ var Topology = {
              
                 // 监听画布
                 function onMessage(event, data) {
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1267,6 +1268,7 @@ var Topology = {
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
+                            data.name = "polyline"
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
@@ -2325,20 +2327,23 @@ var Topology = {
             cachesLists =window.frames[canvasNowId].contentWindow.canvas.caches.list[window.frames[canvasNowId].contentWindow.canvas.caches.list.length-1]
             delList = cachesLists.nodes.slice(window.frames[canvasNowId].contentWindow.canvas.caches.index-1,window.frames[canvasNowId].contentWindow.canvas.caches.index) 
         }
-        childList.map((item,j)=>{
-            let delUUid = delList[0].id.substr((delList[0].id.indexOf('---')-36),36)
-            if(item.children){
-                item.children.map((child,i)=>{
-                    if(child.uuid == delUUid){
-                        item.children.splice(i,1)
+        if(delList.length >0){
+            childList.map((item,j)=>{
+                let delUUid = delList[0].id.substr((delList[0].id.indexOf('---')-36),36)
+                if(item.children){
+                    item.children.map((child,i)=>{
+                        if(child.uuid == delUUid){
+                            item.children.splice(i,1)
+                        }
+                    })
+                }else{
+                    if(item.uuid == delUUid){
+                        childList.splice(j,1)
                     }
-                })
-            }else{
-                if(item.uuid == delUUid){
-                    childList.splice(j,1)
                 }
-            }
-        })
+            })
+        }
+
         canvas.undo();
         canvas.render()
     },
