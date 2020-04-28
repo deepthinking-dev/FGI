@@ -348,6 +348,7 @@ var Topology = {
                 canvas.options.hideRotateCP = true
                 canvas.options.hideSizeCP = true
                 canvas.options.hideInput = true
+                canvas.disableScale =true
                 // window.onload = function(){
                 //     let canvas1 = parent.document.getElementById('' + canvasId).contentWindow
                 //     let embadBig = canvas1.document.getElementById('topo_canvas')
@@ -826,7 +827,7 @@ var Topology = {
                                 canvas.uncombine(data);
                                 canvas.render();
                             }
-                            if(data.childStand) canvas.lockNodes([data], false)
+                            canvas.lockNodes([data], false)
                             break    
                         case 'moveOut':
                             this.workspace.nativeElement.scrollLeft += 10;
@@ -865,6 +866,7 @@ var Topology = {
                                             return v.toString(16);
                                         });
                                     }
+                                    canvas.lockNodes([data],true)
                                     data.id = guid()
                                     saveList.uuid = data.id
                                     data.anchors.map((obj,i) => {
