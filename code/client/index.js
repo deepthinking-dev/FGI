@@ -416,6 +416,7 @@ $(function(){
                     }
                 })
             }
+
             var dataArrOut = [];
             parent.$('#actionOutDiv div').each(function () {
                 let obj = {
@@ -445,6 +446,7 @@ $(function(){
                     }
                 })
             }
+
         }
     })
     $('body').on('click','.addDicClose',(e) => {
@@ -784,9 +786,12 @@ $(function(){
                         window.frames[canvasNowId].contentWindow.bigData.ruleType = "edit"
                         window.frames[canvasNowId].contentWindow.bigData.editRuleId = data.tableRole.id;
                    }
-                   
-                  
-                    responseActionDatas = data.interfaceRoleDataModels
+
+                    if(window.canvasNowId == "canvas0"){
+                        responseActionDatas = data.interfaceRoleDataModels
+                    }else{
+                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
+                    }
                     if(data.operatorInterfaceDataModels){
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {
