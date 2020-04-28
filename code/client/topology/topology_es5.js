@@ -293,7 +293,9 @@ var Topology = {
                             fillStyle:'red',
                             strokeStyle: '#4295ec',
                             hideInput:true,
-                            bkType:0
+                            bkType:0,
+                            hideRotateCP:true,
+                            hideSizeCP:true
                         }
                     })
                 })
@@ -333,7 +335,8 @@ var Topology = {
                     "fromArrowType": "",
                     "toArrowType": "triangleSolid",
                     "scale": 1,
-                    "locked": 0
+                    "locked": 0,
+                    
                 };
                
                 var canvasOptions = {
@@ -341,7 +344,10 @@ var Topology = {
                 };
                 
                 let canvasId = parent.canvasId
-                canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
+                canvas = new Le5leTopology.Topology('topo_canvas',canvasOptions);
+                canvas.options.hideRotateCP = true
+                canvas.options.hideSizeCP = true
+                canvas.options.hideInput = true
                 // window.onload = function(){
                 //     let canvas1 = parent.document.getElementById('' + canvasId).contentWindow
                 //     let embadBig = canvas1.document.getElementById('topo_canvas')
@@ -720,6 +726,8 @@ var Topology = {
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
                                             item.textMaxLine = 1
+                                            item.hideRotateCP=true,
+                                            item.hideSizeCP=true
                                             // item.bkType = 0
                                             // item.fillStyle = "red"
                                         }else{                                         
@@ -764,6 +772,8 @@ var Topology = {
                                             item.rotatedAnchors[2].y = item.rect.center.y
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
+                                            item.hideRotateCP=true,
+                                            item.hideSizeCP=true
                                             // item.bkType = 0
                                             // item.fillStyle = "red"
                                         }
@@ -839,7 +849,8 @@ var Topology = {
                             }
                             locked = data.locked;
                             self.initNode(); 
-
+                            data.hideRotateCP=true,
+                            data.hideSizeCP=true
                             let data1 = JSON.parse(JSON.stringify(data)) 
                             if(self.banAdd){
                                 if(data1.childStand){                              
@@ -965,6 +976,8 @@ var Topology = {
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                 data2.textMaxLine = 1
+                                                data2.hideRotateCP=true,
+                                                data2.hideSizeCP=true
                                                 data2.childStand = {
                                                     type:"IN",
                                                     wz:num,
@@ -1106,7 +1119,8 @@ var Topology = {
                                                 data2.textRect.ex = data2.textRect.x + data2.textRect.width;
                                                 data2.textRect.ey = data2.textRect.y +data2.textRect.height;
                                                 data2.textMaxLine = 1
-                                                
+                                                data2.hideRotateCP=true,
+                                                data2.hideSizeCP=true
                                                 data2.childStand = {
                                                     type:"OUT",
                                                     wz:num,

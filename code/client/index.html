@@ -1219,6 +1219,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 "background-size": "100% 100%",
                 "background-repeat": "no-repeat",
                 })
+                canvas.locked(2)
+                canvas.scale(1)
             } else {
                 $('#topo_canvas').css({
                     "background-color":"#fff",
@@ -1250,6 +1252,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.left="-10px";
                 document.getElementById(window.canvasNowId).style.top="-10px";
                 parent.$(".navbar-default").hide();
+                canvas.locked(2)
+                canvas.scale(1)
             } else {
                 $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
                     "background-color":"#fff",
