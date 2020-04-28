@@ -817,7 +817,6 @@ function ActionSure(){
                     })
                 }
                 test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
-                console.log( test.rect,"999999999999999999999")
                 let flag 
                 if(window.canvasNowId == "canvas0"){
                     // window.Topology.dblclickNode.data.outNum ++
@@ -1270,7 +1269,6 @@ function ActionSure(){
             }
             operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
         })
-        console.log(operatorInterfaceDataModel,"99999999999")
         $.ajax({
             type:"post",
             dataType: "json",
