@@ -415,7 +415,6 @@ function ruleSure(){
     //参数借口
     let operatorInterfaceDataModels = [] 
     let childList ,coordinate;
-    debugger
     if(window.canvasNowId == "canvas0"){
         childList = Object.values(window.Topology.tools)
         coordinate =JSON.stringify(canvas.data)

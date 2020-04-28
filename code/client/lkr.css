@@ -639,8 +639,7 @@ body{
     margin-left: 30px;
 }
 #ruleMde .left-list-tilte{
-    height: 38px;
-    line-height: 38px;
+    line-height: 50px;
     width: 190px;
     display: inline-block;
     text-align: center;
