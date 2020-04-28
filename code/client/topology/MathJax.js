@@ -150,12 +150,14 @@
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         // Topology.init();
                         dictionary()
-                        $("#dicDiv").show()
+                        parent.$("#dicDiv").show()
 
                     } else {
+                        $(".Frame").hide();
                         parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！</li>`)
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                        parent.$("#dicDiv").show()
                     }
                 }
             })
@@ -185,10 +187,13 @@
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】保存成功！</li>`)
                         parent.toastr.success(`【算法】保存成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                        parent.$("#dicDiv").show()
                     } else {
+                        $(".Frame").hide();
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg}！</li>`)
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                        parent.$("#dicDiv").show()
                     }
                 }
             })
