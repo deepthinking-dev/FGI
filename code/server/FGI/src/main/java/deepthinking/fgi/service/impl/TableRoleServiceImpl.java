@@ -14,6 +14,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -31,7 +33,7 @@ import java.util.stream.Collectors;
  * @data 2020/2/18 16:58
  */
 @Service("tableRoleService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> implements TableRoleService {
 
     private static Logger logger = LoggerFactory.getLogger(TableRoleServiceImpl.class);
@@ -773,14 +775,14 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         });
     }
 
-
+    @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
     @Override
     public List<TableRole> GetAllAlgorithmRule(String groupName) {
         TableRoleCriteria tableRoleCriteria=new TableRoleCriteria();
         tableRoleCriteria.createCriteria().andRolegroupEqualTo(groupName);
         return roleMapper.selectByExample(tableRoleCriteria);
     }
-
+    @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
     @Override
     public AlgorithmRuleSaveDataModel getAlgorithmRuleById(String id) {
         if(id==null||"".equals(id)){
@@ -858,7 +860,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return null;
         }
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel) {
         try {
@@ -892,7 +894,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         }
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean modAlgorithmRule(InterfaceRoleDataModel interfaceRoleDataModel) {
         try {
@@ -947,7 +949,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public OperatorInterfaceDataModel modInterfaceRole(OperatorInterfaceDataModel operatorInterfaceDataModel) {
         try {
@@ -1032,7 +1034,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
         return null;
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean modAlgorithmRuleBase(TableRole tableRole) {
         try{
@@ -1043,7 +1045,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean delAlgorithmRuleById(String Id) {
         if(Id==null||"".equals(Id)||Id.equals("0")){
@@ -1076,7 +1078,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean delTableOperatorinterface(String operatorinterfaceId) {
         if(operatorinterfaceId==null||"".equals(operatorinterfaceId)||operatorinterfaceId.equals("0")){
@@ -1109,7 +1111,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return false;
         }
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean delOneInterfaceRole(String interfaceRoueId) {
         try{
@@ -1129,7 +1131,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         }
 
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean saveNewCoordinate(String coordinateinfo, int roleId) {
         try {
@@ -1146,10 +1148,18 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         }
         return true;
     }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean saveFunAction(List<TableAlgorithmcondition> algorithmconditions,String interfaceParametersID,int interfaceRoleId,String actionRelation) {
         try {
+            //修改动作间关系信息
+            TableInterfacerole interfacerole=interfaceroleMapper.selectByPrimaryKey(interfaceRoleId);
+            if(interfacerole.getParametersid().equals(interfaceParametersID)){
+                interfacerole.setActionrelation(actionRelation);
+            }else if(interfacerole.getPreparametersid().equals(interfaceParametersID)){
+                interfacerole.setPreactionrelation(actionRelation);
+            }
+            interfaceroleMapper.updateByPrimaryKeySelective(interfacerole);
             TableAlgorithmconditionCriteria tableAlgorithmconditionCriteria=new TableAlgorithmconditionCriteria();
             tableAlgorithmconditionCriteria.createCriteria().andInterfaceroleidEqualTo(interfaceRoleId).andInterfaceparametersidEqualTo(interfaceParametersID);
             List<TableAlgorithmcondition> old=algorithmconditionMapper.selectByExample(tableAlgorithmconditionCriteria);
@@ -1198,20 +1208,14 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     algorithmconditionMapper.insert(data);
                 });
             }
-            //修改动作间关系信息
-            TableInterfacerole interfacerole=interfaceroleMapper.selectByPrimaryKey(interfaceRoleId);
-            if(interfacerole.getParametersid().equals(interfaceParametersID)){
-                interfacerole.setActionrelation(actionRelation);
-            }else if(interfacerole.getPreparametersid().equals(interfaceParametersID)){
-                interfacerole.setPreactionrelation(actionRelation);
-            }
-            interfaceroleMapper.updateByPrimaryKeySelective(interfacerole);
         }catch (Exception e){
             logger.error(e.getMessage());
             return false;
         }
         return true;
     }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean updataStatus(String roleId,String status) {
         if(roleId==null||roleId.equals("0")){
