@@ -905,6 +905,14 @@ body .form-input{
     /* height: 100%; */
     color:#fff;
 }
+#ruleAct .ruleInfo .ActContont div span{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 25px;
+    line-height: 25px;
+    width: 85%;
+}
 #ruleAct .ruleContentDiv{
     max-height: 180px;
     overflow: auto;

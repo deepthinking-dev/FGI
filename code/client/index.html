@@ -741,7 +741,7 @@
                         <div class="flex lkr-flex" id="main_canvas" >
                             <div id="canvasList">
                                 <ul>
-                                    <li class="pageson"><span class="canvasLi">canvas0</span></li>
+                                    <li class="pageson"><span class="canvasLi" canvasId="canvas0">画布</span></li>
                                 </ul>
                             </div>
                             <div id="colorDiv">
@@ -798,7 +798,7 @@
                                     </div>
                                 </div>
                                 
-                                <!-- <iframe src="./canvas.html"  id="canvas0" style=" width: 100%; height: 75vh;border: none;"></iframe> -->
+                                <!-- <iframe src="./canvas.html"  canvasId="canvas0" style=" width: 100%; height: 75vh;border: none;"></iframe> -->
                             </div>
                         </div>
                         <div class="props" id="flex_props1">
@@ -1277,12 +1277,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
         parent.toastr.success('检查成功！')
         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
     })
-
-    $('body').on('click','.newBuilt',(e) =>{
-        let leg = $('.lkr-bg-canvas').children().length -1
-            leg++
+    // 新建画布窗口
+    var tiemer = "";
+    var time = 2000;//每次点击三秒后才能再次点击
+    var fun = function bClick(){
+        let leg =Date.now().toString(16).substring(Date.now().toString(16).length-6)      
         let canvas_id = "canvas"+leg
-        var c="<iframe src='./canvas.html' id='canvas"+leg+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
+        var c="<iframe src='./canvas.html' id='"+canvas_id+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
         $(".lkr-bg-canvas").append(c)
         $('.lkr-bg-canvas').children().hide();
         $('#'+canvas_id).show()
@@ -1294,11 +1295,23 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $('#canvasList ul li').siblings().removeClass('pageson');
         }
        
-        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi">${canvas_id}</span> <i class="delCanvas">X</i></li>`)
-    })
+        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">画布</span> <i class="delCanvas">X</i></li>`)  
+        $(".newBuilt").unbind("click");
+        tiemer = setTimeout(function(){
+            $(".newBuilt").click(fun);
+        },time);
+    };
+    $(".newBuilt").click(fun);
+   
+
+
+
+    // $('body').on('click','.newBuilt',(e) =>{
+
+    // })
     $('body').on('click','.canvasLi',(e) =>{
         $('.lkr-bg-canvas').children().hide();
-        let idC = $(e.target).text() 
+        let idC = $(e.target).attr("canvasId")
         $(e.target).parent("li").siblings().removeClass('pageson');
         $(e.target).parent("li").addClass('pageson');
         if(idC == "canvas0"){
@@ -1314,7 +1327,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
     $('body').on('click','.delCanvas',(e) =>{
         let delID = $(e.target).prev().text(); 
-        let showId =$(e.target).parent("li").prev().find("span").text()
+        $(e.target).parent("li").siblings().removeClass('pageson');
+        $(e.target).parent("li").prev().addClass('pageson');
+        let showId =$(e.target).parent("li").prev().find("span").attr("canvasId")
         $(e.target).parent("li").remove();
         var iframe = $('#' + delID).prop('contentWindow');    
         $('#' + delID).attr('src', 'about:blank');       

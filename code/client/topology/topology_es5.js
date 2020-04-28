@@ -1124,6 +1124,55 @@ var Topology = {
                                     canvas.render();
                                 } 
                             }
+                            let ruleType ,editRuleId
+                            if(window.canvasNowId == "canvas0"){
+                                ruleType = window.bigData.ruleType
+                                editRuleId = window.bigData.editRuleId 
+                           }else{
+                                ruleType = parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.ruleType
+                                editRuleId =parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.editRuleId
+                           }  
+                           if(ruleType  == "edit"){
+                                let childList = saveList
+                        
+                                let operatorInterfaceDataModel ={
+                                    algorithmID:data.data.sid,
+                                    id:data.id ,
+                                    interfaceName:data.text,
+                                    roleID:editRuleId,
+                                    tableInterfaceparametersList:[]
+                                }
+                        
+                                childList.children.map(index=>{
+                                    let uuid
+                                    if(index.uuid.indexOf('---') !=-1){
+                                        uuid = index.uuid.substr((index.uuid.indexOf('---')-36),36)
+                                    }else{
+                                        uuid = index.uuid
+                                    }
+                                    let CsObj = {
+                                        id:uuid,
+                                        inorout:index.inorout,
+                                        interfaceid:data.id,
+                                        parametersname:index.varname,
+                                        parameterssources:index.id
+                                    }
+                                    operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
+                                })
+                                console.log(operatorInterfaceDataModel,"99999999999")
+                                $.ajax({
+                                    type:"post",
+                                    dataType: "json",
+                                    url:urlConfig.host+'/algorithmRule/modInterfaceRole',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data:JSON.stringify(operatorInterfaceDataModel),
+                                    success: function(data) {
+                                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
+                                        parent.toastr.success(`【算法参数】修改成功！` )
+                                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                                    }
+                                })
+                           }
                             break;
                         case 'resizeNodes':
                             var child = []     
@@ -1512,8 +1561,8 @@ var Topology = {
                                 success: function(dataAl) {
                                     parent.$(".actionSelected2").empty();
                                     parent.$('.ruleActionZZ').text(dataAl.tableAlgorithm.algorithmauthor)
-                                    parent.$('.ruleActionMC').text(dataAl.tableAlgorithm.algorithmname)
-                                    parent.$('.ruleActionMS').text(dataAl.tableAlgorithm.des)
+                                    parent.$('.ruleActionMC').text(dataAl.tableAlgorithm.algorithmname).attr({"title":dataAl.tableAlgorithm.algorithmname})
+                                    parent.$('.ruleActionMS').text(dataAl.tableAlgorithm.des).attr({"title":dataAl.tableAlgorithm.des})
                                     let str =`` ;
                                     let ruleType ,editRuleId
                                     if(window.canvasNowId == "canvas0"){
@@ -1529,6 +1578,7 @@ var Topology = {
                                             type:"get",
                                             data: {Id: editRuleId},
                                             success(datagz) {
+                                                let isNewSZ = true
                                                 datagz.operatorInterfaceDataModels.map(item=>{
                                                     let nowLists = []
                                                     if(window.canvasNowId == "canvas0"){
@@ -1546,6 +1596,7 @@ var Topology = {
                                                     }
                                                     
                                                     if(item.id == data.id&&item.tableInterfaceparametersList.length >= nowLists.length){
+                                                        isNewSZ =false
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
@@ -1574,6 +1625,7 @@ var Topology = {
                                                        
                                                     }
                                                     if(item.id == data.id&&item.tableInterfaceparametersList.length < nowLists.length){ 
+                                                        isNewSZ =false
                                                         nowLists.map(index =>{                                                           
                                                             str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
                                                             if(index.inorout == 1){
@@ -1591,11 +1643,36 @@ var Topology = {
                                                             } 
                                                                 str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
                                                                 </div>`                                                           
-                                                            
+                                                                parent.$('.ruleContentDiv').html(str)
                                                         }) 
                                                     }
-                                                    
                                                 })
+                                                if(isNewSZ){
+                                                    dataAl.tableFuncs.map(index =>{               
+                                                        str +=`<div class="actionInfo" data-uuid='${index.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
+                                                        if(index.inorout == 1){
+                                                            str+=`<input value="输出" class="actionSelected1" disabled>  `
+                                                        }else{
+                                                            str+= `<input value="输入" class="actionSelected1" disabled>  `
+                                                        }
+                                                            str+=` <input value="${index.parametername}"  class="varNameInput" disabled>`
+                                                        if(index.vartype == 1 || index.vartype == "基本类型"){
+                                                            str+=`<input value="基本类型" class="actionSelected2" disabled>`
+                                                        }else if(index.vartype == 2 || index.vartype == "常量"){
+                                                            str+=`<input value="常量" class="actionSelected2" disabled>`
+                                                        }  else{
+                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                        } 
+                                                            str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
+                                                            <button type="button" onclick="reduceButton(event)">x</button>                                                    
+                                                            </div>`     
+                                                        
+
+                                                        parent.$('.ruleContentDiv').html(str)
+                                                    })
+                                                }
+
+                                                
                                             }
                                         })
                                     }else{  
@@ -2045,8 +2122,8 @@ var Topology = {
             })
             event.dataTransfer.setData('text/plain', JSON.stringify(node.data));
         }else{
-            $('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist =[]
-            $('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist =[]
+            parent.$('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist =[]
+            parent.$('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist =[]
             $.ajax({
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                 data:{algthId:node.id},
@@ -2056,9 +2133,9 @@ var Topology = {
                         
                         if(item.inorout == 0){
                            
-                            $('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist.push(item)
+                            parent.$('#'+window.canvasNowId)[0].contentWindow.Topology.addInlist.push(item)
                         }else{
-                            $('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist.push(item)
+                            parent.$('#'+window.canvasNowId)[0].contentWindow.Topology.addOutlist.push(item)
                         }
             
                     })

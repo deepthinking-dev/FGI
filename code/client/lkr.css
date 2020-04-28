@@ -1133,6 +1133,7 @@ body{
     resize:none;
     width: 320px;
     height:120px;
+    line-height: 25px;
 }
 .navbar-default span{
     line-height: 30px;
