@@ -54,7 +54,7 @@
             opacity: 1 !important;
         }
         .divactive{
-            color: #4cb1ff!important;
+            color: aqua!important;
         }
         #edui1_elementpath,#edui1_wordcount,#edui1_scale{
             display: none;
@@ -64,6 +64,9 @@
         }
         .ztree li span{
             color: #45a1e9;
+        }
+        .aqua{
+            color: aqua;!important;
         }
     </style>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
@@ -1281,6 +1284,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     var tiemer = "";
     var time = 2000;//每次点击三秒后才能再次点击
     var fun = function bClick(){
+        $("#ruleName").val("");
+        $("#ruleRemark").val("");
+        $("#gzGroupName").val("");
         let leg =Date.now().toString(16).substring(Date.now().toString(16).length-6)      
         let canvas_id = "canvas"+leg
         var c="<iframe src='./canvas.html' id='"+canvas_id+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
@@ -2966,8 +2972,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#algorithmPage .left-list-tilte').removeClass("divactive")
         $(e.target).addClass("divactive")
     })
-    $('body').on('click','#rulePage .left-list-tilte',(e) => {
-        $('#rulePage .left-list-tilte').removeClass("divactive")
+    $('body').on('click','#ruleListRight .left-list-tilte',(e) => {
+        $('#ruleListRight .left-list-tilte').removeClass("divactive")
         $(e.target).addClass("divactive")
     })
     //获取规则详情
