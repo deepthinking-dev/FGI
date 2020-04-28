@@ -774,6 +774,7 @@ body .form-input{
     display: inline-block;
     width: 120px;
    text-align: right;
+   margin-right: 10px;
 }
 #sureRule  .ruleContent li input{
     background-image: url(./static/select.png) !important;
