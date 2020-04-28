@@ -366,9 +366,9 @@ var Topology = {
                                 "data": data
                             };
                             if(data.childStand){
-                                $(".menu-a-delete").css("display", "none");
+                                parent.$(".menu-a-delete").css("display", "none");
                             }else{
-                                $(".menu-a-delete").css("display", "block");
+                                parent.$(".menu-a-delete").css("display", "block");
                             }
                             self.initNode();
                             break;
@@ -379,6 +379,7 @@ var Topology = {
                             parent.$("#actionMsgOut").val("");
                             parent.$("#actionMsgIn").show();
                             parent.$("#actionMsgOut").hide();
+                            parent.$(".menu-a-delete").css("display", "block");
                             parent.$("#addActionButton").attr({
                                 actionRelation:"",
                                 preActionRelation:""
@@ -1241,23 +1242,173 @@ var Topology = {
                            }
                             break;
                         case 'resizeNodes':
-                            var child = []     
-                            canvas.data.nodes.map(item => {
-                                if(item.id.indexOf(data[0].id) == 0){
-                                    child.push(item)
-                                
+                            // debugger
+                            console.log(data)
+                            if(!data[0].childStand){
+                                data[0].anchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0;
+                                })
+                                data[0].rotatedAnchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0
+                                })
+                            }
+                            if(data[0].childStand) canvas.lockNodes([data[0]], true)
+                            let nowLists =[]
+                            canvas.data.nodes.map(now=>{
+                                if(now.childStand && data[0].id ==now.childStand.fUUid){
+                                    nowLists.push(now)
                                 }
                             })
-                            console.log(child)
-                            if(child.length > 1 ){
-                                if (data.length === 1 && data[0].name == "combine") {
-                                
-                                }else{    
+                            let in_nums = -1
+                            let out_nums = -1
+                            nowLists.map((item,i) => {
+                                if(item.childStand){
+                                    if( data[0].id ==item.childStand.fUUid){
+                                        if(item.childStand.type =="IN"){
+                                            in_nums++
+                                            item.rect.width = 20
+                                            item.rect.height = 10 
+                                            item.rect.x = data[0].rect.x- item.rect.width
+                                            item.rect.y = data[0].rect.y + in_nums*20 + 10
+                                                                          
+                                            item.rect.ex = item.rect.x  + item.rect.width
+                                            item.rect.ey = item.rect.y + item.rect.height
+                                            item.rect.center.x = item.rect.x+ item.rect.width/2
+                                            item.rect.center.y =item.rect.y  + item.rect.height/2
 
-                                    canvas.combine(child)
-                                    canvas.render()
+                                            item.textRect.x = item.rect.x - 5
+                                            item.textRect.y =  item.rect.y
+                                            item.textRect.width = 10
+                                            item.textRect.height = 5
+                                            item.paddingTopNum = 0
+                                            item.paddingTop = 0
+                                            item.fullIconRect.height = 4
+                                            item.fullTextRect.x = item.rect.ex - item.textRect.height -5
+                                            item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
+                                            item.iconRect.x = item.rect.ex - item.textRect.height -5
+                                            item.iconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
+                                            item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.anchors[0].x = item.rect.x
+                                            item.anchors[0].y =item.rect.center.y 
+                                            item.anchors[1].x =0
+                                            item.anchors[1].y = 0   
+                                            item.anchors[2].x = 0
+                                            item.anchors[2].y = 0                                                                                          
+                                            item.anchors[3].x =0
+                                            item.anchors[3].y = 0
+                                            item.rotatedAnchors[0].x = item.rect.x
+                                            item.rotatedAnchors[0].y =item.rect.center.y 
+                                            item.rotatedAnchors[1].x = 0
+                                            item.rotatedAnchors[1].y =0
+                                            item.rotatedAnchors[2].x = 0
+                                            item.rotatedAnchors[2].y = 0
+                                            item.rotatedAnchors[3].x =0
+                                            item.rotatedAnchors[3].y =0
+                                            item.textMaxLine = 1
+                                            item.hideRotateCP=true,
+                                            item.hideSizeCP=true
+                                            // item.bkType = 0
+                                            // item.fillStyle = "red"
+                                        }else{                                         
+                                            out_nums ++                                            
+                                            item.rect.x = data[0].rect.x +data[0].rect.width
+                                            item.rect.y = data[0].rect.y + out_nums*20 + 10
+                                            item.rect.width = 20
+                                            item.rect.height = 10                                
+                                            item.rect.ex = item.rect.x  + item.rect.width
+                                            item.rect.ey = item.rect.y + item.rect.height
+                                            item.rect.center.x = item.rect.x+ item.rect.width/2
+                                            item.rect.center.y =item.rect.y  + item.rect.height/2
+
+
+                                            item.textRect.x = item.rect.x -5
+                                            item.textRect.y =  item.rect.y
+                                            item.textRect.width = 10
+                                            item.textRect.height = 5
+                                            item.paddingTopNum = 0
+                                            item.paddingTop = 0
+                                            item.fullIconRect.height = 4
+                                            item.fullTextRect.x = item.rect.ex - item.textRect.height -5
+                                            item.fullTextRect.y =  item.rect.y  -item.fullIconRect.height
+                                            item.iconRect.x = item.rect.ex - item.textRect.height -5 
+                                            item.iconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
+                                            item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
+                                            item.textMaxLine = 1
+                                            item.anchors[0].x = 0
+                                            item.anchors[0].y =0
+                                            item.anchors[1].x =0
+                                            item.anchors[1].y = 0   
+                                            item.anchors[2].x = item.rect.ex
+                                            item.anchors[2].y = item.rect.center.y                                                                                            
+                                            item.anchors[3].x =0
+                                            item.anchors[3].y = 0
+                                            item.rotatedAnchors[0].x = 0
+                                            item.rotatedAnchors[0].y =0
+                                            item.rotatedAnchors[1].x = 0
+                                            item.rotatedAnchors[1].y =0
+                                            item.rotatedAnchors[2].x = item.rect.ex
+                                            item.rotatedAnchors[2].y = item.rect.center.y
+                                            item.rotatedAnchors[3].x =0
+                                            item.rotatedAnchors[3].y =0
+                                            item.hideRotateCP=true,
+                                            item.hideSizeCP=true
+                                            // item.bkType = 0
+                                            // item.fillStyle = "red"
+                                        }
+                                        canvas.render()                                       
+                                    }
                                 }
-                            }
+                            })
+                            canvas.data.lines.map(item => {
+                                let nodesa = canvas.data.nodes.filter(obj => {
+                                    if(item.from.id == obj.id) return obj
+                                })[0]
+                                item.from.x = nodesa.rotatedAnchors[2].x
+                                item.from.y = nodesa.rotatedAnchors[2].y
+
+                                let nodesa1 = canvas.data.nodes.filter(obj => {
+                                    if(item.to.id == obj.id) return obj
+                                })[0]
+                                item.to.x = nodesa1.rotatedAnchors[0].x
+                                item.to.y = nodesa1.rotatedAnchors[0].y
+                                // if(item.from.id.indexOf(data[0].id) != -1){
+                                //    console.log(item.from.id)
+                                //     let nodesa = canvas.data.nodes.filter(obj => {
+                                //         console.log(obj.id)
+                                //         if(item.from.id == obj.id) return obj
+                                //     })[0]
+                                //     item.from.x = nodesa.rotatedAnchors[2].x
+                                //     item.from.y = nodesa.rotatedAnchors[2].y
+                                // }
+                                // if(item.to.id.indexOf(data[0].id) != -1){
+                                //     let nodesa = canvas.data.nodes.filter(obj => {
+                                //         if(item.to.id == obj.id) return obj
+                                //     })[0]
+                                //     item.to.x = nodesa.rotatedAnchors[0].x
+                                //     item.to.y = nodesa.rotatedAnchors[0].y
+                                // }
+                            })
+                            //var child = []     
+                            // canvas.data.nodes.map(item => {
+                            //     if(item.id.indexOf(data[0].id) == 0){
+                            //         child.push(item)
+                                
+                            //     }
+                            // })
+                            // console.log(child)
+                            // if(child.length > 1 ){
+                            //     if (data.length === 1 && data[0].name == "combine") {
+                                
+                            //     }else{    
+
+                            //         canvas.combine(child)
+                            //         canvas.render()
+                            //     }
+                            // }
                         break
                         case 'lockNodes':
                            if(data.nodes[0].childStand){

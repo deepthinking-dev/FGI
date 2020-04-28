@@ -3026,7 +3026,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 url: urlConfig.host + '/module/GetAllModule',
                 type: "get",
                 success(res){
-                    modelSelectList=`<select class="moduleTypeSelect" onmousedown="if(this.options.length>4){this.size=4}" οnblur="this.size=0" οnchange="this.size=0">`;
+                    modelSelectList=`<select class="moduleTypeSelect">`;
                     res.map(s=>{
                         modelSelectList+=`<option value="${s.modulename}">${s.modulename}</option>`
                     })
