@@ -44,8 +44,9 @@ $(function(){
                     parent.$("#actionMsgIn").val(parent.$("#addActionButton").attr("actionRelation"))
                     var from_name = parent.$("#addActionButton").attr("from_name");
                     var from_id = parent.$("#addActionButton").attr("from_id");
-                    resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
-                        parent.$("#actionInDiv").append(`
+                    if(window.top.canvasNowId == "canvas0"){
+                        resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
+                            parent.$("#actionInDiv").append(`
                               <div style="margin: 10px 0">
                                    <i>${i+1}</i>
                                    <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
@@ -63,20 +64,46 @@ $(function(){
                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                               </div>
                          `)
-                    })
-                    resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t, i) => {
-                        parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
-                    })
+                        })
+                        resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t, i) => {
+                            parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                        })
+                    } else {
+                        window.top.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t,i) => {
+                            parent.$("#actionInDiv").append(`
+                              <div style="margin: 10px 0">
+                                   <i>${i+1}</i>
+                                   <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                                   <span>行为</span><select class="xwSelect_in">
+                                   <option value=">">></option>
+                                   <option value="<"><</option>
+                                   <option value="=">=</option>
+                                   <option value=">=">>=</option>
+                                   <option value="<="><=</option>
+                                   <option value="!=">!=</option>
+                                   <option value="assignment">赋值</option>
+                               </select>
+                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
+                              </div>
+                         `)
+                        })
+                        window.top.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.algorithmconditions.map((t, i) => {
+                            parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                        })
+                    }
                 } else {
                     var from_name = parent.$("#addActionButton").attr("from_name");
                     var from_id = parent.$("#addActionButton").attr("from_id");
-                    globalActionDatas.map(s => {
-                        if (s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")) {
-                            try {
-                                var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                                parent.$("#actionInDiv").empty();
-                                lineDatas.map((t,i) => {
-                                    parent.$("#actionInDiv").append(`
+                    if(window.top.canvasNowId == "canvas0"){
+                        globalActionDatas.map(s => {
+                            if (s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")) {
+                                try {
+                                    var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                    parent.$("#actionInDiv").empty();
+                                    lineDatas.map((t,i) => {
+                                        parent.$("#actionInDiv").append(`
                                           <div style="margin: 10px 0">
                                                <i>${i+1}</i>
                                                <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
@@ -94,15 +121,50 @@ $(function(){
                                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
                                           </div>
                                     `)
-                                })
-                                lineDatas.map((t, i) => {
-                                    parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
-                                })
-                            } catch (e) {
+                                    })
+                                    lineDatas.map((t, i) => {
+                                        parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                                    })
+                                } catch (e) {
 
+                                }
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        window.top.frames[canvasNowId].contentWindow.globalActionDatas.map(s => {
+                            if (s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")) {
+                                try {
+                                    var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                    parent.$("#actionInDiv").empty();
+                                    lineDatas.map((t,i) => {
+                                        parent.$("#actionInDiv").append(`
+                                          <div style="margin: 10px 0">
+                                               <i>${i+1}</i>
+                                               <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                                               <span>行为</span><select class="xwSelect_in">
+                                               <option value=">">></option>
+                                               <option value="<"><</option>
+                                               <option value="=">=</option>
+                                               <option value=">=">>=</option>
+                                               <option value="<="><=</option>
+                                               <option value="!=">!=</option>
+                                               <option value="assignment">赋值</option>
+                                           </select>
+                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">x</button>
+                                          </div>
+                                    `)
+                                    })
+                                    lineDatas.map((t, i) => {
+                                        parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                                    })
+                                } catch (e) {
+
+                                }
+                            }
+                        })
+                    }
                 }
         } else {
             parent.$("#actionInDiv").hide();
@@ -121,8 +183,9 @@ $(function(){
                                     optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                                 })
                                 parent.$("#actionOutDiv").empty();
-                                resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
-                                    parent.$("#actionOutDiv").append(`
+                                if(window.top.canvasNowId == "canvas0"){
+                                    resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
+                                        parent.$("#actionOutDiv").append(`
                                           <div style="margin: 10px 0">
                                                <i>${i+1}</i>
                                                <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
@@ -140,10 +203,35 @@ $(function(){
                                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                           </div>
                                  `)
-                                })
-                                resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
-                                    parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                                })
+                                    })
+                                    resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
+                                        parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                                    })
+                                } else {
+                                    window.top.frames[canvasNowId].contentWindow.resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
+                                        parent.$("#actionOutDiv").append(`
+                                          <div style="margin: 10px 0">
+                                               <i>${i+1}</i>
+                                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                               <span>行为</span><select class="xwSelect_out">
+                                               <option value=">">></option>
+                                               <option value="<"><</option>
+                                               <option value="=">=</option>
+                                               <option value=">=">>=</option>
+                                               <option value="<="><=</option>
+                                               <option value="!=">!=</option>
+                                               <option value="assignment">赋值</option>
+                                           </select>
+                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                          </div>
+                                 `)
+                                    })
+                                    window.top.frames[canvasNowId].contentWindow.resCurrentLineData.dataOut.interfaceRoleDataModels.algorithmconditions.map((t,i)=>{
+                                        parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                                    })
+                                }
                             }
                         })
                     }
@@ -157,12 +245,13 @@ $(function(){
                             optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
                         })
                         parent.$("#actionOutDiv").empty();
-                        globalActionDatas.map(s=>{
-                            if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
-                                try {
-                                    var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
-                                    lineDatas.map((t,i)=>{
-                                        parent.$("#actionOutDiv").append(`
+                        if(window.top.canvasNowId == "canvas0"){
+                            globalActionDatas.map(s=>{
+                                if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
+                                    try {
+                                        var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                                        lineDatas.map((t,i)=>{
+                                            parent.$("#actionOutDiv").append(`
                                                <div style="margin: 10px 0">
                                                    <i>${i+1}</i>
                                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
@@ -180,16 +269,51 @@ $(function(){
                                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
                                               </div>
                                     `)
-                                    })
-                                    lineDatas.map((t,i)=>{
-                                        parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
-                                        parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
-                                    })
-                                }catch (e) {
+                                        })
+                                        lineDatas.map((t,i)=>{
+                                            parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                            parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                                        })
+                                    }catch (e) {
 
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        } else {
+                            window.top.frames[canvasNowId].contentWindow.globalActionDatas.map(s=>{
+                                if(s.id == parent.$("#addActionButton").attr("out_small") + "AND" + parent.$("#addActionButton").attr("in_small")){
+                                    try {
+                                        var lineDatas = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                                        lineDatas.map((t,i)=>{
+                                            parent.$("#actionOutDiv").append(`
+                                               <div style="margin: 10px 0">
+                                                   <i>${i+1}</i>
+                                                   <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                                   <span>行为</span><select class="xwSelect_out">
+                                                   <option value=">">></option>
+                                                   <option value="<"><</option>
+                                                   <option value="=">=</option>
+                                                   <option value=">=">>=</option>
+                                                   <option value="<="><=</option>
+                                                   <option value="!=">!=</option>
+                                                   <option value="assignment">赋值</option>
+                                               </select>
+                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                              </div>
+                                    `)
+                                        })
+                                        lineDatas.map((t,i)=>{
+                                            parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources);
+                                            parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior);
+                                        })
+                                    }catch (e) {
+
+                                    }
+                                }
+                            })
+                        }
                     }
                 })
             }
