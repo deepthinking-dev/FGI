@@ -453,28 +453,51 @@ $(function(){
     $('body').on('click','#addAction',(e) => {
         $("#actionDiv").hide();
         $("#actionOutDiv").hide()
-        if($("#addActionButton").attr("resdata")){//修改动作
+        if(parent.$("#addActionButton").attr("resdata")){//修改动作
             var sendDataIn = [];
             var sendDataOut = [];
-            $('#actionInDiv div').each(function (i,v) {
-                let obj = {
-                    "behavior": $(this).find(".xwSelect_in").val(),
-                    "expression": $(this).find(".bds_in").val(),
-                    "id":$(v).attr("actionId"),
-                    "interfaceparametersid":$("#addActionButton").attr("in_small"),
-                    "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
-                    "remark": "",
-                    "valuesources":Number($(this).find(".xwzly_in").attr("resource")),
-                    "xh":$(this).find("i").text()
-                };
-                sendDataIn.push(obj)
-            })
-            var sendDataAll = {
-                algorithmconditions:sendDataIn,
-                interfaceParametersID:$("#addActionButton").attr("in_small"),
-                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
-                actionRelation:$("#actionMsgIn").val()
+            if(window.top.canvasNowId == "canvas0"){
+                parent.$('#actionInDiv div').each(function (i,v) {
+                    let obj = {
+                        "behavior": $(this).find(".xwSelect_in").val(),
+                        "expression": $(this).find(".bds_in").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("in_small"),
+                        "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources":Number($(this).find(".xwzly_in").attr("resource")),
+                        "xh":$(this).find("i").text()
+                    };
+                    sendDataIn.push(obj)
+                })
+                var sendDataAll = {
+                    algorithmconditions:sendDataIn,
+                    interfaceParametersID:$("#addActionButton").attr("in_small"),
+                    interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                    actionRelation:$("#actionMsgIn").val()
+                }
+            } else {
+                parent.$('#actionInDiv div').each(function (i,v) {
+                    let objs = {
+                        "behavior": $(this).find(".xwSelect_in").val(),
+                        "expression": $(this).find(".bds_in").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("in_small"),
+                        "interfaceroleid": window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources":Number($(this).find(".xwzly_in").attr("resource")),
+                        "xh":$(this).find("i").text()
+                    };
+                    sendDataIn.push(objs)
+                })
+                var sendDataAll = {
+                    algorithmconditions:sendDataIn,
+                    interfaceParametersID:$("#addActionButton").attr("in_small"),
+                    interfaceRoleId:window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                    actionRelation:$("#actionMsgIn").val()
+                }
             }
+
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
                 data:JSON.stringify(sendDataAll),
@@ -483,25 +506,48 @@ $(function(){
                 contentType:"application/json",
                 success(res) {}
             })
-            $('#actionOutDiv div').each(function (i,v) {
-                let obj = {
-                    "behavior": $(this).find(".xwSelect_out").val(),
-                    "expression": $(this).find(".bds_out").val(),
-                    "id":$(v).attr("actionId"),
-                    "interfaceparametersid":$("#addActionButton").attr("out_small"),
-                    "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
-                    "remark": "",
-                    "valuesources":Number($(this).find(".xwzly_out").val()),
-                    "xh":$(this).find("i").text()
-                };
-                sendDataOut.push(obj)
-            })
-            var sendDataAllOut = {
-                algorithmconditions:sendDataOut,
-                interfaceParametersID:$("#addActionButton").attr("out_small"),
-                interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
-                actionRelation:$("#actionMsgOut").val()
+            if(window.top.canvasNowId == "canvas0"){
+                parent.$('#actionOutDiv div').each(function (i,v) {
+                    let obj = {
+                        "behavior": $(this).find(".xwSelect_out").val(),
+                        "expression": $(this).find(".bds_out").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("out_small"),
+                        "interfaceroleid": resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources":Number($(this).find(".xwzly_out").val()),
+                        "xh":$(this).find("i").text()
+                    };
+                    sendDataOut.push(obj)
+                })
+                var sendDataAllOut = {
+                    algorithmconditions:sendDataOut,
+                    interfaceParametersID:$("#addActionButton").attr("out_small"),
+                    interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                    actionRelation:$("#actionMsgOut").val()
+                }
+            } else {
+                parent.$('#actionOutDiv div').each(function (i,v) {
+                    let obja = {
+                        "behavior": $(this).find(".xwSelect_out").val(),
+                        "expression": $(this).find(".bds_out").val(),
+                        "id":$(v).attr("actionId"),
+                        "interfaceparametersid":$("#addActionButton").attr("out_small"),
+                        "interfaceroleid": window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "remark": "",
+                        "valuesources":Number($(this).find(".xwzly_out").val()),
+                        "xh":$(this).find("i").text()
+                    };
+                    sendDataOut.push(obja)
+                })
+                var sendDataAllOut = {
+                    algorithmconditions:sendDataOut,
+                    interfaceParametersID:$("#addActionButton").attr("out_small"),
+                    interfaceRoleId:window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                    actionRelation:$("#actionMsgOut").val()
+                }
             }
+
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
                 data:JSON.stringify(sendDataAllOut),
