@@ -1712,7 +1712,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 remark:'',
                 // id:null
             }
-            console.log(param)
             if(flag){
                 $.ajax({
                     url:urlConfig.host+'/module/addModule',
@@ -1781,7 +1780,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     id:items.attr("id") || 0,
                     moduleid:items.attr("moduleid") || window.bigData.editmoduleId
                 })
-                console.log(mouldParam);
             })
 
             let param = {
@@ -1793,7 +1791,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 // sqlurl:null,
                 remark:'',
             }
-            console.log(param)
             if(flag){
                 $.ajax({
                     url:urlConfig.host+'/module/modModuleById',
@@ -2446,7 +2443,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data:{algthId:s} ,
             type:"get",
             success(data) {
-                console.log(data);
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $("#group").val("");
                     $("#group").val(data.tableAlgorithm.algorithmgroup)
@@ -3462,7 +3458,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             data: {roleId:id,status:status},
             success(data) {
-                console.log(data);
                 if(status == "发布"){
                     parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
                     parent.toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
@@ -3508,13 +3503,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 parent.$("#moduleGroupDelete").hide();
                 var type = parent.$("#moduleGroupDeleteYes").attr("type");
-                console.log(type);
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',
                     type:"get",
                     data: {type :type},
                     success(data) {
-                        console.log(type);
                         $("#groupTable").empty()
                         if(data.length){
                             $("#groupTable").append(`<thead>
