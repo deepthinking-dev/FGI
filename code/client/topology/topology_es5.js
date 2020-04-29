@@ -1415,7 +1415,7 @@ var Topology = {
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
-                            data.name = "line"
+                            data.name = "polyline"
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
