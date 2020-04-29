@@ -1290,7 +1290,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     // 新建画布窗口
     var tiemer = "";
-    var time = 2000;//每次点击三秒后才能再次点击
+    var time = 3000;//每次点击三秒后才能再次点击
     var fun = function bClick(){
         $("#ruleName").val("");
         $("#ruleRemark").val("");
@@ -1350,7 +1350,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     
     $('body').on('click','.delCanvas',(e) =>{
-        let delID = $(e.target).prev().text(); 
+        let delID = $(e.target).prev().attr("canvasid")
         $(e.target).parent("li").siblings().removeClass('pageson');
         $(e.target).parent("li").prev().addClass('pageson');
         let showId =$(e.target).parent("li").prev().find("span").attr("canvasId")
@@ -1364,6 +1364,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#' + delID).remove(); 
         $('.lkr-bg-canvas').children().hide();
         let leg = $('.lkr-bg-canvas').children().length
+      
         if(leg > 1){
             $('#'+showId).show()
             window.canvasNowId =showId
