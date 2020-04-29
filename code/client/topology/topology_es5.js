@@ -562,7 +562,7 @@ var Topology = {
                                                 parent.$(".xwzly_out").off("change").on("change",(e)=>{
                                                     if($(e.target).find('option:selected').attr('type') == 3){
                                                         $(e.target).next().next().empty();
-                                                        $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
+                                                        $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
                                                     } else {
                                                         $(e.target).next().next().empty();
                                                         $(e.target).next().next().append(`<option value=">">></option>
@@ -572,6 +572,16 @@ var Topology = {
                                <option value="<="><=</option>
                                <option value="!=">!=</option>
                                <option value="assignment">赋值</option>`)
+                                                    }
+                                                })
+                                                parent.$(".xwzly_out").each((i,s)=>{
+                                                    if($(s).find('option:selected').attr('type') == 3){
+                                                        try {
+                                                            $(s).next().next().empty();
+                                                            $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                                                        }catch (e) {
+                                                            console.log(e);
+                                                        }
                                                     }
                                                 })
                                             }
@@ -648,16 +658,26 @@ var Topology = {
                                                     parent.$(".xwzly_out").off("change").on("change",(e)=>{
                                                         if($(e.target).find('option:selected').attr('type') == 3){
                                                             $(e.target).next().next().empty();
-                                                            $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
+                                                            $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
                                                         } else {
                                                             $(e.target).next().next().empty();
                                                             $(e.target).next().next().append(`<option value=">">></option>
-                               <option value="<"><</option>
-                               <option value="=">=</option>
-                               <option value=">=">>=</option>
-                               <option value="<="><=</option>
-                               <option value="!=">!=</option>
-                               <option value="assignment">赋值</option>`)
+                                                               <option value="<"><</option>
+                                                               <option value="=">=</option>
+                                                               <option value=">=">>=</option>
+                                                               <option value="<="><=</option>
+                                                               <option value="!=">!=</option>
+                                                               <option value="assignment">赋值</option>`)
+                                                        }
+                                                    })
+                                                    parent.$(".xwzly_out").each((i,s)=>{
+                                                        if($(s).find('option:selected').attr('type') == 3){
+                                                            try {
+                                                                $(s).next().next().empty();
+                                                                $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                                                            }catch (e) {
+                                                                console.log(e);
+                                                            }
                                                         }
                                                     })
                                                 }

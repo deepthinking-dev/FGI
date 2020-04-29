@@ -116,7 +116,7 @@ $(function(){
                         parent.$(".xwzly_out").off("change").on("change",(e)=>{
                             if($(e.target).find('option:selected').attr('type') == 3){
                                 $(e.target).next().next().empty();
-                                $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
+                                $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
                             } else {
                                 $(e.target).next().next().empty();
                                 $(e.target).next().next().append(`<option value=">">></option>
