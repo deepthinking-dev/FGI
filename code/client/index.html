@@ -3077,6 +3077,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(e.target).addClass("divactive")
     })
     $('body').on('click','#ruleListRight .left-list-tilte',(e) => {
+        if(window.canvasNowId == "canvas0" && !window.isRuleNow){
+            return false
+        }
+        if (window.frames[canvasNowId] && window.frames[canvasNowId].contentWindow.canvasNowId != "canvas0"  && !window.frames[canvasNowId].contentWindow.isRuleNow) {
+            return false
+        }
         $('#ruleListRight .left-list-tilte').removeClass("divactive")
         $(e.target).addClass("divactive")
     })
