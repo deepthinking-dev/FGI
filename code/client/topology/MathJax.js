@@ -60,7 +60,6 @@
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
-        debugger
         if($('#AlgorithmnameY').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
             parent.toastr.info(`【算法】请填写算法名称！` )
@@ -927,7 +926,6 @@ function ActionSure(){
    let UPdataList = []
    let AddList = []
    let DelList = []
-   debugger
     //判断修改，新增，删除数据
     for(let i =0;i< actionInfoNum.length ;i++){
         let UPFlag = false

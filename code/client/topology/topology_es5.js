@@ -349,15 +349,9 @@ var Topology = {
                 canvas.options.hideSizeCP = true
                 canvas.options.hideInput = true
                 canvas.disableScale =true
-                // window.onload = function(){
-                //     let canvas1 = parent.document.getElementById('' + canvasId).contentWindow
-                //     let embadBig = canvas1.document.getElementById('topo_canvas')
-                //     canvas = new Le5leTopology.Topology('topo_canvas', canvasOptions);
-                // }
-             
                 // 监听画布
                 function onMessage(event, data) {
-                    //console.log(event,data)
+
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -797,7 +791,6 @@ var Topology = {
                             })
                             break    
                         case 'moveOutNode':
-                            console.log(data)
                             if(editGzType == false){
                                 editGzType = true;
                             }
@@ -1201,9 +1194,6 @@ var Topology = {
                                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.id] = saveList
                                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes =[data]
                                     }
-                                   
-                                    // push(saveList)
-                                    console.log(canvas.data.nodes)
                                     canvas.render();
                                 } 
                             }
@@ -1242,7 +1232,6 @@ var Topology = {
                                     }
                                     operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
                                 })
-                                console.log(operatorInterfaceDataModel,"99999999999")
                                 $.ajax({
                                     type:"post",
                                     dataType: "json",
@@ -1258,8 +1247,6 @@ var Topology = {
                            }
                             break;
                         case 'resizeNodes':
-                            // debugger
-                            console.log(data)
                             if(!data[0].childStand){
                                 data[0].anchors.map((obj,i) => {
                                     obj.x = 0;
@@ -1391,40 +1378,7 @@ var Topology = {
                                 })[0]
                                 item.to.x = nodesa1.rotatedAnchors[0].x
                                 item.to.y = nodesa1.rotatedAnchors[0].y
-                                // if(item.from.id.indexOf(data[0].id) != -1){
-                                //    console.log(item.from.id)
-                                //     let nodesa = canvas.data.nodes.filter(obj => {
-                                //         console.log(obj.id)
-                                //         if(item.from.id == obj.id) return obj
-                                //     })[0]
-                                //     item.from.x = nodesa.rotatedAnchors[2].x
-                                //     item.from.y = nodesa.rotatedAnchors[2].y
-                                // }
-                                // if(item.to.id.indexOf(data[0].id) != -1){
-                                //     let nodesa = canvas.data.nodes.filter(obj => {
-                                //         if(item.to.id == obj.id) return obj
-                                //     })[0]
-                                //     item.to.x = nodesa.rotatedAnchors[0].x
-                                //     item.to.y = nodesa.rotatedAnchors[0].y
-                                // }
                             })
-                            //var child = []     
-                            // canvas.data.nodes.map(item => {
-                            //     if(item.id.indexOf(data[0].id) == 0){
-                            //         child.push(item)
-                                
-                            //     }
-                            // })
-                            // console.log(child)
-                            // if(child.length > 1 ){
-                            //     if (data.length === 1 && data[0].name == "combine") {
-                                
-                            //     }else{    
-
-                            //         canvas.combine(child)
-                            //         canvas.render()
-                            //     }
-                            // }
                         break
                         case 'lockNodes':
                            if(data.nodes[0].childStand){
@@ -1644,9 +1598,7 @@ var Topology = {
                                     return
                                 }
                             }else{
-                                console.log(parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes)
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
-
                                 if( data.nodes == null && data.lines.length == 0){
                                     parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
@@ -2343,7 +2295,6 @@ var Topology = {
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                 data:{algthId:node.id},
                 success: function(data) {
-                    console.log(data);
                     data.tableFuncs.map((item) =>{
                         if(item.inorout == 0){
                             Topology.addInlist.push(item)
@@ -2362,7 +2313,6 @@ var Topology = {
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                 data:{algthId:node.id},
                 success: function(data) {
-                    console.log(data);
                     data.tableFuncs.map((item) =>{
                         
                         if(item.inorout == 0){
