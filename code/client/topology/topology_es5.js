@@ -1588,6 +1588,19 @@ var Topology = {
                                 }
                                 return flag
                             }
+                            let ruleType
+                            if(window.canvasNowId == "canvas0"){
+                                ruleType =window.bigData.ruleType
+                            }else{
+                                ruleType =window.frames[canvasNowId].contentWindow.bigData.ruleType
+                            }
+                            if(ruleType== "edit"){
+                                if(window.canvasNowId == "canvas0"){
+                                    window.isRuleNow = false
+                                }else{
+                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                }
+                            }
                             break;
                         case 'delete':
                             if(window.canvasNowId == "canvas0"){
