@@ -970,14 +970,14 @@ var Topology = {
                                                     type = "常量"
                                                 }
                                                 if(item.vartype == 3){
-                                                    type ="对象"
+                                                    type ="模型"
                                                 }
                                                 
                                                 switch (type) {
                                                     case '常量':
                                                         fillStyle = '#0eff23';
                                                         break;
-                                                    case '对象':
+                                                    case '模型':
                                                         fillStyle = '#ff00e7';
                                                         break;
                                                     case 'int':
@@ -1135,13 +1135,13 @@ var Topology = {
                                                     type = "常量"
                                                 }
                                                 if(item.vartype == 3){
-                                                    type ="对象"
+                                                    type ="模型"
                                                 }
                                                 switch (type) {
                                                     case '常量':
                                                         fillStyle = '#0eff23';
                                                         break;
-                                                    case '对象':
+                                                    case '模型':
                                                         fillStyle = '#ff00e7';
                                                         break;
                                                     case 'int':
@@ -1539,7 +1539,7 @@ var Topology = {
                                             case '常量':
                                                 strokeStyle = '#0eff23';
                                                 break;
-                                            case '对象':
+                                            case '模型':
                                                 strokeStyle = '#ff00e7';
                                                 break;
                                             case 'int':
@@ -1933,7 +1933,7 @@ var Topology = {
                                                                     }else if(index.vartype == 2 || index.vartype == "常量"){
                                                                         str+=`<input value="常量" class="actionSelected2" disabled>`
                                                                     }  else{
-                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                        str+=`<input value="模型" class="actionSelected2" disabled>`
                                                                     } 
                                                                         str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`
                                                                     if(inter.remark == "xin"){
@@ -1963,7 +1963,7 @@ var Topology = {
                                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
                                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
                                                             }  else{
-                                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                str+=`<input value="模型" class="actionSelected2" disabled>`
                                                             } 
                                                                 str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`  
                                                                 if(index.remark == "xin"){
@@ -1988,7 +1988,7 @@ var Topology = {
                                                         }else if(index.vartype == 2 || index.vartype == "常量"){
                                                             str+=`<input value="常量" class="actionSelected2" disabled>`
                                                         }  else{
-                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                            str+=`<input value="模型" class="actionSelected2" disabled>`
                                                         } 
                                                             str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
                                                                <button type="button" onclick="reduceButton(event)">x</button>                                                    
@@ -2023,7 +2023,7 @@ var Topology = {
                                                 }else if(index.vartype == "常量"||  index.vartype == 2){
                                                     str+=`<input value="常量" class="actionSelected2" disabled>`
                                                 } else{
-                                                    str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                    str+=`<input value="模型" class="actionSelected2" disabled>`
                                                 } 
                                                 str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
                                                 <button type="button" onclick="reduceButton(event)">x</button>                                               
@@ -2041,7 +2041,7 @@ var Topology = {
                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
                                             }  else{
-                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                str+=`<input value="模型" class="actionSelected2" disabled>`
                                             } 
                                                 str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
                                                 </div>`              
@@ -2057,7 +2057,7 @@ var Topology = {
                                             $("#varTypeInput").val("常量")
                                         }
                                         if($(".actionSelected2").val() == "3"){
-                                            $("#varTypeInput").val("对象")
+                                            $("#varTypeInput").val("模型")
                                         }
                                         if($(".actionSelected2").val() == "1"){
                                             $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))

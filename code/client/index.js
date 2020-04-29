@@ -140,13 +140,13 @@ $(function(){
         debugger
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
-                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】行为值来源为对象才能赋值！ </li>`)
-                parent.toastr.info(`【算法】行为值来源为对象才能赋值！` )
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】行为值来源为模型才能赋值！ </li>`)
+                parent.toastr.info(`【算法】行为值来源为模型才能赋值！` )
                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                 return false
             }
         }
-        if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') == "3" && $(e.target).parent().children('.xwSelect_out').val() == "assignment"){//对象&&赋值
+        if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') == "3" && $(e.target).parent().children('.xwSelect_out').val() == "assignment"){//模型&&赋值
             currentActionInput = $(e.target)
             var xwid = $(e.target).parent().children('.xwzly_out').val();
             $.ajax({

@@ -734,7 +734,7 @@ function ActionSure(){
                     case '常量':
                         fillStyle = '#0eff23';
                         break;
-                    case '对象':
+                    case '模型':
                         fillStyle = '#ff00e7';
                         break;
                     case 'int':
@@ -1370,7 +1370,7 @@ function ruleAddButtonS(){
                                 $(e.target).parent().attr("data-name",item.varname)
                             }
                             if(item.vartype == "3"){
-                                $(e.target).parent().children('.actionSelected2').val("对象")
+                                $(e.target).parent().children('.actionSelected2').val("模型")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)
