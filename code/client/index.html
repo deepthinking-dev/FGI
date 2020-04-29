@@ -504,7 +504,7 @@
                 <input id="AlgorithmnameY" type="text" maxlength="200">
             </div>
             <div>
-                <span class="form-span">分组</span>
+                <span class="form-span">分组<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
                 <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" readonly placeholder="请双击选择分组">
             </div>
             <!-- <div class="AlgorithInput">
@@ -742,7 +742,7 @@
                         <div class="flex lkr-flex" id="main_canvas" >
                             <div id="canvasList">
                                 <ul>
-                                    <li class="pageson"><span class="canvasLi" canvasId="canvas0">画布</span></li>
+                                    <li class="pageson"><span class="canvasLi" canvasId="canvas0">画布1</span></li>
                                 </ul>
                             </div>
                             <div id="colorDiv">
@@ -1016,7 +1016,7 @@
                         <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px" maxlength="500">
                     </div>
                     <div>
-                        <span>分组</span><input readonly type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
+                        <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input readonly type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
                     </div>
                     <input type="text" value="" id="zdStatus" style="display: none">
                 </div>
@@ -1309,8 +1309,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }else{
             $('#canvasList ul li').siblings().removeClass('pageson');
         }
-       
-        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">画布</span> <i class="delCanvas">X</i></li>`)  
+        let canvasNum = $("#canvasList ul li").length
+        let newCanvasName = "画布"+ canvasNum
+        $("#canvasList ul li").each((i,v) => {
+            let items = $(v)
+            canvasName = items.children(".canvasLi").text()
+            if(canvasName == newCanvasName){
+                canvasNum ++ 
+                newCanvasName = "画布"+ canvasNum
+            }
+        })
+        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">${newCanvasName}</span> <i class="delCanvas">X</i></li>`)  
         $(".newBuilt").unbind("click");
         tiemer = setTimeout(function(){
             $(".newBuilt").click(fun);
@@ -1396,7 +1405,20 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     
     $('body').on('click','.clearCanvas',(e) =>{
-        location.reload();
+        if(window.canvasNowId == "canvas0"){
+            window.canvas.data.nodes = []
+            window.canvas.data.lines = []
+            window.Topology.tools = {}
+            window.globalActionDatas =[]
+            canvas.render();
+        }else{
+            window.frames[canvasNowId].contentWindow.canvas.data.nodes = []
+            window.frames[canvasNowId].contentWindow.canvas.data.lines = []
+            window.frames[canvasNowId].contentWindow.Topology.tools = {}
+            window.frames[canvasNowId].contentWindow.globalActionDatas =[]
+            window.frames[canvasNowId].contentWindow.canvas.render();
+        }
+        //location.reload();
     })
     function changeVarType(e){
         if(e.target.value == "2"){

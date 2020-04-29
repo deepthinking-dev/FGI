@@ -60,18 +60,19 @@
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
-        if($('#groupGs').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
-            toastr.info(`【算法】分组不能为空！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false;
-        }
         if($('#AlgorithmnameY').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
             parent.toastr.info(`【算法】请填写算法名称！` )
             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             return false;
         }
+        if($('#groupGs').val() == ""){
+            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
+            toastr.info(`【算法】分组不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
+       
         if($('#MathInput').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写公式！</li>`)
             parent.toastr.info(`【算法】请填写公式！` )
@@ -124,6 +125,11 @@
                 }
                 tableF.push(obj)
             }
+        }else{
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写公式！</li>`)
+            parent.toastr.info(`【算法】请填写公式！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+            return false;
         }
         if(window.bigData.formulaType == 'edit'){
             tableAl.algorithmauthor = $('#gsName').val();

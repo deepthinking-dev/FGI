@@ -672,12 +672,6 @@ $(function(){
         $("#editDicTitle").text("修改算法")
     }) 
     $('body').on('click','#editDicYes',(e) => {
-        if($("#group").val() == ""){
-            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】分组不能为空！ </li>`)
-            parent.toastr.info(`【算法】分组不能为空！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false;
-        }
         let name = $("#editDicName").val();
         var flag = true;
         if(name == ""){
@@ -686,6 +680,13 @@ $(function(){
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
+        if($("#group").val() == ""){
+            parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】分组不能为空！ </li>`)
+            parent.toastr.info(`【算法】分组不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
+      
         let des =  $("#editDicDes").val();
         let dataAll = {
             "tableAlgorithm": {
