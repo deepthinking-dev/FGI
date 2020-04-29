@@ -207,6 +207,22 @@
     </script>
 </head>
 <body>
+
+    <!-- 规则修改状态，是否清空画布 -->
+    <div class="lkr-frame" id='isClearCanvas'>
+        <div class="lkr-frame-div" style="height: 150px;">
+            <div class="lkr-frame-content">
+                <h3>
+                    确认清空此规则?
+                </h3>
+                
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='isClearDelRule()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='isClearClose()'>取消</div>
+            </div>
+        </div>
+    </div>
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="head-hidden" style="width: 100%;height: 50px;overflow: hidden;z-index: 99;position: relative;"></div>
@@ -395,19 +411,19 @@
     </div>
     <!-- 算法确认删除框 -->
     <div class="lkr-frame" id='lkrRule'>
-            <div class="lkr-frame-div" style="height: 150px;">
-                <div class="lkr-frame-content">
-                    <h3>
-                        确认删除此规则?
-                    </h3>
-                    
-                </div>
-                <div class="lkr-frame-foot">
-                    <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
-                    <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
-                </div>
+        <div class="lkr-frame-div" style="height: 150px;">
+            <div class="lkr-frame-content">
+                <h3>
+                    确认删除此规则?
+                </h3>
+                
+            </div>
+            <div class="lkr-frame-foot">
+                <div class="lkr-button" onclick='ConfirmDelRule()' style="margin-right: 10px;">确定</div>
+                <div class="lkr-button" onclick='ruleDelClose()'>取消</div>
             </div>
         </div>
+    </div>
     <!-- 规则确认删除框 -->
     <div class="lkr-frame" id='ruleDeleteDiv'>
         <div class="lkr-frame-div" style="height: 150px;">
@@ -1354,7 +1370,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let delID = $(e.target).prev().attr("canvasid")
         $(e.target).parent("li").siblings().removeClass('pageson');
         $(e.target).parent("li").prev().addClass('pageson');
-        let showId =$(e.target).parent("li").prev().find("span").attr("canvasId")
+        let showId =$(e.target).parent("li").prev().find("span").attr("canvasid")
         $(e.target).parent("li").remove();
         var iframe = $('#' + delID).prop('contentWindow');    
         $('#' + delID).attr('src', 'about:blank');       
@@ -1365,14 +1381,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#' + delID).remove(); 
         $('.lkr-bg-canvas').children().hide();
         let leg = $('.lkr-bg-canvas').children().length
-      
-        if(leg > 1){
+       if(showId == "canvas0"){
+            $("#flex_canvas").show();
+            window.canvasNowId ="canvas0"
+       }else{
             $('#'+showId).show()
             window.canvasNowId =showId
-        }else{
-            $("#flex_canvas").show();
-             window.canvasNowId ="canvas0"
-        }
+            $('#'+showId)[0].contentWindow.canvasNowId = showId
+       }
     
     })
     $('body').on('click','.export',(e) =>{
@@ -1407,6 +1423,20 @@ Date.prototype.Format = function (fmt) { // author: meizz
     })
     
     $('body').on('click','.clearCanvas',(e) =>{
+        let ruleType, isRuleNow
+        if(window.canvasNowId == "canvas0"){
+            ruleType = window.bigData.ruleType
+            isRuleNow =window.isRuleNow
+        }else{
+            ruleType = parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.ruleType
+            isRuleNow = parent.$('#'+window.top.canvasNowId)[0].contentWindow.isRuleNow
+        } 
+        if(ruleType == "edit" && !isRuleNow){
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 当前规则有修改，请先暂存规则，再清空画布！ </li>`)
+            parent.toastr.info(`当前规则有修改，请先暂存规则，再清空画布！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+            return false
+        }
         if(window.canvasNowId == "canvas0"){
             window.canvas.data.nodes = []
             window.canvas.data.lines = []
@@ -3083,10 +3113,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
             $('#dataModulePage').show()
+            $(".mxGruopTable").html(" ")
             getModuleList()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').show()
+            $(".sfGruopTable").html(" ")
             sfWinList();
             $.ajax({
                 url: urlConfig.host + '/module/GetAllModule',
@@ -3102,6 +3134,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         if($('#flex_tools .liactive').text() == "规则库"){
             $('#gzDiv').show()
+            $(".gzGruopTable").html(" ")
             getGzList()
         }
     }
@@ -3513,12 +3546,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {modelId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待</li>`)
+                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！</li>`)
+                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
                 freshClick("modelWinTree")
@@ -3533,12 +3566,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {roleId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！</li>`)
+                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！` )
                     $("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！</li>`)
+                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
                 freshClick("gzWinTree")
@@ -3553,12 +3586,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {algthId:id,status:status},
             success(data) {
                 if(status == "发布"){
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 已发布，发布功能未完善，敬请期待！</li>`)
+                    parent.toastr.info(`已发布，发布功能未完善，敬请期待！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 } else {
-                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！审核</li>`)
-                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
+                    parent.$('.noticeList').append(`<li>${parent.getTime()} 取消发布，发布功能未完善，敬请期待！</li>`)
+                    parent.toastr.info(`取消发布，发布功能未完善，敬请期待！` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
                 freshClick("sfWinTree")

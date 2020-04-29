@@ -1268,6 +1268,12 @@ var Topology = {
                                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
                                         parent.toastr.success(`【算法参数】修改成功！` )
                                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                                        if(window.canvasNowId == "canvas0"){
+                                            window.isRuleNow = false
+                                        }else{
+                                            window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                        }
+                                      
                                     }
                                 })
                            }
@@ -1415,7 +1421,7 @@ var Topology = {
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
-                            data.name = "polyline"
+                            data.name = "curve"
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
@@ -1698,6 +1704,11 @@ var Topology = {
                                                             data: {interfaceRoueId :xian.id},
                                                             success(data) {
                                                                 if(data == true){
+                                                                    if(window.canvasNowId == "canvas0"){
+                                                                        window.isRuleNow = false
+                                                                    }else{
+                                                                        window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                                                    }
                                                                     parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
                                                                     toastr.success(`【算法】删除成功！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1743,6 +1754,11 @@ var Topology = {
                                         },
                                         success: function(data) {
                                             if(data == true){
+                                                if(window.canvasNowId == "canvas0"){
+                                                    window.isRuleNow = false
+                                                }else{
+                                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                                }
                                                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
                                                 parent.toastr.success(`【算法】删除成功！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -2456,7 +2472,13 @@ var Topology = {
                             url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
                             type:"get",
                             data: {interfaceRoueId :s.id},
-                            success(data) {}
+                            success(data) {
+                                if(window.canvasNowId == "canvas0"){
+                                    window.isRuleNow = false
+                                }else{
+                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                }
+                            }
                         })
                     } catch (e) {
     
