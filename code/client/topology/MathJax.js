@@ -60,18 +60,19 @@
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
-        if($('#groupGs').val() == ""){
-            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
-            toastr.info(`【算法】分组不能为空！` )
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false;
-        }
         if($('#AlgorithmnameY').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
             parent.toastr.info(`【算法】请填写算法名称！` )
             parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
             return false;
         }
+        if($('#groupGs').val() == ""){
+            $('.noticeList').append(`<li>${getTime()} 【算法】分组不能为空！</li>`)
+            toastr.info(`【算法】分组不能为空！` )
+            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false;
+        }
+       
         if($('#MathInput').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写公式！</li>`)
             parent.toastr.info(`【算法】请填写公式！` )
@@ -124,6 +125,11 @@
                 }
                 tableF.push(obj)
             }
+        }else{
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写公式！</li>`)
+            parent.toastr.info(`【算法】请填写公式！` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+            return false;
         }
         if(window.bigData.formulaType == 'edit'){
             tableAl.algorithmauthor = $('#gsName').val();
@@ -150,7 +156,7 @@
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
                         freshClick("sfWinTree")
-                        freshClick("sfTree")
+                        // freshClick("sfTree")
 
                     } else {
                         $(".Frame").hide();
@@ -158,6 +164,8 @@
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
+                        // freshClick("sfTree")
                     }
                 }
             })
@@ -186,6 +194,7 @@
                         parent.toastr.success(`【算法】保存成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
                         freshClick("sfTree")
                     } else {
                         $(".Frame").hide();
@@ -193,6 +202,8 @@
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
+                        freshClick("sfTree")
                     }
                 }
             })
@@ -520,6 +531,11 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(tableRole),
             success: function(data) {
+                if(window.canvasNowId == "canvas0"){
+                    window.isRuleNow =true
+                }else{
+                    window.frames[canvasNowId].contentWindow.isRuleNow =true
+                }
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
                 parent.toastr.success(`【规则】修改成功！` )
@@ -910,7 +926,6 @@ function ActionSure(){
    let UPdataList = []
    let AddList = []
    let DelList = []
-
     //判断修改，新增，删除数据
     for(let i =0;i< actionInfoNum.length ;i++){
         let UPFlag = false
@@ -1255,7 +1270,7 @@ function ActionSure(){
 
         childList.children.map(index=>{
             let uuid
-            if(index.uuid.indexOf('---') !=-1){
+            if(index.uuid.indexOf('---') != -1){
                 uuid = index.uuid.substr((index.uuid.indexOf('---')-36),36)
             }else{
                 uuid = index.uuid
@@ -1276,6 +1291,12 @@ function ActionSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(operatorInterfaceDataModel),
             success: function(data) {
+                if(window.canvasNowId == "canvas0"){
+                    window.isRuleNow = false
+                }else{
+                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                }
+              
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
                 parent.toastr.success(`【算法参数】修改成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
