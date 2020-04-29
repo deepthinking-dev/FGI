@@ -1606,13 +1606,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     </tr>`
                 })
                 $('#addSource tbody').html(thStr)
-
+                let isAllNum = 0
                 window.bigData.editmoduledata.map(item => {
                     if($(e.target).val() ==item.tableName){
                         $('#chk'+item.fieldname).prop('checked',true)
+                        isAllNum ++
                     }
                 })
-                if(window.bigData.editmoduledata.length == data.length){
+                if(isAllNum == data.length){
                     $("#selectAll").prop("checked",true)
                 }
             }
@@ -1631,7 +1632,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }else{
             $("#selectAll").prop("checked",false)
         }
-        console.log(leg)
     }
     $("#fgiSource").click((e) => {
         let addMbTr = $('#addMb tbody tr')
@@ -1641,8 +1641,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
            $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
                 window.bigData.editmoduledata.push({
-                    fieldname:items.children('.columnName').text()?items.children('.columnName').text():items.children('.columnName').find('input').val(),
-                    tableName:items.children('.tableName').text()?items.children('.tableName').text() :items.children('.tableName').find('input').val()
+                    fieldname:(items.children('.columnName').text()).trim()?(items.children('.columnName').text()).trim():items.children('.columnName').find('input').val(),
+                    tableName:(items.children('.tableName').text()).trim()?(items.children('.tableName').text()).trim() :items.children('.tableName').find('input').val()
                 })
             })
         }
@@ -1709,14 +1709,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
 
-                if(items.children('.columnComment').text() == "" && items.children('.columnComment').find('input').val() == ""){
+                if((items.children('.columnComment').text()).trim() == "" && items.children('.columnComment').find('input').val() == ""){
                     $('.noticeList').append(`<li>${parent.getTime()} 请填写【模型】字段中文名称！ </li>`)
                     parent.toastr.info('请填写【模型】字段中文名称！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     flag = false
                     return false
                 }
-                if(items.children('.columnName').text() == "" && items.children('.columnName').find('input').val() == ""){
+                if((items.children('.columnName').text()).trim() == "" && items.children('.columnName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${parent.getTime()} 请填写【模型】字段英文名称！ </li>`)
                     parent.toastr.info('请填写【模型】字段英文名称！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1730,7 +1730,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 //     flag = false
                 //     return false
                 // }
-                if(items.children('.tableName').text() == "" && items.children('.tableName').find('input').val() == ""){
+                if((items.children('.tableName').text()).trim() == "" && items.children('.tableName').find('input').val() == ""){
                     $('.noticeList').append(`<li>${parent.getTime()} 请填写【模型】字段表名！ </li>`)
                     parent.toastr.info('请填写【模型】字段表名！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1738,11 +1738,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     return false
                 }
                 mouldParam.push({
-                    fieldname:items.children('.columnComment').text()?items.children('.columnComment').text() :items.children('.columnComment').find('input').val(),
-                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():items.children('.columnType').text(),
-                    tablename:items.children('.tableName').text()?items.children('.tableName').text():items.children('.tableName').find('input').val(),
-                    englishname:items.children('.columnName').text()?items.children('.columnName').text():items.children('.columnName').find('input').val(),
-                    remark:items.children('.columnRemark').text()?items.children('.columnRemark').text():items.children('.columnRemark').find('input').val(),
+                    fieldname:(items.children('.columnComment').text()).trim()?(items.children('.columnComment').text()).trim():(items.children('.columnComment').find('input').val()).trim(),
+                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():(items.children('.columnType').text()).trim(),
+                    tablename:(items.children('.tableName').text()).trim()?(items.children('.tableName').text()).trim():(items.children('.tableName').find('input').val()).trim(),
+                    englishname:(items.children('.columnName').text()).trim()?(items.children('.columnName').text()).trim():(items.children('.columnName').find('input').val()).trim(),
+                    remark:(items.children('.columnRemark').text()).trim()?(items.children('.columnRemark').text()).trim():(items.children('.columnRemark').find('input').val()).trim(),
                 })
             })
             let param = {
@@ -2274,8 +2274,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                if(addMbTr.length > 0){
                     for(let s=0;s<addMbTr.length;s++){
                         let itemh = $(addMbTr).eq(s)
-                        let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
-                        let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
+                        let fieldname =(itemh.children('.columnName').text()).trim()?(itemh.children('.columnName').text()).trim():itemh.children('.columnName').find('input').val()
+                        let tableName =(itemh.children('.tableName').text()).trim()?(itemh.children('.tableName').text()).trim():itemh.children('.tableName').find('input').val()
                         if( list.eq(1).text() == fieldname && $("#fgiName").val() == tableName){
                             flag = false
                             break;
@@ -2296,8 +2296,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 if(addMbTr.length > 0){
                     for(let s=0;s<addMbTr.length;s++){
                         let itemh = $(addMbTr).eq(s)
-                        let fieldname =itemh.children('.columnName').text()?itemh.children('.columnName').text():itemh.children('.columnName').find('input').val()
-                        let tableName =itemh.children('.tableName').text()?itemh.children('.tableName').text() :itemh.children('.tableName').find('input').val()
+                        let fieldname =(itemh.children('.columnName').text()).trim()?(itemh.children('.columnName').text()).trim():itemh.children('.columnName').find('input').val()
+                        let tableName =(itemh.children('.tableName').text()).trim()?(itemh.children('.tableName').text()).trim():itemh.children('.tableName').find('input').val()
                         if( list.eq(1).text() == fieldname && $("#fgiName").val() == tableName){
                             $(addMbTr).eq(s).remove();
                         }
@@ -2305,7 +2305,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 if( window.bigData.editmoduledata.length > 0){
                     window.bigData.editmoduledata.map((item,i)=>{
-                        if(list.eq(1).text() == item.fieldname && $("#fgiName").val() == item.tableName){
+                        if((list.eq(1).text()).trim() == item.fieldname && ($("#fgiName").val()).trim() == item.tableName){
                             window.bigData.editmoduledata.splice(i,1)
                         }
                     })
@@ -2362,7 +2362,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
         if( window.bigData.editmoduledata.length > 0){
             window.bigData.editmoduledata.map((item,i)=>{
-                if($(event.target).parents('tr').children(".columnName").text() == item.fieldname && $(event.target).parents('tr').children(".tableName").text()  == item.tableName){
+                if(($(event.target).parents('tr').children(".columnName").text()).trim() == item.fieldname && ($(event.target).parents('tr').children(".tableName").text()).trim()  == item.tableName){
                     window.bigData.editmoduledata.splice(i,1)
                 }
             })
