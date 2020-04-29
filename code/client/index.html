@@ -1968,8 +1968,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function freshClick(treeId) {
         var tObj=$.fn.zTree.getZTreeObj(treeId);
-        if(tObj){
-            var selectedNode=tObj.getSelectedNodes()[0];
+        var selectedNode=tObj.getSelectedNodes()[0];
+        if(selectedNode){
             $("#"+selectedNode.tId+"_a").click();
         }
     }
