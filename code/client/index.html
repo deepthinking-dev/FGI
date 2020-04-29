@@ -23,8 +23,6 @@
         .left-list{
             width: 65%;
             margin: auto;
-            margin-top: 10px;
-            /* border: 1px solid black; */
         }
         .left-list-event{
             border: 1px dashed #4295ec;
@@ -823,10 +821,10 @@
                                 <li><span onclick="ruleGroupShow()"><i class="ruleI"></i>规则库</span></li>
                             </div>
                             <div class='Search'>
-                                <i class="icon-search"></i>
-                                <input id="searchName" type='text' placeholder="检索分组" class="lkr-input" style="flex:1;margin: auto;color: white"/>
-
-                            </input>
+                                <div>
+                                    <input id="searchName" type='text' onkeydown="keyup_submit(event)" class="search-input" style="margin: auto;color: white;width: 220px;height: 34px"/>
+                                    <input type='button' onclick="searchData()" value="检索" style="background: #409eff;width: 80px;color: #fff;margin: 15px 0;margin-left: 1px;border: none;height: 32px;"/>
+                                </div>
                             </div>
                             <!-- 模型库页-->
                             <div id="modelPageDiv" class='lkr-page'>
@@ -1060,6 +1058,9 @@
 <script>
     var editGzType = false;
     var globalActionDatas = [];
+    var mxDataAll={};
+    var sfDataAll = {};
+    var gzDataAll = {};
     var modelSelectList;
     var deleteLineDataId;
     var currentActionInput;
@@ -2204,14 +2205,30 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
     }
     function dataModlue(){
+        $("#moduleListRight").empty();
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
             data: {type:1},
             success(data) {
+                mxDataAll = {};
                 var treeData=[]
                 data.map(s=>{
                     treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
+                    $.ajax({
+                        url: urlConfig.host + '/module/GetModuleByGroupName',
+                        type:"get",
+                        data: {moduleGroupName:s.groupname},
+                        success(data) {
+                            if(data.length){
+                                var datas = [];
+                                data.map(t=>{
+                                    datas.push(t.modulename)
+                                })
+                                mxDataAll[s.groupname] = datas;
+                            }
+                        }
+                    })
                 })
                 $.fn.zTree.init($("#moduleTree"),setting, treeData);
             }
@@ -2444,73 +2461,37 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
-    var treeDatasssss =[
-            { name:"组1", open:true,bm:"11",
-                children: [
-                    { name:"组1-1",
-                        bm:"1111",
-                        children: [
-                            { name:"组1-1-1",bm:"111111",
-                                children: [
-                                    { name:"组1-1-1-1",bm:"11111111"}
-                                ],
-                            },
-                            { name:"组1-1-2",bm:"111112"},
-                            { name:"组1-1-3",bm:"111113"},
-                            { name:"组1-1-4",bm:"111114"}
-                        ]},
-                    { name:"组1-2",
-                        bm:"1112",
-                        children: [
-                            { name:"组1-2-1",bm:"111211"},
-                            { name:"组1-2-2",bm:"111212"},
-                            { name:"组1-2-3",bm:"111213"},
-                            { name:"组1-2-4",bm:"111214"}
-                        ]},
-                    { name:"组1-3",bm:"1113"}
-                ]},
-            { name:"组2",bm:"21",
-                children: [
-                    { name:"组2-1", open:true,bm:"2111",
-                        children: [
-                            { name:"组2-1-1",bm:"211111"},
-                            { name:"组2-1-2",bm:"211112"},
-                            { name:"组2-1-3",bm:"211113"},
-                            { name:"组2-1-4",bm:"211114"}
-                        ]},
-                    { name:"组2-2",bm:"2112",
-                        children: [
-                            { name:"组2-2-1",bm:"211211"},
-                            { name:"组2-2-2",bm:"211212"},
-                            { name:"组2-2-3",bm:"211213"},
-                            { name:"组2-2-4",bm:"211214"}
-                        ]},
-                    { name:"组2-3",bm:"2113",
-                        children: [
-                            { name:"组2-3-1"},
-                            { name:"组2-3-2"},
-                            { name:"组2-3-3"},
-                            { name:"组2-3-4"}
-                        ]}
-                ]},
-                { name:"组3",bm:"31"}
-            ];
     //算法库维护
     function dictionaryShow(){
         $("#modelPageDiv").hide();
         $("#ruleMde").hide();
         $("#algorithmPage").show();
+        $("#sfGruopListRight").empty()
         $(".dataManage").text("算法管理")
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
             data: {type:2},
             success(data) {
+                sfDataAll = {};
                 var treeData=[]
                 data.map(s=>{
                     treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName:s.groupname},
+                        success(data) {
+                            if(data.length){
+                                var datas = [];
+                                data.map(t=>{
+                                    datas.push(t.tableAlgorithm.algorithmname)
+                                })
+                                sfDataAll[s.groupname] = datas;
+                            }
+                        }
+                    })
                 })
-
                 $.fn.zTree.init($("#sfTree"),setting, treeData);
             }
         })
@@ -2960,42 +2941,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".logicUl").append($(".logicLi:first").clone());
     }
 
-    $("#searchName").bind('input propertychange',function(s){
-        let val = $("#searchName").val();
-        // return;
-        if($('.liactive').text() == "模型库"){
-            $("#moduleTree a").each((i,s)=>{
-                if($(s).attr("title").includes(val)){
-                    $(s).show()
-                } else {
-                    $(s).hide()
-                }
-            })
-        } else if($('.liactive').text() == "算法库"){
-            // var arr = [];
-            // abc.map(s=>{
-            //     if(!s.pid && s.name.includes(val)){
-            //         arr.push(s)
-            //     }
-            // })
-            // $.fn.zTree.init($("#sfTree"),setting, arr);
-            $("#sfTree a").each((i,s)=>{
-                if($(s).attr("title").includes(val)){
-                    $(s).show()
-                } else {
-                    $(s).hide()
-                }
-            })
-        } else {
-            $("#ruleTree a").each((i,s)=>{
-                if($(s).attr("title").includes(val)){
-                    $(s).show()
-                } else {
-                    $(s).hide()
-                }
-            })
-        }
-    });
      function closeActionDiv() {
          $("#actionDiv").hide()
          $("#actionOutDiv").hide()
@@ -3106,14 +3051,30 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#modelPageDiv").hide();
         $("#ruleMde").show();
         $("#algorithmPage").hide();
+        $("#ruleListRight").empty()
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
             data: {type:3},
             success(data) {
-                var treeData=[]
+                var treeData=[];
+                gzDataAll={};
                 data.map(s=>{
                     treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName:s.groupname},
+                        success(data) {
+                            if(data.length){
+                                var datas = [];
+                                data.map(t=>{
+                                    datas.push(t.rolename)
+                                })
+                                gzDataAll[s.groupname] = datas;
+                            }
+                        }
+                    })
                 })
                 $.fn.zTree.init($("#ruleTree"),setting, treeData);
             }
@@ -3725,6 +3686,77 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(window.top.frames['ueditor_0'].contentWindow.document.body).attr('contenteditable',false)
     },1500)
 
+    function searchData() {
+        searchs()
+    }
+    function keyup_submit(e) {
+        var evt = window.event || e;
+        if (evt.keyCode == 13){
+            searchs()
+        }
+    }
+    
+    function searchs() {
+        let val = $("#searchName").val();
+        if($('.liactive').text() == "模型库"){
+            var sfTree = $.fn.zTree.getZTreeObj("moduleTree");
+            sfTree.expandAll(true);
+            $("#moduleTree a").removeClass("select");
+            $("#moduleListRight").empty()
+            if(val == "") return;
+            let groupMx = [];
+            for(let i in mxDataAll){
+                mxDataAll[i].map(s=>{
+                    if(s.includes(val)){
+                        groupMx.push(i)
+                    }
+                })
+            }
+            $("#moduleTree a").each((i,s)=>{
+                if($(s).attr("title").includes(val) || groupMx.includes($(s).attr("title"))){
+                    $(s).addClass("select")
+                }
+            })
+        } else if($('.liactive').text() == "算法库"){
+            var sfTree = $.fn.zTree.getZTreeObj("sfTree");
+            sfTree.expandAll(true);
+            $("#sfTree a").removeClass("select");
+            $("#sfGruopListRight").empty()
+            if(val == "") return;
+            let groupList = [];
+            for(let i in sfDataAll){
+                sfDataAll[i].map(s=>{
+                    if(s.includes(val)){
+                        groupList.push(i)
+                    }
+                })
+            }
+            $("#sfTree a").each((i,s)=>{
+                if($(s).attr("title").includes(val) || groupList.includes($(s).attr("title"))){
+                    $(s).addClass("select")
+                }
+            })
+        } else {
+            var sfTree = $.fn.zTree.getZTreeObj("ruleTree");
+            sfTree.expandAll(true);
+            $("#ruleTree a").removeClass("select");
+            $("#ruleListRight").empty();
+            if(val == "") return;
+            let groupGz = [];
+            for(let i in gzDataAll){
+                gzDataAll[i].map(s=>{
+                    if(s.includes(val)){
+                        groupGz.push(i)
+                    }
+                })
+            }
+            $("#ruleTree a").each((i,s)=>{
+                if($(s).attr("title").includes(val) || groupGz.includes($(s).attr("title"))){
+                    $(s).addClass("select")
+                }
+            })
+        }
+    }
 </script>
 </body>
 </html>
