@@ -66,6 +66,9 @@
         .aqua{
             color: aqua;!important;
         }
+        .red{
+            color:red
+        }
     </style>
     <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
     <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
@@ -2006,6 +2009,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     //树节点点击
     function treeClick(event, treeId, node) {
+        if($("#searchName").val()){
+            var value = $("#searchName").val()
+        }
         if(node.type == 1){
             if(node.right == 1){
                 $.ajax({
@@ -2016,7 +2022,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $("#moduleListRight").empty()
                         if(data.length){
                             data.map((s,index)=>{
-                                $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                if(s.modulename.includes(value)){
+                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule red" style="height:50px;">${s.modulename}</div></div>`)
+                                } else {
+                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                }
                             })
                         }
                     }
@@ -2109,6 +2119,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     }
                                 })
                             })
+                            $("#sfGruopListRight .left-list-tilte").removeClass("red");
+                            $("#sfGruopListRight .left-list-tilte").each((i,s)=>{
+                                if($(s).text().includes(value)){
+                                    $(s).addClass("red")
+                                }
+                            })
                         }
                     }
                 })
@@ -2165,7 +2181,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $("#ruleListRight").empty()
                         if(data.length){
                             data.map((s,index)=>{
-                                $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                                if (s.rolename.includes(value)){
+                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule red" style="height:50px;">${s.rolename}</div></div>`)
+                                } else {
+                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                                }
                             })
                         }
                     }
@@ -3735,6 +3755,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             var sfTree = $.fn.zTree.getZTreeObj("moduleTree");
             sfTree.expandAll(true);
             $("#moduleTree a").removeClass("select");
+            $("#moduleTree a").removeClass("curSelectedNode");
             $("#moduleListRight").empty()
             if(val == "") return;
             let groupMx = [];
@@ -3754,6 +3775,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             var sfTree = $.fn.zTree.getZTreeObj("sfTree");
             sfTree.expandAll(true);
             $("#sfTree a").removeClass("select");
+            $("#sfTree a").removeClass("curSelectedNode");
             $("#sfGruopListRight").empty()
             if(val == "") return;
             let groupList = [];
@@ -3773,6 +3795,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             var sfTree = $.fn.zTree.getZTreeObj("ruleTree");
             sfTree.expandAll(true);
             $("#ruleTree a").removeClass("select");
+            $("#ruleTree a").removeClass("curSelectedNode");
             $("#ruleListRight").empty();
             if(val == "") return;
             let groupGz = [];

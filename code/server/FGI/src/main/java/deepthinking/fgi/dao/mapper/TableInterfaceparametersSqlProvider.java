@@ -63,7 +63,11 @@ public class TableInterfaceparametersSqlProvider {
         }
         
         if (record.getInorout() != null) {
-            sql.VALUES("inOrOut", "#{inorout,jdbcType=DECIMAL}");
+            sql.VALUES("inOrOut", "#{inorout,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.VALUES("remark", "#{remark,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -86,6 +90,7 @@ public class TableInterfaceparametersSqlProvider {
         sql.SELECT("ParametersSources");
         sql.SELECT("ParametersName");
         sql.SELECT("inOrOut");
+        sql.SELECT("remark");
         sql.FROM("table_interfaceparameters");
         applyWhere(sql, example, false);
         
@@ -126,7 +131,11 @@ public class TableInterfaceparametersSqlProvider {
         }
         
         if (record.getInorout() != null) {
-            sql.SET("inOrOut = #{record.inorout,jdbcType=DECIMAL}");
+            sql.SET("inOrOut = #{record.inorout,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -147,7 +156,8 @@ public class TableInterfaceparametersSqlProvider {
         sql.SET("InterfaceID = #{record.interfaceid,jdbcType=VARCHAR}");
         sql.SET("ParametersSources = #{record.parameterssources,jdbcType=VARCHAR}");
         sql.SET("ParametersName = #{record.parametersname,jdbcType=VARCHAR}");
-        sql.SET("inOrOut = #{record.inorout,jdbcType=DECIMAL}");
+        sql.SET("inOrOut = #{record.inorout,jdbcType=INTEGER}");
+        sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
         
         TableInterfaceparametersCriteria example = (TableInterfaceparametersCriteria) parameter.get("example");
         applyWhere(sql, example, true);
@@ -177,7 +187,11 @@ public class TableInterfaceparametersSqlProvider {
         }
         
         if (record.getInorout() != null) {
-            sql.SET("inOrOut = #{inorout,jdbcType=DECIMAL}");
+            sql.SET("inOrOut = #{inorout,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("remark = #{remark,jdbcType=VARCHAR}");
         }
         
         sql.WHERE("ID = #{id,jdbcType=VARCHAR}");

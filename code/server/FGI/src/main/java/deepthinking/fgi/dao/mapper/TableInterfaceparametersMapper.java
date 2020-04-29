@@ -56,10 +56,10 @@ public interface TableInterfaceparametersMapper {
     @Insert({
         "insert into table_interfaceparameters (ID, InterfaceID, ",
         "ParametersSources, ParametersName, ",
-        "inOrOut)",
+        "inOrOut, remark)",
         "values (#{id,jdbcType=VARCHAR}, #{interfaceid,jdbcType=VARCHAR}, ",
         "#{parameterssources,jdbcType=VARCHAR}, #{parametersname,jdbcType=VARCHAR}, ",
-        "#{inorout,jdbcType=DECIMAL})"
+        "#{inorout,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})"
     })
     int insert(TableInterfaceparameters record);
 
@@ -84,7 +84,8 @@ public interface TableInterfaceparametersMapper {
         @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.VARCHAR),
         @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR),
         @Result(column="ParametersName", property="parametersname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.DECIMAL)
+        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.INTEGER),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     List<TableInterfaceparameters> selectByExample(TableInterfaceparametersCriteria example);
 
@@ -96,7 +97,7 @@ public interface TableInterfaceparametersMapper {
      */
     @Select({
         "select",
-        "ID, InterfaceID, ParametersSources, ParametersName, inOrOut",
+        "ID, InterfaceID, ParametersSources, ParametersName, inOrOut, remark",
         "from table_interfaceparameters",
         "where ID = #{id,jdbcType=VARCHAR}"
     })
@@ -105,7 +106,8 @@ public interface TableInterfaceparametersMapper {
         @Result(column="InterfaceID", property="interfaceid", jdbcType=JdbcType.VARCHAR),
         @Result(column="ParametersSources", property="parameterssources", jdbcType=JdbcType.VARCHAR),
         @Result(column="ParametersName", property="parametersname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.DECIMAL)
+        @Result(column="inOrOut", property="inorout", jdbcType=JdbcType.INTEGER),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR)
     })
     TableInterfaceparameters selectByPrimaryKey(String id);
 
@@ -147,7 +149,8 @@ public interface TableInterfaceparametersMapper {
         "set InterfaceID = #{interfaceid,jdbcType=VARCHAR},",
           "ParametersSources = #{parameterssources,jdbcType=VARCHAR},",
           "ParametersName = #{parametersname,jdbcType=VARCHAR},",
-          "inOrOut = #{inorout,jdbcType=DECIMAL}",
+          "inOrOut = #{inorout,jdbcType=INTEGER},",
+          "remark = #{remark,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(TableInterfaceparameters record);
