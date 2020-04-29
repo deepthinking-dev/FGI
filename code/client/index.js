@@ -67,7 +67,7 @@ $(function(){
                 $("#actionInDiv").append(`
                       <div style="margin: 10px 0">
                            <i>${num+1}</i>
-                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                           <span>行为值来源</span><input id="aaa" class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
@@ -84,6 +84,7 @@ $(function(){
                     `)
         } else {
             $("#actionMsgOut").val("");
+
             $.ajax({
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
                 data:{algthId:$("#addActionButton").attr("id_out")},
@@ -111,6 +112,23 @@ $(function(){
                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                           </div>
                         `)
+
+                        parent.$(".xwzly_out").off("change").on("change",(e)=>{
+                            if($(e.target).find('option:selected').attr('type') == 3){
+                                $(e.target).next().next().empty();
+                                $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
+                            } else {
+                                $(e.target).next().next().empty();
+                                $(e.target).next().next().append(`<option value=">">></option>
+                               <option value="<"><</option>
+                               <option value="=">=</option>
+                               <option value=">=">>=</option>
+                               <option value="<="><=</option>
+                               <option value="!=">!=</option>
+                               <option value="assignment">赋值</option>`)
+                            }
+                        })
+
                 }
             })
         }
@@ -509,6 +527,7 @@ $(function(){
                         parent.toastr.info(`${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
+                        freshClick("sfWinTree")
                         freshClick("sfTree")
                         $("#dicDiv").show()
                     } else {
