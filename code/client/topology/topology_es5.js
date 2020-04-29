@@ -367,6 +367,14 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+                            var out_small = data.from.id.split('---')[0]//输出小矩形uuid
+                            var in_small =  data.to.id.split('---')[0]//输入小矩形uuid
+                            if(window.top.canvasNowId == "canvas0"){
+                                deleteLineDataId = out_small + "AND" + in_small;
+                            }else{
+                                parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId = out_small + "AND" + in_small;
+
+                            }
                             currentLineData = data;
                             // let id_in;//输入端算法id
                             // let id_out;//输出端算法id
@@ -2547,34 +2555,68 @@ debugger
     // 删除
     onDelete: function (e) {
         canvas.delete();
-        globalActionDatas.map((s,i)=>{
-            if(s.id == deleteLineDataId){
-                globalActionDatas.splice(i,1)
-            }
-        })
-        if(responseActionDatas && responseActionDatas.length >0){
-            responseActionDatas.map(s=>{
-                if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
-                    try {
-                        $.ajax({
-                            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-                            type:"get",
-                            data: {interfaceRoueId :s.id},
-                            success(data) {
-                                if(window.canvasNowId == "canvas0"){
-                                    window.isRuleNow = false
-                                }else{
-                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
-                                }
-                            }
-                        })
-                    } catch (e) {
-    
-                    }
+
+        if(window.top.canvasNowId == "canvas0"){
+            globalActionDatas.map((s,i)=>{
+                if(s.id == deleteLineDataId){
+                    globalActionDatas.splice(i,1)
+                }
+            })
+        }else{
+            parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas.map((s,i)=>{
+                if(s.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId){
+                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas.splice(i,1)
                 }
             })
         }
- 
+
+        if(window.top.canvasNowId == "canvas0"){
+            if(responseActionDatas && responseActionDatas.length >0){
+                responseActionDatas.map(s=>{
+                    if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
+                        try {
+                            $.ajax({
+                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                type:"get",
+                                data: {interfaceRoueId :s.id},
+                                success(data) {
+                                    if(window.canvasNowId == "canvas0"){
+                                        window.isRuleNow = false
+                                    }else{
+                                        window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    }
+                                }
+                            })
+                        } catch (e) {
+
+                        }
+                    }
+                })
+            }
+        }else{
+            if( parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas &&  parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas.length >0){
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas.map(s=>{
+                    if(s.preParametersID + "AND" + s.parametersID ==  parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId){
+                        try {
+                            $.ajax({
+                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                type:"get",
+                                data: {interfaceRoueId :s.id},
+                                success(data) {
+                                    if(window.canvasNowId == "canvas0"){
+                                        window.isRuleNow = false
+                                    }else{
+                                        window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    }
+                                }
+                            })
+                        } catch (e) {
+
+                        }
+                    }
+                })
+            }
+        }
     },
     // 撤销
     undo: function () {
