@@ -156,7 +156,7 @@
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
                         freshClick("sfWinTree")
-                        // freshClick("sfTree")
+                        freshClick("sfTree")
 
                     } else {
                         $(".Frame").hide();
@@ -165,7 +165,7 @@
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
                         freshClick("sfWinTree")
-                        // freshClick("sfTree")
+                        freshClick("sfTree")
                     }
                 }
             })
@@ -208,7 +208,6 @@
                 }
             })
         }
-        sfWinList();
 }
 function fieldsClose(){
     $("#fields").attr("style","display:none;");
