@@ -1271,7 +1271,7 @@ var Topology = {
                                         if(window.canvasNowId == "canvas0"){
                                             window.isRuleNow = false
                                         }else{
-                                            window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                            parent.$('#'+window.top.canvasNowId)[0].contentWindow.isRuleNow = false
                                         }
                                       
                                     }
@@ -1624,13 +1624,13 @@ var Topology = {
                             if(window.canvasNowId == "canvas0"){
                                 ruleTypes =window.bigData.ruleType
                             }else{
-                                ruleTypes =window.frames[canvasNowId].contentWindow.bigData.ruleType
+                                ruleTypes =parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.ruleType
                             }
                             if(ruleTypes== "edit"){
                                 if(window.canvasNowId == "canvas0"){
                                     window.isRuleNow = false
                                 }else{
-                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.isRuleNow = false
                                 }
                             }
                             break;
