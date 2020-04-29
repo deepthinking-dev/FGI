@@ -1367,7 +1367,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             actionRelation:"",
             preActionRelation:""
         })
-        debugger
+        parent.$("#addActionButton").attr("resData",false)
         canvas.data.nodes.map(s=>{
             if(s.id == data.from.id){
                 id_out = s.childStand.fid
