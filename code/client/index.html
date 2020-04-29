@@ -94,8 +94,6 @@
         ]]
     });
     var data = null
-    
-    
         function isFocus(e){
             alert(UE.getEditor('editor').isFocus());
             UE.dom.domUtils.preventDefault(e)
@@ -1575,7 +1573,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 window.bigData.mouldParam = data
                 let thStr = ''
                 data.map(item => {
-                    thStr += `<tr><td><input id='${'chk'+item.COLUMN_NAME}' type="checkbox" name="item" data-id='${item.COLUMN_NAME}'/></td>
+                    thStr += `<tr><td><input id='${'chk'+item.COLUMN_NAME}' type="checkbox" name="item" data-id='${item.COLUMN_NAME}' onchange="showAll(event)"/></td>
                     <td>${item.COLUMN_COMMENT?item.COLUMN_COMMENT:''}</td>
                     <td>${item.COLUMN_NAME?item.COLUMN_NAME:''}</td>
                     <td>${item.COLUMN_TYPE?item.COLUMN_TYPE:''}</td>
@@ -1589,12 +1587,31 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $('#chk'+item.fieldname).prop('checked',true)
                     }
                 })
+                if(window.bigData.editmoduledata.length == data.length){
+                    $("#selectAll").prop("checked",true)
+                }
             }
         })
     })
+    function showAll(e){
+        let leg =0
+        $("#addSource tbody tr").each((i,v) => {
+            let items = $(v).children("td").find("input:checkbox")
+            if( items.prop('checked')){
+                leg ++
+            }
+        })
+        if(leg == $("#addSource tbody tr").length){
+            $("#selectAll").prop("checked",true)
+        }else{
+            $("#selectAll").prop("checked",false)
+        }
+        console.log(leg)
+    }
     $("#fgiSource").click((e) => {
         let addMbTr = $('#addMb tbody tr')
         window.bigData.editmoduledata =[]
+        $("#selectAll").prop("checked",false)
         if(addMbTr.length > 0){
            $("#addMb tbody tr").each((i,v) => {
                 let items = $(v)
@@ -1736,10 +1753,46 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                             }
                         })
+                        $.ajax({
+                            url: urlConfig.host + '/module/GetModuleByGroupName',
+                            type:"get",
+                            data: {moduleGroupName:$("#modulegroup").val()},
+                            success(data) {
+                                $("#dataModulePage .mxGruopTable").empty();
+                                if(data.length){
+                                    $("#dataModulePage .mxGruopTable").append(`<thead>
+                                    <th style="width: 150px">模型名称</th>
+                                    <th style="width: 150px">描述</th>
+                                    <th style="width: 150px">状态</th>
+                                    <th style="width: 200px">操作</th>
+                                    </thead>`)
+                                    data.map(s=>{
+                                        var img,title;
+                                        if(s.status == "未发布"){
+                                            img = "static/fabu.png";
+                                            title = "发布";
+                                        } else {
+                                            img = "static/cancelFb.png";
+                                            title = "取消发布";
+                                        }
+                                        $("#dataModulePage .mxGruopTable").append(
+                                            `<tr>
+                                    <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
+                                    <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
+                                    <td style="width: 150px">${s.status}</td>
+                                    <td style="width: 150px">
+                                        <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                        <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                        <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                    </td>
+                                </tr>
+                            `)
+                                    })
+                                }
+                            }
+                        })
                         $('#lkrFrame').fadeToggle(500)
                         $("#dataModulePage").show()
-                        freshClick("modelWinTree")
-                        freshClick("moduleTree")
                     }
                }) 
             }
@@ -1812,7 +1865,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
                                 freshClick("modelWinTree")
-                                freshClick("moduleTree")
                             }
                         })
                     }
@@ -1867,50 +1919,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
     }
    
-    function reseTabsList(val){
-
-        if(val == "全部"){
-
-            $.ajax({
-                url:urlConfig.host+'/module/GetAllModule',
-                data:'',
-                success: function(data) {
-                    if(data){
-                        $(".moduleContentList").html('')
-                        let str=``
-                        data.map(item=>{
-                            $(".moduleContentList").append(`<div class="left-list">
-                                    <div class="left-list-tilte dbclickModule"  moduleId='${item.id}'>${item.modulename}</div>
-                                    <div class="left-list-event">
-                                        <div class='lkr-list-edit lkr-edit' moduleId='${item.id}' >编辑模型</div>
-                                        <div class='lkr-list-del lkr-del' moduleId='${item.id}' >删除模型</div>
-                                    </div>
-                                </div>`)
-                        })
-                    }
-                }
-            })
-        }else{
-            $.ajax({
-            url:urlConfig.host+'/module/GetModuleByGroupName',
-            data:{moduleGroupName:val},
-            success: function(data) {
-                // $(".left-list").remove()
-                $(".moduleContentList").html('')
-                data.map(item => {
-                    $(".moduleContentList").append(`<div class="left-list">
-                        <div class="left-list-tilte dbclickModule"  moduleId='${item.id}'>${item.modulename}</div>
-                        <div class="left-list-event">
-                            <div class='lkr-list-edit lkr-edit' moduleId='${item.id}' >编辑模型</div>
-                            <div class='lkr-list-del lkr-del' moduleId='${item.id}' >删除模型</div>
-                        </div>
-                    </div>`)
-                })
-            }
-        })
-        }
-
-    }
     function ConfirmDel(){
         $.ajax({
             url:urlConfig.host+'/module/delModuleById',
@@ -1930,10 +1938,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function freshClick(treeId) {
         var tObj=$.fn.zTree.getZTreeObj(treeId);
-        if(tObj){
-            var selectedNode=tObj.getSelectedNodes()[0];
-            $("#"+selectedNode.tId+"_a").click();
-        }
+        var selectedNode=tObj.getSelectedNodes()[0];
+        $("#"+selectedNode.tId+"_a").click();
     }
     //树节点点击
     function treeClick(event, treeId, node) {
@@ -2181,12 +2187,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#modelPageDiv").show();
         $("#ruleMde").hide();
         $("#algorithmPage").hide();
-        $("#moduleListRight").empty()
     }
-    $("#selectedModlue").change((e)=>{
-      
-        reseTabsList( $("#selectedModlue").val());
-    })
     function ModuleClose(){
         $('#dataModulePage').hide()
     }
@@ -2198,7 +2199,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }catch (e) {
             console.log(e);
         }
-
+        
         $(".Frame").fadeToggle(500);
         $("#dicDiv").hide()
         $(".gsTitle").text("公式编辑")
@@ -2221,6 +2222,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $("#groupGs").val("");
             }
         })
+        
     }
     function AlgorithmClose(){
         $('#AddAlgorithm').fadeToggle(500)
@@ -2428,7 +2430,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $.fn.zTree.init($("#sfTree"),setting, treeData);
             }
         })
-        $("#sfGruopListRight").empty()
     }
 
     //删除字典信息
@@ -2867,7 +2868,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                 }
-
+                dictionaryShow()
             }
         })
     }
@@ -2939,8 +2940,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type:"get",
             success(data) {
                 if(data.status == 1){
-                    $('.noticeList').append(`<li>${parent.getTime()}【算法】字典 删除成功！</li>`)
-                    parent.toastr.success('【算法】字典删除成功！')
+                    $('.noticeList').append(`<li>${parent.getTime()}【算法】 删除成功！</li>`)
+                    parent.toastr.success('【算法】 删除成功！')
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     $('#deleteZdDiv').hide()
                     freshClick("sfWinTree")
@@ -3027,17 +3028,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $.fn.zTree.init($("#ruleTree"),setting, treeData);
             }
         })
-        $("#ruleListRight").empty()
     }
     function dataModify() {
         if($('#flex_tools .liactive').text() == "模型库"){
             $('#dataModulePage').show()
             getModuleList()
-            $('#dataModulePage .mxGruopTable').empty()
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').show()
-            $('#dicDiv .sfGruopTable').empty()
             sfWinList();
             $.ajax({
                 url: urlConfig.host + '/module/GetAllModule',
@@ -3054,7 +3052,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if($('#flex_tools .liactive').text() == "规则库"){
             $('#gzDiv').show()
             getGzList()
-            $('#gzDiv .gzGruopTable').empty()
         }
     }
     //算法弹窗列表
@@ -3465,7 +3462,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                freshClick("modelWinTree")
+                getModuleList()
             }
         })
     }
@@ -3485,7 +3482,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                freshClick("gzWinTree")
+                getGzList()
             }
         })
     }
@@ -3505,7 +3502,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                freshClick("sfWinTree")
+                sfWinList()
             }
         })
     }
