@@ -504,7 +504,11 @@ $(function(){
                 type:"POST",
                 dataType: "json",
                 contentType:"application/json",
-                success(res) {}
+                success(res) {
+                    if(res){
+                        window.isRuleNow = false
+                    }
+                }
             })
             if(window.top.canvasNowId == "canvas0"){
                 parent.$('#actionOutDiv div').each(function (i,v) {
@@ -554,7 +558,11 @@ $(function(){
                 type:"POST",
                 dataType: "json",
                 contentType:"application/json",
-                success(res) {}
+                success(res) {
+                    if(res){
+                        window.isRuleNow = false
+                    }
+                }
             })
         } else{//新增动作
             var dataArrIn = [];
@@ -920,6 +928,19 @@ $(function(){
 
    // 点击编辑规则
     $('body').on('click','.lkr-list-ediRule',(e) => {
+        if(window.canvasNowId == "canvas0" && !window.isRuleNow){
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
+            parent.toastr.info(`请暂存当前规则！！` )
+            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false
+        }
+        if (window.frames[canvasNowId] && window.frames[canvasNowId].contentWindow.canvasNowId != "canvas0"  && !window.frames[canvasNowId].contentWindow.isRuleNow) {
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
+            parent.toastr.info(`请暂存当前规则！！` )
+            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false
+        }
+
         window.bigData.editRuleId = $(e.target).attr('ruleId')
         let ruleid =  $(e.target).attr('ruleId')
         window.bigData.isExportId = ruleid
@@ -947,20 +968,19 @@ $(function(){
                         window.Topology.isClickAction = []
                         window.Topology.tools = {}
                         window.bigData.ruleType = "edit"
+                        window.isRuleNow =true
                         window.bigData.editRuleId = data.tableRole.id;
+                        responseActionDatas = data.interfaceRoleDataModels
                    }else{
                         window.frames[canvasNowId].contentWindow.canvas.open(JSON.parse(ruleData))
                         window.frames[canvasNowId].contentWindow.Topology.isClickAction = []
                         window.frames[canvasNowId].contentWindow.Topology.tools = {}
                         window.frames[canvasNowId].contentWindow.bigData.ruleType = "edit"
+                        window.frames[canvasNowId].contentWindow.isRuleNow =true
                         window.frames[canvasNowId].contentWindow.bigData.editRuleId = data.tableRole.id;
+                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
                    }
 
-                    if(window.canvasNowId == "canvas0"){
-                        responseActionDatas = data.interfaceRoleDataModels
-                    }else{
-                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
-                    }
                     if(data.operatorInterfaceDataModels){
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {

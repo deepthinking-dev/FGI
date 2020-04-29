@@ -1069,6 +1069,7 @@
         dataIn:"",
         dataOut:""
     };
+    var isRuleNow = true
     var canvasNowId = "canvas0"
     var setting={
         check: {
@@ -1302,6 +1303,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#'+canvas_id).show()
         $('#'+canvas_id)[0].contentWindow.canvasNowId = canvas_id
         window.canvasNowId = canvas_id
+        $('#'+canvas_id)[0].contentWindow.isRuleNow =true
         if( $('#canvasList ul li').length == 1){
             $('#canvasList ul li').eq(0).removeClass('pageson');
         }else{
