@@ -90,28 +90,31 @@ $(function(){
                 data:{algthId:$("#addActionButton").attr("id_out")},
                 success(res) {
                     let optionx = "";
-                    res.tableFuncs.map(s=>{
-                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                    })
-                    var num = $("#actionOutDiv div").length;
-                    $("#actionOutDiv").append(`
-                          <div style="margin: 10px 0">
-                               <i>${num+1}</i>
-                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
-                               <span>行为</span><select class="xwSelect_out">
-                               <option value=">">></option>
+                    let options = `<option value=">">></option>
                                <option value="<"><</option>
                                <option value="=">=</option>
                                <option value=">=">>=</option>
                                <option value="<="><=</option>
                                <option value="!=">!=</option>
-                               <option value="assignment">赋值</option>
-                           </select>
+                               <option value="assignment">赋值</option>`;
+                    var num = $("#actionOutDiv div").length;
+                    res.tableFuncs.map((s,i)=>{
+                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`;
+                        if(i == 0 && s.vartype == 3){
+                            options = `<option value="assignment">赋值</option>`
+                        }
+                    })
+                    $("#actionOutDiv").append(`
+                          <div style="margin: 10px 0">
+                               <i>${num+1}</i>
+                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                               <span>行为</span><select class="xwSelect_out">${options}</select>
                                <span>表达式</span><input type="text" value="" class="bds_out">
                                 <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none;width: 22px">x</button>
                           </div>
                         `)
+
 
                         parent.$(".xwzly_out").off("change").on("change",(e)=>{
                             if($(e.target).find('option:selected').attr('type') == 3){
