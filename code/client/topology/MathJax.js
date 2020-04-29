@@ -60,6 +60,7 @@
     })
     //提交算法信息及公式编辑
     function ConfirmFrame(){
+        debugger
         if($('#AlgorithmnameY').val() == ""){
             parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】请填写算法名称！</li>`)
             parent.toastr.info(`【算法】请填写算法名称！` )
@@ -156,7 +157,7 @@
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
                         freshClick("sfWinTree")
-                        freshClick("sfTree")
+                        // freshClick("sfTree")
 
                     } else {
                         $(".Frame").hide();
@@ -164,6 +165,8 @@
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
+                        // freshClick("sfTree")
                     }
                 }
             })
@@ -192,6 +195,7 @@
                         parent.toastr.success(`【算法】保存成功！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
                         freshClick("sfTree")
                     } else {
                         $(".Frame").hide();
@@ -199,6 +203,8 @@
                         parent.toastr.info(`【算法】${data.msg}！` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         parent.$("#dicDiv").show()
+                        freshClick("sfWinTree")
+                        freshClick("sfTree")
                     }
                 }
             })

@@ -1774,6 +1774,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $("#mouldName").val("")
                                     $("#mouldRemark").val("")
                                     $('#addMb tbody').html('')
+                                    freshClick("modelWinTree")
+                                    freshClick("moduleTree")
                                 }
                             }
                         })
@@ -1889,6 +1891,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
                                 freshClick("modelWinTree")
+                                freshClick("moduleTree")
                             }
                         })
                     }
@@ -2567,7 +2570,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     }
                 } else if(data.tableAlgorithm.algorithmtype == 2){
                     $("#updateSzId").val(s);
-                    $("#dicDiv").hide();
+                    $("#dicDiv").show();
                     $("#groupGs").val("")
                     $("#groupGs").val(data.tableAlgorithm.algorithmgroup)
                     $(".gsTitle").text("公式编辑")
@@ -3095,12 +3098,19 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     //编辑规则
     function modifyGz(s) {
-        if(editGzType) {
-            $('.noticeList').append(`<li>${parent.getTime()} 当前编辑的规则需进行保存！ </li>`)
-            parent.toastr.info('当前编辑的规则需进行保存！')
-            $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false;
+        if(window.canvasNowId == "canvas0" && !window.isRuleNow){
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
+            parent.toastr.info(`请暂存当前规则！！` )
+            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false
         }
+        if (window.frames[canvasNowId] && window.frames[canvasNowId].contentWindow.canvasNowId != "canvas0"  && !window.frames[canvasNowId].contentWindow.isRuleNow) {
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
+            parent.toastr.info(`请暂存当前规则！！` )
+            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+            return false
+        }
+
         $("#gzDiv").hide();
         window.bigData.editRuleId = s;
         let ruleid =  s;
@@ -3111,6 +3121,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
+                    ruleData
                     $('#ruleName').val(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);

@@ -954,6 +954,7 @@ $(function(){
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
+                   
                     $('#ruleName').val(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
@@ -972,6 +973,18 @@ $(function(){
                         window.isRuleNow =true
                         window.bigData.editRuleId = data.tableRole.id;
                         responseActionDatas = data.interfaceRoleDataModels
+                        canvas.data.nodes.map(item=>{
+                            if(!item.childStand){
+                                item.anchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0;
+                                })
+                                item.rotatedAnchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0
+                                })
+                            }
+                        })
                    }else{
                         window.frames[canvasNowId].contentWindow.canvas.open(JSON.parse(ruleData))
                         window.frames[canvasNowId].contentWindow.Topology.isClickAction = []
@@ -980,8 +993,20 @@ $(function(){
                         window.frames[canvasNowId].contentWindow.isRuleNow =true
                         window.frames[canvasNowId].contentWindow.bigData.editRuleId = data.tableRole.id;
                         parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
+                        window.frames[canvasNowId].contentWindow.canvas.data.nodes.map(item=>{
+                            if(!item.childStand){
+                                item.anchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0;
+                                })
+                                item.rotatedAnchors.map((obj,i) => {
+                                    obj.x = 0;
+                                    obj.y = 0
+                                })
+                            }
+                        })
                    }
-
+                 
                     if(data.operatorInterfaceDataModels){
                         data.operatorInterfaceDataModels.map(item=>{
                             let obj = {
