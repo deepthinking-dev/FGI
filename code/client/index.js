@@ -67,7 +67,7 @@ $(function(){
             parent.$("#actionInDiv").append(`
                       <div style="margin: 10px 0">
                            <i>${num+1}</i>
-                           <span>行为值来源</span><input id="aaa" class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
