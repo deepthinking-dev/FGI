@@ -82,20 +82,22 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             int id=algorithmModel.getTableAlgorithm().getId();
             if(algorithmModel.getTableAlgorithm().getAlgorithmtype()!= AlgorithmtypeEnum.logical.getAlgorithmtype()){
                 List<TableFunc> tableFuncs=algorithmModel.getTableFuncs();
-                if(algorithmModel.getTableAlgorithm().getAlgorithmtype()== AlgorithmtypeEnum.formula.getAlgorithmtype()){
-                    TableFunc tableFunc=new TableFunc();
-                    tableFunc.setInorout(InOrOutType.out.getType());
-                    tableFunc.setParametername("公式计算结果");
-                    tableFunc.setVarname("result");
-                    tableFunc.setVartype(tableFuncs.get(0).getVartype());
-                    tableFunc.setValvalue(tableFuncs.get(0).getValvalue());
-                    tableFunc.setRemark("");
-                    tableFuncs.add(tableFunc);
+                if(tableFuncs.size()>0){
+                    if(algorithmModel.getTableAlgorithm().getAlgorithmtype()== AlgorithmtypeEnum.formula.getAlgorithmtype()){
+                        TableFunc tableFunc=new TableFunc();
+                        tableFunc.setInorout(InOrOutType.out.getType());
+                        tableFunc.setParametername("公式计算结果");
+                        tableFunc.setVarname("result");
+                        tableFunc.setVartype(tableFuncs.get(0).getVartype());
+                        tableFunc.setValvalue(tableFuncs.get(0).getValvalue());
+                        tableFunc.setRemark("");
+                        tableFuncs.add(tableFunc);
+                    }
+                    tableFuncs.stream().forEach(funcs->{
+                        funcs.setAlgorithmid(id);//设置算子ID
+                        tableFuncMapper.insert(funcs);
+                    });
                 }
-                tableFuncs.stream().forEach(funcs->{
-                    funcs.setAlgorithmid(id);//设置算子ID
-                    tableFuncMapper.insert(funcs);
-                });
             }
 
         }catch (Exception e){
@@ -188,6 +190,17 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
 
     @Override
     public int modAlgorithmBaseInfoById(TableAlgorithm tableAlgorithm) {
+        boolean flag=cheakAlgorithmrole(tableAlgorithm.getId().toString());
+        if(flag){
+            return 2;
+        }
+        TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
+        tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(tableAlgorithm.getAlgorithmname())
+                .andIdNotEqualTo(tableAlgorithm.getId()).andAlgorithmgroupEqualTo(tableAlgorithm.getAlgorithmgroup());
+        List<TableAlgorithm> tableAlgorithms=tableAlgorithmMapper.selectByExample(tableAlgorithmCriteria);
+        if(tableAlgorithms.size()>0){//重名
+            return 3;
+        }
         return updateByPrimaryKeySelective(tableAlgorithm);
     }
 
