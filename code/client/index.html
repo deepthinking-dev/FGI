@@ -1549,7 +1549,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnName">${item.englishname?item.englishname:''}</td>
                     <td class="columnType">${item.fieldtype?item.fieldtype:''}</td> 
                     <td class="tableName">${item.tablename?item.tablename:''}</td>
-                    <td class="columnRemark"></td>
+                    <td class="columnRemark">${item.remark?item.remark:''}</td>
                     </tr>`
                 })
                 $('#addMb tbody').html(thStr)
