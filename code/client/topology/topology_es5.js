@@ -526,7 +526,7 @@ var Topology = {
 
                                         $.ajax({
                                             url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                            data:{algthId:$("#addActionButton").attr("id_out")},
+                                            data:{algthId:parent.$("#addActionButton").attr("id_out")},
                                             success(res) {
                                                 let optionx = "";
                                                 res.tableFuncs.map(s=>{
@@ -597,7 +597,7 @@ var Topology = {
                                             })
                                             $.ajax({
                                                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                                data:{algthId:$("#addActionButton").attr("id_out")},
+                                                data:{algthId:parent.$("#addActionButton").attr("id_out")},
                                                 success(res) {
                                                     let optionx = "";
                                                     res.tableFuncs.map(s => {
