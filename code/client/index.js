@@ -59,15 +59,15 @@ $(function(){
         })
     })
     $('body').on('click','#addActionButton',(e) => {
-        if($("#selectOutIn").val() == "1"){
-            $("#actionMsgIn").val("");
-            var num = $("#actionInDiv div").length;
-            var from_name = $('#addActionButton').attr("from_name");
-            var from_id = $('#addActionButton').attr("from_id");
-                $("#actionInDiv").append(`
+        if(parent.$("#selectOutIn").val() == "1"){
+            parent.$("#actionMsgIn").val("");
+            var num = parent.$("#actionInDiv div").length;
+            var from_name = parent.$('#addActionButton').attr("from_name");
+            var from_id = parent.$('#addActionButton').attr("from_id");
+            parent.$("#actionInDiv").append(`
                       <div style="margin: 10px 0">
                            <i>${num+1}</i>
-                           <span>行为值来源</span><input id="aaa" class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
+                           <span>行为值来源</span><input class="xwzly_in" disabled value="${from_name}" resource="${from_id}">
                            <span>行为</span><select class="xwSelect_in">
                            <option value=">">></option>
                            <option value="<"><</option>
@@ -83,11 +83,11 @@ $(function(){
                       </div>
                     `)
         } else {
-            $("#actionMsgOut").val("");
+            parent.$("#actionMsgOut").val("");
 
             $.ajax({
                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                data:{algthId:$("#addActionButton").attr("id_out")},
+                data:{algthId:parent.$("#addActionButton").attr("id_out")},
                 success(res) {
                     let optionx = "";
                     let options = `<option value=">">></option>
@@ -104,7 +104,7 @@ $(function(){
                             options = `<option value="assignment">赋值</option>`
                         }
                     })
-                    $("#actionOutDiv").append(`
+                    parent.$("#actionOutDiv").append(`
                           <div style="margin: 10px 0">
                                <i>${num+1}</i>
                                <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
@@ -137,7 +137,6 @@ $(function(){
         }
     })
     $('body').on('click','.bds_out',(e) => {
-        debugger
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】行为值来源为模型才能赋值！ </li>`)
