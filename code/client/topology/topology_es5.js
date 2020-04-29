@@ -351,7 +351,7 @@ var Topology = {
                 canvas.disableScale =true
                 // 监听画布
                 function onMessage(event, data) {
-
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -816,11 +816,13 @@ var Topology = {
                                 item.to.x = nodesa1.rotatedAnchors[0].x
                                 item.to.y = nodesa1.rotatedAnchors[0].y
                             })
+                            // canvas.updateProps()
                             break    
                         case 'moveOutNode':
                             if(editGzType == false){
                                 editGzType = true;
                             }
+                            $("#showCsName").text("").hide()
                             break   
                         case 'moveInNode':   
                             if(data.name == "combine"){
@@ -830,6 +832,14 @@ var Topology = {
                                 $("#menu_unCombine").css("display", "block");
                                 canvas.uncombine(data);
                                 canvas.render();
+                            }
+                            if(data.childStand){
+                                $("#showCsName").text(data.childStand.cstext).css({
+                                    "position":"absolute",
+                                    "top":(data.rect.y+40)+"px",
+                                    "left":(data.rect.x)+"px"
+                                })
+                                $("#showCsName").show()
                             }
                             canvas.lockNodes([data], false)
                             break    
@@ -965,8 +975,8 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
-                                                // data2.text = ""   
+                                                // data2.text = item.parametername;
+                                                data2.text = ""   
                                                 data2.bkType = 0
                                                 data2.fillStyle = fillStyle
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -997,7 +1007,8 @@ var Topology = {
                                                     text:item.valvalue,
                                                     fid:data.data.sid,
                                                     fUUid: data.id,
-                                                    canshuId:item.id
+                                                    canshuId:item.id,
+                                                    cstext:item.parametername
                                                 }
                                               
                                                 // data2.anchors[0].x = data2.rect.x
@@ -1025,7 +1036,7 @@ var Topology = {
                                                     obj.y = data1.rotatedAnchors[i].y-85 + num.y
                                                 }) 
                                                 canvas.addNode(data2)
-                                                canvas.lockNodes([data2],true)   
+                                                // canvas.lockNodes([data2],true)   
                                                 canvas.render()
                                                 if(data.data.inNum  > data.data.outNum){
                                                     if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
@@ -1127,7 +1138,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
+                                                // data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 data2.bkType = 0
                                                 data2.fillStyle = fillStyle
@@ -1159,7 +1170,8 @@ var Topology = {
                                                     text:item.valvalue,
                                                     fid:data.data.sid,
                                                     fUUid: data.id,
-                                                    canshuId:item.id
+                                                    canshuId:item.id,
+                                                    cstext:item.parametername
                                                 }
                                                 // data2.anchors[0].x = 0
                                                 // data2.anchors[0].y = 0 
@@ -1186,7 +1198,7 @@ var Topology = {
                                                     obj.y = data1.rotatedAnchors[i].y-85 + num.y
                                                 }) 
                                                 canvas.addNode(data2)
-                                                canvas.lockNodes([data2],true)   
+                                                // canvas.lockNodes([data2],true)   
                                                 canvas.render()
                                                 if(data.data.outNum > data.data.inNum){
                                                     if(data.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
@@ -1418,14 +1430,14 @@ var Topology = {
                         break
                         case 'lockNodes':
                            if(data.nodes[0].childStand){
-                                canvas.lockNodes([data],true)
+                                // canvas.lockNodes([data],true)
                            }
                            
                         break
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
-                            data.name = "curve"
+                            data.name = "line"
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){

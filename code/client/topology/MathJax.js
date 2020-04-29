@@ -814,7 +814,8 @@ function ActionSure(){
                     text:parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
                     fid:data.data.sid,
                     fUUid: data.id,
-                    canshuId: parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    canshuId: parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id"),
+                    cstext:parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val()
                 }
                 if(parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     test.anchors.map((obj,i) => {
@@ -835,7 +836,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
+                test.text = ""
                 let flag 
                 if(window.canvasNowId == "canvas0"){
                     // window.Topology.dblclickNode.data.outNum ++

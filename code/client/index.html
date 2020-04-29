@@ -210,7 +210,9 @@
     </script>
 </head>
 <body>
+     <div id="showCsName" style="z-index: 999;color: #fff;">
 
+     </div>
     <!-- 规则修改状态，是否清空画布 -->
     <div class="lkr-frame" id='isClearCanvas'>
         <div class="lkr-frame-div" style="height: 150px;">
@@ -1520,6 +1522,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
                     <td class="columnType">
                         <select class="moduleSelect">
+
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -1541,18 +1544,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
-              
+                $(".moduleSelect").change((e)=>{
+                    $(e.target).parent('.columnType').children('.moduleSelect').hide()
+                    $(e.target).parent('.columnType').children('.moduleInputOne').show()
+                    $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+                })
             }
         })
     })
+    
+    
     function myFunction(e){
-        if( $(e.target).val() == ""){
-            $(e.target).parent('.columnType').children('.moduleSelect').show()
-            $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-        }else{
-            $(e.target).parent('.columnType').children('.moduleSelect').hide()
-            $(e.target).parent('.columnType').children('.moduleInputOne').show()
-        }
+        // debugger
+        $(e.target).parent('.columnType').children('.moduleSelect').show()
+        $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+        // if( $(e.target).val() == ""){
+           
+        // }else{
+        //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
+        //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
+        // }
        
     }
 
@@ -1962,25 +1973,39 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".dataSourceTbody").append(`<tr>
             <td class="columnComment"><input type="text" value="" maxlength="20"></td>
             <td class="columnName"><input type="text" value="" maxlength="20"></td>
-            <td class="columnType"><select class="">
-                                                <option value="byte">byte</option>
-                                                <option value="short">short</option>
-                                                <option value="int">int</option>
-                                                <option value="long">long</option>
-                                                <option value="float">float</option>
-                                                <option value="double">double</option>
-                                                <option value="boolean">boolean</option>
-                                                <option value="char">char</option>
-                                                <option value="date">date</option>
-                                                <option value="string">string</option>
-                                                <option value="BLOB">BLOB</option>
-                                                <option value="boolean">boolean</option>
-                                                <option value="array">array</option>
-                                            </select></td>
+            <td class="columnType"><select class="moduleSelect">
+                            <option value="byte">byte</option>
+                            <option value="short">short</option>
+                            <option value="int">int</option>
+                            <option value="long">long</option>
+                            <option value="float">float</option>
+                            <option value="double">double</option>
+                            <option value="boolean">boolean</option>
+                            <option value="char">char</option>
+                            <option value="date">date</option>
+                            <option value="string">string</option>
+                            <option value="BLOB">BLOB</option>
+                            <option value="boolean">boolean</option>
+                            <option value="array">array</option>
+                        </select>
+              <input type="text" style="display:none;"  class="moduleInputOne"  value="" onchange="myFunction(event)"></td>
             <td class="tableName"><input type="text" value="-"  maxlength="20"></td>
             <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
+             $('.moduleSelect').show()           
+            $(".moduleSelect").change((e)=>{
+                $(e.target).parent('.columnType').children('.moduleSelect').hide()
+                $(e.target).parent('.columnType').children('.moduleInputOne').show()
+                $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+            })
+            function myFunction(e){
+
+                $(e.target).parent('.columnType').children('.moduleSelect').show()
+                $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+
+            
+            }
     }
    
     function ConfirmDel(){
@@ -2422,6 +2447,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#addMb tbody').append(thStr)
         $('#addSource tbody').html('')
         $("#sourceName").fadeToggle(500)
+        $(".moduleSelect").change((e)=>{
+            $(e.target).parent('.columnType').children('.moduleSelect').hide()
+            $(e.target).parent('.columnType').children('.moduleInputOne').show()
+            $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+        })
     }
 
 
