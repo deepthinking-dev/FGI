@@ -484,53 +484,123 @@ public class TableInterfaceparametersCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInoroutEqualTo(Long value) {
+        public Criteria andInoroutEqualTo(Integer value) {
             addCriterion("inOrOut =", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutNotEqualTo(Long value) {
+        public Criteria andInoroutNotEqualTo(Integer value) {
             addCriterion("inOrOut <>", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutGreaterThan(Long value) {
+        public Criteria andInoroutGreaterThan(Integer value) {
             addCriterion("inOrOut >", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutGreaterThanOrEqualTo(Long value) {
+        public Criteria andInoroutGreaterThanOrEqualTo(Integer value) {
             addCriterion("inOrOut >=", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutLessThan(Long value) {
+        public Criteria andInoroutLessThan(Integer value) {
             addCriterion("inOrOut <", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutLessThanOrEqualTo(Long value) {
+        public Criteria andInoroutLessThanOrEqualTo(Integer value) {
             addCriterion("inOrOut <=", value, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutIn(List<Long> values) {
+        public Criteria andInoroutIn(List<Integer> values) {
             addCriterion("inOrOut in", values, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutNotIn(List<Long> values) {
+        public Criteria andInoroutNotIn(List<Integer> values) {
             addCriterion("inOrOut not in", values, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutBetween(Long value1, Long value2) {
+        public Criteria andInoroutBetween(Integer value1, Integer value2) {
             addCriterion("inOrOut between", value1, value2, "inorout");
             return (Criteria) this;
         }
 
-        public Criteria andInoroutNotBetween(Long value1, Long value2) {
+        public Criteria andInoroutNotBetween(Integer value1, Integer value2) {
             addCriterion("inOrOut not between", value1, value2, "inorout");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

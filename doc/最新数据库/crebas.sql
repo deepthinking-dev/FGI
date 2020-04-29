@@ -116,6 +116,7 @@ create table Table_InterfaceParameters
    ParametersSources    varchar(50) comment '参数来源',
    ParametersName       varchar(50) comment '参数名称',
    inOrOut              int comment '输入输出',
+   Remark               varchar(50) comment '备注',
    primary key (ID)
 );
 
