@@ -1254,7 +1254,8 @@ var Topology = {
                                         inorout:index.inorout,
                                         interfaceid:data.id,
                                         parametersname:index.varname,
-                                        parameterssources:index.id
+                                        parameterssources:index.id,
+                                        remark:index.remark
                                     }
                                     operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
                                 })
@@ -1271,7 +1272,7 @@ var Topology = {
                                         if(window.canvasNowId == "canvas0"){
                                             window.isRuleNow = false
                                         }else{
-                                            window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                            parent.$('#'+window.top.canvasNowId)[0].contentWindow.isRuleNow = false
                                         }
                                       
                                     }
@@ -1624,13 +1625,13 @@ var Topology = {
                             if(window.canvasNowId == "canvas0"){
                                 ruleTypes =window.bigData.ruleType
                             }else{
-                                ruleTypes =window.frames[canvasNowId].contentWindow.bigData.ruleType
+                                ruleTypes =parent.$('#'+window.top.canvasNowId)[0].contentWindow.bigData.ruleType
                             }
                             if(ruleTypes== "edit"){
                                 if(window.canvasNowId == "canvas0"){
                                     window.isRuleNow = false
                                 }else{
-                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.isRuleNow = false
                                 }
                             }
                             break;
@@ -1855,9 +1856,12 @@ var Topology = {
                                                                     }  else{
                                                                         str+=`<input value="对象" class="actionSelected2" disabled>`
                                                                     } 
-                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
-                                                                        <button type="button" onclick="reduceButton(event)">x</button>                                                    
-                                                                        </div>`     
+                                                                        str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`
+                                                                    if(inter.remark == "xin"){
+                                                                        str+=`<button type="button" onclick="reduceButton(event)">x</button> `
+                                                                    }      
+                                                                                                                           
+                                                                        str+=`</div>`     
                                                                 }
 
                                                                 parent.$('.ruleContentDiv').html(str)
@@ -1882,8 +1886,11 @@ var Topology = {
                                                             }  else{
                                                                 str+=`<input value="对象" class="actionSelected2" disabled>`
                                                             } 
-                                                                str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
-                                                                </div>`                                                           
+                                                                str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`  
+                                                                if(index.remark == "xin"){
+                                                                    str+=`<button type="button" onclick="reduceButton(event)">x</button>`
+                                                                }                                               
+                                                                str+=`</div>`                                                           
                                                                 parent.$('.ruleContentDiv').html(str)
                                                         }) 
                                                     }
@@ -1905,7 +1912,7 @@ var Topology = {
                                                             str+=`<input value="对象" class="actionSelected2" disabled>`
                                                         } 
                                                             str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
-                                                            <button type="button" onclick="reduceButton(event)">x</button>                                                    
+                                                               <button type="button" onclick="reduceButton(event)">x</button>                                                    
                                                             </div>`     
                                                         
 

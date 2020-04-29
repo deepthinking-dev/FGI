@@ -486,7 +486,8 @@ function ruleSure(){
                 inorout:index.inorout,
                 interfaceid:item.uuid,
                 parametersname:index.varname,
-                parameterssources:index.id
+                parameterssources:index.id,
+                remark:index.remark
             }
             objF.tableInterfaceparametersList.push(CsObj)
         })
@@ -1279,7 +1280,8 @@ function ActionSure(){
                 inorout:index.inorout,
                 interfaceid:data.id,
                 parametersname:index.varname,
-                parameterssources:index.id
+                parameterssources:index.id,
+                remark:index.remark
             }
             operatorInterfaceDataModel.tableInterfaceparametersList.push(CsObj)
         })

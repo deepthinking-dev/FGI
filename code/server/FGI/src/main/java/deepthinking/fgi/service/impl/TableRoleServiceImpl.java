@@ -350,7 +350,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     tableInterfaceparameters.setId(interfaceParamXmlModel.getId());
                     tableInterfaceparameters.setInterfaceid(interfaceXmlModel.getId());
                     tableInterfaceparameters.setParameterssources(interfaceParamXmlModel.getOrigin());
-                    tableInterfaceparameters.setInorout((long) interfaceParamXmlModel.getIotype());
+                    tableInterfaceparameters.setInorout(interfaceParamXmlModel.getIotype());
                     tableInterfaceparameters.setParametersname(interfaceParamXmlModel.getName());
                     tableInterfaceparametersList.add(tableInterfaceparameters);
                     map.remove(interfaceParamXmlModel.getId());
