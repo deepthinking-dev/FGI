@@ -36,6 +36,7 @@ var Topology = {
     banAdd:true,
     dblclickNode:{},
     isClickAction:[],
+    moveNodesList:[],
     // 对象的最初入口
     init: function () {
         var self = this;
@@ -368,6 +369,8 @@ var Topology = {
                             break;
                         case 'line':
                             currentLineData = data;
+                            canvas.lockLines([data],true)
+                            canvas.render()
                             // let id_in;//输入端算法id
                             // let id_out;//输出端算法id
                             // parent.$("#actionMsgIn").val("");
@@ -944,7 +947,6 @@ var Topology = {
                                         obj.y = 0
                                     })
                                 }
-debugger
                                 if(data.data.inNum > 0 || data.data.outNum > 0){                                
                                     let data2 = JSON.parse(JSON.stringify(data1)) 
                                     function guid() {
@@ -1088,7 +1090,7 @@ debugger
                                                     obj.y = data1.rotatedAnchors[i].y-85 + num.y
                                                 }) 
                                                 canvas.addNode(data2)
-                                                // canvas.lockNodes([data2],true)   
+                                                canvas.lockNodes([data2],true)   
                                                 canvas.render()
                                                 if(data.data.inNum  > data.data.outNum){
                                                     if( data.rect.height < (heights*(data.data.inNum+1)+10*(data.data.inNum+1))){
@@ -1250,7 +1252,7 @@ debugger
                                                     obj.y = data1.rotatedAnchors[i].y-85 + num.y
                                                 }) 
                                                 canvas.addNode(data2)
-                                                // canvas.lockNodes([data2],true)   
+                                                canvas.lockNodes([data2],true)   
                                                 canvas.render()
                                                 if(data.data.outNum > data.data.inNum){
                                                     if(data.rect.height < (heights*(data.data.outNum+1) +10*(data.data.outNum+1))){
@@ -1346,7 +1348,9 @@ debugger
                                 })
                            }
                             break;
+                            
                         case 'resizeNodes':
+
                             if(!data[0].childStand){
                                 data[0].anchors.map((obj,i) => {
                                     obj.x = 0;
@@ -1356,6 +1360,15 @@ debugger
                                     obj.x = 0;
                                     obj.y = 0
                                 })
+                                // data[0].rect.width = 200
+                                // data[0].rect.height = 100
+                            }else{
+                                // self.moveNodesList =data
+                                // data[0].rect.width = 20
+                                // data[0].rect.height = 10
+                                // data[0].rect.x = data[0].rect.x
+                                // data[0].rect.y = data[0].rect.y
+                                // canvas.lockNodes([data[0]], true)
                             }
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             let nowLists =[]
@@ -1411,8 +1424,8 @@ debugger
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
                                             item.textMaxLine = 1
-                                            item.hideRotateCP=true,
-                                            item.hideSizeCP=true
+                                            item.hideRotateCP = true,
+                                            item.hideSizeCP = true
                                             // item.bkType = 0
                                             // item.fillStyle = "red"
                                         }else{                                         
@@ -1482,14 +1495,19 @@ debugger
                         break
                         case 'lockNodes':
                            if(data.nodes[0].childStand){
-                                // canvas.lockNodes([data],true)
+                                canvas.lockNodes([data],true)
                            }
                            
                         break
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
-                            data.name = "curve"
+                            data.name = "polyline"
+                            data.manualCps =true
+                            canvas.lockLines([data],true)
+                            canvas.render()
+                            data.controlPoints[0].hidden = true
+                            data.controlPoints[1].hidden = true
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
