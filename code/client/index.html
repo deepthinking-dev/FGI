@@ -1820,6 +1820,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         })
                         $('#lkrFrame').fadeToggle(500)
                         $("#dataModulePage").show()
+                        freshClick("modelWinTree")
+                        freshClick("moduleTree")
                     }
                }) 
             }
@@ -1966,8 +1968,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
     function freshClick(treeId) {
         var tObj=$.fn.zTree.getZTreeObj(treeId);
-        var selectedNode=tObj.getSelectedNodes()[0];
-        $("#"+selectedNode.tId+"_a").click();
+        if(tObj){
+            var selectedNode=tObj.getSelectedNodes()[0];
+            $("#"+selectedNode.tId+"_a").click();
+        }
     }
     //树节点点击
     function treeClick(event, treeId, node) {
@@ -2440,6 +2444,57 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
+    var treeDatasssss =[
+            { name:"组1", open:true,bm:"11",
+                children: [
+                    { name:"组1-1",
+                        bm:"1111",
+                        children: [
+                            { name:"组1-1-1",bm:"111111",
+                                children: [
+                                    { name:"组1-1-1-1",bm:"11111111"}
+                                ],
+                            },
+                            { name:"组1-1-2",bm:"111112"},
+                            { name:"组1-1-3",bm:"111113"},
+                            { name:"组1-1-4",bm:"111114"}
+                        ]},
+                    { name:"组1-2",
+                        bm:"1112",
+                        children: [
+                            { name:"组1-2-1",bm:"111211"},
+                            { name:"组1-2-2",bm:"111212"},
+                            { name:"组1-2-3",bm:"111213"},
+                            { name:"组1-2-4",bm:"111214"}
+                        ]},
+                    { name:"组1-3",bm:"1113"}
+                ]},
+            { name:"组2",bm:"21",
+                children: [
+                    { name:"组2-1", open:true,bm:"2111",
+                        children: [
+                            { name:"组2-1-1",bm:"211111"},
+                            { name:"组2-1-2",bm:"211112"},
+                            { name:"组2-1-3",bm:"211113"},
+                            { name:"组2-1-4",bm:"211114"}
+                        ]},
+                    { name:"组2-2",bm:"2112",
+                        children: [
+                            { name:"组2-2-1",bm:"211211"},
+                            { name:"组2-2-2",bm:"211212"},
+                            { name:"组2-2-3",bm:"211213"},
+                            { name:"组2-2-4",bm:"211214"}
+                        ]},
+                    { name:"组2-3",bm:"2113",
+                        children: [
+                            { name:"组2-3-1"},
+                            { name:"组2-3-2"},
+                            { name:"组2-3-3"},
+                            { name:"组2-3-4"}
+                        ]}
+                ]},
+                { name:"组3",bm:"31"}
+            ];
     //算法库维护
     function dictionaryShow(){
         $("#modelPageDiv").hide();
@@ -2455,6 +2510,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 data.map(s=>{
                     treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype,"right":s.grouptype})
                 })
+
                 $.fn.zTree.init($("#sfTree"),setting, treeData);
             }
         })
@@ -2896,7 +2952,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         }
                     })
                 }
-                dictionaryShow()
             }
         })
     }
@@ -2907,6 +2962,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     $("#searchName").bind('input propertychange',function(s){
         let val = $("#searchName").val();
+        // return;
         if($('.liactive').text() == "模型库"){
             $("#moduleTree a").each((i,s)=>{
                 if($(s).attr("title").includes(val)){
@@ -3498,7 +3554,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                getModuleList()
+                freshClick("modelWinTree")
             }
         })
     }
@@ -3518,7 +3574,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                getGzList()
+                freshClick("gzWinTree")
             }
         })
     }
@@ -3538,7 +3594,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     parent.toastr.info(`取消发布，发布功能未完善，敬请期待！审核` )
                     parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 }
-                sfWinList()
+                freshClick("sfWinTree")
             }
         })
     }
