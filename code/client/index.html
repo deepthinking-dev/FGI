@@ -1367,7 +1367,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             actionRelation:"",
             preActionRelation:""
         })
-        parent.$("#addActionButton").attr("resData",false)
+        parent.$("#addActionButton").attr("resData","false")
         canvas.data.nodes.map(s=>{
             if(s.id == data.from.id){
                 id_out = s.childStand.fid
@@ -1491,7 +1491,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 resCurrentLineData.dataIn = resInAll;
                 resCurrentLineData.dataOut = resOutAll;
-                parent.$("#addActionButton").attr("resData",true)
+                parent.$("#addActionButton").attr("resData","true")
                 try{
                     resBaseIn.map((t,i)=>{
                         parent.$("#actionInDiv").append(`
