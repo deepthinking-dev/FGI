@@ -1612,13 +1612,13 @@ var Topology = {
                                 }
                                 return flag
                             }
-                            let ruleType
+                            let ruleTypes
                             if(window.canvasNowId == "canvas0"){
-                                ruleType =window.bigData.ruleType
+                                ruleTypes =window.bigData.ruleType
                             }else{
-                                ruleType =window.frames[canvasNowId].contentWindow.bigData.ruleType
+                                ruleTypes =window.frames[canvasNowId].contentWindow.bigData.ruleType
                             }
-                            if(ruleType== "edit"){
+                            if(ruleTypes== "edit"){
                                 if(window.canvasNowId == "canvas0"){
                                     window.isRuleNow = false
                                 }else{
