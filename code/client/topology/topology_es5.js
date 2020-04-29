@@ -367,6 +367,7 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
+                            console.log(data)
                             let id_in;//输入端算法id
                             let id_out;//输出端算法id
                             parent.$("#actionMsgIn").val("");
@@ -386,7 +387,9 @@ var Topology = {
                                     id_in = s.childStand.fid
                                 }
                             })
-
+                            if(window.canvasNowId != "canvas0"){
+                                parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
+                            }   
                             var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
                             var bigList=[];
                             canvas.data.nodes.map(s=>{
@@ -1666,6 +1669,7 @@ var Topology = {
                             }
                             break;
                         case 'delete':
+                            console.log(data)
                             if(window.canvasNowId == "canvas0"){
                                 if(data.nodes.length==0 && data.lines.length == 0){
                                     parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
@@ -1675,6 +1679,7 @@ var Topology = {
                                 }
                             }else{
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
+                                data.lines = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines 
                                 if( data.nodes == null && data.lines.length == 0){
                                     parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
@@ -1687,13 +1692,23 @@ var Topology = {
                                     delete  window.Topology.tools[data.nodes[0].id]
                                 }else{
                                     delete  parent.$('#'+window.top.canvasNowId)[0].contentWindow.Topology.tools[data.nodes[0].id]
+                                   
                                 }
                               
                             }catch (e) {
                                 console.log(e);
                             }
 
-                            data.nodes.map(index=>{
+                           if(window.canvasNowId != "canvas0"){
+                                parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.map((item,i)=>{
+                                    if(item.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines[0].id){
+                                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.splice(i,1)
+                                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.render();
+                                    }
+                                })
+                           }
+                            if(data.nodes){
+                                data.nodes.map(index=>{
                                 let length , canvas ;
                                 if(window.canvasNowId == "canvas0"){
                                     length=window.canvas.data.nodes.length;
@@ -1799,6 +1814,8 @@ var Topology = {
                                     })
                                 }                          
                             })
+                            }
+                            
                             
                             $("#flex_props_home").removeClass("hidden");
                             $("#flex_props_node").addClass("hidden");

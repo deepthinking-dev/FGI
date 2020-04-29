@@ -251,7 +251,11 @@ $(function(){
                 contentType:"application/json",
                 success(res) {
                     if(res){
-                        window.isRuleNow = false
+                        if(window.canvasNowId == "canvas0"){
+                            window.isRuleNow = false
+                        }else{
+                            window.frames[canvasNowId].contentWindow.isRuleNow = false
+                        }
                     }
                 }
             })
@@ -305,7 +309,11 @@ $(function(){
                 contentType:"application/json",
                 success(res) {
                     if(res){
-                        window.isRuleNow = false
+                        if(window.canvasNowId == "canvas0"){
+                            window.isRuleNow = false
+                        }else{
+                            window.frames[canvasNowId].contentWindow.isRuleNow = false
+                        }
                     }
                 }
             })
