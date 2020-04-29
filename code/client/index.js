@@ -134,6 +134,7 @@ $(function(){
         }
     })
     $('body').on('click','.bds_out',(e) => {
+        debugger
         if($(e.target).parent().children('.xwSelect_out').val() == "assignment"){
             if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') != "3"){
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】行为值来源为对象才能赋值！ </li>`)
@@ -144,6 +145,7 @@ $(function(){
         }
         if($(e.target).parent().children('.xwzly_out').find("option:selected").attr('type') == "3" && $(e.target).parent().children('.xwSelect_out').val() == "assignment"){//对象&&赋值
             currentActionInput = $(e.target)
+            var xwid = $(e.target).parent().children('.xwzly_out').val();
             $.ajax({
                 url: urlConfig.host + '/module/findTableModuleByName',
                 data: {name : $(e.target).parent().children('.xwzly_out').find("option:selected").attr('valvalue')},
@@ -175,7 +177,9 @@ $(function(){
                 success(res) {
                     let optionx = "";
                     res.tableFuncs.map(s=>{
-                        optionx += `<option value=${s.varname}>${s.varname}</option>`
+                        if(s.id != xwid){
+                            optionx += `<option value=${s.varname}>${s.varname}</option>`
+                        }
                     })
                     $("#actionSelectName").html(`${optionx}`)
                     if(currentActionInput.val()){
