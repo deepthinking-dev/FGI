@@ -1369,7 +1369,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let delID = $(e.target).prev().attr("canvasid")
         $(e.target).parent("li").siblings().removeClass('pageson');
         $(e.target).parent("li").prev().addClass('pageson');
-        let showId =$(e.target).parent("li").prev().find("span").attr("canvasId")
+        let showId =$(e.target).parent("li").prev().find("span").attr("canvasid")
         $(e.target).parent("li").remove();
         var iframe = $('#' + delID).prop('contentWindow');    
         $('#' + delID).attr('src', 'about:blank');       
@@ -1380,14 +1380,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#' + delID).remove(); 
         $('.lkr-bg-canvas').children().hide();
         let leg = $('.lkr-bg-canvas').children().length
-      
-        if(leg > 1){
+       if(showId == "canvas0"){
+            $("#flex_canvas").show();
+            window.canvasNowId ="canvas0"
+       }else{
             $('#'+showId).show()
             window.canvasNowId =showId
-        }else{
-            $("#flex_canvas").show();
-             window.canvasNowId ="canvas0"
-        }
+            $('#'+showId)[0].contentWindow.canvasNowId = showId
+       }
     
     })
     $('body').on('click','.export',(e) =>{
