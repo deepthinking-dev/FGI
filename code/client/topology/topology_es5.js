@@ -665,8 +665,6 @@ var Topology = {
                             canvas.lock(0)
                             break;
                         case 'moveNodes':
-                            let widthsa = data[0].rect.width
-                            let heightsa = data[0].rect.height
                             data[0].anchors.map((obj,i) => {
                                 obj.x = 0;
                                 obj.y = 0;
@@ -713,21 +711,21 @@ var Topology = {
                                             item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
                                             item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.anchors[0].x = item.rect.x
-                                            item.anchors[0].y =item.rect.center.y 
-                                            item.anchors[1].x =0
-                                            item.anchors[1].y = 0   
-                                            item.anchors[2].x = 0
-                                            item.anchors[2].y = 0                                                                                          
-                                            item.anchors[3].x =0
-                                            item.anchors[3].y = 0
+                                            item.anchors[0].y = item.rect.center.y 
+                                            item.anchors[1].x = item.rect.center.x
+                                            item.anchors[1].y = item.rect.y   
+                                            item.anchors[2].x = item.rect.ex
+                                            item.anchors[2].y = item.rect.center.y                                                                                        
+                                            item.anchors[3].x = item.rect.center.x
+                                            item.anchors[3].y = item.rect.ey  
                                             item.rotatedAnchors[0].x = item.rect.x
                                             item.rotatedAnchors[0].y =item.rect.center.y 
-                                            item.rotatedAnchors[1].x = 0
-                                            item.rotatedAnchors[1].y =0
-                                            item.rotatedAnchors[2].x = 0
-                                            item.rotatedAnchors[2].y = 0
-                                            item.rotatedAnchors[3].x =0
-                                            item.rotatedAnchors[3].y =0
+                                            item.rotatedAnchors[1].x = item.rect.center.x
+                                            item.rotatedAnchors[1].y = item.rect.y 
+                                            item.rotatedAnchors[2].x = item.rect.ex
+                                            item.rotatedAnchors[2].y = item.rect.center.y  
+                                            item.rotatedAnchors[3].x = item.rect.center.x
+                                            item.rotatedAnchors[3].y = item.rect.ey 
                                             item.textMaxLine = 1
                                             item.hideRotateCP=true,
                                             item.hideSizeCP=true
@@ -759,22 +757,22 @@ var Topology = {
                                             item.fullIconRect.x =  item.rect.ex - item.textRect.height -5
                                             item.fullIconRect.y = item.rect.y  -item.fullIconRect.height
                                             item.textMaxLine = 1
-                                            item.anchors[0].x = 0
-                                            item.anchors[0].y =0
-                                            item.anchors[1].x =0
-                                            item.anchors[1].y = 0   
+                                            item.anchors[0].x = item.rect.x
+                                            item.anchors[0].y = item.rect.center.y 
+                                            item.anchors[1].x = item.rect.center.x
+                                            item.anchors[1].y = item.rect.y   
                                             item.anchors[2].x = item.rect.ex
-                                            item.anchors[2].y = item.rect.center.y                                                                                            
-                                            item.anchors[3].x =0
-                                            item.anchors[3].y = 0
-                                            item.rotatedAnchors[0].x = 0
-                                            item.rotatedAnchors[0].y =0
-                                            item.rotatedAnchors[1].x = 0
-                                            item.rotatedAnchors[1].y =0
+                                            item.anchors[2].y = item.rect.center.y                                                                                        
+                                            item.anchors[3].x = item.rect.center.x
+                                            item.anchors[3].y = item.rect.ey  
+                                            item.rotatedAnchors[0].x = item.rect.x
+                                            item.rotatedAnchors[0].y =item.rect.center.y 
+                                            item.rotatedAnchors[1].x = item.rect.center.x
+                                            item.rotatedAnchors[1].y = item.rect.y 
                                             item.rotatedAnchors[2].x = item.rect.ex
-                                            item.rotatedAnchors[2].y = item.rect.center.y
-                                            item.rotatedAnchors[3].x =0
-                                            item.rotatedAnchors[3].y =0
+                                            item.rotatedAnchors[2].y = item.rect.center.y  
+                                            item.rotatedAnchors[3].x = item.rect.center.x
+                                            item.rotatedAnchors[3].y = item.rect.ey 
                                             item.hideRotateCP=true,
                                             item.hideSizeCP=true
                                             // item.bkType = 0
@@ -796,22 +794,6 @@ var Topology = {
                                 })[0]
                                 item.to.x = nodesa1.rotatedAnchors[0].x
                                 item.to.y = nodesa1.rotatedAnchors[0].y
-                                // if(item.from.id.indexOf(data[0].id) != -1){
-                                //    console.log(item.from.id)
-                                //     let nodesa = canvas.data.nodes.filter(obj => {
-                                //         console.log(obj.id)
-                                //         if(item.from.id == obj.id) return obj
-                                //     })[0]
-                                //     item.from.x = nodesa.rotatedAnchors[2].x
-                                //     item.from.y = nodesa.rotatedAnchors[2].y
-                                // }
-                                // if(item.to.id.indexOf(data[0].id) != -1){
-                                //     let nodesa = canvas.data.nodes.filter(obj => {
-                                //         if(item.to.id == obj.id) return obj
-                                //     })[0]
-                                //     item.to.x = nodesa.rotatedAnchors[0].x
-                                //     item.to.y = nodesa.rotatedAnchors[0].y
-                                // }
                             })
                             break    
                         case 'moveOutNode':
