@@ -734,7 +734,7 @@ function ActionSure(){
                     case '常量':
                         fillStyle = '#0eff23';
                         break;
-                    case '对象':
+                    case '模型':
                         fillStyle = '#ff00e7';
                         break;
                     case 'int':
@@ -814,7 +814,8 @@ function ActionSure(){
                     text:parent.$('.ruleContentDiv .actionInfo').eq(i).find('#varTypeInput').val(),
                     fid:data.data.sid,
                     fUUid: data.id,
-                    canshuId: parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id")
+                    canshuId: parent.$('.ruleContentDiv .actionInfo').eq(i).attr("Funcs-id"),
+                    cstext:parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val()
                 }
                 if(parent.$('.ruleContentDiv .actionInfo').eq(i).find('.actionSelected1').val() == 0){
                     test.anchors.map((obj,i) => {
@@ -835,7 +836,7 @@ function ActionSure(){
                         obj.y = data.rotatedAnchors[i].y-115 + num.y
                     })
                 }
-                test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1').val();
+                test.text = ""
                 let flag 
                 if(window.canvasNowId == "canvas0"){
                     // window.Topology.dblclickNode.data.outNum ++
@@ -1369,7 +1370,7 @@ function ruleAddButtonS(){
                                 $(e.target).parent().attr("data-name",item.varname)
                             }
                             if(item.vartype == "3"){
-                                $(e.target).parent().children('.actionSelected2').val("对象")
+                                $(e.target).parent().children('.actionSelected2').val("模型")
                                 $(e.target).parent().children('#varTypeInput').val(item.valvalue)
                                 $(e.target).parent().children('.varNameInput').val($(e.target).val())
                                 $(e.target).parent().attr("Funcs-id",item.id)

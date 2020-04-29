@@ -210,7 +210,9 @@
     </script>
 </head>
 <body>
+     <div id="showCsName" style="z-index: 999;color: #fff;">
 
+     </div>
     <!-- 规则修改状态，是否清空画布 -->
     <div class="lkr-frame" id='isClearCanvas'>
         <div class="lkr-frame-div" style="height: 150px;">
@@ -287,7 +289,7 @@
        <div id="actionSelectDiv">
            <div style="text-align: center;margin-top: 20px">
                <p>
-                   <span>对象字段</span>
+                   <span>模型字段</span>
                    <select id="actionSelectParma"></select>
                </p>
                <p>
@@ -765,7 +767,7 @@
                             <div id="colorDiv">
                                 <ul>
                                     <li style="background: #0eff23">常量</li>
-                                    <li style="background: #ff00e7">对象</li>
+                                    <li style="background: #ff00e7">模型</li>
                                     <li style="background: red">int</li>
                                     <li style="background: #ff7749">byte</li>
                                     <li style="background: #a4ff59">long</li>
@@ -890,11 +892,11 @@
                                 查看详情
                             </a>
                         </div>
-                        <!-- <div>
+                        <div>
                             <a class="menu-a" id="setAct">
                                 设置动作
                             </a>
-                        </div> -->
+                        </div>
                         <div class="line"></div>
                         <div>
                             <a onclick="onCombine()" class="menu-a-disabled" id="menu_combine" disabled>
@@ -1046,7 +1048,7 @@
     <!-- <div id="colorDiv">
         <ul>
             <li style="background: #0eff23">常量</li>
-            <li style="background: #ff00e7">对象</li>
+            <li style="background: #ff00e7">模型</li>
             <li style="background: red">int</li>
             <li style="background: #ff7749">byte</li>
             <li style="background: #a4ff59">long</li>
@@ -1077,6 +1079,7 @@
 <script>
     var editGzType = false;
     var globalActionDatas = [];
+    var currentLineData;
     var mxDataAll={};
     var sfDataAll = {};
     var gzDataAll = {};
@@ -1350,9 +1353,349 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
 
 
-    // $('body').on('click','#setAct',(e) =>{
-    //     $("#actionDiv").show();
-    // })
+    $('body').on('click','#setAct',(e) =>{
+        $("#actionDiv").show();
+        var data,datas,local,res;
+        if(window.top.canvasNowId == "canvas0"){
+            data = currentLineData;
+            datas = canvas.data;
+            local = globalActionDatas;
+            res =responseActionDatas
+        }else{
+            data = parent.$('#'+window.top.canvasNowId)[0].contentWindow.currentLineData;
+            datas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data;
+            local = parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas;
+            res = parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas
+        }
+        let id_in;//输入端算法id
+        let id_out;//输出端算法id
+        parent.$("#actionMsgIn").val("");
+        parent.$("#actionMsgOut").val("");
+        parent.$("#actionMsgIn").show();
+        parent.$("#actionMsgOut").hide();
+        parent.$(".menu-a-delete").css("display", "block");
+        parent.$("#addActionButton").attr({
+            actionRelation:"",
+            preActionRelation:""
+        })
+        parent.$("#addActionButton").attr("resData","false")
+        datas.nodes.map(s=>{
+            if(s.id == data.from.id){
+                id_out = s.childStand.fid
+            }
+            if(s.id == data.to.id){
+                id_in = s.childStand.fid
+            }
+        })
+        if(window.canvasNowId != "canvas0"){
+            parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
+        }
+        var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
+        var bigList=[];
+        datas.nodes.map(s=>{
+            if(s.id == data.from.id){
+                smallOutName = s.childStand.cstext;
+                out_big = s.childStand.fUUid;
+            }
+            if(s.id == data.to.id){
+                smallInName = s.childStand.cstext;
+                in_big = s.childStand.fUUid;
+            }
+        })
+        datas.nodes.map(s=>{
+            if(s.id == out_big){
+                bigOutName = s.text;
+            }
+            if(s.id == in_big){
+                bigInName = s.text;
+            }
+        })
+        datas.nodes.map(s=>{
+            if(s.id == data.to.id){
+                fromParmaChinese = s.childStand.cstext
+            }
+        })
+        $.ajax({
+            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+            data:{algthId:id_in},
+            success(response) {
+                response.tableFuncs.map(s=>{
+                    if(s.parametername == fromParmaChinese){
+                        console.log(fromParmaChinese);
+                        parent.$('#addActionButton').attr("from_name",s.varname);
+                        parent.$('#addActionButton').attr("from_id",s.id);
+                    }
+                })
+                parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
+                    parent.$(s).val(parent.$('#addActionButton').attr("from_name"));
+                    parent.$(s).attr(parent.$('#addActionButton').attr("from_id"))
+                })
+            }
+        })
+        parent.$("#selectOutIn").empty();
+        parent.$("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
+        parent.$('#selectOutIn').val('1')
+
+        let out_small = data.from.id.split('---')[0]//输出小矩形uuid
+        let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
+        parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
+        window.lineDiv = true;
+
+        parent.$("#actionInDiv").empty();
+        parent.$("#actionOutDiv").empty();
+
+        var localData = true;//使用本地缓存数据
+        var responseCurrentData = false;
+        var resBaseOut;
+        var resBaseIn;
+        if(res){//后台返回数据
+            res.map(t=>{
+                if((t.preParametersID == out_small) && (t.parametersID == in_small)){
+                    responseCurrentData= t;
+                    resBaseOut = [];
+                    resBaseIn = [];
+                    localData = false;
+                }
+            })
+            if(responseCurrentData){
+                parent.$("#actionMsgIn").val(responseCurrentData.actionRelation)
+                parent.$("#actionMsgOut").val(responseCurrentData.preActionRelation)
+                parent.$("#addActionButton").attr({
+                    actionRelation:responseCurrentData.actionRelation,
+                    preActionRelation:responseCurrentData.preActionRelation
+                })
+                responseCurrentData.algorithmconditions.map(s=>{
+                    if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
+                        resBaseOut.push(s)
+                    }
+                    if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
+                        resBaseIn.push(s)
+                    }
+                })
+                var resOutAll = {
+                    "interfaceRoleDataModels":
+                        {
+                            "algorithmconditions":resBaseOut,
+                            "des": "",
+                            "id": responseCurrentData.id,
+                            "interfaceID": responseCurrentData.interfaceID,
+                            "parametersID":responseCurrentData.parametersID,
+                            "preInterfaceID": responseCurrentData.preInterfaceID,
+                            "preParametersID": responseCurrentData.preParametersID,
+                            "remark": "",
+                            "roleid": responseCurrentData.roleid,
+                        }
+                }
+                var resInAll = {
+                    "interfaceRoleDataModels":
+                        {
+                            "algorithmconditions": resBaseIn,
+                            "des": "",
+                            "id": responseCurrentData.id,
+                            "interfaceID": responseCurrentData.interfaceID,
+                            "parametersID": responseCurrentData.parametersID,
+                            "preInterfaceID": responseCurrentData.preInterfaceID,
+                            "preParametersID": responseCurrentData.preParametersID,
+                            "remark": "",
+                            "roleid": responseCurrentData.roleid,
+                        }
+                }
+                resCurrentLineData.dataIn = resInAll;
+                resCurrentLineData.dataOut = resOutAll;
+                parent.$("#addActionButton").attr("resData","true")
+                try{
+                    resBaseIn.map((t,i)=>{
+                        parent.$("#actionInDiv").append(`
+                                                  <div style="margin: 10px 0" actionId=${t.id}>
+                                                       <i>${i+1}</i>
+                                                       <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                       <span>行为</span><select class="xwSelect_in">
+                                                       <option value=">">></option>
+                                                       <option value="<"><</option>
+                                                       <option value="=">=</option>
+                                                       <option value=">=">>=</option>
+                                                       <option value="<="><=</option>
+                                                       <option value="!=">!=</option>
+                                                       <option value="assignment">赋值</option>
+                                                   </select>
+                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                  </div>
+                                            `)
+                    })
+                    resBaseIn.map((t,i)=>{
+                        parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                    })
+
+                    $.ajax({
+                        url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                        data:{algthId:parent.$("#addActionButton").attr("id_out")},
+                        success(res) {
+                            let optionx = "";
+                            res.tableFuncs.map(s=>{
+                                optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                            })
+                            resBaseOut.map((t,i)=>{
+                                parent.$("#actionOutDiv").append(`
+                                                          <div style="margin: 10px 0" actionId=${t.id}>
+                                                               <i>${i+1}</i>
+                                                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                                               <span>行为</span><select class="xwSelect_out">
+                                                               <option value=">">></option>
+                                                               <option value="<"><</option>
+                                                               <option value="=">=</option>
+                                                               <option value=">=">>=</option>
+                                                               <option value="<="><=</option>
+                                                               <option value="!=">!=</option>
+                                                               <option value="assignment">赋值</option>
+                                                           </select>
+                                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                          </div>
+                                                    `)
+                            })
+                            resBaseOut.map((t,i)=>{
+                                parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
+                                parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                            })
+                            parent.$(".xwzly_out").off("change").on("change",(e)=>{
+                                if($(e.target).find('option:selected').attr('type') == 3){
+                                    $(e.target).next().next().empty();
+                                    $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
+                                } else {
+                                    $(e.target).next().next().empty();
+                                    $(e.target).next().next().append(`<option value=">">></option>
+                               <option value="<"><</option>
+                               <option value="=">=</option>
+                               <option value=">=">>=</option>
+                               <option value="<="><=</option>
+                               <option value="!=">!=</option>
+                               <option value="assignment">赋值</option>`)
+                                }
+                            })
+                            parent.$(".xwzly_out").each((i,s)=>{
+                                if($(s).find('option:selected').attr('type') == 3){
+                                    try {
+                                        $(s).next().next().empty();
+                                        $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                                    }catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            })
+                        }
+                    })
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+        if(localData){//本地缓存数据
+            local.map(s=>{
+                if(s.id == out_small + "AND" + in_small){
+                    try{
+                        parent.$("#actionMsgIn").val("");
+                        parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                        parent.$("#actionMsgOut").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
+                        var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                        var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                        lineDatas.map((t,i)=>{
+                            parent.$("#actionInDiv").append(`
+                                                     <div style="margin: 10px 0">
+                                                           <i>${i+1}</i>
+                                                           <span>行为值来源</span><input class="xwzly_in" disabled>
+                                                           <span>行为</span><select class="xwSelect_in">
+                                                           <option value=">">></option>
+                                                           <option value="<"><</option>
+                                                           <option value="=">=</option>
+                                                           <option value=">=">>=</option>
+                                                           <option value="<="><=</option>
+                                                           <option value="!=">!=</option>
+                                                           <option value="assignment">赋值</option>
+                                                            </select>
+                                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                     </div>
+                                                `)
+                        })
+                        lineDatas.map((t,i)=>{
+                            parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                        })
+                        $.ajax({
+                            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            data:{algthId:parent.$("#addActionButton").attr("id_out")},
+                            success(res) {
+                                let optionx = "";
+                                res.tableFuncs.map(s => {
+                                    optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                                })
+                                lineDatasOut.map((t,i)=>{
+                                    parent.$("#actionOutDiv").append(`
+                                                             <div style="margin: 10px 0">
+                                                                   <i>${i+1}</i>
+                                                                   <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                                                                   <span>行为</span><select class="xwSelect_out">
+                                                                   <option value=">">></option>
+                                                                   <option value="<"><</option>
+                                                                   <option value="=">=</option>
+                                                                   <option value=">=">>=</option>
+                                                                   <option value="<="><=</option>
+                                                                   <option value="!=">!=</option>
+                                                                   <option value="assignment">赋值</option>
+                                                                    </select>
+                                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                                                             </div>
+                                                        `)
+                                })
+                                lineDatasOut.map((t,i)=>{
+                                    parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
+                                    parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                                })
+                                parent.$(".xwzly_out").off("change").on("change",(e)=>{
+                                    if($(e.target).find('option:selected').attr('type') == 3){
+                                        $(e.target).next().next().empty();
+                                        $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
+                                    } else {
+                                        $(e.target).next().next().empty();
+                                        $(e.target).next().next().append(`<option value=">">></option>
+                                                               <option value="<"><</option>
+                                                               <option value="=">=</option>
+                                                               <option value=">=">>=</option>
+                                                               <option value="<="><=</option>
+                                                               <option value="!=">!=</option>
+                                                               <option value="assignment">赋值</option>`)
+                                    }
+                                })
+                                parent.$(".xwzly_out").each((i,s)=>{
+                                    if($(s).find('option:selected').attr('type') == 3){
+                                        try {
+                                            $(s).next().next().empty();
+                                            $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                                        }catch (e) {
+                                            console.log(e);
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            })
+        }
+        setTimeout(()=>{
+            if(window.lineDiv){
+                parent.$('#actionDiv').show();
+            }
+        },300)
+        parent.$('#actionInDiv').show();
+    })
     $('body').on('click','.canvasLi',(e) =>{
         $('.lkr-bg-canvas').children().hide();
         let idC = $(e.target).attr("canvasId")
@@ -1520,6 +1863,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
                     <td class="columnType">
                         <select class="moduleSelect">
+
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -1541,18 +1885,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
-              
+                $(".moduleSelect").change((e)=>{
+                    $(e.target).parent('.columnType').children('.moduleSelect').hide()
+                    $(e.target).parent('.columnType').children('.moduleInputOne').show()
+                    $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+                })
             }
         })
     })
+    
+    
     function myFunction(e){
-        if( $(e.target).val() == ""){
-            $(e.target).parent('.columnType').children('.moduleSelect').show()
-            $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-        }else{
-            $(e.target).parent('.columnType').children('.moduleSelect').hide()
-            $(e.target).parent('.columnType').children('.moduleInputOne').show()
-        }
+        // debugger
+        $(e.target).parent('.columnType').children('.moduleSelect').show()
+        $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+        // if( $(e.target).val() == ""){
+           
+        // }else{
+        //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
+        //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
+        // }
        
     }
 
@@ -1962,25 +2314,39 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $(".dataSourceTbody").append(`<tr>
             <td class="columnComment"><input type="text" value="" maxlength="20"></td>
             <td class="columnName"><input type="text" value="" maxlength="20"></td>
-            <td class="columnType"><select class="">
-                                                <option value="byte">byte</option>
-                                                <option value="short">short</option>
-                                                <option value="int">int</option>
-                                                <option value="long">long</option>
-                                                <option value="float">float</option>
-                                                <option value="double">double</option>
-                                                <option value="boolean">boolean</option>
-                                                <option value="char">char</option>
-                                                <option value="date">date</option>
-                                                <option value="string">string</option>
-                                                <option value="BLOB">BLOB</option>
-                                                <option value="boolean">boolean</option>
-                                                <option value="array">array</option>
-                                            </select></td>
+            <td class="columnType"><select class="moduleSelect">
+                            <option value="byte">byte</option>
+                            <option value="short">short</option>
+                            <option value="int">int</option>
+                            <option value="long">long</option>
+                            <option value="float">float</option>
+                            <option value="double">double</option>
+                            <option value="boolean">boolean</option>
+                            <option value="char">char</option>
+                            <option value="date">date</option>
+                            <option value="string">string</option>
+                            <option value="BLOB">BLOB</option>
+                            <option value="boolean">boolean</option>
+                            <option value="array">array</option>
+                        </select>
+              <input type="text" style="display:none;"  class="moduleInputOne"  value="" onchange="myFunction(event)"></td>
             <td class="tableName"><input type="text" value="-"  maxlength="20"></td>
             <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
+             $('.moduleSelect').show()           
+            $(".moduleSelect").change((e)=>{
+                $(e.target).parent('.columnType').children('.moduleSelect').hide()
+                $(e.target).parent('.columnType').children('.moduleInputOne').show()
+                $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+            })
+            function myFunction(e){
+
+                $(e.target).parent('.columnType').children('.moduleSelect').show()
+                $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+
+            
+            }
     }
    
     function ConfirmDel(){
@@ -2422,6 +2788,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $('#addMb tbody').append(thStr)
         $('#addSource tbody').html('')
         $("#sourceName").fadeToggle(500)
+        $(".moduleSelect").change((e)=>{
+            $(e.target).parent('.columnType').children('.moduleSelect').hide()
+            $(e.target).parent('.columnType').children('.moduleInputOne').show()
+            $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
+        })
     }
 
 

@@ -36,6 +36,7 @@ var Topology = {
     banAdd:true,
     dblclickNode:{},
     isClickAction:[],
+    moveNodesList:[],
     // 对象的最初入口
     init: function () {
         var self = this;
@@ -351,7 +352,7 @@ var Topology = {
                 canvas.disableScale =true
                 // 监听画布
                 function onMessage(event, data) {
-
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -367,320 +368,352 @@ var Topology = {
                             self.initNode();
                             break;
                         case 'line':
-                            console.log(data)
-                            let id_in;//输入端算法id
-                            let id_out;//输出端算法id
-                            parent.$("#actionMsgIn").val("");
-                            parent.$("#actionMsgOut").val("");
-                            parent.$("#actionMsgIn").show();
-                            parent.$("#actionMsgOut").hide();
-                            parent.$(".menu-a-delete").css("display", "block");
-                            parent.$("#addActionButton").attr({
-                                actionRelation:"",
-                                preActionRelation:""
-                            })
-                            canvas.data.nodes.map(s=>{
-                                if(s.id == data.from.id){
-                                    id_out = s.childStand.fid
-                                }
-                                if(s.id == data.to.id){
-                                    id_in = s.childStand.fid
-                                }
-                            })
+                            var out_small = data.from.id.split('---')[0]//输出小矩形uuid
+                            var in_small =  data.to.id.split('---')[0]//输入小矩形uuid
+                            if(window.top.canvasNowId == "canvas0"){
+                                deleteLineDataId = out_small + "AND" + in_small;
+                            }else{
+                                parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId = out_small + "AND" + in_small;
+
+                            }
+                            currentLineData = data;
+                            canvas.lockLines([data],true)
+                            canvas.render()
+                            // let id_in;//输入端算法id
+                            // let id_out;//输出端算法id
+                            // parent.$("#actionMsgIn").val("");
+                            // parent.$("#actionMsgOut").val("");
+                            // parent.$("#actionMsgIn").show();
+                            // parent.$("#actionMsgOut").hide();
+                            // parent.$(".menu-a-delete").css("display", "block");
+                            // parent.$("#addActionButton").attr({
+                            //     actionRelation:"",
+                            //     preActionRelation:""
+                            // })
+                            // canvas.data.nodes.map(s=>{
+                            //     if(s.id == data.from.id){
+                            //         id_out = s.childStand.fid
+                            //     }
+                            //     if(s.id == data.to.id){
+                            //         id_in = s.childStand.fid
+                            //     }
+                            // })
                             if(window.canvasNowId != "canvas0"){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
-                            }   
-                            var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
-                            var bigList=[];
-                            canvas.data.nodes.map(s=>{
-                                if(s.id == data.from.id){
-                                    smallOutName = s.text;
-                                    out_big = s.childStand.fUUid;
-                                }
-                                if(s.id == data.to.id){
-                                    smallInName = s.text;
-                                    in_big = s.childStand.fUUid;
-                                }
-                            })
-                            canvas.data.nodes.map(s=>{
-                                if(s.id == out_big){
-                                    bigOutName = s.text;
-                                }
-                                if(s.id == in_big){
-                                    bigInName = s.text;
-                                }
-                            })
-                            canvas.data.nodes.map(s=>{
-                                if(s.id == data.to.id){
-                                    fromParmaChinese = s.text
-                                }
-                            })
-                            $.ajax({
-                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                data:{algthId:id_in},
-                                success(response) {
-                                    response.tableFuncs.map(s=>{
-                                       if(s.parametername == fromParmaChinese){
-                                           parent.$('#addActionButton').attr("from_name",s.varname);
-                                           parent.$('#addActionButton').attr("from_id",s.id);
-                                       }
-                                    })
-                                    parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
-                                        parent.$(s).val(parent.$('#addActionButton').attr("from_name"));
-                                        parent.$(s).attr(parent.$('#addActionButton').attr("from_id"))
-                                    })
-                                }
-                            })
-                            parent.$("#selectOutIn").empty();
-                            parent.$("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
-                            parent.$('#selectOutIn').val('1')
-
-                            let out_small = data.from.id.split('---')[0]//输出小矩形uuid
-                            let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
-                            parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
-                            window.lineDiv = true;
-                            deleteLineDataId = out_small + "AND" + in_small;
-                            parent.$("#actionInDiv").empty();
-                            parent.$("#actionOutDiv").empty();
-
-                            var localData = true;//使用本地缓存数据
-                            var responseCurrentData = false;
-                            var resBaseOut;
-                            var resBaseIn;
-                            if(responseActionDatas){//后台返回数据
-                                responseActionDatas.map(t=>{
-                                    if((t.preParametersID == out_small) && (t.parametersID == in_small)){
-                                        responseCurrentData= t;
-                                        resBaseOut = [];
-                                        resBaseIn = [];
-                                        localData = false;
-                                    }
-                                })
-                                if(responseCurrentData){
-                                    parent.$("#actionMsgIn").val(responseCurrentData.actionRelation)
-                                    parent.$("#actionMsgOut").val(responseCurrentData.preActionRelation)
-                                    parent.$("#addActionButton").attr({
-                                        actionRelation:responseCurrentData.actionRelation,
-                                        preActionRelation:responseCurrentData.preActionRelation
-                                    })
-                                    responseCurrentData.algorithmconditions.map(s=>{
-                                        if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
-                                            resBaseOut.push(s)
-                                        }
-                                        if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
-                                            resBaseIn.push(s)
-                                        }
-                                    })
-                                    var resOutAll = {
-                                        "interfaceRoleDataModels":
-                                            {
-                                                "algorithmconditions":resBaseOut,
-                                                "des": "",
-                                                "id": responseCurrentData.id,
-                                                "interfaceID": responseCurrentData.interfaceID,
-                                                "parametersID":responseCurrentData.parametersID,
-                                                "preInterfaceID": responseCurrentData.preInterfaceID,
-                                                "preParametersID": responseCurrentData.preParametersID,
-                                                "remark": "",
-                                                "roleid": responseCurrentData.roleid,
-                                            }
-                                    }
-                                    var resInAll = {
-                                        "interfaceRoleDataModels":
-                                            {
-                                                "algorithmconditions": resBaseIn,
-                                                "des": "",
-                                                "id": responseCurrentData.id,
-                                                "interfaceID": responseCurrentData.interfaceID,
-                                                "parametersID": responseCurrentData.parametersID,
-                                                "preInterfaceID": responseCurrentData.preInterfaceID,
-                                                "preParametersID": responseCurrentData.preParametersID,
-                                                "remark": "",
-                                                "roleid": responseCurrentData.roleid,
-                                            }
-                                    }
-                                    resCurrentLineData.dataIn = resInAll;
-                                    resCurrentLineData.dataOut = resOutAll;
-                                    parent.$("#addActionButton").attr("resData",true)
-                                    try{
-                                        resBaseIn.map((t,i)=>{
-                                            parent.$("#actionInDiv").append(`
-                                                  <div style="margin: 10px 0" actionId=${t.id}>
-                                                       <i>${i+1}</i>
-                                                       <span>行为值来源</span><input class="xwzly_in" disabled>
-                                                       <span>行为</span><select class="xwSelect_in">
-                                                       <option value=">">></option>
-                                                       <option value="<"><</option>
-                                                       <option value="=">=</option>
-                                                       <option value=">=">>=</option>
-                                                       <option value="<="><=</option>
-                                                       <option value="!=">!=</option>
-                                                       <option value="assignment">赋值</option>
-                                                   </select>
-                                                       <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                       <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                       <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                                  </div>
-                                            `)
-                                        })
-                                        resBaseIn.map((t,i)=>{
-                                            parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
-                                        })
-
-                                        $.ajax({
-                                            url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                            data:{algthId:parent.$("#addActionButton").attr("id_out")},
-                                            success(res) {
-                                                let optionx = "";
-                                                res.tableFuncs.map(s=>{
-                                                    optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                                                })
-                                                resBaseOut.map((t,i)=>{
-                                                    parent.$("#actionOutDiv").append(`
-                                                          <div style="margin: 10px 0" actionId=${t.id}>
-                                                               <i>${i+1}</i>
-                                                               <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
-                                                               <span>行为</span><select class="xwSelect_out">
-                                                               <option value=">">></option>
-                                                               <option value="<"><</option>
-                                                               <option value="=">=</option>
-                                                               <option value=">=">>=</option>
-                                                               <option value="<="><=</option>
-                                                               <option value="!=">!=</option>
-                                                               <option value="assignment">赋值</option>
-                                                           </select>
-                                                               <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                                                               <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                               <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                                          </div>
-                                                    `)
-                                                })
-                                                resBaseOut.map((t,i)=>{
-                                                    parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
-                                                    parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                                                })
-                                                parent.$(".xwzly_out").off("change").on("change",(e)=>{
-                                                    if($(e.target).find('option:selected').attr('type') == 3){
-                                                        $(e.target).next().next().empty();
-                                                        $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
-                                                    } else {
-                                                        $(e.target).next().next().empty();
-                                                        $(e.target).next().next().append(`<option value=">">></option>
-                               <option value="<"><</option>
-                               <option value="=">=</option>
-                               <option value=">=">>=</option>
-                               <option value="<="><=</option>
-                               <option value="!=">!=</option>
-                               <option value="assignment">赋值</option>`)
-                                                    }
-                                                })
-                                            }
-                                        })
-                                    } catch (e) {
-                                        console.log(e);
-                                    }
-                                }
                             }
-                            if(localData){//本地缓存数据
-                                globalActionDatas.map(s=>{
-                                    if(s.id == out_small + "AND" + in_small){
-                                        try{
-                                            parent.$("#actionMsgIn").val("");
-                                            parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
-                                            parent.$("#actionMsgOut").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
-                                            var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                                            var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
-                                            lineDatas.map((t,i)=>{
-                                                parent.$("#actionInDiv").append(`
-                                                     <div style="margin: 10px 0">
-                                                           <i>${i+1}</i>
-                                                           <span>行为值来源</span><input class="xwzly_in" disabled>
-                                                           <span>行为</span><select class="xwSelect_in">
-                                                           <option value=">">></option>
-                                                           <option value="<"><</option>
-                                                           <option value="=">=</option>
-                                                           <option value=">=">>=</option>
-                                                           <option value="<="><=</option>
-                                                           <option value="!=">!=</option>
-                                                           <option value="assignment">赋值</option>
-                                                            </select>
-                                                           <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                                                           <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                           <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                                     </div>
-                                                `)
-                                            })
-                                            lineDatas.map((t,i)=>{
-                                                parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
-                                            })
-                                            $.ajax({
-                                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                                                data:{algthId:parent.$("#addActionButton").attr("id_out")},
-                                                success(res) {
-                                                    let optionx = "";
-                                                    res.tableFuncs.map(s => {
-                                                        optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                                                    })
-                                                    lineDatasOut.map((t,i)=>{
-                                                        parent.$("#actionOutDiv").append(`
-                                                             <div style="margin: 10px 0">
-                                                                   <i>${i+1}</i>
-                                                                   <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
-                                                                   <span>行为</span><select class="xwSelect_out">
-                                                                   <option value=">">></option>
-                                                                   <option value="<"><</option>
-                                                                   <option value="=">=</option>
-                                                                   <option value=">=">>=</option>
-                                                                   <option value="<="><=</option>
-                                                                   <option value="!=">!=</option>
-                                                                   <option value="assignment">赋值</option>
-                                                                    </select>
-                                                                   <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                                                                   <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                                                                   <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                                                             </div>
-                                                        `)
-                                                    })
-                                                    lineDatasOut.map((t,i)=>{
-                                                        parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
-                                                        parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                                                    })
-                                                    parent.$(".xwzly_out").off("change").on("change",(e)=>{
-                                                        if($(e.target).find('option:selected').attr('type') == 3){
-                                                            $(e.target).next().next().empty();
-                                                            $(e.target).next().next().append(` <option value="assignment">赋值</option>`)
-                                                        } else {
-                                                            $(e.target).next().next().empty();
-                                                            $(e.target).next().next().append(`<option value=">">></option>
-                               <option value="<"><</option>
-                               <option value="=">=</option>
-                               <option value=">=">>=</option>
-                               <option value="<="><=</option>
-                               <option value="!=">!=</option>
-                               <option value="assignment">赋值</option>`)
-                                                        }
-                                                    })
-                                                }
-                                            })
-                                        } catch (e) {
-                                            console.log(e);
-                                        }
-                                    }
-                                })
-                            }
-                            setTimeout(()=>{
-                                if(window.lineDiv){
-                                    parent.$('#actionDiv').show();
-                                }
-                            },300)
-                            parent.$('#actionInDiv').show();
-                            selected = {
-                                "type": event,
-                                "data": data
-                            };
-                            window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                            locked = data.locked;
-                            self.initLine();
+                            // var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
+                            // var bigList=[];
+                            // canvas.data.nodes.map(s=>{
+                            //     if(s.id == data.from.id){
+                            //         smallOutName = s.text;
+                            //         out_big = s.childStand.fUUid;
+                            //     }
+                            //     if(s.id == data.to.id){
+                            //         smallInName = s.text;
+                            //         in_big = s.childStand.fUUid;
+                            //     }
+                            // })
+                            // canvas.data.nodes.map(s=>{
+                            //     if(s.id == out_big){
+                            //         bigOutName = s.text;
+                            //     }
+                            //     if(s.id == in_big){
+                            //         bigInName = s.text;
+                            //     }
+                            // })
+                            // canvas.data.nodes.map(s=>{
+                            //     if(s.id == data.to.id){
+                            //         debugger
+                            //         fromParmaChinese = s.text
+                            //     }
+                            // })
+                            // $.ajax({
+                            //     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            //     data:{algthId:id_in},
+                            //     success(response) {
+                            //         response.tableFuncs.map(s=>{
+                            //            if(s.parametername == fromParmaChinese){
+                            //                console.log(fromParmaChinese);
+                            //                parent.$('#addActionButton').attr("from_name",s.varname);
+                            //                parent.$('#addActionButton').attr("from_id",s.id);
+                            //            }
+                            //         })
+                            //         parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
+                            //             parent.$(s).val(parent.$('#addActionButton').attr("from_name"));
+                            //             parent.$(s).attr(parent.$('#addActionButton').attr("from_id"))
+                            //         })
+                            //     }
+                            // })
+                            // parent.$("#selectOutIn").empty();
+                            // parent.$("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
+                            // parent.$('#selectOutIn').val('1')
+                            //
+                            // let out_small = data.from.id.split('---')[0]//输出小矩形uuid
+                            // let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
+                            // parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
+                            // window.lineDiv = true;
+                            // deleteLineDataId = out_small + "AND" + in_small;
+                            // parent.$("#actionInDiv").empty();
+                            // parent.$("#actionOutDiv").empty();
+                            //
+                            // var localData = true;//使用本地缓存数据
+                            // var responseCurrentData = false;
+                            // var resBaseOut;
+                            // var resBaseIn;
+                            // if(responseActionDatas){//后台返回数据
+                            //     responseActionDatas.map(t=>{
+                            //         if((t.preParametersID == out_small) && (t.parametersID == in_small)){
+                            //             responseCurrentData= t;
+                            //             resBaseOut = [];
+                            //             resBaseIn = [];
+                            //             localData = false;
+                            //         }
+                            //     })
+                            //     if(responseCurrentData){
+                            //         parent.$("#actionMsgIn").val(responseCurrentData.actionRelation)
+                            //         parent.$("#actionMsgOut").val(responseCurrentData.preActionRelation)
+                            //         parent.$("#addActionButton").attr({
+                            //             actionRelation:responseCurrentData.actionRelation,
+                            //             preActionRelation:responseCurrentData.preActionRelation
+                            //         })
+                            //         responseCurrentData.algorithmconditions.map(s=>{
+                            //             if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
+                            //                 resBaseOut.push(s)
+                            //             }
+                            //             if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
+                            //                 resBaseIn.push(s)
+                            //             }
+                            //         })
+                            //         var resOutAll = {
+                            //             "interfaceRoleDataModels":
+                            //                 {
+                            //                     "algorithmconditions":resBaseOut,
+                            //                     "des": "",
+                            //                     "id": responseCurrentData.id,
+                            //                     "interfaceID": responseCurrentData.interfaceID,
+                            //                     "parametersID":responseCurrentData.parametersID,
+                            //                     "preInterfaceID": responseCurrentData.preInterfaceID,
+                            //                     "preParametersID": responseCurrentData.preParametersID,
+                            //                     "remark": "",
+                            //                     "roleid": responseCurrentData.roleid,
+                            //                 }
+                            //         }
+                            //         var resInAll = {
+                            //             "interfaceRoleDataModels":
+                            //                 {
+                            //                     "algorithmconditions": resBaseIn,
+                            //                     "des": "",
+                            //                     "id": responseCurrentData.id,
+                            //                     "interfaceID": responseCurrentData.interfaceID,
+                            //                     "parametersID": responseCurrentData.parametersID,
+                            //                     "preInterfaceID": responseCurrentData.preInterfaceID,
+                            //                     "preParametersID": responseCurrentData.preParametersID,
+                            //                     "remark": "",
+                            //                     "roleid": responseCurrentData.roleid,
+                            //                 }
+                            //         }
+                            //         resCurrentLineData.dataIn = resInAll;
+                            //         resCurrentLineData.dataOut = resOutAll;
+                            //         parent.$("#addActionButton").attr("resData",true)
+                            //         try{
+                            //             resBaseIn.map((t,i)=>{
+                            //                 parent.$("#actionInDiv").append(`
+                            //                       <div style="margin: 10px 0" actionId=${t.id}>
+                            //                            <i>${i+1}</i>
+                            //                            <span>行为值来源</span><input class="xwzly_in" disabled>
+                            //                            <span>行为</span><select class="xwSelect_in">
+                            //                            <option value=">">></option>
+                            //                            <option value="<"><</option>
+                            //                            <option value="=">=</option>
+                            //                            <option value=">=">>=</option>
+                            //                            <option value="<="><=</option>
+                            //                            <option value="!=">!=</option>
+                            //                            <option value="assignment">赋值</option>
+                            //                        </select>
+                            //                            <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                            //                            <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                            //                            <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                            //                       </div>
+                            //                 `)
+                            //             })
+                            //             resBaseIn.map((t,i)=>{
+                            //                 parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
+                            //             })
+                            //
+                            //             $.ajax({
+                            //                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            //                 data:{algthId:parent.$("#addActionButton").attr("id_out")},
+                            //                 success(res) {
+                            //                     let optionx = "";
+                            //                     res.tableFuncs.map(s=>{
+                            //                         optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                            //                     })
+                            //                     resBaseOut.map((t,i)=>{
+                            //                         parent.$("#actionOutDiv").append(`
+                            //                               <div style="margin: 10px 0" actionId=${t.id}>
+                            //                                    <i>${i+1}</i>
+                            //                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                            //                                    <span>行为</span><select class="xwSelect_out">
+                            //                                    <option value=">">></option>
+                            //                                    <option value="<"><</option>
+                            //                                    <option value="=">=</option>
+                            //                                    <option value=">=">>=</option>
+                            //                                    <option value="<="><=</option>
+                            //                                    <option value="!=">!=</option>
+                            //                                    <option value="assignment">赋值</option>
+                            //                                </select>
+                            //                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                            //                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                            //                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                            //                               </div>
+                            //                         `)
+                            //                     })
+                            //                     resBaseOut.map((t,i)=>{
+                            //                         parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
+                            //                         parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                            //                     })
+                            //                     parent.$(".xwzly_out").off("change").on("change",(e)=>{
+                            //                         if($(e.target).find('option:selected').attr('type') == 3){
+                            //                             $(e.target).next().next().empty();
+                            //                             $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
+                            //                         } else {
+                            //                             $(e.target).next().next().empty();
+                            //                             $(e.target).next().next().append(`<option value=">">></option>
+                            //    <option value="<"><</option>
+                            //    <option value="=">=</option>
+                            //    <option value=">=">>=</option>
+                            //    <option value="<="><=</option>
+                            //    <option value="!=">!=</option>
+                            //    <option value="assignment">赋值</option>`)
+                            //                         }
+                            //                     })
+                            //                     parent.$(".xwzly_out").each((i,s)=>{
+                            //                         if($(s).find('option:selected').attr('type') == 3){
+                            //                             try {
+                            //                                 $(s).next().next().empty();
+                            //                                 $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                            //                             }catch (e) {
+                            //                                 console.log(e);
+                            //                             }
+                            //                         }
+                            //                     })
+                            //                 }
+                            //             })
+                            //         } catch (e) {
+                            //             console.log(e);
+                            //         }
+                            //     }
+                            // }
+                            // if(localData){//本地缓存数据
+                            //     globalActionDatas.map(s=>{
+                            //         if(s.id == out_small + "AND" + in_small){
+                            //             try{
+                            //                 parent.$("#actionMsgIn").val("");
+                            //                 parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                            //                 parent.$("#actionMsgOut").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
+                            //                 var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                            //                 var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                            //                 lineDatas.map((t,i)=>{
+                            //                     parent.$("#actionInDiv").append(`
+                            //                          <div style="margin: 10px 0">
+                            //                                <i>${i+1}</i>
+                            //                                <span>行为值来源</span><input class="xwzly_in" disabled>
+                            //                                <span>行为</span><select class="xwSelect_in">
+                            //                                <option value=">">></option>
+                            //                                <option value="<"><</option>
+                            //                                <option value="=">=</option>
+                            //                                <option value=">=">>=</option>
+                            //                                <option value="<="><=</option>
+                            //                                <option value="!=">!=</option>
+                            //                                <option value="assignment">赋值</option>
+                            //                                 </select>
+                            //                                <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
+                            //                                <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                            //                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                            //                          </div>
+                            //                     `)
+                            //                 })
+                            //                 lineDatas.map((t,i)=>{
+                            //                     parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
+                            //                 })
+                            //                 $.ajax({
+                            //                     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                            //                     data:{algthId:parent.$("#addActionButton").attr("id_out")},
+                            //                     success(res) {
+                            //                         let optionx = "";
+                            //                         res.tableFuncs.map(s => {
+                            //                             optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
+                            //                         })
+                            //                         lineDatasOut.map((t,i)=>{
+                            //                             parent.$("#actionOutDiv").append(`
+                            //                                  <div style="margin: 10px 0">
+                            //                                        <i>${i+1}</i>
+                            //                                        <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
+                            //                                        <span>行为</span><select class="xwSelect_out">
+                            //                                        <option value=">">></option>
+                            //                                        <option value="<"><</option>
+                            //                                        <option value="=">=</option>
+                            //                                        <option value=">=">>=</option>
+                            //                                        <option value="<="><=</option>
+                            //                                        <option value="!=">!=</option>
+                            //                                        <option value="assignment">赋值</option>
+                            //                                         </select>
+                            //                                        <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
+                            //                                        <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
+                            //                                        <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
+                            //                                  </div>
+                            //                             `)
+                            //                         })
+                            //                         lineDatasOut.map((t,i)=>{
+                            //                             parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
+                            //                             parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
+                            //                         })
+                            //                         parent.$(".xwzly_out").off("change").on("change",(e)=>{
+                            //                             if($(e.target).find('option:selected').attr('type') == 3){
+                            //                                 $(e.target).next().next().empty();
+                            //                                 $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
+                            //                             } else {
+                            //                                 $(e.target).next().next().empty();
+                            //                                 $(e.target).next().next().append(`<option value=">">></option>
+                            //                                    <option value="<"><</option>
+                            //                                    <option value="=">=</option>
+                            //                                    <option value=">=">>=</option>
+                            //                                    <option value="<="><=</option>
+                            //                                    <option value="!=">!=</option>
+                            //                                    <option value="assignment">赋值</option>`)
+                            //                             }
+                            //                         })
+                            //                         parent.$(".xwzly_out").each((i,s)=>{
+                            //                             if($(s).find('option:selected').attr('type') == 3){
+                            //                                 try {
+                            //                                     $(s).next().next().empty();
+                            //                                     $(s).next().next().append(`<option value="assignment">赋值</option>`)
+                            //                                 }catch (e) {
+                            //                                     console.log(e);
+                            //                                 }
+                            //                             }
+                            //                         })
+                            //                     }
+                            //                 })
+                            //             } catch (e) {
+                            //                 console.log(e);
+                            //             }
+                            //         }
+                            //     })
+                            // }
+                            // setTimeout(()=>{
+                            //     if(window.lineDiv){
+                            //         parent.$('#actionDiv').show();
+                            //     }
+                            // },300)
+                            // parent.$('#actionInDiv').show();
+                            // selected = {
+                            //     "type": event,
+                            //     "data": data
+                            // };
+                            // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
+                            // locked = data.locked;
+                            // self.initLine();
                             break;
                         case 'multi':
                             locked = true;
@@ -846,11 +879,13 @@ var Topology = {
                                 item.to.x = nodesa1.rotatedAnchors[0].x
                                 item.to.y = nodesa1.rotatedAnchors[0].y
                             })
+                            // canvas.updateProps()
                             break    
                         case 'moveOutNode':
                             if(editGzType == false){
                                 editGzType = true;
                             }
+                            $("#showCsName").text("").hide()
                             break   
                         case 'moveInNode':   
                             if(data.name == "combine"){
@@ -860,6 +895,14 @@ var Topology = {
                                 $("#menu_unCombine").css("display", "block");
                                 canvas.uncombine(data);
                                 canvas.render();
+                            }
+                            if(data.childStand){
+                                $("#showCsName").text(data.childStand.cstext).css({
+                                    "position":"absolute",
+                                    "top":(data.rect.y+40)+"px",
+                                    "left":(data.rect.x)+"px"
+                                })
+                                $("#showCsName").show()
                             }
                             canvas.lockNodes([data], false)
                             break    
@@ -912,7 +955,6 @@ var Topology = {
                                         obj.y = 0
                                     })
                                 }
-
                                 if(data.data.inNum > 0 || data.data.outNum > 0){                                
                                     let data2 = JSON.parse(JSON.stringify(data1)) 
                                     function guid() {
@@ -940,14 +982,14 @@ var Topology = {
                                                     type = "常量"
                                                 }
                                                 if(item.vartype == 3){
-                                                    type ="对象"
+                                                    type ="模型"
                                                 }
                                                 
                                                 switch (type) {
                                                     case '常量':
                                                         fillStyle = '#0eff23';
                                                         break;
-                                                    case '对象':
+                                                    case '模型':
                                                         fillStyle = '#ff00e7';
                                                         break;
                                                     case 'int':
@@ -995,8 +1037,8 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
-                                                // data2.text = ""   
+                                                // data2.text = item.parametername;
+                                                data2.text = ""   
                                                 data2.bkType = 0
                                                 data2.fillStyle = fillStyle
                                                 data2.rect.ex = data1.rect.x + num.x;
@@ -1027,7 +1069,8 @@ var Topology = {
                                                     text:item.valvalue,
                                                     fid:data.data.sid,
                                                     fUUid: data.id,
-                                                    canshuId:item.id
+                                                    canshuId:item.id,
+                                                    cstext:item.parametername
                                                 }
                                               
                                                 // data2.anchors[0].x = data2.rect.x
@@ -1104,13 +1147,13 @@ var Topology = {
                                                     type = "常量"
                                                 }
                                                 if(item.vartype == 3){
-                                                    type ="对象"
+                                                    type ="模型"
                                                 }
                                                 switch (type) {
                                                     case '常量':
                                                         fillStyle = '#0eff23';
                                                         break;
-                                                    case '对象':
+                                                    case '模型':
                                                         fillStyle = '#ff00e7';
                                                         break;
                                                     case 'int':
@@ -1157,7 +1200,7 @@ var Topology = {
                                                 data2.id = UUid+"---"+type;
                                                 data2.rect.width = widths
                                                 data2.rect.height = heights
-                                                data2.text = item.parametername;
+                                                // data2.text = item.parametername;
                                                 // data2.text = ""   
                                                 data2.bkType = 0
                                                 data2.fillStyle = fillStyle
@@ -1189,7 +1232,8 @@ var Topology = {
                                                     text:item.valvalue,
                                                     fid:data.data.sid,
                                                     fUUid: data.id,
-                                                    canshuId:item.id
+                                                    canshuId:item.id,
+                                                    cstext:item.parametername
                                                 }
                                                 // data2.anchors[0].x = 0
                                                 // data2.anchors[0].y = 0 
@@ -1312,7 +1356,9 @@ var Topology = {
                                 })
                            }
                             break;
+                            
                         case 'resizeNodes':
+
                             if(!data[0].childStand){
                                 data[0].anchors.map((obj,i) => {
                                     obj.x = 0;
@@ -1322,6 +1368,15 @@ var Topology = {
                                     obj.x = 0;
                                     obj.y = 0
                                 })
+                                // data[0].rect.width = 200
+                                // data[0].rect.height = 100
+                            }else{
+                                // self.moveNodesList =data
+                                // data[0].rect.width = 20
+                                // data[0].rect.height = 10
+                                // data[0].rect.x = data[0].rect.x
+                                // data[0].rect.y = data[0].rect.y
+                                // canvas.lockNodes([data[0]], true)
                             }
                             if(data[0].childStand) canvas.lockNodes([data[0]], true)
                             let nowLists =[]
@@ -1377,8 +1432,8 @@ var Topology = {
                                             item.rotatedAnchors[3].x =0
                                             item.rotatedAnchors[3].y =0
                                             item.textMaxLine = 1
-                                            item.hideRotateCP=true,
-                                            item.hideSizeCP=true
+                                            item.hideRotateCP = true,
+                                            item.hideSizeCP = true
                                             // item.bkType = 0
                                             // item.fillStyle = "red"
                                         }else{                                         
@@ -1455,7 +1510,12 @@ var Topology = {
                         case 'addLine':
                             var strokeStyle;
                             data.dash = 1;
-                            data.name = "curve"
+                            data.name = "polyline"
+                            data.manualCps =true
+                            canvas.lockLines([data],true)
+                            canvas.render()
+                            data.controlPoints[0].hidden = true
+                            data.controlPoints[1].hidden = true
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
@@ -1507,7 +1567,7 @@ var Topology = {
                                             case '常量':
                                                 strokeStyle = '#0eff23';
                                                 break;
-                                            case '对象':
+                                            case '模型':
                                                 strokeStyle = '#ff00e7';
                                                 break;
                                             case 'int':
@@ -1680,7 +1740,7 @@ var Topology = {
                             }else{
                                 data.nodes = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selNodes
                                 data.lines = parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines 
-                                if( data.nodes == null && data.lines.length == 0){
+                                if( data.nodes == null && data.lines == null){
                                     parent.$('.noticeList').append(`<li>${parent.getTime()} 请选择要删除的节点或者线！ </li>`)
                                     toastr.info(`请选择要删除的节点或者线！` )
                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
@@ -1698,10 +1758,10 @@ var Topology = {
                             }catch (e) {
                                 console.log(e);
                             }
-
                            if(window.canvasNowId != "canvas0"){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.map((item,i)=>{
                                     if(item.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines[0].id){
+                                        debugger
                                         parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.splice(i,1)
                                         parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.render();
                                     }
@@ -1901,7 +1961,7 @@ var Topology = {
                                                                     }else if(index.vartype == 2 || index.vartype == "常量"){
                                                                         str+=`<input value="常量" class="actionSelected2" disabled>`
                                                                     }  else{
-                                                                        str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                        str+=`<input value="模型" class="actionSelected2" disabled>`
                                                                     } 
                                                                         str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`
                                                                     if(inter.remark == "xin"){
@@ -1931,7 +1991,7 @@ var Topology = {
                                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
                                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
                                                             }  else{
-                                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                                str+=`<input value="模型" class="actionSelected2" disabled>`
                                                             } 
                                                                 str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>`  
                                                                 if(index.remark == "xin"){
@@ -1956,7 +2016,7 @@ var Topology = {
                                                         }else if(index.vartype == 2 || index.vartype == "常量"){
                                                             str+=`<input value="常量" class="actionSelected2" disabled>`
                                                         }  else{
-                                                            str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                            str+=`<input value="模型" class="actionSelected2" disabled>`
                                                         } 
                                                             str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>   
                                                                <button type="button" onclick="reduceButton(event)">x</button>                                                    
@@ -1991,7 +2051,7 @@ var Topology = {
                                                 }else if(index.vartype == "常量"||  index.vartype == 2){
                                                     str+=`<input value="常量" class="actionSelected2" disabled>`
                                                 } else{
-                                                    str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                    str+=`<input value="模型" class="actionSelected2" disabled>`
                                                 } 
                                                 str+=`<input value="${index.valvalue}" id="varTypeInput" disabled>   
                                                 <button type="button" onclick="reduceButton(event)">x</button>                                               
@@ -2009,7 +2069,7 @@ var Topology = {
                                             }else if(index.vartype == 2 || index.vartype == "常量" ){
                                                 str+=`<input value="常量" class="actionSelected2" disabled>`
                                             }  else{
-                                                str+=`<input value="对象" class="actionSelected2" disabled>`
+                                                str+=`<input value="模型" class="actionSelected2" disabled>`
                                             } 
                                                 str+= `<input value="${index.valvalue}" id="varTypeInput" disabled>                                                 
                                                 </div>`              
@@ -2025,7 +2085,7 @@ var Topology = {
                                             $("#varTypeInput").val("常量")
                                         }
                                         if($(".actionSelected2").val() == "3"){
-                                            $("#varTypeInput").val("对象")
+                                            $("#varTypeInput").val("模型")
                                         }
                                         if($(".actionSelected2").val() == "1"){
                                             $("#varTypeInput").val($('.actionSelected2 option:selected').attr('datavalue'))
@@ -2513,34 +2573,68 @@ var Topology = {
     // 删除
     onDelete: function (e) {
         canvas.delete();
-        globalActionDatas.map((s,i)=>{
-            if(s.id == deleteLineDataId){
-                globalActionDatas.splice(i,1)
-            }
-        })
-        if(responseActionDatas && responseActionDatas.length >0){
-            responseActionDatas.map(s=>{
-                if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
-                    try {
-                        $.ajax({
-                            url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
-                            type:"get",
-                            data: {interfaceRoueId :s.id},
-                            success(data) {
-                                if(window.canvasNowId == "canvas0"){
-                                    window.isRuleNow = false
-                                }else{
-                                    window.frames[canvasNowId].contentWindow.isRuleNow = false
-                                }
-                            }
-                        })
-                    } catch (e) {
-    
-                    }
+
+        if(window.top.canvasNowId == "canvas0"){
+            globalActionDatas.map((s,i)=>{
+                if(s.id == deleteLineDataId){
+                    globalActionDatas.splice(i,1)
+                }
+            })
+        }else{
+            parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas.map((s,i)=>{
+                if(s.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId){
+                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas.splice(i,1)
                 }
             })
         }
- 
+
+        if(window.top.canvasNowId == "canvas0"){
+            if(responseActionDatas && responseActionDatas.length >0){
+                responseActionDatas.map(s=>{
+                    if(s.preParametersID + "AND" + s.parametersID == deleteLineDataId){
+                        try {
+                            $.ajax({
+                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                type:"get",
+                                data: {interfaceRoueId :s.id},
+                                success(data) {
+                                    if(window.canvasNowId == "canvas0"){
+                                        window.isRuleNow = false
+                                    }else{
+                                        window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    }
+                                }
+                            })
+                        } catch (e) {
+
+                        }
+                    }
+                })
+            }
+        }else{
+            if( parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas &&  parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas.length >0){
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas.map(s=>{
+                    if(s.preParametersID + "AND" + s.parametersID ==  parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId){
+                        try {
+                            $.ajax({
+                                url: urlConfig.host + '/algorithmRule/delOneInterfaceRole',
+                                type:"get",
+                                data: {interfaceRoueId :s.id},
+                                success(data) {
+                                    if(window.canvasNowId == "canvas0"){
+                                        window.isRuleNow = false
+                                    }else{
+                                        window.frames[canvasNowId].contentWindow.isRuleNow = false
+                                    }
+                                }
+                            })
+                        } catch (e) {
+
+                        }
+                    }
+                })
+            }
+        }
     },
     // 撤销
     undo: function () {
