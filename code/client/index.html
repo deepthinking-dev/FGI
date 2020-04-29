@@ -1355,7 +1355,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     $('body').on('click','#setAct',(e) =>{
         $("#actionDiv").show();
-        var data = currentLineData
+        var data,datas,local,res;
+        if(window.top.canvasNowId == "canvas0"){
+            data = currentLineData;
+            datas = canvas.data;
+            local = globalActionDatas;
+            res =responseActionDatas
+        }else{
+            data = parent.$('#'+window.top.canvasNowId)[0].contentWindow.currentLineData;
+            datas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data;
+            local = parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas;
+            res = parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas
+        }
         let id_in;//输入端算法id
         let id_out;//输出端算法id
         parent.$("#actionMsgIn").val("");
@@ -1367,8 +1378,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
             actionRelation:"",
             preActionRelation:""
         })
-        debugger
-        canvas.data.nodes.map(s=>{
+        parent.$("#addActionButton").attr("resData","false")
+        datas.nodes.map(s=>{
             if(s.id == data.from.id){
                 id_out = s.childStand.fid
             }
@@ -1381,7 +1392,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
         var bigList=[];
-        canvas.data.nodes.map(s=>{
+        datas.nodes.map(s=>{
             if(s.id == data.from.id){
                 smallOutName = s.childStand.cstext;
                 out_big = s.childStand.fUUid;
@@ -1391,7 +1402,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 in_big = s.childStand.fUUid;
             }
         })
-        canvas.data.nodes.map(s=>{
+        datas.nodes.map(s=>{
             if(s.id == out_big){
                 bigOutName = s.text;
             }
@@ -1399,7 +1410,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 bigInName = s.text;
             }
         })
-        canvas.data.nodes.map(s=>{
+        datas.nodes.map(s=>{
             if(s.id == data.to.id){
                 fromParmaChinese = s.childStand.cstext
             }
@@ -1429,7 +1440,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
         parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
         window.lineDiv = true;
-        deleteLineDataId = out_small + "AND" + in_small;
+
         parent.$("#actionInDiv").empty();
         parent.$("#actionOutDiv").empty();
 
@@ -1437,8 +1448,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
         var responseCurrentData = false;
         var resBaseOut;
         var resBaseIn;
-        if(responseActionDatas){//后台返回数据
-            responseActionDatas.map(t=>{
+        if(res){//后台返回数据
+            res.map(t=>{
                 if((t.preParametersID == out_small) && (t.parametersID == in_small)){
                     responseCurrentData= t;
                     resBaseOut = [];
@@ -1491,7 +1502,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 resCurrentLineData.dataIn = resInAll;
                 resCurrentLineData.dataOut = resOutAll;
-                parent.$("#addActionButton").attr("resData",true)
+                parent.$("#addActionButton").attr("resData","true")
                 try{
                     resBaseIn.map((t,i)=>{
                         parent.$("#actionInDiv").append(`
@@ -1582,7 +1593,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         }
         if(localData){//本地缓存数据
-            globalActionDatas.map(s=>{
+            local.map(s=>{
                 if(s.id == out_small + "AND" + in_small){
                     try{
                         parent.$("#actionMsgIn").val("");

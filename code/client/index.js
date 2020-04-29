@@ -204,7 +204,7 @@ $(function(){
     $('body').on('click','#addAction',(e) => {
         $("#actionDiv").hide();
         $("#actionOutDiv").hide()
-        if(parent.$("#addActionButton").attr("resdata")){//修改动作
+        if(parent.$("#addActionButton").attr("resdata") == "true"){//修改动作
             var sendDataIn = [];
             var sendDataOut = [];
             if(window.top.canvasNowId == "canvas0"){
