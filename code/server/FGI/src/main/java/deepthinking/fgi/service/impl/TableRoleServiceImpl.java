@@ -17,14 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -558,6 +557,69 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         return firstInterfaceIdSet;
     }
 
+    //数据库接口实体->输出接口实体
+    private InterfaceXmlModel convertDbInterfaceToOutInterface(TableOperatorinterface tableOperatorinterface){
+        InterfaceXmlModel interfaceXmlModel = new InterfaceXmlModel();
+        interfaceXmlModel.setName(tableOperatorinterface.getInterfacename());
+        interfaceXmlModel.setId(tableOperatorinterface.getId());
+        AlgorithmXmlModel algorithm = new AlgorithmXmlModel();
+        algorithm.setId(tableOperatorinterface.getAlgorithmid());
+        interfaceXmlModel.setAlgorithm(algorithm);
+        return interfaceXmlModel;
+    }
+
+    //数据库算子参数实体,赋值给输出算子参数
+    private ParamXmlModel convertDbFuncToOutParam(TableFunc tableFunc){
+        ParamXmlModel paramXmlModel = new ParamXmlModel();
+        paramXmlModel.setId(tableFunc.getId());
+        paramXmlModel.setName(tableFunc.getVarname());
+        paramXmlModel.setType(tableFunc.getVartype());
+        paramXmlModel.setValue(tableFunc.getValvalue());
+        paramXmlModel.setIotype(tableFunc.getInorout().intValue());
+        paramXmlModel.setRemark(tableFunc.getRemark());
+        paramXmlModel.setName(tableFunc.getParametername());
+        return paramXmlModel;
+    }
+
+    //数据库接口参数实体->输出接口参数实体
+    private InterfaceParamXmlModel convertDbIparamToOutIpxm(TableInterfaceparameters tableInterfaceparameters){
+        InterfaceParamXmlModel interfaceParamXmlModel = new InterfaceParamXmlModel();
+        interfaceParamXmlModel.setId(tableInterfaceparameters.getId());
+        interfaceParamXmlModel.setName(tableInterfaceparameters.getParametersname());
+        interfaceParamXmlModel.setOrigin(tableInterfaceparameters.getParameterssources());
+        interfaceParamXmlModel.setIotype(tableInterfaceparameters.getInorout().intValue());
+        return interfaceParamXmlModel;
+    }
+
+    //数据库参数动作实体->输出参数动作实体
+    private BehaviourXmlModel convertDbTConditionToOutBehivor(TableAlgorithmcondition tableAlgorithmcondition,
+                                                              InterfaceParamXmlModel interfaceParamXmlModel){
+        BehaviourXmlModel behaviourXmlModel = new BehaviourXmlModel();
+        behaviourXmlModel.setBehave(tableAlgorithmcondition.getBehavior());
+        behaviourXmlModel.setExpression(tableAlgorithmcondition.getExpression());
+        behaviourXmlModel.setOrigin(tableAlgorithmcondition.getValuesources());
+        behaviourXmlModel.setRemark(tableAlgorithmcondition.getRemark());
+        behaviourXmlModel.setParamId(interfaceParamXmlModel.getId());
+        return behaviourXmlModel;
+    }
+
+
+
+    //数据库算子实体,赋值给输出算子实体
+    private void configDbAlgorithmData(InterfaceXmlModel interfaceXmlModel,
+                                       TableAlgorithm tableAlgorithm){
+        interfaceXmlModel.getAlgorithm().setName(tableAlgorithm.getAlgorithmname());
+        interfaceXmlModel.getAlgorithm().setAuthor(tableAlgorithm.getAlgorithmauthor());
+        interfaceXmlModel.getAlgorithm().setIspub(tableAlgorithm.getIspublic().intValue());
+        interfaceXmlModel.getAlgorithm().setType(tableAlgorithm.getAlgorithmtype().intValue());
+        interfaceXmlModel.getAlgorithm().setFunc(tableAlgorithm.getAlgorithmfun());
+        interfaceXmlModel.getAlgorithm().setDesc(tableAlgorithm.getDes());
+        interfaceXmlModel.getAlgorithm().setRemark(tableAlgorithm.getRemark());
+        interfaceXmlModel.getAlgorithm().setAlgorithmGroup(tableAlgorithm.getAlgorithmgroup());
+        interfaceXmlModel.getAlgorithm().setStatus(tableAlgorithm.getStatus());
+        interfaceXmlModel.getAlgorithm().setRemarks2(tableAlgorithm.getRemark2());
+    }
+
     //设置首接口
     private void setFirstIntefa(Set<String> firstInterfaceIdSet,
                                 List<TableOperatorinterface> allInterfaceList,
@@ -648,6 +710,112 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         });
     }
 
+    //子接口判重
+    private Boolean judgeRepeatChildInterface(InterfaceParamXmlModel interfaceParamXmlModel,
+                                              String interfaceId){
+        AtomicReference<Boolean> flag = new AtomicReference<>(true);
+        interfaceParamXmlModel.getInterfaces().getInterfa().forEach(interfaceXmlModel -> {
+            if(interfaceXmlModel.getId().equals(interfaceId)){
+                flag.set(false);
+            }
+        });
+        return flag.get();
+    }
+
+    //设置子参数
+    private void setChildIntefa(InterfaceXmlModel interfaceXmlModel,
+                                List<TableInterfacerole> allInterfaceRelevanceList,
+                                List<TableOperatorinterface> allInterfaceList,
+                                List<TableAlgorithm> allAlgorithmList,
+                                List<TableFunc> allFuncList,
+                                List<TableInterfaceparameters> allInterfaceParametersList,
+                                List<TableAlgorithmcondition> allConditionList){
+        Set<Integer> removeIndex = new HashSet<Integer>();
+        final int[] count = {0};
+        List<InterfaceXmlModel> nxtImList = new ArrayList<InterfaceXmlModel>();
+        interfaceXmlModel.getParams().getParam().forEach(interfaceParamXmlModel -> {    //循环接口参数
+            //=============================设置参数子接口===============================//
+            if(interfaceParamXmlModel.getIotype() == 1){    //输出
+                allInterfaceRelevanceList.forEach(tableInterfacerole -> {   //接口关系
+                    if(tableInterfacerole.getPreparametersid().equals(interfaceParamXmlModel.getId())){
+                        removeIndex.add(count[0]);
+//                        System.out.println("关系ID:" + tableInterfacerole.getId() + ",前参数ID:" + tableInterfacerole.getPreparametersid());
+                        //获取子接口
+                        allInterfaceList.forEach(tableOperatorinterface -> {
+                            if(tableInterfacerole.getInterfaceid().equals(tableOperatorinterface.getId())){
+//                                System.out.println("父参数ID:" + interfaceParamXmlModel.getId() + ",子接口ID:" + tableOperatorinterface.getId());
+                                if(judgeRepeatChildInterface(interfaceParamXmlModel, tableOperatorinterface.getId())){
+                                    InterfaceXmlModel ixm = convertDbInterfaceToOutInterface(tableOperatorinterface);
+                                    InterfaceParamsXmlModel interfaceParamsXmlModel = new InterfaceParamsXmlModel();
+                                    allInterfaceParametersList.forEach(tableInterfaceparameters -> {
+                                        if(tableInterfaceparameters.getInterfaceid().equals(ixm.getId())){
+                                            Boolean flag = false;
+                                            if(tableInterfaceparameters.getInorout().intValue() == 0){  //输入
+                                                if(tableInterfaceparameters.getId().equals(tableInterfacerole.getParametersid())){
+                                                    flag = true;
+                                                }
+                                            }else{
+                                                flag = true;
+                                            }
+                                            if(flag){
+                                                InterfaceParamXmlModel ipxm = convertDbIparamToOutIpxm(tableInterfaceparameters);
+                                                BehavioursXmlModel behavioursXmlModel = new BehavioursXmlModel();
+                                                allConditionList.forEach(tableAlgorithmcondition -> {
+                                                    if(tableAlgorithmcondition.getInterfaceparametersid().equals(tableInterfaceparameters.getId())){
+                                                        behavioursXmlModel.getAction().add(convertDbTConditionToOutBehivor(tableAlgorithmcondition, ipxm));
+                                                    }
+                                                });
+                                                ipxm.setActions(behavioursXmlModel);
+                                                interfaceParamsXmlModel.getParam().add(ipxm);
+                                            }
+
+                                        }
+                                    });
+                                    ixm.setParams(interfaceParamsXmlModel);
+                                    interfaceParamXmlModel.getInterfaces().getInterfa().add(ixm);
+                                    nxtImList.add(ixm);
+                                }
+                            }
+                        });
+                    }
+                    count[0]++;
+                });
+            //=============================设置参数子接口===============================//
+            }
+
+            //===============================设置子接口算子/算子参数=====================================//
+            interfaceParamXmlModel.getInterfaces().getInterfa().forEach(childInterfaceXmlModel ->{
+                allAlgorithmList.forEach(tableAlgorithm -> {
+                    if(tableAlgorithm.getId().intValue() == interfaceXmlModel.getAlgorithm().getId().intValue()){
+                        configDbAlgorithmData(childInterfaceXmlModel, tableAlgorithm);
+                        ParamsXmlModel paramsXmlModel = new ParamsXmlModel();
+                        allFuncList.forEach(tableFunc -> {
+                            if(tableFunc.getAlgorithmid().intValue() == tableAlgorithm.getId().intValue()){
+                                paramsXmlModel.getParam().add(convertDbFuncToOutParam(tableFunc));
+                            }
+                        });
+                        childInterfaceXmlModel.getAlgorithm().setParams(paramsXmlModel);
+                    }
+                });
+            });
+            //===============================设置子接口算子/算子参数=====================================//
+        });
+        removeIndex.forEach(index ->{
+            allInterfaceRelevanceList.remove(index);
+        });
+        if(allInterfaceRelevanceList.size() > 0){
+            nxtImList.forEach(ixm -> {
+                setChildIntefa(ixm,
+                        allInterfaceRelevanceList,
+                        allInterfaceList,
+                        allAlgorithmList,
+                        allFuncList,
+                        allInterfaceParametersList,
+                        allConditionList);
+            });
+        }
+    }
+
     /**
      * 拼装算法导出实体
      * @param id
@@ -674,6 +842,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             setFirstIntefa(firstInterfaceIdSet, allInterfaceList, rule);   //设置首接口
             setFirstIntefaAlgorithm(rule, allAlgorithmList, allFuncList);  //设置首接口算子以及算子参数
             setFirstIntefaInteParam(rule, allInterfaceParametersList, allConditionList);    //设置首接口的接口参数和行为
+            setChildIntefa(rule.getInterfaces().getInterfa().get(0),
+                    allInterfaceRelevanceList,
+                    allInterfaceList,
+                    allAlgorithmList,
+                    allFuncList,
+                    allInterfaceParametersList,
+                    allConditionList);
             return rule;
         }else{
             return null;
