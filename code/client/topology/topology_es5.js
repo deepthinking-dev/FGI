@@ -2675,13 +2675,39 @@ var Topology = {
                 }
             })
         }
-
+      
         canvas.undo();
+        canvas.render()
+
+        canvas.data.nodes.map(item=>{
+            if(!item.childStand){
+                item.anchors.map((obj,i) => {
+                    obj.x = 0;
+                    obj.y = 0;
+                })
+                item.rotatedAnchors.map((obj,i) => {
+                    obj.x = 0;
+                    obj.y = 0
+                })
+            }
+        })
         canvas.render()
     },
     // 恢复
     redo: function () {
         canvas.redo();
+        canvas.data.nodes.map(item=>{
+            if(!item.childStand){
+                item.anchors.map((obj,i) => {
+                    obj.x = 0;
+                    obj.y = 0;
+                })
+                item.rotatedAnchors.map((obj,i) => {
+                    obj.x = 0;
+                    obj.y = 0
+                })
+            }
+        })
     },
     // 剪切
     cut: function () {
