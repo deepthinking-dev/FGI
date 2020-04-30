@@ -17,14 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +59,8 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     private TableInterfaceparametersMapper tableInterfaceparametersMapper;
     @Resource
     private TableAlgorithmconditionMapper tableAlgorithmconditionMapper;
+    @Resource
+    private TableGroupdataMapper tableGroupdataMapper;
 
     @Override
     public PageInfo<TableRole> pageFind(int pageNum, int pageSize, Object parameter) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -79,7 +80,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         //算法规则表Table_Role
         TableRole tableRole = new TableRole();
         tableRole.setRolename(rule.getName() + "-副本" + String.valueOf(System.currentTimeMillis()));
-        rule.setName(tableRole.getRolename());
+        tableRole.setRolegroup(rule.getRoleGroup());
         tableRole.setDes(rule.getDesc());
         tableRole.setRemark(rule.getRemark());
         tableRole.setEntrancenote(rule.getEntrancenote());
@@ -90,68 +91,72 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableRole.setRemark2(rule.getRemark2());
         tableRole.setRemark3(rule.getRemark3());
 
-        roleMapper.insert(tableRole);
+        TableGroupdataCriteria tableGroupdataCriteria = new TableGroupdataCriteria();
+        tableGroupdataCriteria.createCriteria().andGroupnameEqualTo(rule.getRoleGroup());
+        if(tableGroupdataMapper.selectByExample(tableGroupdataCriteria).size() <= 0){
+            tableRole.setRolegroup("默认分组");
+            rule.setRoleGroup("默认分组");
+            TableGroupdataCriteria tableGroupdataCriteria2 = new TableGroupdataCriteria();
+            tableGroupdataCriteria2.createCriteria().andGroupnameEqualTo("默认分组");
+            if(tableGroupdataMapper.selectByExample(tableGroupdataCriteria).size() <= 0){
+                TableGroupdata tableGroupdata = new TableGroupdata();
+                tableGroupdata.setGroupname("默认分组");
+                tableGroupdata.setGrouptype(3);
+                tableGroupdata.setParentid(0);
+                tableGroupdataMapper.insert(tableGroupdata);
+            }
+        }
 
-        Map map = new HashMap();
-        Map map2 = new HashMap();
-        Map map3 = new HashMap();
-        Map map4 = new HashMap();
+
+
+        roleMapper.insert(tableRole);
 
         Map transMap = new HashMap();   //key--老ID value新ID
 
-        //接口表
-        List<TableOperatorinterface> tableOperatorinterfaceList = new ArrayList<TableOperatorinterface>();
-        //接口参数
-        List<TableInterfaceparameters> tableInterfaceparametersList = new ArrayList<TableInterfaceparameters>();
-        //接口关系
-        List<TableInterfacerole> tableInterfaceroleList = new ArrayList<TableInterfacerole>();
-        //动作
-        List<TableAlgorithmcondition> tableAlgorithmconditionList = new ArrayList<TableAlgorithmcondition>();
+        Map tmap = new HashMap();   //xmlID-新UUID
+        Map vtmap = new HashMap();  //新UUID-老ID
+        Map ycmap = new HashMap();  //xmlID-新UUID
+
+
+        List<TableOperatorinterface> tableOperatorinterfaceList = new ArrayList<TableOperatorinterface>();  //接口表
+
+        List<TableInterfaceparameters> tableInterfaceparametersList = new ArrayList<TableInterfaceparameters>();    //接口参数
+
+        List<TableInterfacerole> tableInterfaceroleList = new ArrayList<TableInterfacerole>();   //接口关系
+
+        List<TableAlgorithmcondition> tableAlgorithmconditionList = new ArrayList<TableAlgorithmcondition>();   //动作
         if(null != rule.getInterfaces()){
             rule.getInterfaces().getInterfa().forEach(interfaceXmlModel -> {
-                //接口表
-                if(null != interfaceXmlModel.getAlgorithm()){
-                    AtomicBoolean flag = new AtomicBoolean(true);
-                    tableOperatorinterfaceList.forEach(tableOperatorinterface -> {
-                        if(tableOperatorinterface.getAlgorithmid().intValue() == interfaceXmlModel.getAlgorithm().getId().intValue()){
-                            flag.set(false);
-                        }
-                    });
-                    if(flag.get()){
-                        TableOperatorinterface tableOperatorinterface = new TableOperatorinterface();
-                        String id = UUID.randomUUID().toString().replace("-", "");
-                        transMap.put(interfaceXmlModel.getId(), id);
-                        map.put(interfaceXmlModel.getName(), id);
-                        map4.put(id, interfaceXmlModel.getName());
-                        interfaceXmlModel.setId(id);
-                        tableOperatorinterface.setId(id);
-                        tableOperatorinterface.setAlgorithmid(interfaceXmlModel.getAlgorithm().getId());
-                        tableOperatorinterface.setInterfacename(interfaceXmlModel.getName());
-                        tableOperatorinterface.setRoleid(tableRole.getId());
-                        tableOperatorinterfaceList.add(tableOperatorinterface);
-                    }
-                }
+                TableOperatorinterface tableOperatorinterface = new TableOperatorinterface();
+                String id = UUID.randomUUID().toString().replace("-", "");
+                tmap.put(interfaceXmlModel.getId(), id);
 
-                //给所有接口赋值ID
-                SetAllInterfaceId(interfaceXmlModel, map, false, map4, transMap);
+                interfaceXmlModel.setId(id);
+                tableOperatorinterface.setId(id);
+                tableOperatorinterface.setAlgorithmid(interfaceXmlModel.getAlgorithm().getId());
+                tableOperatorinterface.setInterfacename(interfaceXmlModel.getName());
+                tableOperatorinterface.setRoleid(tableRole.getId());
 
-                //收集接口列表
-                GetAllInterfaceFromModel(interfaceXmlModel, tableOperatorinterfaceList, tableRole, false);
-                //给接口参数设置ID,同时构造总的关系条数,同时构造总的动作条数
-                SetInterfaceParam(interfaceXmlModel, tableInterfaceroleList, tableAlgorithmconditionList, map2, map3, tableRole, transMap);
-                //收集接口参数ID
-                GetAllInterfaceParamFromModel(interfaceXmlModel, tableInterfaceparametersList, map3);
+                tableOperatorinterfaceList.add(tableOperatorinterface);
 
-                // 构造算法接口关系列表
-                GetAllInterfaceRoleFromModel(interfaceXmlModel, tableInterfaceroleList);
-                //构造动作表
-                GetBehaviorFromModel(tableInterfaceroleList, tableAlgorithmconditionList);
+                SetAllInterfaceId(interfaceXmlModel, tmap, transMap, false);   //给所有接口赋值ID
+
+                GetAllInterfaceFromModel(interfaceXmlModel, tableOperatorinterfaceList, tableRole, false);  //收集接口
+
+                SetInterfaceParamId(interfaceXmlModel, ycmap, vtmap, transMap);   //给所有接口参数赋值ID
+
+                GetAllInterfaceParamFromModel(interfaceXmlModel, tableInterfaceparametersList, vtmap);   //收集接口参数
+
+                setInterfaceParamRela(interfaceXmlModel,tableInterfaceroleList,tableRole,null, null); //构造接口关系
+
+                cleanRelaList(tableInterfaceroleList);  //除重
+
+                tmap.clear();
+                GetAllBehavior(interfaceXmlModel, tableAlgorithmconditionList, ycmap, tmap);   //收集动作
 
             });
         }
 
-
-        System.out.println();
         Set<String> transKeySet = transMap.keySet();
         String coo = tableRole.getCoordinate();
         for(String key : transKeySet){
@@ -172,7 +177,8 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         tableInterfaceroleList.forEach(tableInterfacerole -> {
             interfaceroleMapper.insert(tableInterfacerole);
         });
-        SetBehaviorIRData(tableAlgorithmconditionList, tableInterfaceroleList);
+        GetAllRleBehavior(tableInterfaceroleList, tableAlgorithmconditionList);
+//        clearRleBehavior(tableAlgorithmconditionList);
         tableAlgorithmconditionList.forEach(tableAlgorithmcondition -> {
             algorithmconditionMapper.insert(tableAlgorithmcondition);
         });
@@ -193,10 +199,6 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         });
     }
 
-
-    private void ConstructAllFRData(){
-
-    }
 
     /**
      * 构造动作表
@@ -248,6 +250,81 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
     }
 
+    //设置接口参数ID
+    private void SetInterfaceParamId(InterfaceXmlModel interfaceXmlModel, Map tmap, Map vtmap, Map transMap){
+        if(null != interfaceXmlModel.getParams()){
+            List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
+            interfaceParamXmlModelList.forEach(interfaceParamXmlModel ->{
+                String id = UUID.randomUUID().toString().replace("-", "");
+                if(null != tmap.get(interfaceParamXmlModel.getId())){
+                    interfaceParamXmlModel.setId(String.valueOf(tmap.get(interfaceParamXmlModel.getId())));
+                }else{
+                    vtmap.put(id, interfaceParamXmlModel.getId());
+                    tmap.put(interfaceParamXmlModel.getId(), id);
+                    transMap.put(interfaceParamXmlModel.getId(), id);
+                    interfaceParamXmlModel.setId(id);
+                }
+            });
+
+            interfaceParamXmlModelList.forEach(interfaceParamXmlModel -> {
+                if(interfaceParamXmlModel.getInterfaces().getInterfa().size() > 0){
+                    interfaceParamXmlModel.getInterfaces().getInterfa().forEach(ixm ->{
+                        SetInterfaceParamId(ixm, tmap, vtmap, transMap);
+                    });
+                }
+            });
+        }
+    }
+
+    //去重
+    private void cleanRelaList(List<TableInterfacerole> tableInterfaceroleList){
+        List<TableInterfacerole> tmpList = new ArrayList<TableInterfacerole>();
+        for(int i = 0; i < tableInterfaceroleList.size() - 1; i++){
+            TableInterfacerole ti = tableInterfaceroleList.get(i);
+            if(!tmpList.contains(ti)){
+                for(int j = i + 1; j < tableInterfaceroleList.size(); j++){
+                    TableInterfacerole ti2 = tableInterfaceroleList.get(j);
+                    if(ti.getInterfaceid().equals(ti2.getInterfaceid()) && ti.getParametersid().equals(ti2.getParametersid()) && ti.getPreinterfaceid().equals(ti2.getPreinterfaceid())
+                            && ti.getPreparametersid().equals(ti2.getPreparametersid())){
+                        tmpList.add(ti2);
+                    }
+                }
+            }
+        }
+        tableInterfaceroleList.removeAll(tmpList);
+    }
+
+    //构造接口关系
+    private void setInterfaceParamRela(InterfaceXmlModel interfaceXmlModel,
+                                   List<TableInterfacerole> tableInterfaceroleList,
+                                   TableRole tableRole,
+                                       InterfaceXmlModel fatherInterfaceXmlModel,
+                                       InterfaceParamXmlModel param){
+
+        if(null != fatherInterfaceXmlModel){
+            TableInterfacerole tableInterfacerole = new TableInterfacerole();   //接口关系
+            tableInterfacerole.setDes(interfaceXmlModel.getDesc());
+            tableInterfacerole.setRemark(interfaceXmlModel.getRemark());
+            tableInterfacerole.setRoleid(tableRole.getId());
+            tableInterfacerole.setPreinterfaceid(fatherInterfaceXmlModel.getId());
+            tableInterfacerole.setPreparametersid(param.getId());
+            tableInterfacerole.setInterfaceid(interfaceXmlModel.getId());
+            tableInterfacerole.setParametersid(interfaceXmlModel.getParams().getParam().stream().filter(p -> p.getIotype() == 0).collect(Collectors.toList()).get(0).getId());
+            tableInterfaceroleList.add(tableInterfacerole);
+        }
+
+        interfaceXmlModel.getParams().getParam().forEach(pa ->{
+            if(pa.getInterfaces().getInterfa().size() > 0){
+                pa.getInterfaces().getInterfa().forEach(inx ->{
+                    setInterfaceParamRela(inx, tableInterfaceroleList, tableRole, interfaceXmlModel, pa);
+                });
+            }
+        });
+    }
+
+
+
+
     /**
      * 给接口参数设置ID,同时构造总的关系条数
      * @param interfaceXmlModel
@@ -271,7 +348,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     map2.put(id, interfaceParamXmlModel.getId());
 
                     if(interfaceParamXmlModel.getIotype() == 1){    //输出
-                        if(null != interfaceParamXmlModel.getInterfa()){
+//                        if(null != interfaceParamXmlModel.getInterfa()){
                             TableInterfacerole tableInterfacerole = new TableInterfacerole();   //接口关系
                             tableInterfacerole.setRoleid(tableRole.getId());
                             tableInterfacerole.setPreinterfaceid(interfaceXmlModel.getId());
@@ -279,7 +356,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                             tableInterfacerole.setDes(interfaceParamXmlModel.getDesc());
                             tableInterfacerole.setRemark(interfaceParamXmlModel.getRemark());
                             tableInterfaceroleList.add(tableInterfacerole);
-                        }
+//                        }
                     }
                     interfaceParamXmlModel.getActions().getAction().forEach(action ->{
                         TableAlgorithmcondition tableAlgorithmcondition = new TableAlgorithmcondition();
@@ -293,8 +370,24 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                 }
             });
             interfaceParamXmlModelList.forEach(ix -> {
-                if(null != ix.getInterfa()){    //有下一层
-                    SetInterfaceParam(ix.getInterfa(), tableInterfaceroleList, tableAlgorithmconditionList, map, map2, tableRole, transMap);
+//                if(null != ix.getInterfa()){    //有下一层
+//                    SetInterfaceParam(ix.getInterfa(), tableInterfaceroleList, tableAlgorithmconditionList, map, map2, tableRole, transMap);
+//                }
+            });
+        }
+    }
+
+    //获取所有接口ID
+    private void GetAllInterfaceId(InterfaceXmlModel interfaceXmlModel,
+                                   Set<String> interfaceIdSet){
+        interfaceIdSet.add(interfaceXmlModel.getId());
+        if(null != interfaceXmlModel.getParams()){
+            List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
+            interfaceParamXmlModelList.forEach(interfaceParamXmlModel -> {
+                if(interfaceParamXmlModel.getInterfaces().getInterfa().size() > 0){    //有下一层
+                    interfaceParamXmlModel.getInterfaces().getInterfa().forEach(ixm ->{
+                        GetAllInterfaceId(ixm, interfaceIdSet);
+                    });
                 }
             });
         }
@@ -307,26 +400,82 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      * @param fg
      */
     private void SetAllInterfaceId(InterfaceXmlModel interfaceXmlModel,
-                                   Map map,
-                                   boolean fg,
-                                   Map map2,
-                                   Map transMap){
+                                   Map tmap,
+                                   Map transMap,
+                                   Boolean fg){
         if(null != interfaceXmlModel.getParams()){
             List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
             if(fg){
                 String id = UUID.randomUUID().toString().replace("-", "");
-                if(map.get(interfaceXmlModel.getName()) != null){
-                    interfaceXmlModel.setId(String.valueOf(map.get(interfaceXmlModel.getName())));
+                if(tmap.get(interfaceXmlModel.getId()) != null){
+                    interfaceXmlModel.setId(String.valueOf(tmap.get(interfaceXmlModel.getId())));
                 }else{
+                    tmap.put(interfaceXmlModel.getId(), id);
                     transMap.put(interfaceXmlModel.getId(), id);
                     interfaceXmlModel.setId(id);
-                    map.put(interfaceXmlModel.getName(), id);
-                    map2.put(id, interfaceXmlModel.getName());
                 }
             }
+
             interfaceParamXmlModelList.forEach(interfaceParamXmlModel -> {
-                if(null != interfaceParamXmlModel.getInterfa()){    //有下一层
-                    SetAllInterfaceId(interfaceParamXmlModel.getInterfa(), map, true, map2, transMap);
+                if(interfaceParamXmlModel.getInterfaces().getInterfa().size() > 0){
+                    interfaceParamXmlModel.getInterfaces().getInterfa().forEach(ixm ->{
+                        SetAllInterfaceId(ixm, tmap, transMap, true);
+                    });
+                }
+            });
+        }
+    }
+
+    private void clearRleBehavior(List<TableAlgorithmcondition> tableAlgorithmconditionList){
+        List<TableAlgorithmcondition> tmpList = new ArrayList<TableAlgorithmcondition>();
+        for(int i = 0; i < tableAlgorithmconditionList.size() - 1; i++){
+            TableAlgorithmcondition ti = tableAlgorithmconditionList.get(i);
+            if(!tmpList.contains(ti)){
+                for(int j = i + 1; j < tableAlgorithmconditionList.size(); j++){
+                    TableAlgorithmcondition ti2 = tableAlgorithmconditionList.get(j);
+                    if(ti.getInterfaceparametersid().equals(ti2.getInterfaceparametersid()) && ti.getInterfaceroleid().intValue() == ti2.getInterfaceroleid().intValue()){
+                        tmpList.add(ti2);
+                    }
+                }
+            }
+        }
+        tableAlgorithmconditionList.removeAll(tmpList);
+    }
+
+    private void GetAllRleBehavior(List<TableInterfacerole> tableInterfaceroleList, List<TableAlgorithmcondition> tableAlgorithmconditionList){
+        tableInterfaceroleList.forEach(tableInterfacerole -> {
+            tableAlgorithmconditionList.forEach(condition ->{
+                if(tableInterfacerole.getParametersid().equals(condition.getInterfaceparametersid()) || tableInterfacerole.getPreparametersid().equals(condition.getInterfaceparametersid())){
+                    condition.setInterfaceroleid(tableInterfacerole.getId());
+                }
+            });
+        });
+    }
+
+    //获取所有动作
+    private void GetAllBehavior(InterfaceXmlModel interfaceXmlModel, List<TableAlgorithmcondition> tableAlgorithmconditionList, Map ycmap, Map tmap){
+        if(null != interfaceXmlModel.getParams()){
+            List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
+            interfaceParamXmlModelList.forEach(param ->{
+                param.getActions().getAction().forEach(action ->{
+                    if(tmap.get(param.getId()) == null){
+                        TableAlgorithmcondition tableAlgorithmcondition = new TableAlgorithmcondition();
+                        tableAlgorithmcondition.setInterfaceparametersid(String.valueOf(ycmap.get(action.getParamId())));
+                        tableAlgorithmcondition.setBehavior(action.getBehave());
+                        tableAlgorithmcondition.setValuesources(action.getOrigin());
+                        tableAlgorithmcondition.setExpression(action.getExpression());
+                        tableAlgorithmcondition.setRemark(action.getRemark());
+                        tableAlgorithmconditionList.add(tableAlgorithmcondition);
+                    }
+                });
+                tmap.put(param.getId(), param.getId());
+            });
+
+            interfaceParamXmlModelList.forEach(interfaceParamXmlModel -> {
+                if(interfaceParamXmlModel.getInterfaces().getInterfa().size() > 0){
+                    interfaceParamXmlModel.getInterfaces().getInterfa().forEach(ixm ->{
+                        GetAllBehavior(ixm, tableAlgorithmconditionList, ycmap, tmap);
+                    });
                 }
             });
         }
@@ -339,12 +488,11 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
      */
     private void GetAllInterfaceParamFromModel(InterfaceXmlModel interfaceXmlModel,
                                                List<TableInterfaceparameters> tableInterfaceparametersList,
-                                               Map map){
+                                               Map vtmap){
         if(null != interfaceXmlModel.getParams()){
             List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
             interfaceParamXmlModelList.forEach(interfaceParamXmlModel ->{
-//                AtomicBoolean flag = new AtomicBoolean(true);
-                if(map.get(interfaceParamXmlModel.getId()) != null){
+                if(vtmap.get(interfaceParamXmlModel.getId()) != null){
                     //接口参数
                     TableInterfaceparameters tableInterfaceparameters = new TableInterfaceparameters();
                     tableInterfaceparameters.setId(interfaceParamXmlModel.getId());
@@ -352,26 +500,20 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     tableInterfaceparameters.setParameterssources(interfaceParamXmlModel.getOrigin());
                     tableInterfaceparameters.setInorout(interfaceParamXmlModel.getIotype());
                     tableInterfaceparameters.setParametersname(interfaceParamXmlModel.getName());
+                    tableInterfaceparameters.setRemark(interfaceParamXmlModel.getRemark());
                     tableInterfaceparametersList.add(tableInterfaceparameters);
-                    map.remove(interfaceParamXmlModel.getId());
-                }
-
-//                tableInterfaceparametersList.forEach(tableInterfaceparameters -> {
-//                    if((tableInterfaceparameters.getInterfaceid().equals(interfaceXmlModel.getId()))
-//                            && (tableInterfaceparameters.getParameterssources().equals(interfaceParamXmlModel.getOrigin()))){   //接口ID 和 参数来源判重
-//                        flag.set(false);
-//                    }
-//                });
-//                if(flag.get()){
-//
-//                }
-            });
-
-            interfaceParamXmlModelList.forEach(ix -> {
-                if(null != ix.getInterfa()){    //有下一层
-                    GetAllInterfaceParamFromModel(ix.getInterfa() ,tableInterfaceparametersList, map);
+                    vtmap.remove(interfaceParamXmlModel.getId());
                 }
             });
+
+            interfaceParamXmlModelList.forEach(interfaceParamXmlModel -> {
+                if(interfaceParamXmlModel.getInterfaces().getInterfa().size() > 0){
+                    interfaceParamXmlModel.getInterfaces().getInterfa().forEach(ixm ->{
+                        GetAllInterfaceParamFromModel(ixm, tableInterfaceparametersList, vtmap);
+                    });
+                }
+            });
+
         }
     }
 
@@ -389,7 +531,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             if(fg){
                 AtomicBoolean flag = new AtomicBoolean(true);
                 tableOperatorinterfaceList.forEach(tableOperatorinterface -> {
-                    if(tableOperatorinterface.getInterfacename().equals(interfaceXmlModel.getName())){    //接口名称来判重
+                    if(tableOperatorinterface.getId().equals(interfaceXmlModel.getId())){
                         flag.set(false);
                     }
                 });
@@ -405,8 +547,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
             List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
             interfaceParamXmlModelList.forEach(ix -> {
-                if(null != ix.getInterfa()){    //有下一层
-                    GetAllInterfaceFromModel(ix.getInterfa() ,tableOperatorinterfaceList, tableRole, true);
+                if(ix.getInterfaces().getInterfa().size() > 0){
+                    ix.getInterfaces().getInterfa().forEach(ixm ->{
+                        GetAllInterfaceFromModel(ixm, tableOperatorinterfaceList, tableRole, true);
+                    });
                 }
             });
 
@@ -427,19 +571,19 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                         (tableInterfacerole.getParametersid() == null)){
                     interfaceXmlModel.getParams().getParam().forEach(interfaceParamXmlModel -> {
                         if(tableInterfacerole.getPreparametersid().equals(interfaceParamXmlModel.getId())){
-                            if(null != interfaceParamXmlModel.getInterfa()){
-                                tableInterfacerole.setInterfaceid(interfaceParamXmlModel.getInterfa().getId());
-                                tableInterfacerole.setParametersid(interfaceParamXmlModel.getInterfa().getParams().getParam().stream().filter(inp -> inp.getIotype() == 0).collect(Collectors.toList()).get(0).getId());
-                            }
+//                            if(null != interfaceParamXmlModel.getInterfa()){
+//                                tableInterfacerole.setInterfaceid(interfaceParamXmlModel.getInterfa().getId());
+//                                tableInterfacerole.setParametersid(interfaceParamXmlModel.getInterfa().getParams().getParam().stream().filter(inp -> inp.getIotype() == 0).collect(Collectors.toList()).get(0).getId());
+//                            }
                         }
                     });
                 }
             }
         });
         interfaceXmlModel.getParams().getParam().forEach(ix -> {
-            if(null != ix.getInterfa()){    //有下一层
-                GetAllInterfaceRoleFromModel(ix.getInterfa() ,tableInterfaceroleList);
-            }
+//            if(null != ix.getInterfa()){    //有下一层
+//                GetAllInterfaceRoleFromModel(ix.getInterfa() ,tableInterfaceroleList);
+//            }
         });
         /*if(null != interfaceXmlModel.getParams()){
             List<InterfaceParamXmlModel> interfaceParamXmlModelList = interfaceXmlModel.getParams().getParam();
@@ -558,6 +702,72 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
         return firstInterfaceIdSet;
     }
 
+    //数据库接口实体->输出接口实体
+    private InterfaceXmlModel convertDbInterfaceToOutInterface(TableOperatorinterface tableOperatorinterface, TableInterfacerole tableInterfacerole){
+        InterfaceXmlModel interfaceXmlModel = new InterfaceXmlModel();
+        interfaceXmlModel.setName(tableOperatorinterface.getInterfacename());
+        interfaceXmlModel.setId(tableOperatorinterface.getId());
+        interfaceXmlModel.setDesc(tableInterfacerole.getDes());
+        interfaceXmlModel.setRemark(tableInterfacerole.getRemark());
+        AlgorithmXmlModel algorithm = new AlgorithmXmlModel();
+        algorithm.setId(tableOperatorinterface.getAlgorithmid());
+        interfaceXmlModel.setAlgorithm(algorithm);
+        return interfaceXmlModel;
+    }
+
+    //数据库算子参数实体,赋值给输出算子参数
+    private ParamXmlModel convertDbFuncToOutParam(TableFunc tableFunc){
+        ParamXmlModel paramXmlModel = new ParamXmlModel();
+        paramXmlModel.setId(tableFunc.getId());
+        paramXmlModel.setName(tableFunc.getVarname());
+        paramXmlModel.setType(tableFunc.getVartype());
+        paramXmlModel.setValue(tableFunc.getValvalue());
+        paramXmlModel.setIotype(tableFunc.getInorout().intValue());
+        paramXmlModel.setRemark(tableFunc.getRemark());
+        paramXmlModel.setName(tableFunc.getParametername());
+        return paramXmlModel;
+    }
+
+    //数据库接口参数实体->输出接口参数实体
+    private InterfaceParamXmlModel convertDbIparamToOutIpxm(TableInterfaceparameters tableInterfaceparameters){
+        InterfaceParamXmlModel interfaceParamXmlModel = new InterfaceParamXmlModel();
+        interfaceParamXmlModel.setId(tableInterfaceparameters.getId());
+        interfaceParamXmlModel.setName(tableInterfaceparameters.getParametersname());
+        interfaceParamXmlModel.setOrigin(tableInterfaceparameters.getParameterssources());
+        interfaceParamXmlModel.setIotype(tableInterfaceparameters.getInorout().intValue());
+        interfaceParamXmlModel.setRemark(tableInterfaceparameters.getRemark());
+        return interfaceParamXmlModel;
+    }
+
+    //数据库参数动作实体->输出参数动作实体
+    private BehaviourXmlModel convertDbTConditionToOutBehivor(TableAlgorithmcondition tableAlgorithmcondition,
+                                                              InterfaceParamXmlModel interfaceParamXmlModel){
+        BehaviourXmlModel behaviourXmlModel = new BehaviourXmlModel();
+        behaviourXmlModel.setBehave(tableAlgorithmcondition.getBehavior());
+        behaviourXmlModel.setExpression(tableAlgorithmcondition.getExpression());
+        behaviourXmlModel.setOrigin(tableAlgorithmcondition.getValuesources());
+        behaviourXmlModel.setRemark(tableAlgorithmcondition.getRemark());
+        behaviourXmlModel.setParamId(interfaceParamXmlModel.getId());
+        return behaviourXmlModel;
+    }
+
+
+
+    //数据库算子实体,赋值给输出算子实体
+    private void configDbAlgorithmData(InterfaceXmlModel interfaceXmlModel,
+                                       TableAlgorithm tableAlgorithm){
+        interfaceXmlModel.getAlgorithm().setName(tableAlgorithm.getAlgorithmname());
+        interfaceXmlModel.getAlgorithm().setAuthor(tableAlgorithm.getAlgorithmauthor());
+        interfaceXmlModel.getAlgorithm().setIspub(tableAlgorithm.getIspublic().intValue());
+        interfaceXmlModel.getAlgorithm().setType(tableAlgorithm.getAlgorithmtype().intValue());
+        interfaceXmlModel.getAlgorithm().setFunc(tableAlgorithm.getAlgorithmfun());
+        interfaceXmlModel.getAlgorithm().setDesc(tableAlgorithm.getDes());
+        interfaceXmlModel.getAlgorithm().setRemark(tableAlgorithm.getRemark());
+        interfaceXmlModel.getAlgorithm().setAlgorithmGroup(tableAlgorithm.getAlgorithmgroup());
+        interfaceXmlModel.getAlgorithm().setStatus(tableAlgorithm.getStatus());
+        interfaceXmlModel.getAlgorithm().setRemarks2(tableAlgorithm.getRemark2());
+    }
+
     //设置首接口
     private void setFirstIntefa(Set<String> firstInterfaceIdSet,
                                 List<TableOperatorinterface> allInterfaceList,
@@ -628,6 +838,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                     interfaceParamXmlModel.setName(tableInterfaceparameters.getParametersname());
                     interfaceParamXmlModel.setOrigin(tableInterfaceparameters.getParameterssources());
                     interfaceParamXmlModel.setIotype(tableInterfaceparameters.getInorout().intValue());
+                    interfaceParamXmlModel.setRemark(tableInterfaceparameters.getRemark());
                     BehavioursXmlModel behavioursXmlModel = new BehavioursXmlModel();
                     allConditionList.forEach(tableAlgorithmcondition -> {
                         if(tableAlgorithmcondition.getInterfaceparametersid().equals(tableInterfaceparameters.getId())){
@@ -646,6 +857,112 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             });
             interfaceXmlModel.setParams(interfaceParamsXmlModel);
         });
+    }
+
+    //子接口判重
+    private Boolean judgeRepeatChildInterface(InterfaceParamXmlModel interfaceParamXmlModel,
+                                              String interfaceId){
+        AtomicReference<Boolean> flag = new AtomicReference<>(true);
+        interfaceParamXmlModel.getInterfaces().getInterfa().forEach(interfaceXmlModel -> {
+            if(interfaceXmlModel.getId().equals(interfaceId)){
+                flag.set(false);
+            }
+        });
+        return flag.get();
+    }
+
+    //设置子参数
+    private void setChildIntefa(InterfaceXmlModel interfaceXmlModel,
+                                List<TableInterfacerole> allInterfaceRelevanceList,
+                                List<TableOperatorinterface> allInterfaceList,
+                                List<TableAlgorithm> allAlgorithmList,
+                                List<TableFunc> allFuncList,
+                                List<TableInterfaceparameters> allInterfaceParametersList,
+                                List<TableAlgorithmcondition> allConditionList){
+        Set<Integer> removeIndex = new HashSet<Integer>();
+        final int[] count = {0};
+        List<InterfaceXmlModel> nxtImList = new ArrayList<InterfaceXmlModel>();
+        interfaceXmlModel.getParams().getParam().forEach(interfaceParamXmlModel -> {    //循环接口参数
+            //=============================设置参数子接口===============================//
+            if(interfaceParamXmlModel.getIotype() == 1){    //输出
+                allInterfaceRelevanceList.forEach(tableInterfacerole -> {   //接口关系
+                    if(tableInterfacerole.getPreparametersid().equals(interfaceParamXmlModel.getId())){
+                        removeIndex.add(count[0]);
+//                        System.out.println("关系ID:" + tableInterfacerole.getId() + ",前参数ID:" + tableInterfacerole.getPreparametersid());
+                        //获取子接口
+                        allInterfaceList.forEach(tableOperatorinterface -> {
+                            if(tableInterfacerole.getInterfaceid().equals(tableOperatorinterface.getId())){
+//                                System.out.println("父参数ID:" + interfaceParamXmlModel.getId() + ",子接口ID:" + tableOperatorinterface.getId());
+                                if(judgeRepeatChildInterface(interfaceParamXmlModel, tableOperatorinterface.getId())){
+                                    InterfaceXmlModel ixm = convertDbInterfaceToOutInterface(tableOperatorinterface, tableInterfacerole);
+                                    InterfaceParamsXmlModel interfaceParamsXmlModel = new InterfaceParamsXmlModel();
+                                    allInterfaceParametersList.forEach(tableInterfaceparameters -> {
+                                        if(tableInterfaceparameters.getInterfaceid().equals(ixm.getId())){
+                                            Boolean flag = false;
+                                            if(tableInterfaceparameters.getInorout().intValue() == 0){  //输入
+                                                if(tableInterfaceparameters.getId().equals(tableInterfacerole.getParametersid())){
+                                                    flag = true;
+                                                }
+                                            }else{
+                                                flag = true;
+                                            }
+                                            if(flag){
+                                                InterfaceParamXmlModel ipxm = convertDbIparamToOutIpxm(tableInterfaceparameters);
+                                                BehavioursXmlModel behavioursXmlModel = new BehavioursXmlModel();
+                                                allConditionList.forEach(tableAlgorithmcondition -> {
+                                                    if(tableAlgorithmcondition.getInterfaceparametersid().equals(tableInterfaceparameters.getId())){
+                                                        behavioursXmlModel.getAction().add(convertDbTConditionToOutBehivor(tableAlgorithmcondition, ipxm));
+                                                    }
+                                                });
+                                                ipxm.setActions(behavioursXmlModel);
+                                                interfaceParamsXmlModel.getParam().add(ipxm);
+                                            }
+
+                                        }
+                                    });
+                                    ixm.setParams(interfaceParamsXmlModel);
+                                    interfaceParamXmlModel.getInterfaces().getInterfa().add(ixm);
+                                    nxtImList.add(ixm);
+                                }
+                            }
+                        });
+                    }
+                    count[0]++;
+                });
+            //=============================设置参数子接口===============================//
+            }
+
+            //===============================设置子接口算子/算子参数=====================================//
+            interfaceParamXmlModel.getInterfaces().getInterfa().forEach(childInterfaceXmlModel ->{
+                allAlgorithmList.forEach(tableAlgorithm -> {
+                    if(tableAlgorithm.getId().intValue() == interfaceXmlModel.getAlgorithm().getId().intValue()){
+                        configDbAlgorithmData(childInterfaceXmlModel, tableAlgorithm);
+                        ParamsXmlModel paramsXmlModel = new ParamsXmlModel();
+                        allFuncList.forEach(tableFunc -> {
+                            if(tableFunc.getAlgorithmid().intValue() == tableAlgorithm.getId().intValue()){
+                                paramsXmlModel.getParam().add(convertDbFuncToOutParam(tableFunc));
+                            }
+                        });
+                        childInterfaceXmlModel.getAlgorithm().setParams(paramsXmlModel);
+                    }
+                });
+            });
+            //===============================设置子接口算子/算子参数=====================================//
+        });
+        removeIndex.forEach(index ->{
+            allInterfaceRelevanceList.remove(index);
+        });
+        if(allInterfaceRelevanceList.size() > 0){
+            nxtImList.forEach(ixm -> {
+                setChildIntefa(ixm,
+                        allInterfaceRelevanceList,
+                        allInterfaceList,
+                        allAlgorithmList,
+                        allFuncList,
+                        allInterfaceParametersList,
+                        allConditionList);
+            });
+        }
     }
 
     /**
@@ -674,6 +991,13 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             setFirstIntefa(firstInterfaceIdSet, allInterfaceList, rule);   //设置首接口
             setFirstIntefaAlgorithm(rule, allAlgorithmList, allFuncList);  //设置首接口算子以及算子参数
             setFirstIntefaInteParam(rule, allInterfaceParametersList, allConditionList);    //设置首接口的接口参数和行为
+            setChildIntefa(rule.getInterfaces().getInterfa().get(0),
+                    allInterfaceRelevanceList,
+                    allInterfaceList,
+                    allAlgorithmList,
+                    allFuncList,
+                    allInterfaceParametersList,
+                    allConditionList);
             return rule;
         }else{
             return null;
@@ -801,7 +1125,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
                                 }
                             });
                             interfaceXmlModel.setParams(interfaceParamsXmlModel);
-                            interfaceParamXmlModel.setInterfa(interfaceXmlModel);
+//                            interfaceParamXmlModel.setInterfa(interfaceXmlModel);
                         }
                 });
             }
