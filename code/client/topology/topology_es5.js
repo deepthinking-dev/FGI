@@ -364,7 +364,9 @@ var Topology = {
                                 parent.$(".menu-a-delete").css("display", "none");
                             }else{
                                 parent.$(".menu-a-delete").css("display", "block");
+                                parent.$("#showAllmag").show()
                             }
+
                             self.initNode();
                             break;
                         case 'line':
@@ -748,6 +750,7 @@ var Topology = {
                                 selNodes = null;
                             });
                            parent.$("#setAct").hide();
+                           parent.$("#showAllmag").hide()
                             canvas.lock(0)
                             break;
                         case 'moveNodes':

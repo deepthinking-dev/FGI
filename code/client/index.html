@@ -888,8 +888,8 @@
                             </a>
                         </div>
                         <div>
-                            <a class="menu-a" id="showAllmag">
-                                查看详情
+                            <a class="menu-a" id="showAllmag" style="display: none">
+                                算法详情
                             </a>
                         </div>
                         <div>
@@ -1764,6 +1764,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
         })
        }else{
         location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + isExportId
+        if(window.canvasNowId == "canvas0"){
+            window.bigData.isExportButton = false
+        }else{
+            window.frames[canvasNowId].contentWindow.bigData.isExportButton = false
+        }
        }
        
 
@@ -1842,6 +1847,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
 
     $('body').on('click','.lkr-list-edit',(e) => {
+        debugger
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).attr('moduleId')
         $("#dataModulePage").show()

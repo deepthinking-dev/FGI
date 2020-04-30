@@ -533,8 +533,10 @@ function ruleSure(){
             success: function(data) {
                 if(window.canvasNowId == "canvas0"){
                     window.isRuleNow =true
+                    window.bigData.isExportId = tableRole.id
                 }else{
                     window.frames[canvasNowId].contentWindow.isRuleNow =true
+                    window.frames[canvasNowId].contentWindow.bigData.isExportId = tableRole.id
                 }
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
@@ -558,6 +560,7 @@ function ruleSure(){
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id
                     isExportButton = window.bigData.isExportButton
+                   
                 }else{
                     window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
                     isExportButton = window.frames[canvasNowId].contentWindow.bigData.isExportButton
