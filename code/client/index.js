@@ -535,8 +535,8 @@ $(function(){
                 success(data) {
                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                     if(data.status == 1){
-                        parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
-                        parent.toastr.info(`${data.msg}` )
+                        parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！ </li>`)
+                        parent.toastr.success(`【算法】${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
                         freshClick("sfWinTree")
