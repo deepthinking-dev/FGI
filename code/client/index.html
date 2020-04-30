@@ -1738,8 +1738,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
     })
     $('body').on('click','.export',(e) =>{
-        window.bigData.isExportButton = true
-       if(window.bigData.isExportId == "") {
+        let isExportId
+        if(window.canvasNowId == "canvas0"){
+            window.bigData.isExportButton = true
+            isExportId  =window.bigData.isExportId
+        }else{
+           window.frames[canvasNowId].contentWindow.bigData.isExportButton = true
+           isExportId =window.frames[canvasNowId].contentWindow.bigData.isExportId
+        }
+       
+       if(isExportId == "") {
         $("#sureRule").show()
             $.ajax({
             url:urlConfig.host+ '/group/findAllGroupMessagesByType',
@@ -1755,7 +1763,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
        }else{
-        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + window.bigData.isExportId
+        location.href= urlConfig.host+'/algorithmRule/saveAlgorithmRule2File?id=' + isExportId
        }
        
 
