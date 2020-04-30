@@ -248,24 +248,6 @@ $(function(){
                     actionRelation:$("#actionMsgIn").val()
                 }
             }
-
-            $.ajax({
-                url:urlConfig.host+'/algorithmRule/saveFunAction',
-                data:JSON.stringify(sendDataAll),
-                type:"POST",
-                dataType: "json",
-                contentType:"application/json",
-                success(res) {
-                    if(res){
-                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-                        if(window.canvasNowId == "canvas0"){
-                            window.isRuleNow = false
-                        }else{
-                            window.frames[canvasNowId].contentWindow.isRuleNow = false
-                        }
-                    }
-                }
-            })
             if(window.top.canvasNowId == "canvas0"){
                 parent.$('#actionOutDiv div').each(function (i,v) {
                     let obj = {
@@ -308,16 +290,29 @@ $(function(){
                 }
             }
 
+
             $.ajax({
                 url:urlConfig.host+'/algorithmRule/saveFunAction',
-                data:JSON.stringify(sendDataAllOut),
+                data:JSON.stringify(sendDataAll),
                 type:"POST",
                 dataType: "json",
                 contentType:"application/json",
                 success(res) {
                     if(res){
-
-                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                        $.ajax({
+                            url:urlConfig.host+'/algorithmRule/saveFunAction',
+                            data:JSON.stringify(sendDataAllOut),
+                            type:"POST",
+                            dataType: "json",
+                            contentType:"application/json",
+                            success(ress) {
+                                if(ress){
+                                    parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
+                                    parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
+                                    parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                                }
+                            }
+                        })
                         if(window.canvasNowId == "canvas0"){
                             window.isRuleNow = false
                         }else{
@@ -326,10 +321,6 @@ $(function(){
                     }
                 }
             })
-            setTimeout(()=>{
-                parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
-                parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
-            },300)
         } else{//新增动作
             var dataArrIn = [];
             parent.$('#actionInDiv div').each(function () {
