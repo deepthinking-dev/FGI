@@ -326,8 +326,10 @@ $(function(){
                     }
                 }
             })
-            parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
-            parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
+            setTimeout(()=>{
+                parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
+                parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
+            },300)
         } else{//新增动作
             var dataArrIn = [];
             parent.$('#actionInDiv div').each(function () {
