@@ -890,8 +890,8 @@ function ActionSure(){
         }else{
             varName = parent.$('.ruleContentDiv .actionInfo').eq(i).find('.varNameInput1 option:selected').val()
         }
-        test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
-        canvas.render();
+        // test.text = parent.$('.ruleContentDiv .actionInfo').eq(i).attr('data-parametername');
+        // canvas.render();
         let uuid = parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")
         if(uuid.indexOf('---') == -1){
             uuid= parent.$('.ruleContentDiv .actionInfo').eq(i).attr("data-uuid")+"---"+typeIn
