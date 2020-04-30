@@ -386,6 +386,9 @@ function RelateClose(){
 //规则弹框
 function ruleOpen(){
     $("#sureRule").show();
+    $("#ruleName").val("");
+    $("#ruleRemark").val("").attr({"placeholder":"请输入规则描述"});
+    $("#gzGroupName").val("");
     $.ajax({
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},
@@ -563,10 +566,16 @@ function ruleSure(){
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id
                     isExportButton = window.bigData.isExportButton
+                    window.isRuleNow =true
+                    window.bigData.ruleType ="edit"
+                    window.bigData.editRuleId  = data.tableRole.id
                    
                 }else{
+                    window.frames[canvasNowId].contentWindow.isRuleNow =true
                     window.frames[canvasNowId].contentWindow.bigData.isExportId = data.tableRole.id
                     isExportButton = window.frames[canvasNowId].contentWindow.bigData.isExportButton
+                    window.frames[canvasNowId].contentWindow.bigData.ruleType ="edit"
+                    window.frames[canvasNowId].contentWindow.bigData.editRuleId  = data.tableRole.id
                 }
 
                 if(isExportButton){

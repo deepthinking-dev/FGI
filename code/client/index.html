@@ -1785,12 +1785,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
             window.canvas.data.lines = []
             window.Topology.tools = {}
             window.globalActionDatas =[]
+            window.bigData.ruleType ="add"
             canvas.render();
         }else{
             window.frames[canvasNowId].contentWindow.canvas.data.nodes = []
             window.frames[canvasNowId].contentWindow.canvas.data.lines = []
             window.frames[canvasNowId].contentWindow.Topology.tools = {}
             window.frames[canvasNowId].contentWindow.globalActionDatas =[]
+            window.frames[canvasNowId].contentWindow.bigData.ruleType ="add"
             window.frames[canvasNowId].contentWindow.canvas.render();
         }
         //location.reload();
