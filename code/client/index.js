@@ -295,7 +295,7 @@ $(function(){
                         "expression": $(this).find(".bds_out").val(),
                         "id":$(v).attr("actionId"),
                         "interfaceparametersid":$("#addActionButton").attr("out_small"),
-                        "interfaceroleid": window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
+                        "interfaceroleid":resCurrentLineData.dataIn.interfaceRoleDataModels.id,//线id
                         "remark": "",
                         "valuesources":Number($(this).find(".xwzly_out").val()),
                         "xh":$(this).find("i").text()
@@ -305,7 +305,7 @@ $(function(){
                 var sendDataAllOut = {
                     algorithmconditions:sendDataOut,
                     interfaceParametersID:$("#addActionButton").attr("out_small"),
-                    interfaceRoleId:window.frames[canvasNowId].contentWindow.resCurrentLineData.dataIn.interfaceRoleDataModels.id,
+                    interfaceRoleId:resCurrentLineData.dataIn.interfaceRoleDataModels.id,
                     actionRelation:$("#actionMsgOut").val()
                 }
             }
