@@ -18,6 +18,10 @@ public class InterfaceXmlModel implements Serializable {
 
     private String name;    //接口名称
 
+    private String desc;    //描述
+
+    private String remark;  //备注
+
     private AlgorithmXmlModel algorithm;    //算子
 
     private InterfaceParamsXmlModel params; //接口参数
@@ -54,4 +58,19 @@ public class InterfaceXmlModel implements Serializable {
         this.id = id;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }
