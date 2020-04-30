@@ -1346,8 +1346,8 @@ var Topology = {
                                     contentType: "application/json;charset=UTF-8",
                                     data:JSON.stringify(operatorInterfaceDataModel),
                                     success: function(data) {
-                                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功！ </li>`)
-                                        parent.toastr.success(`【算法参数】修改成功！` )
+                                        parent.$('.noticeList').append(`<li>${parent.getTime()}【算法参数】修改成功，请暂存规则！ </li>`)
+                                        parent.toastr.success(`【算法参数】修改成功，请暂存规则！` )
                                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                                         if(window.canvasNowId == "canvas0"){
                                             window.isRuleNow = false
@@ -1818,8 +1818,8 @@ var Topology = {
                                                                     }else{
                                                                         window.frames[canvasNowId].contentWindow.isRuleNow = false
                                                                     }
-                                                                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
-                                                                    toastr.success(`【算法】删除成功！` )
+                                                                    parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功，请暂存规则！ </li>`)
+                                                                    toastr.success(`【算法】删除成功，请暂存规则！` )
                                                                     $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                                     canvas.render();
                                                                 }
@@ -1868,8 +1868,8 @@ var Topology = {
                                                 }else{
                                                     window.frames[canvasNowId].contentWindow.isRuleNow = false
                                                 }
-                                                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功！ </li>`)
-                                                parent.toastr.success(`【算法】删除成功！` )
+                                                parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】删除成功，请暂存规则！ </li>`)
+                                                parent.toastr.success(`【算法】删除成功，请暂存规则！` )
                                                 $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                                                 canvas.render();
                                             }

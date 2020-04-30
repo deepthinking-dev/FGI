@@ -257,6 +257,9 @@ $(function(){
                 contentType:"application/json",
                 success(res) {
                     if(res){
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
+                        parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         if(window.canvasNowId == "canvas0"){
                             window.isRuleNow = false
                         }else{
@@ -315,6 +318,9 @@ $(function(){
                 contentType:"application/json",
                 success(res) {
                     if(res){
+                        parent.$('.noticeList').append(`<li>${parent.getTime()}【动作设置】修改成功，请暂存规则！ </li>`)
+                        parent.toastr.success(`【动作设置】修改成功，请暂存规则！` )
+                        parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                         if(window.canvasNowId == "canvas0"){
                             window.isRuleNow = false
                         }else{
