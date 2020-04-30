@@ -385,10 +385,10 @@ function RelateClose(){
 }
 //规则弹框
 function ruleOpen(){
-    $("#sureRule").show();
-    $("#ruleName").val("");
-    $("#ruleRemark").val("").attr({"placeholder":"请输入规则描述"});
-    $("#gzGroupName").val("");
+    parent.$("#sureRule").show();
+    parent.$("#ruleName").val("");
+    parent.$("#ruleRemark").val("").attr({"placeholder":"请输入规则描述"});
+    parent.$("#gzGroupName").val("");
     $.ajax({
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},
@@ -410,9 +410,9 @@ function RuleClose(){
 //保存规则（一起新增）
 function ruleSure(){
     if($("#gzGroupName").val() == ""){
-        $('.noticeList').append(`<li>${parent.getTime()} 分组不能为空！ </li>`)
-        toastr.info(`分组不能为空！` )
-        $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
+        parent.$('.noticeList').append(`<li>${parent.getTime()} 分组不能为空！ </li>`)
+        parent.toastr.info(`分组不能为空！` )
+        parent.$("#flex_props1_home").scrollTop( parent.$("#flex_props1_home")[0].scrollHeight);
         return false
     }
      //动作
@@ -423,10 +423,10 @@ function ruleSure(){
         return false
      }
     editGzType = false;
-   parent.$("#currentGzName").text($("#ruleName").val());
-   parent.$("#currentGzName").attr("title",$("#ruleName").val())
-   parent.$("#currentGzDes").text($("#ruleRemark").val());
-   parent.$("#currentGzDes").attr("title",$("#ruleRemark").val());
+    parent.$("#currentGzName").text($("#ruleName").val());
+    parent.$("#currentGzName").attr("title",$("#ruleName").val())
+    parent.$("#currentGzDes").text($("#ruleRemark").val());
+    parent.$("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
 
     //参数借口
