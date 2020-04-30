@@ -940,7 +940,7 @@ var Topology = {
                                 if(data1.childStand){                              
                                     return
                                 }else{
-                                
+                                    parent.$("#showAllmag").show()
                                     self.isClickAction.push({isClick:true,id:data.id})
                                     function guid() {
                                         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
