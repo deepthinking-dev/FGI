@@ -29,7 +29,7 @@ public class InterfaceParamXmlModel implements Serializable {
 
     private BehavioursXmlModel actions; //动作
 
-    private InterfaceXmlModel interfa;     //下一个接口
+    private InterfacesXmlModel interfaces = new InterfacesXmlModel();  //接口
 
     public InterfaceParamXmlModel() {
     }
@@ -66,14 +66,6 @@ public class InterfaceParamXmlModel implements Serializable {
         this.actions = actions;
     }
 
-    public InterfaceXmlModel getInterfa() {
-        return interfa;
-    }
-
-    public void setInterfa(InterfaceXmlModel interfa) {
-        this.interfa = interfa;
-    }
-
     public String getDesc() {
         return desc;
     }
@@ -96,5 +88,13 @@ public class InterfaceParamXmlModel implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public InterfacesXmlModel getInterfaces() {
+        return interfaces;
+    }
+
+    public void setInterfaces(InterfacesXmlModel interfaces) {
+        this.interfaces = interfaces;
     }
 }
