@@ -376,6 +376,7 @@ var Topology = {
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.deleteLineDataId = out_small + "AND" + in_small;
 
                             }
+                            parent.$("#setAct").show()
                             currentLineData = data;
                             canvas.lockLines([data],true)
                             canvas.render()
@@ -746,6 +747,7 @@ var Topology = {
                                 selected = null;
                                 selNodes = null;
                             });
+                           parent.$("#setAct").hide();
                             canvas.lock(0)
                             break;
                         case 'moveNodes':
@@ -907,6 +909,7 @@ var Topology = {
                             canvas.lockNodes([data], false)
                             break    
                         case 'moveOut':
+                            parent.$("#setAct").hide()
                             this.workspace.nativeElement.scrollLeft += 10;
                             this.workspace.nativeElement.scrollTop += 10;
                             break;
