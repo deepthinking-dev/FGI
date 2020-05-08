@@ -389,6 +389,12 @@ function ruleOpen(){
     parent.$("#ruleName").val("");
     parent.$("#ruleRemark").val("").attr({"placeholder":"请输入规则描述"});
     parent.$("#gzGroupName").val("");
+    var resData = zcData[$('.pageson .canvasLi').text()];
+    if(resData){
+        parent.$("#ruleName").val(resData.rolename);
+        parent.$("#ruleRemark").val(resData.des);
+        parent.$("#gzGroupName").val(resData.rolegroup);
+    }
     $.ajax({
         url:urlConfig.host+ '/group/findAllGroupMessagesByType',
         data:{type:3},

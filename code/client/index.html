@@ -323,7 +323,7 @@
         <div class="ruleContent"> 
             <li><span>规则名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input maxlength="200" id="ruleName" type="text" placeholder="请输入规则名称"></li>
             <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px;margin-right: 10px;">规则描述 </div><textarea maxlength="500" id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
-            <li style="margin: 0"><span>分组名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input placeholder="请双击选择分组" id="gzGroupName" readonly type="text" ondblclick="groupTreeDataShow(3)"></li>
+            <li style="margin: 0"><span>分组名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input placeholder="请双击选择分组" id="gzGroupName" type="text" ondblclick="groupTreeDataShow(3)"></li>
             <li style="display:none;"><span>备注 </span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
             <button onclick="ruleSure()">确定</button>
         </div>
@@ -525,7 +525,7 @@
             </div>
             <div>
                 <span class="form-span">分组<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
-                <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" readonly placeholder="请双击选择分组">
+                <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" placeholder="请双击选择分组">
             </div>
             <!-- <div class="AlgorithInput">
                 <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
@@ -668,7 +668,7 @@
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right;margin-right: 10px;">模型所属组<i style="color: red;font-size: 16px;display: inline-block">*</i> </label>
-                    <input id='modulegroup' class="lkr-input" ondblclick="groupTreeDataShow(1)" readonly placeholder="请双击选择分组">
+                    <input id='modulegroup' class="lkr-input" ondblclick="groupTreeDataShow(1)" placeholder="请双击选择分组">
                     <input type='text' id='modulegroupshow' class="lkr-input" style="display: none;"/>
 
                 </div>
@@ -1020,7 +1020,7 @@
                         <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px" maxlength="500">
                     </div>
                     <div>
-                        <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input readonly type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
+                        <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
                     </div>
                     <input type="text" value="" id="zdStatus" style="display: none">
                 </div>
@@ -1064,6 +1064,7 @@
 <script>
     var editGzType = false;
     var globalActionDatas = [];
+    var zcData={};
     var currentLineData;
     var mxDataAll={};
     var sfDataAll = {};
@@ -1878,7 +1879,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
 
     $('body').on('click','.lkr-list-edit',(e) => {
-        debugger
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).attr('moduleId')
         $("#dataModulePage").show()
@@ -1897,7 +1897,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('.operate').show();
                 $('#fgiSource').show();
                 $('.addsjyth').show();
-                $("#modulegroup").val(data.modulegroup)
+                $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
                 $("#mouldName").val(data.modulename).removeAttr("readonly")
                 $("#mouldRemark").val(data.des).removeAttr("readonly")
                 window.bigData.editmoduleId = data.id
@@ -1906,9 +1906,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnComment"><input type="text" value="${item.fieldname?item.fieldname:''}"></td> 
                     <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
-                    <td class="columnType">
-                        <select class="moduleSelect">
-
+                    <td class="columnType" style="position:relative;width: 110px"><input type="text" class="moduleInputOne" value="${item.fieldtype?item.fieldtype:''}" style="background-color: rgba(0,0,0,0);border: none;outline: none;background-image: url(./static/select.png);background-size: 100% 100%;background-repeat: no-repeat;height: 30px;position: absolute;left:5px;top: 5px;width: 70px">
+                        <select class="moduleSelect" onchange="zdlxChange($(this))">
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -1923,34 +1922,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             <option value="boolean">boolean</option>
                             <option value="array">array</option>
                         </select>
-                        <input type="text" class="moduleInputOne" value="${item.fieldtype?item.fieldtype:''}" onchange="myFunction(event)">
                         </td>           
                     <td class="tableName"><input type="text" value="${item.tablename?item.tablename:''}"></td>
                     <td class="columnRemark"><input type="text" value="${item.remark?item.remark:''}"></td>
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
-                $(".moduleSelect").change((e)=>{
-                    $(e.target).parent('.columnType').children('.moduleSelect').hide()
-                    $(e.target).parent('.columnType').children('.moduleInputOne').show()
-                    $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
-                })
             }
         })
     })
-    
-    
     function myFunction(e){
-        // debugger
         $(e.target).parent('.columnType').children('.moduleSelect').show()
         $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-        // if( $(e.target).val() == ""){
-           
-        // }else{
-        //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
-        //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
-        // }
-       
     }
 
     $('body').on('dblclick','.dbclickModule',(e) =>{
@@ -2002,6 +1985,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#addMb tbody").html("")
         $('#lkrFrame .lkr-button').show()
         $('#lkrFrame').show()
+        $("#modulegroup").attr("readonly",false);
         $("#mouldName").attr("readonly",false);
         $("#mouldRemark").attr("readonly",false);
         $.ajax({
@@ -2170,7 +2154,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 mouldParam.push({
                     fieldname:(items.children('.columnComment').text()).trim()?(items.children('.columnComment').text()).trim():(items.children('.columnComment').find('input').val()).trim(),
-                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():(items.children('.columnType').text()).trim(),
+                    fieldtype:items.find('.moduleInputOne').val()?items.find('.moduleInputOne').val():(items.children('.columnType').text()).trim(),
                     tablename:(items.children('.tableName').text()).trim()?(items.children('.tableName').text()).trim():(items.children('.tableName').find('input').val()).trim(),
                     englishname:(items.children('.columnName').text()).trim()?(items.children('.columnName').text()).trim():(items.children('.columnName').find('input').val()).trim(),
                     remark:(items.children('.columnRemark').text()).trim()?(items.children('.columnRemark').text()).trim():(items.children('.columnRemark').find('input').val()).trim(),
@@ -2280,15 +2264,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     flag = false
                     return false
                 }
-                var types;
-                if(items.children('.columnType').find('select').css("display") == "none"){
-                    types= items.children('.columnType').find('input').val()
-                } else {
-                    types = items.children('.columnType').find('select').val()
-                }
+                // var types;
+                // if(items.children('.columnType').find('select').css("display") == "none"){
+                //     types= items.children('.columnType').find('input').val()
+                // } else {
+                //     types = items.children('.columnType').find('select').val()
+                // }
                 mouldParam.push({
                     fieldname:items.children('.columnComment').find('input').val(),
-                    fieldtype:types,
+                    fieldtype:items.find('.moduleInputOne').val()?items.find('.moduleInputOne').val():(items.children('.columnType').text()).trim(),
                     tablename:items.children('.tableName').find('input').val(),
                     englishname:items.children('.columnName').find('input').val(),
                     remark:items.children('.columnRemark').find('input').val(),
@@ -2355,11 +2339,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $(v).prop('checked',false)
         })
     }
+    function zdlxChange(s) {
+        s.prev().val(s.val())
+    }
+
     function addsjyth(){
         $(".dataSourceTbody").append(`<tr>
             <td class="columnComment"><input type="text" value="" maxlength="20"></td>
             <td class="columnName"><input type="text" value="" maxlength="20"></td>
-            <td class="columnType"><select class="moduleSelect">
+            <td class="columnType" style="position:relative;width: 110px"><input type="text" class="moduleInputOne" value="" style="background-color: rgba(0,0,0,0);border: none;outline: none;background-image: url(./static/select.png);background-size: 100% 100%;background-repeat: no-repeat;height: 30px;position: absolute;left:5px;top: 5px;width: 70px">
+                        <select class="moduleSelect" onchange="zdlxChange($(this))">
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -2374,24 +2363,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             <option value="boolean">boolean</option>
                             <option value="array">array</option>
                         </select>
-              <input type="text" style="display:none;"  class="moduleInputOne"  value="" onchange="myFunction(event)"></td>
+            </td>
             <td class="tableName"><input type="text" value="-"  maxlength="20"></td>
             <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
-             $('.moduleSelect').show()           
-            $(".moduleSelect").change((e)=>{
-                $(e.target).parent('.columnType').children('.moduleSelect').hide()
-                $(e.target).parent('.columnType').children('.moduleInputOne').show()
-                $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
-            })
-            function myFunction(e){
-
-                $(e.target).parent('.columnType').children('.moduleSelect').show()
-                $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-
-            
-            }
+            //  $('.moduleSelect').show()
+            // $(".moduleSelect").change((e)=>{
+            //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())
+            // })
+            // function myFunction(e){
+            //
+            //     $(e.target).parent('.columnType').children('.moduleSelect').show()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+            //
+            //
+            // }
     }
    
     function ConfirmDel(){
@@ -2418,153 +2407,176 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#"+selectedNode.tId+"_a").click();
         }
     }
+
     //树节点点击
     function treeClick(event, treeId, node) {
+        var allName = []
+        allName.push(node.name)
+        function names(parent) {
+            if(parent.children){
+                parent.children.map(s=>{
+                    allName.push(s.name);
+                    names(s)
+                })
+            }
+        }
+        names(node)
         if($("#searchName").val()){
             var value = $("#searchName").val()
         }
         if(node.type == 1){
             if(node.right == 1){
-                $.ajax({
-                    url: urlConfig.host + '/module/GetModuleByGroupName',
-                    type:"get",
-                    data: {moduleGroupName:node.name},
-                    success(data) {
-                        $("#moduleListRight").empty()
-                        if(data.length){
-                            data.map((s,index)=>{
-                                if(s.modulename.includes(value)){
-                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule red" style="height:50px;">${s.modulename}</div></div>`)
-                                } else {
-                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
-                                }
-                            })
+                $("#moduleListRight").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/module/GetModuleByGroupName',
+                        type:"get",
+                        data: {moduleGroupName:name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    if(s.modulename.includes(value)){
+                                        $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule red" style="height:50px;">${s.modulename}</div></div>`)
+                                    } else {
+                                        $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                    }
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/module/GetModuleByGroupName',
-                    type:"get",
-                    data: {moduleGroupName:node.name},
-                    success(data) {
-                        $("#dataModulePage .mxGruopTable").empty();
-                        if(data.length){
-                            $("#dataModulePage .mxGruopTable").append(`<thead>
-                            <th style="width: 150px">模型名称</th>
-                            <th style="width: 150px">描述</th>
-                            <th style="width: 150px">状态</th>
-                            <th style="width: 200px">操作</th>
-                            </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#dataModulePage .mxGruopTable").empty();
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/module/GetModuleByGroupName',
+                        type:"get",
+                        data: {moduleGroupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#dataModulePage .mxGruopTable thead").length){
+                                    $("#dataModulePage .mxGruopTable").append(`<thead>
+                                        <th style="width: 150px">模型名称</th>
+                                        <th style="width: 150px">描述</th>
+                                        <th style="width: 150px">状态</th>
+                                        <th style="width: 200px">操作</th>
+                                        </thead>`)
                                 }
-                                $("#dataModulePage .mxGruopTable").append(
-                                    `<tr>
-                            <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
-                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
-                            <td style="width: 150px">${s.status}</td>
-                            <td style="width: 150px">
-                                <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
-                            })
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#dataModulePage .mxGruopTable").append(
+                                        `<tr>
+                                        <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
+                                        <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
+                                        <td style="width: 150px">${s.status}</td>
+                                        <td style="width: 150px">
+                                            <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                            <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                            <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                        </td>
+                                    </tr>
+                                   `)
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }
         if(node.type == 2){
             if(node.right == 2){
-                $.ajax({
-                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                    type:"get",
-                    data: {groupName :node.name},
-                    success(data) {
-                        $("#sfGruopListRight").empty();
-                        if(data.length){
-                            data.map((s,index)=>{
-                                window.addAlgorithm({
-                                    name: 'rectangle',
-                                    icon: 'icon-rectangle',
-                                    id:s.tableAlgorithm.id,
-                                    type:"tableAlgorithm",
-                                    data: {
-                                        id:s.tableAlgorithm.id,
-                                        text: s.tableAlgorithm.algorithmname,
-                                        rect: {
-                                            width: 200,
-                                            height: 100
-                                        },
-                                        parentId:s.tableAlgorithm.id,
-                                        font: {
-                                            fontFamily: 'Arial',
-                                            color: 'aqua',
-                                            textBaseline: 'top'
-                                        },
-                                        data:{
-                                            inNum:s.inNum,
-                                            outNum:s.outNum,
-                                            index:index,
-                                            sid:s.tableAlgorithm.id
-                                        },
-                                        children:[],
-                                        paddingLeft: 10,
-                                        paddingRight: 10,
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
-                                        borderRadius: 0.1,
+                $("#sfGruopListRight").empty();
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName :name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    window.addAlgorithm({
                                         name: 'rectangle',
-                                        fillStyle:'rgba(4,44,98,0.58)',
-                                        strokeStyle: '#4295ec',
-                                        hideInput:true
+                                        icon: 'icon-rectangle',
+                                        id:s.tableAlgorithm.id,
+                                        type:"tableAlgorithm",
+                                        data: {
+                                            id:s.tableAlgorithm.id,
+                                            text: s.tableAlgorithm.algorithmname,
+                                            rect: {
+                                                width: 200,
+                                                height: 100
+                                            },
+                                            parentId:s.tableAlgorithm.id,
+                                            font: {
+                                                fontFamily: 'Arial',
+                                                color: 'aqua',
+                                                textBaseline: 'top'
+                                            },
+                                            data:{
+                                                inNum:s.inNum,
+                                                outNum:s.outNum,
+                                                index:index,
+                                                sid:s.tableAlgorithm.id
+                                            },
+                                            children:[],
+                                            paddingLeft: 10,
+                                            paddingRight: 10,
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            borderRadius: 0.1,
+                                            name: 'rectangle',
+                                            fillStyle:'rgba(4,44,98,0.58)',
+                                            strokeStyle: '#4295ec',
+                                            hideInput:true
+                                        }
+                                    })
+                                })
+                                $("#sfGruopListRight .left-list-tilte").removeClass("red");
+                                $("#sfGruopListRight .left-list-tilte").each((i,s)=>{
+                                    if($(s).text().includes(value)){
+                                        $(s).addClass("red")
                                     }
                                 })
-                            })
-                            $("#sfGruopListRight .left-list-tilte").removeClass("red");
-                            $("#sfGruopListRight .left-list-tilte").each((i,s)=>{
-                                if($(s).text().includes(value)){
-                                    $(s).addClass("red")
-                                }
-                            })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#dicDiv .sfGruopTable").empty()
-                        if(data.length){
-                            $("#dicDiv .sfGruopTable").append(`<thead>
-                            <th style="width: 120px">作者</th>
-                            <th style="width: 120px">算法名称</th>
-                            <th style="width: 120px">算法描述</th>
-                            <th style="width: 120px">状态</th>
-                            <th style="width: 150px">操作</th>
-                            </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.tableAlgorithm.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#dicDiv .sfGruopTable").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#dicDiv .sfGruopTable thead").length){
+                                    $("#dicDiv .sfGruopTable").append(`<thead>
+                                    <th style="width: 120px">作者</th>
+                                    <th style="width: 120px">算法名称</th>
+                                    <th style="width: 120px">算法描述</th>
+                                    <th style="width: 120px">状态</th>
+                                    <th style="width: 150px">操作</th>
+                                    </thead>`)
                                 }
-                                $("#dicDiv .sfGruopTable").append(
-                                    `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.tableAlgorithm.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#dicDiv .sfGruopTable").append(
+                                        `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
                             <td title="${s.tableAlgorithm.algorithmauthor}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
                             <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
@@ -2576,56 +2588,62 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                            })
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }
         if(node.type == 3){
             if(node.right == 3){
-                $.ajax({
-                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#ruleListRight").empty()
-                        if(data.length){
-                            data.map((s,index)=>{
-                                if (s.rolename.includes(value)){
-                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule red" style="height:50px;">${s.rolename}</div></div>`)
-                                } else {
-                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
-                                }
-                            })
+                $("#ruleListRight").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    if (s.rolename.includes(value)){
+                                        $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule red" style="height:50px;">${s.rolename}</div></div>`)
+                                    } else {
+                                        $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                                    }
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#gzDiv .gzGruopTable").empty()
-                        if(data.length){
-                            $("#gzDiv .gzGruopTable").append(`<thead>
-                    <th style="width: 150px">规则名称</th>
-                    <th style="width: 150px">描述</th>
-                    <th style="width: 150px">状态</th>
-                    <th style="width: 180px">操作</th>
-                    </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#gzDiv .gzGruopTable").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#gzDiv .gzGruopTable thead").length){
+                                    $("#gzDiv .gzGruopTable").append(`<thead>
+                                        <th style="width: 150px">规则名称</th>
+                                        <th style="width: 150px">描述</th>
+                                        <th style="width: 150px">状态</th>
+                                        <th style="width: 180px">操作</th>
+                                        </thead>`)
                                 }
-                                $("#gzDiv .gzGruopTable").append(
-                                    `<tr>
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#gzDiv .gzGruopTable").append(
+                                        `<tr>
                             <td title="${s.rolename}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.rolename}</td>
                             <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.des}</td>
                             <td style="width: 150px">${s.status}</td>
@@ -2637,9 +2655,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                            })
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }
@@ -3589,84 +3608,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         })
     }
-    //编辑规则
-    function modifyGz(s) {
-        if(window.canvasNowId == "canvas0" && !window.isRuleNow){
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
-            parent.toastr.info(`请暂存当前规则！！` )
-            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false
-        }
-        if (window.frames[canvasNowId] && window.frames[canvasNowId].contentWindow.canvasNowId != "canvas0"  && !window.frames[canvasNowId].contentWindow.isRuleNow) {
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
-            parent.toastr.info(`请暂存当前规则！！` )
-            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false
-        }
-
-        $("#gzDiv").hide();
-        window.bigData.editRuleId = s;
-        let ruleid =  s;
-        $.ajax({
-            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
-            type:"get",
-            data: {Id:ruleid},
-            success(data) {
-                if(data){
-                    let ruleData = data.tableRole.coordinate
-                    ruleData
-                    $('#ruleName').val(data.tableRole.rolename)
-                    $('#ruleRemark').val(data.tableRole.des)
-                    $("#currentGzName").text(data.tableRole.rolename);
-                    $("#currentGzName").attr("title",data.tableRole.rolename)
-                    $("#currentGzDes").text(data.tableRole.des);
-                    $("#currentGzDes").attr("title",data.tableRole.des);
-                    $("#bzMsg").val(data.tableRole.entrancenote);
-                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
-                    canvas.open(JSON.parse(ruleData))
-                    window.Topology.isClickAction = []
-                    window.Topology.tools = {}
-                    window.bigData.ruleType = "edit"
-                    window.bigData.editRuleId = data.tableRole.id;
-                    if(window.canvasNowId == "canvas0"){
-                        responseActionDatas = data.interfaceRoleDataModels
-                    }else{
-                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
-                    }
-                    if(data.operatorInterfaceDataModels){
-                        data.operatorInterfaceDataModels.map(item=>{
-                            let obj = {
-                                isClick:true,
-                                id:item.algorithmID
-                            }
-                            let saveList ={
-                                id :item.algorithmID,
-                                uuid:item.id,
-                                name:item.interfaceName,
-                                children:[]
-                            }
-                            item.tableInterfaceparametersList.map(index=>{
-                                let hx ={
-                                    id:index.parameterssources,
-                                    uuid:index.id,
-                                    algorithmid:item.algorithmID,
-                                    varname:index.parametersname,
-                                    vartype:"",
-                                    valvalue:"",
-                                    inorout:index.inorout,
-                                    remark:""
-                                }
-                                saveList.children.push(hx)
-                            })
-                            window.Topology.isClickAction.push(obj)
-                            window.Topology.tools[item.id] = saveList
-                        })
-                    }
-                }
-
-            }
-        })
-    }
     //删除规则
     function deleteGz(s) {
         window.bigData.delRuleId = s;
@@ -3694,7 +3635,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type=3
         }
         $("#groupDiv").show();
-        $("#groupInputName").attr("type",type)
+        $("#groupInputName").attr("types",type)
         $("#groupTable").empty();
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -3734,7 +3675,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupInputName").val("");
         $("#parentGroup").attr("parentid","");
         $("#parentGroup").val("");
-        var type = $("#groupInputName").attr("type");
+        var type = $("#groupInputName").attr("types");
     })
 
     $("#addGroupYes").click(()=>{
@@ -3752,7 +3693,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
-            "grouptype":Number($("#groupInputName").attr("type")),
+            "grouptype":Number($("#groupInputName").attr("types")),
             "id": 0,
             "parentid": $("#parentGroup").attr("parentid") || 0
         }
@@ -3774,9 +3715,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
+                            data: {type :$("#groupInputName").attr("types")},
                             success(data) {
-                                var types = $("#groupInputName").attr("type");
+                                var types = $("#groupInputName").attr("types");
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
                                 if(data.length){
@@ -3796,11 +3737,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                            `)
                                     })
                                 }
-                                if($("#groupInputName").attr("type") == 1){
+                                if($("#groupInputName").attr("types") == 1){
                                     dataModlue()
-                                } else if($("#groupInputName").attr("type") == 2){
+                                } else if($("#groupInputName").attr("types") == 2){
                                     dictionary()
-                                } else if($("#groupInputName").attr("type") == 3){
+                                } else if($("#groupInputName").attr("types") == 3){
                                     ruleGroupShow()
                                 }
                             }
@@ -3830,11 +3771,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
+                            data: {type :$("#groupInputName").attr("types")},
                             success(data) {
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
-                                var typess = $("#groupInputName").attr("type");
+                                var typess = $("#groupInputName").attr("types");
                                 if(data.length){
                                     $("#groupTable").append(`<thead>
                                         <th style="width: 220px">分组名称</th>
@@ -3854,11 +3795,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                             }
                         })
-                        if($("#groupInputName").attr("type") == 1){
+                        if($("#groupInputName").attr("types") == 1){
                             dataModlue()
-                        } else if($("#groupInputName").attr("type") == 2){
+                        } else if($("#groupInputName").attr("types") == 2){
                             dictionary()
-                        } else if($("#groupInputName").attr("type") == 3){
+                        } else if($("#groupInputName").attr("types") == 3){
                             ruleGroupShow()
                         }
                     }
@@ -3873,7 +3814,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $.ajax({
                 url: urlConfig.host + '/group/findAllGroupMessagesByType',
                 type:"get",
-                data: {type:$("#groupInputName").attr("type")},
+                data: {type:$("#groupInputName").attr("types")},
                 success(data) {
                     data.map(s=>{
                         if(s.id == pid){
@@ -4097,7 +4038,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
-            data: {type:$("#groupInputName").attr("type")},
+            data: {type:$("#groupInputName").attr("types")},
             success(data) {
                 var treeData=[]
                 data.map(s=>{
@@ -4229,7 +4170,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     }
-    
 
 </script>
 </body>

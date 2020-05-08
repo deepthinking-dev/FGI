@@ -736,7 +736,7 @@ $(function(){
                     $("#currentGzDes").text(data.tableRole.des);
                     $("#currentGzDes").attr("title",data.tableRole.des);
                     $('#gzGroupName').val(data.tableRole.rolegroup)
-
+                    zcData[$('.pageson .canvasLi').text()] = data.tableRole;
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     if(window.canvasNowId == "canvas0"){
