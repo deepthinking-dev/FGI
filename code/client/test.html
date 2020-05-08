@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <meta name="layout" content="main">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+        <script src="./plugins/html2canvas.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#capture').on('dblclick',function(){
+                    html2canvas(document.querySelector("#capture")).then(canvas => {
+                        imgUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-imgUrleam")
+                        var saveFile = function(data, filename){
+                        //这个地址我也不知道有什么用
+                        //(属于XML方法)createElementNS() 方法可创建带有指定命名空间的元素节点。
+                        //此方法可返回一个 Element 对象。
+                            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                            save_link.href = data;
+                            save_link.download = filename;
+                    //MouseEvents 貌似为固定值
+                    //CreateEvent是一个Windows API函数。它用来创建或打开一个命名的或无名的事件对象
+                            var event = document.createEvent('MouseEvents');
+                            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                            save_link.dispatchEvent(event);
+                        };
+                        var filename = (new Date()).getTime() + '.' + 'jpg';
+                        saveFile(imgUrl,filename);
+                    });
+                });
+               
+            });
+        </script>
+    </head>
+    <body>
+        <div id="capture" style="padding: 10px; background: #f5da55">
+            <h4 style="color: #000; ">Hello world!</h4>
+        </div>
+    </body>
+</html>

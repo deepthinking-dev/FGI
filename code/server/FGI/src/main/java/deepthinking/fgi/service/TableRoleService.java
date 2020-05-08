@@ -7,6 +7,7 @@ import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
 import deepthinking.fgi.model.xml.RuleXmlModel;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @param groupName
      * @return
      */
-    List<TableRole> GetAllAlgorithmRule(String groupName );
+    List<TableRole> GetAllAlgorithmRule(String groupName , HttpServletRequest request);
 
     /**
      * 根据规则编号获取算法规则(规则具体信息)
@@ -57,7 +58,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * 新增算法规则
      * @return
      */
-    AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel);
+    AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel,HttpServletRequest request);
 
     /**
      * 修改接口信息

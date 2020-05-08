@@ -889,7 +889,7 @@ var Topology = {
                             if(editGzType == false){
                                 editGzType = true;
                             }
-                            $("#showCsName").text("").hide()
+                            parent.$("#showCsName").text("").hide()
                             break   
                         case 'moveInNode':   
                             if(data.name == "combine"){
@@ -901,12 +901,13 @@ var Topology = {
                                 canvas.render();
                             }
                             if(data.childStand){
-                                $("#showCsName").text(data.childStand.cstext).css({
+                                parent.$("#showCsName").text(data.childStand.cstext).css({
                                     "position":"absolute",
                                     "top":(data.rect.y+40)+"px",
-                                    "left":(data.rect.x)+"px"
+                                    "left":(data.rect.x)+"px",
+                                    "z-index":"999999"
                                 })
-                                $("#showCsName").show()
+                                parent.$("#showCsName").show()
                             }
                             canvas.lockNodes([data], false)
                             break    
@@ -2551,6 +2552,7 @@ var Topology = {
     },
     // 锁定
     onLock: function () {
+        console.log(locked)
         locked = !locked;
         if (selected.type === 'multi') {
             if (selected.data.nodes) {

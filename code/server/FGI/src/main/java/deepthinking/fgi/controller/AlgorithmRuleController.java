@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -80,8 +81,8 @@ public class AlgorithmRuleController {
     @GetMapping("/getAllAlgorithmRule")
     @ApiOperation(value = "04-03 根据分组获取该分组下的所有规则信息", notes = "返回算法规则基本信息列表", httpMethod = "GET")
     @ApiImplicitParam(name = "groupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
-    public List<TableRole> getAllAlgorithmRule(String groupName){
-        return tableRoleService.GetAllAlgorithmRule(groupName);
+    public List<TableRole> getAllAlgorithmRule(String groupName, HttpServletRequest request){
+        return tableRoleService.GetAllAlgorithmRule(groupName,request);
     }
 
     @GetMapping("/getAlgorithmRuleById")
@@ -93,8 +94,8 @@ public class AlgorithmRuleController {
 
     @PostMapping("/saveAlgorithmRule")
     @ApiOperation(value = "04-05 新增算法规则", notes = "返回新增的规则本身信息", httpMethod = "POST")
-    public AlgorithmRuleSaveDataModel saveAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel){
-        return tableRoleService.saveAlgorithmRule(algorithmRuleSaveDataModel);
+    public AlgorithmRuleSaveDataModel saveAlgorithmRule(@ApiParam @RequestBody AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel,HttpServletRequest request){
+        return tableRoleService.saveAlgorithmRule(algorithmRuleSaveDataModel,request);
     }
 
 //    @PostMapping("/saveOperatorInterfaceData")
@@ -117,8 +118,9 @@ public class AlgorithmRuleController {
 
     @PostMapping("/modAlgorithmRuleBase")
     @ApiOperation(value = "04-09 只修改规则基本信息", notes = "返回修改结果", httpMethod = "POST")
-    public boolean modAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole){
-        return tableRoleService.modAlgorithmRuleBase(tableRole);
+    public TableRole modAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole){
+        tableRoleService.modAlgorithmRuleBase(tableRole);
+        return tableRole;
     }
 
     @GetMapping("/delAlgorithmRuleById")

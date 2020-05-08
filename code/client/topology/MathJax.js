@@ -553,7 +553,7 @@ function ruleSure(){
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
                 parent.toastr.success(`【规则】修改成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-
+                $("#canvasList ul .pageson span").text(data.tableRole.rolename)
             }
         })
     }else{
@@ -568,6 +568,7 @@ function ruleSure(){
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】保存成功！ </li>`)
                 parent.toastr.success(`【规则】保存成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+                $("#canvasList ul .pageson span").text(data.tableRole.rolename)
                 let isExportButton
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id
