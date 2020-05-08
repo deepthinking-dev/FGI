@@ -83,7 +83,8 @@
         <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
         <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
-
+    <script src="./plugins/html2canvas.js"></script>
+    <!-- <script src="./plugins/html2.js"></script> -->
     <script type="text/javascript">
 
         //实例化编辑器
@@ -761,7 +762,7 @@
                         <div class="flex lkr-flex" id="main_canvas" >
                             <div id="canvasList">
                                 <ul>
-                                    <li class="pageson"><span class="canvasLi" canvasId="canvas0">画布1</span></li>
+                                    <li class="pageson"><span class="canvasLi" canvasId="canvas0">画布1</span><i class="delCanvas">X</i></li>
                                 </ul>
                             </div>
                             <div id="colorDiv">
@@ -1228,16 +1229,38 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if(window.canvasNowId == "canvas0"){
             if (document.fullscreenElement) {
             $('#topo_canvas').css({
-                "background-color":"#fff",
+                // "background-color":"#fff",
                 "background-image": "url('./static/bigbg.jpg')",
                 "background-size": "100% 100%",
                 "background-repeat": "no-repeat",
-                })
-                window.canvas.lock(2)
+            })
+                window.canvas.lock(1)
                 window.canvas.scale(1)
+                console.log("全屏")
+           $('#topo_canvas').on('dblclick',function(){
+                html2canvas(document.querySelector("#topo_canvas")).then(canvas => {
+                    imgUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-imgUrleam")
+                    var saveFile = function(data, filename){
+                    //这个地址我也不知道有什么用
+                    //(属于XML方法)createElementNS() 方法可创建带有指定命名空间的元素节点。
+                    //此方法可返回一个 Element 对象。
+                        var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                        save_link.href = data;
+                        save_link.download = filename;
+                        //MouseEvents 貌似为固定值
+                        //CreateEvent是一个Windows API函数。它用来创建或打开一个命名的或无名的事件对象
+                        var event = document.createEvent('MouseEvents');
+                        event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                        save_link.dispatchEvent(event);
+                    };
+                    var filename = (new Date()).getTime() + '.' + 'jpg';
+                    saveFile(imgUrl,filename);
+                    
+                });
+           });
             } else {
                 $('#topo_canvas').css({
-                    "background-color":"#fff",
+                    // "background-color":"#fff",
                     "background-image": "url('./static/lkr.png')",
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
@@ -1246,11 +1269,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
                     "border-radius": "8px"
                 })
+                $('#topo_canvas').off('dblclick')
+                window.canvas.lock(0)
+                window.canvas.scale(1)
+                console.log("不是全屏")
             }
         }else{
             if (document.fullscreenElement) {
                 $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
-                    "background-color":"#fff",
+                    // "background-color":"#fff",
                     "background-image": "url('./static/bigbg.jpg')",
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
@@ -1266,11 +1293,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.left="-10px";
                 document.getElementById(window.canvasNowId).style.top="-10px";
                 parent.$(".navbar-default").hide();
-                document.getElementById(window.canvasNowId).canvas.lock(2)
+                document.getElementById(window.canvasNowId).canvas.lock(1)
                 document.getElementById(window.canvasNowId).canvas.scale(1)
             } else {
                 $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
-                    "background-color":"#fff",
+                    // "background-color":"#fff",
                     "background-image": "url('./static/lkr.png')",
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
@@ -1285,6 +1312,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.zIndex="2";
                 document.getElementById(window.canvasNowId).style.left="10px";
                 document.getElementById(window.canvasNowId).style.top="0px";
+                document.getElementById(window.canvasNowId).canvas.lock(0)
+                document.getElementById(window.canvasNowId).canvas.scale(1)
             }
         }
         
@@ -1299,38 +1328,46 @@ Date.prototype.Format = function (fmt) { // author: meizz
     var tiemer = "";
     var time = 3000;//每次点击三秒后才能再次点击
     var fun = function bClick(){
-        $("#ruleName").val("");
-        $("#ruleRemark").val("");
-        $("#gzGroupName").val("");
-        let leg =Date.now().toString(16).substring(Date.now().toString(16).length-6)      
-        let canvas_id = "canvas"+leg
-        var c="<iframe src='./canvas.html' id='"+canvas_id+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
-        $(".lkr-bg-canvas").append(c)
-        $('.lkr-bg-canvas').children().hide();
-        $('#'+canvas_id).show()
-        $('#'+canvas_id)[0].contentWindow.canvasNowId = canvas_id
-        window.canvasNowId = canvas_id
-        $('#'+canvas_id)[0].contentWindow.isRuleNow =true
-        if( $('#canvasList ul li').length == 1){
-            $('#canvasList ul li').eq(0).removeClass('pageson');
+        if ($("#canvasList").css("display") == "none") {
+            $("#canvasList").show()
+            $("#flex_canvas").show();
+            window.canvasNowId ="canvas0"
         }else{
-            $('#canvasList ul li').siblings().removeClass('pageson');
-        }
-        let canvasNum = $("#canvasList ul li").length
-        let newCanvasName = "画布"+ canvasNum
-        $("#canvasList ul li").each((i,v) => {
-            let items = $(v)
-            canvasName = items.children(".canvasLi").text()
-            if(canvasName == newCanvasName){
-                canvasNum ++ 
-                newCanvasName = "画布"+ canvasNum
+            $("#ruleName").val("");
+            $("#ruleRemark").val("");
+            $("#gzGroupName").val("");
+            let leg =Date.now().toString(16).substring(Date.now().toString(16).length-6)      
+            let canvas_id = "canvas"+leg
+            var c="<iframe src='./canvas.html' id='"+canvas_id+"' style='width: 100%; height: 75vh;border: 0;' scrolling='no' allowtransparency='yes' marginwidth='0' marginheight='0' frameborder='0'></iframe>"
+            $(".lkr-bg-canvas").append(c)
+            $('.lkr-bg-canvas').children().hide();
+            $('#'+canvas_id).show()
+            $('#'+canvas_id)[0].contentWindow.canvasNowId = canvas_id
+            window.canvasNowId = canvas_id
+            $('#'+canvas_id)[0].contentWindow.isRuleNow =true
+            if( $('#canvasList ul li').length == 1){
+                $('#canvasList ul li').eq(0).removeClass('pageson');
+            }else{
+                $('#canvasList ul li').siblings().removeClass('pageson');
             }
-        })
-        $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">${newCanvasName}</span> <i class="delCanvas">X</i></li>`)  
-        $(".newBuilt").unbind("click");
-        tiemer = setTimeout(function(){
-            $(".newBuilt").click(fun);
-        },time);
+            let canvasNum = $("#canvasList ul li").length
+            let newCanvasName = "画布"+ canvasNum
+            $("#canvasList ul li").each((i,v) => {
+                let items = $(v)
+                canvasName = items.children(".canvasLi").text()
+                if(canvasName == newCanvasName){
+                    canvasNum ++ 
+                    newCanvasName = "画布"+ canvasNum
+                }
+            })
+            $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">${newCanvasName}</span> <i class="delCanvas">X</i></li>`)  
+            $(".newBuilt").unbind("click");
+            tiemer = setTimeout(function(){
+                $(".newBuilt").click(fun);
+            },time);
+        }
+       
+     
     };
     $(".newBuilt").click(fun);
    
@@ -1698,27 +1735,35 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
     $('body').on('click','.delCanvas',(e) =>{
         let delID = $(e.target).prev().attr("canvasid")
-        $(e.target).parent("li").siblings().removeClass('pageson');
-        $(e.target).parent("li").prev().addClass('pageson');
-        let showId =$(e.target).parent("li").prev().find("span").attr("canvasid")
-        $(e.target).parent("li").remove();
-        var iframe = $('#' + delID).prop('contentWindow');    
-        $('#' + delID).attr('src', 'about:blank');       
-        try{ 
-            iframe.document.write(''); 
-            iframe.document.clear(); 
-        }catch(e){} 
-        $('#' + delID).remove(); 
-        $('.lkr-bg-canvas').children().hide();
-        let leg = $('.lkr-bg-canvas').children().length
-       if(showId == "canvas0"){
-            $("#flex_canvas").show();
-            window.canvasNowId ="canvas0"
-       }else{
-            $('#'+showId).show()
-            window.canvasNowId =showId
-            $('#'+showId)[0].contentWindow.canvasNowId = showId
-       }
+        if(delID == "canvas0"){
+            if($("#canvasList ul li").length == 1){
+                $("#canvasList").hide()
+            }
+            $("#flex_canvas").hide();
+        }else{
+            $(e.target).parent("li").siblings().removeClass('pageson');
+            $(e.target).parent("li").prev().addClass('pageson');
+            let showId =$(e.target).parent("li").prev().find("span").attr("canvasid")
+            $(e.target).parent("li").remove();
+            var iframe = $('#' + delID).prop('contentWindow');    
+            $('#' + delID).attr('src', 'about:blank');       
+            try{ 
+                iframe.document.write(''); 
+                iframe.document.clear(); 
+            }catch(e){} 
+            $('#' + delID).remove(); 
+            $('.lkr-bg-canvas').children().hide();
+            let leg = $('.lkr-bg-canvas').children().length
+            if(showId == "canvas0"){
+                $("#flex_canvas").show();
+                window.canvasNowId ="canvas0"
+            }else{
+                $('#'+showId).show()
+                window.canvasNowId =showId
+                $('#'+showId)[0].contentWindow.canvasNowId = showId
+            }
+        }
+      
     
     })
     $('body').on('click','.export',(e) =>{

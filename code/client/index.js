@@ -710,8 +710,26 @@ $(function(){
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
-                   
+                    $("#canvasList ul li").each((i,v) => {
+                        let items = $(v)
+                        canvasName = items.children(".canvasLi").text()
+                        if(canvasName == data.tableRole.rolename){
+                            $('.lkr-bg-canvas').children().hide();
+                            items.siblings().removeClass('pageson');
+                            items.addClass('pageson');
+                            let showId = items.children(".canvasLi").attr("canvasid")
+                            if(showId == "canvas0"){
+                                $("#flex_canvas").show();
+                                window.canvasNowId ="canvas0"
+                            }else{
+                                $('#'+showId).show()
+                                window.canvasNowId = showId
+                            }
+
+                        }
+                    })
                     $('#ruleName').val(data.tableRole.rolename)
+                    $("#canvasList ul .pageson span").text(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
                     $("#currentGzName").attr("title",data.tableRole.rolename)
