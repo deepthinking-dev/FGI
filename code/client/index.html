@@ -1063,6 +1063,7 @@
 <script>
     var editGzType = false;
     var globalActionDatas = [];
+    var zcData={};
     var currentLineData;
     var mxDataAll={};
     var sfDataAll = {};
@@ -3559,84 +3560,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
                 })
                 $.fn.zTree.init($("#sfWinTree"),setting, treeData);
-            }
-        })
-    }
-    //编辑规则
-    function modifyGz(s) {
-        if(window.canvasNowId == "canvas0" && !window.isRuleNow){
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
-            parent.toastr.info(`请暂存当前规则！！` )
-            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false
-        }
-        if (window.frames[canvasNowId] && window.frames[canvasNowId].contentWindow.canvasNowId != "canvas0"  && !window.frames[canvasNowId].contentWindow.isRuleNow) {
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请暂存当前规则！ </li>`)
-            parent.toastr.info(`请暂存当前规则！！` )
-            parent.$("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
-            return false
-        }
-
-        $("#gzDiv").hide();
-        window.bigData.editRuleId = s;
-        let ruleid =  s;
-        $.ajax({
-            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
-            type:"get",
-            data: {Id:ruleid},
-            success(data) {
-                if(data){
-                    let ruleData = data.tableRole.coordinate
-                    ruleData
-                    $('#ruleName').val(data.tableRole.rolename)
-                    $('#ruleRemark').val(data.tableRole.des)
-                    $("#currentGzName").text(data.tableRole.rolename);
-                    $("#currentGzName").attr("title",data.tableRole.rolename)
-                    $("#currentGzDes").text(data.tableRole.des);
-                    $("#currentGzDes").attr("title",data.tableRole.des);
-                    $("#bzMsg").val(data.tableRole.entrancenote);
-                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
-                    canvas.open(JSON.parse(ruleData))
-                    window.Topology.isClickAction = []
-                    window.Topology.tools = {}
-                    window.bigData.ruleType = "edit"
-                    window.bigData.editRuleId = data.tableRole.id;
-                    if(window.canvasNowId == "canvas0"){
-                        responseActionDatas = data.interfaceRoleDataModels
-                    }else{
-                        parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas = data.interfaceRoleDataModels
-                    }
-                    if(data.operatorInterfaceDataModels){
-                        data.operatorInterfaceDataModels.map(item=>{
-                            let obj = {
-                                isClick:true,
-                                id:item.algorithmID
-                            }
-                            let saveList ={
-                                id :item.algorithmID,
-                                uuid:item.id,
-                                name:item.interfaceName,
-                                children:[]
-                            }
-                            item.tableInterfaceparametersList.map(index=>{
-                                let hx ={
-                                    id:index.parameterssources,
-                                    uuid:index.id,
-                                    algorithmid:item.algorithmID,
-                                    varname:index.parametersname,
-                                    vartype:"",
-                                    valvalue:"",
-                                    inorout:index.inorout,
-                                    remark:""
-                                }
-                                saveList.children.push(hx)
-                            })
-                            window.Topology.isClickAction.push(obj)
-                            window.Topology.tools[item.id] = saveList
-                        })
-                    }
-                }
-
             }
         })
     }

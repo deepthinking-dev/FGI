@@ -710,7 +710,6 @@ $(function(){
             success(data) {
                 if(data){
                     let ruleData = data.tableRole.coordinate
-                   
                     $('#ruleName').val(data.tableRole.rolename)
                     $('#ruleRemark').val(data.tableRole.des)
                     $("#currentGzName").text(data.tableRole.rolename);
@@ -718,7 +717,7 @@ $(function(){
                     $("#currentGzDes").text(data.tableRole.des);
                     $("#currentGzDes").attr("title",data.tableRole.des);
                     $('#gzGroupName').val(data.tableRole.rolegroup)
-
+                    zcData[$('.pageson .canvasLi').text()] = data.tableRole;
                     $("#bzMsg").val(data.tableRole.entrancenote);
                     $("#ruleDes").attr("data",data.tableRole.entrancenote)
                     if(window.canvasNowId == "canvas0"){
