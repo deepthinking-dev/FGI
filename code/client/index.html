@@ -2361,153 +2361,176 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#"+selectedNode.tId+"_a").click();
         }
     }
+
     //树节点点击
     function treeClick(event, treeId, node) {
+        var allName = []
+        allName.push(node.name)
+        function names(parent) {
+            if(parent.children){
+                parent.children.map(s=>{
+                    allName.push(s.name);
+                    names(s)
+                })
+            }
+        }
+        names(node)
         if($("#searchName").val()){
             var value = $("#searchName").val()
         }
         if(node.type == 1){
             if(node.right == 1){
-                $.ajax({
-                    url: urlConfig.host + '/module/GetModuleByGroupName',
-                    type:"get",
-                    data: {moduleGroupName:node.name},
-                    success(data) {
-                        $("#moduleListRight").empty()
-                        if(data.length){
-                            data.map((s,index)=>{
-                                if(s.modulename.includes(value)){
-                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule red" style="height:50px;">${s.modulename}</div></div>`)
-                                } else {
-                                    $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
-                                }
-                            })
+                $("#moduleListRight").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/module/GetModuleByGroupName',
+                        type:"get",
+                        data: {moduleGroupName:name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    if(s.modulename.includes(value)){
+                                        $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule red" style="height:50px;">${s.modulename}</div></div>`)
+                                    } else {
+                                        $("#moduleListRight").append(`<div class="left-list"><div title="${s.modulename}" moduleId="${s.id}" class="left-list-tilte dbclickModule" style="height:50px;">${s.modulename}</div></div>`)
+                                    }
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/module/GetModuleByGroupName',
-                    type:"get",
-                    data: {moduleGroupName:node.name},
-                    success(data) {
-                        $("#dataModulePage .mxGruopTable").empty();
-                        if(data.length){
-                            $("#dataModulePage .mxGruopTable").append(`<thead>
-                            <th style="width: 150px">模型名称</th>
-                            <th style="width: 150px">描述</th>
-                            <th style="width: 150px">状态</th>
-                            <th style="width: 200px">操作</th>
-                            </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#dataModulePage .mxGruopTable").empty();
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/module/GetModuleByGroupName',
+                        type:"get",
+                        data: {moduleGroupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#dataModulePage .mxGruopTable thead").length){
+                                    $("#dataModulePage .mxGruopTable").append(`<thead>
+                                        <th style="width: 150px">模型名称</th>
+                                        <th style="width: 150px">描述</th>
+                                        <th style="width: 150px">状态</th>
+                                        <th style="width: 200px">操作</th>
+                                        </thead>`)
                                 }
-                                $("#dataModulePage .mxGruopTable").append(
-                                    `<tr>
-                            <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
-                            <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
-                            <td style="width: 150px">${s.status}</td>
-                            <td style="width: 150px">
-                                <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                                <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
-                                <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                            </td>
-                        </tr>
-                       `)
-                            })
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#dataModulePage .mxGruopTable").append(
+                                        `<tr>
+                                        <td title="${s.modulename}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.modulename}</td>
+                                        <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${s.des}</td>
+                                        <td style="width: 150px">${s.status}</td>
+                                        <td style="width: 150px">
+                                            <img moduleId="${s.id}" class="lkr-list-edit" title="修改" src="static/edit.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                            <img moduleId="${s.id}" class="lkr-list-del" title="删除" src="static/delete.png" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin: 0 10px">
+                                            <img title="${title}" src="${img}" onclick="publishModule('${s.id}','${title}')" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                        </td>
+                                    </tr>
+                                   `)
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }
         if(node.type == 2){
             if(node.right == 2){
-                $.ajax({
-                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                    type:"get",
-                    data: {groupName :node.name},
-                    success(data) {
-                        $("#sfGruopListRight").empty();
-                        if(data.length){
-                            data.map((s,index)=>{
-                                window.addAlgorithm({
-                                    name: 'rectangle',
-                                    icon: 'icon-rectangle',
-                                    id:s.tableAlgorithm.id,
-                                    type:"tableAlgorithm",
-                                    data: {
-                                        id:s.tableAlgorithm.id,
-                                        text: s.tableAlgorithm.algorithmname,
-                                        rect: {
-                                            width: 200,
-                                            height: 100
-                                        },
-                                        parentId:s.tableAlgorithm.id,
-                                        font: {
-                                            fontFamily: 'Arial',
-                                            color: 'aqua',
-                                            textBaseline: 'top'
-                                        },
-                                        data:{
-                                            inNum:s.inNum,
-                                            outNum:s.outNum,
-                                            index:index,
-                                            sid:s.tableAlgorithm.id
-                                        },
-                                        children:[],
-                                        paddingLeft: 10,
-                                        paddingRight: 10,
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
-                                        borderRadius: 0.1,
+                $("#sfGruopListRight").empty();
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName :name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    window.addAlgorithm({
                                         name: 'rectangle',
-                                        fillStyle:'rgba(4,44,98,0.58)',
-                                        strokeStyle: '#4295ec',
-                                        hideInput:true
+                                        icon: 'icon-rectangle',
+                                        id:s.tableAlgorithm.id,
+                                        type:"tableAlgorithm",
+                                        data: {
+                                            id:s.tableAlgorithm.id,
+                                            text: s.tableAlgorithm.algorithmname,
+                                            rect: {
+                                                width: 200,
+                                                height: 100
+                                            },
+                                            parentId:s.tableAlgorithm.id,
+                                            font: {
+                                                fontFamily: 'Arial',
+                                                color: 'aqua',
+                                                textBaseline: 'top'
+                                            },
+                                            data:{
+                                                inNum:s.inNum,
+                                                outNum:s.outNum,
+                                                index:index,
+                                                sid:s.tableAlgorithm.id
+                                            },
+                                            children:[],
+                                            paddingLeft: 10,
+                                            paddingRight: 10,
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            borderRadius: 0.1,
+                                            name: 'rectangle',
+                                            fillStyle:'rgba(4,44,98,0.58)',
+                                            strokeStyle: '#4295ec',
+                                            hideInput:true
+                                        }
+                                    })
+                                })
+                                $("#sfGruopListRight .left-list-tilte").removeClass("red");
+                                $("#sfGruopListRight .left-list-tilte").each((i,s)=>{
+                                    if($(s).text().includes(value)){
+                                        $(s).addClass("red")
                                     }
                                 })
-                            })
-                            $("#sfGruopListRight .left-list-tilte").removeClass("red");
-                            $("#sfGruopListRight .left-list-tilte").each((i,s)=>{
-                                if($(s).text().includes(value)){
-                                    $(s).addClass("red")
-                                }
-                            })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#dicDiv .sfGruopTable").empty()
-                        if(data.length){
-                            $("#dicDiv .sfGruopTable").append(`<thead>
-                            <th style="width: 120px">作者</th>
-                            <th style="width: 120px">算法名称</th>
-                            <th style="width: 120px">算法描述</th>
-                            <th style="width: 120px">状态</th>
-                            <th style="width: 150px">操作</th>
-                            </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.tableAlgorithm.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#dicDiv .sfGruopTable").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/operatorMaintenance/getAllAlgorithm',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#dicDiv .sfGruopTable thead").length){
+                                    $("#dicDiv .sfGruopTable").append(`<thead>
+                                    <th style="width: 120px">作者</th>
+                                    <th style="width: 120px">算法名称</th>
+                                    <th style="width: 120px">算法描述</th>
+                                    <th style="width: 120px">状态</th>
+                                    <th style="width: 150px">操作</th>
+                                    </thead>`)
                                 }
-                                $("#dicDiv .sfGruopTable").append(
-                                    `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.tableAlgorithm.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#dicDiv .sfGruopTable").append(
+                                        `<tr class="dbclickAlgorithm" algorithmid="${s.tableAlgorithm.id}">
                             <td title="${s.tableAlgorithm.algorithmauthor}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmauthor}</td>
                             <td title="${s.tableAlgorithm.algorithmname}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.algorithmname}</td>
                             <td title="${s.tableAlgorithm.des}" style="width: 150px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" algorithmid="${s.tableAlgorithm.id}">${s.tableAlgorithm.des}</td>
@@ -2519,56 +2542,62 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                            })
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }
         if(node.type == 3){
             if(node.right == 3){
-                $.ajax({
-                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#ruleListRight").empty()
-                        if(data.length){
-                            data.map((s,index)=>{
-                                if (s.rolename.includes(value)){
-                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule red" style="height:50px;">${s.rolename}</div></div>`)
-                                } else {
-                                    $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
-                                }
-                            })
+                $("#ruleListRight").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                data.map((s,index)=>{
+                                    if (s.rolename.includes(value)){
+                                        $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule red" style="height:50px;">${s.rolename}</div></div>`)
+                                    } else {
+                                        $("#ruleListRight").append(`<div class="left-list"><div title="${s.rolename}" ruleId="${s.id}" class="left-list-tilte lkr-list-ediRule" style="height:50px;">${s.rolename}</div></div>`)
+                                    }
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             } else {
-                $.ajax({
-                    url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
-                    type:"get",
-                    data: {groupName:node.name},
-                    success(data) {
-                        $("#gzDiv .gzGruopTable").empty()
-                        if(data.length){
-                            $("#gzDiv .gzGruopTable").append(`<thead>
-                    <th style="width: 150px">规则名称</th>
-                    <th style="width: 150px">描述</th>
-                    <th style="width: 150px">状态</th>
-                    <th style="width: 180px">操作</th>
-                    </thead>`)
-                            data.map(s=>{
-                                var img,title;
-                                if(s.status == "未发布"){
-                                    img = "static/fabu.png";
-                                    title = "发布";
-                                } else {
-                                    img = "static/cancelFb.png";
-                                    title = "取消发布";
+                $("#gzDiv .gzGruopTable").empty()
+                allName.map(name=>{
+                    $.ajax({
+                        url: urlConfig.host + '/algorithmRule/getAllAlgorithmRule',
+                        type:"get",
+                        data: {groupName:name},
+                        success(data) {
+                            if(data.length){
+                                if(!$("#gzDiv .gzGruopTable thead").length){
+                                    $("#gzDiv .gzGruopTable").append(`<thead>
+                                        <th style="width: 150px">规则名称</th>
+                                        <th style="width: 150px">描述</th>
+                                        <th style="width: 150px">状态</th>
+                                        <th style="width: 180px">操作</th>
+                                        </thead>`)
                                 }
-                                $("#gzDiv .gzGruopTable").append(
-                                    `<tr>
+                                data.map(s=>{
+                                    var img,title;
+                                    if(s.status == "未发布"){
+                                        img = "static/fabu.png";
+                                        title = "发布";
+                                    } else {
+                                        img = "static/cancelFb.png";
+                                        title = "取消发布";
+                                    }
+                                    $("#gzDiv .gzGruopTable").append(
+                                        `<tr>
                             <td title="${s.rolename}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.rolename}</td>
                             <td title="${s.des}" style="width: 150px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">${s.des}</td>
                             <td style="width: 150px">${s.status}</td>
@@ -2580,9 +2609,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             </td>
                         </tr>
                        `)
-                            })
+                                })
+                            }
                         }
-                    }
+                    })
                 })
             }
         }

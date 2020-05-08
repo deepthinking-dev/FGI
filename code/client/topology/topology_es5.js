@@ -352,7 +352,6 @@ var Topology = {
                 canvas.disableScale =true
                 // 监听画布
                 function onMessage(event, data) {
-                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];

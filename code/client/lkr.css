@@ -762,7 +762,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    z-index: 999999;
+    z-index: 20000;
 }
 #gzDiv{
     position: absolute;
