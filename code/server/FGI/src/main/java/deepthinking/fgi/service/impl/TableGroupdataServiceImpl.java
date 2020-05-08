@@ -132,9 +132,7 @@ public class TableGroupdataServiceImpl extends BaseServiceImpl<TableGroupdata,In
         try {
             String name=tableGroupdata.getGroupname();
             int type=tableGroupdata.getGrouptype();
-            TableGroupdataCriteria tableGroupdataCriteria=new TableGroupdataCriteria();
-            tableGroupdataCriteria.createCriteria().andGrouptypeEqualTo(type).andGroupnameEqualTo(name);
-            List<TableGroupdata> list=groupdataMapper.selectByExample(tableGroupdataCriteria);
+            List<TableGroupdata> list=findTableGroupdataByTypeAndName(name,type);
             if(list.size()>0){
                 return 2;
             }else{
@@ -145,6 +143,14 @@ public class TableGroupdataServiceImpl extends BaseServiceImpl<TableGroupdata,In
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public List<TableGroupdata> findTableGroupdataByTypeAndName(String name, int type) {
+        TableGroupdataCriteria tableGroupdataCriteria=new TableGroupdataCriteria();
+        tableGroupdataCriteria.createCriteria().andGrouptypeEqualTo(type).andGroupnameEqualTo(name);
+        List<TableGroupdata> list=groupdataMapper.selectByExample(tableGroupdataCriteria);
+        return list;
     }
 
     @Override

@@ -4,13 +4,16 @@ import com.github.pagehelper.PageInfo;
 import deepthinking.fgi.dao.mapper.TableModuleMapper;
 import deepthinking.fgi.dao.mapper.TableModulefieldMapper;
 import deepthinking.fgi.domain.*;
+import deepthinking.fgi.service.TableGroupdataService;
 import deepthinking.fgi.service.TableModuleService;
+import deepthinking.fgi.util.UserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +36,10 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
     private TableModulefieldMapper tableModulefieldMapper;
 
     @Override
-    public List<TableModule> GetAllModule() {
+    public List<TableModule> GetAllModule(HttpServletRequest request) {
         TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
+        String userId= UserData.getUserIdFromCookie(request.getCookies());
+        tableModuleCriteria.createCriteria().andRemark2EqualTo(userId);
         return tableModuleMapper.selectByExample(tableModuleCriteria);
     }
 
@@ -44,9 +49,10 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
     }
 
     @Override
-    public List<TableModule> GetModuleByGroupName(String moduleGroupName) {
+    public List<TableModule> GetModuleByGroupName(String moduleGroupName,HttpServletRequest request) {
         TableModuleCriteria tableModuleCriteria=new TableModuleCriteria();
-        tableModuleCriteria.createCriteria().andModulegroupEqualTo(moduleGroupName);
+        String userId= UserData.getUserIdFromCookie(request.getCookies());
+        tableModuleCriteria.createCriteria().andModulegroupEqualTo(moduleGroupName).andRemark2EqualTo(userId);
         return tableModuleMapper.selectByExample(tableModuleCriteria);
     }
 
@@ -64,12 +70,27 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
         return module;
     }
 
+    @Resource
+    private TableGroupdataService tableGroupdataService;
+
     @Override
-    public boolean addModule(TableModule module) {
+    public boolean addModule(TableModule module,HttpServletRequest request) {
         module.setSqlurl("fgi");
         try {
+            //查询是否添加分组
+            String groupname=module.getModulegroup();
+            List<TableGroupdata> listgroup=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,1);
+            if(listgroup==null||listgroup.size()==0){
+                TableGroupdata tableGroupdata=new TableGroupdata();
+                tableGroupdata.setGroupname(groupname);
+                tableGroupdata.setParentid(0);
+                tableGroupdata.setGrouptype(1);
+                tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+            }
             //添加模型
             module.setStatus("未发布");
+            String userId= UserData.getUserIdFromCookie(request.getCookies());
+            module.setRemark2(userId);
             insert(module);
             //获取模型ID
             int id=module.getId();

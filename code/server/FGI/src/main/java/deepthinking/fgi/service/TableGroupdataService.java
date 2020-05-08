@@ -34,4 +34,12 @@ public interface TableGroupdataService extends BaseService<TableGroupdata,Intege
      * @return
      */
     int saveTableGroupMessage(TableGroupdata tableGroupdata);
+
+    /**
+     * 根据类型和名称查询分组
+     * @param name
+     * @param type
+     * @return
+     */
+    List<TableGroupdata> findTableGroupdataByTypeAndName(String name,int type);
 }

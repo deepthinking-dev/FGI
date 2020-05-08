@@ -8,7 +8,9 @@ import deepthinking.fgi.model.AlgorithmRuleSaveDataModel;
 import deepthinking.fgi.model.OperatorInterfaceDataModel;
 import deepthinking.fgi.model.xml.*;
 import deepthinking.fgi.service.TableAlgorithmService;
+import deepthinking.fgi.service.TableGroupdataService;
 import deepthinking.fgi.service.TableRoleService;
+import deepthinking.fgi.util.UserData;
 import deepthinking.fgi.util.XMLUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -396,7 +399,7 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     /**
      * 给所有接口赋值ID
      * @param interfaceXmlModel
-     * @param map
+     * @param tmap
      * @param fg
      */
     private void SetAllInterfaceId(InterfaceXmlModel interfaceXmlModel,
@@ -1134,9 +1137,10 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
 
     @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
     @Override
-    public List<TableRole> GetAllAlgorithmRule(String groupName) {
+    public List<TableRole> GetAllAlgorithmRule(String groupName, HttpServletRequest request) {
         TableRoleCriteria tableRoleCriteria=new TableRoleCriteria();
-        tableRoleCriteria.createCriteria().andRolegroupEqualTo(groupName);
+        String userId= UserData.getUserIdFromCookie(request.getCookies());
+        tableRoleCriteria.createCriteria().andRolegroupEqualTo(groupName).andRemark2EqualTo(userId);
         return roleMapper.selectByExample(tableRoleCriteria);
     }
     @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
@@ -1217,13 +1221,28 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
             return null;
         }
     }
+
+    @Resource
+    private TableGroupdataService tableGroupdataService;
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel) {
+    public AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel,HttpServletRequest request) {
         try {
+            String groupname=algorithmRuleSaveDataModel.getTableRole().getRolegroup();
+            List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,1);
+            if(list==null||list.size()==0){
+                TableGroupdata tableGroupdata=new TableGroupdata();
+                tableGroupdata.setGroupname(groupname);
+                tableGroupdata.setParentid(0);
+                tableGroupdata.setGrouptype(1);
+                tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+            }
             //保存最后算法规则信息
             TableRole tableRole=algorithmRuleSaveDataModel.getTableRole();
             tableRole.setStatus("未发布");
+            String userId= UserData.getUserIdFromCookie(request.getCookies());
+            tableRole.setRemark2(userId);
             insert(tableRole);
             //新增接口信息
             List<OperatorInterfaceDataModel> operatorInterfaceDataModels=algorithmRuleSaveDataModel.getOperatorInterfaceDataModels();

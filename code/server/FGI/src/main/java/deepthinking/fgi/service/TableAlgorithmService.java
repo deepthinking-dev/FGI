@@ -4,6 +4,7 @@ import deepthinking.fgi.domain.TableAlgorithm;
 import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
      * @param groupName
      * @return
      */
-    List<AlgorithmBaseInfo> getAllAlgorithm(String groupName);
+    List<AlgorithmBaseInfo> getAllAlgorithm(String groupName, HttpServletRequest request);
 
     /**
      * 记录算子之间的逻辑关系（当算子有前序算子时，定义前序算子需要满足的逻辑条件，以执行后续算子）
@@ -31,7 +32,7 @@ public interface TableAlgorithmService extends BaseService<TableAlgorithm,Intege
      * @param algorithmModel
      * @return
      */
-    int addAlgorithm(AlgorithmModel algorithmModel);
+    int addAlgorithm(AlgorithmModel algorithmModel,HttpServletRequest request);
 
     /**
      * 根据算子ID获取该算子相关的所有信息，包括参数以及参数关联算子信息
