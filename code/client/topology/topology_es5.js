@@ -1520,8 +1520,8 @@ var Topology = {
                             data.manualCps =true
                             canvas.lockLines([data],true)
                             canvas.render()
-                            data.controlPoints[0].hidden = true
-                            data.controlPoints[1].hidden = true
+                            data.controlPoints[0].hidden = true;
+                            data.controlPoints[1].hidden = true;
                             if(!data.to.id){
                                 canvas.data.lines.map((item,i) => {
                                     if(item.id == data.id){
@@ -1708,7 +1708,7 @@ var Topology = {
                                 }else if(value){
                                     fromType = typeof(value)
                                 }else{
-                                    var typeArr1 =["byte","int","long","short","float","double"];
+                                    var typeArr1 =["byte","int","long","short","float","double","number"];
                                     var typeArr2 = ["char","String"] 
                                     if(typeArr1.includes(fromType) && typeArr1.includes(toType)){
                                         flag = true

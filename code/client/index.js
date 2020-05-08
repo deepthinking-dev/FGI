@@ -912,8 +912,7 @@ $(function(){
                                 <option>char</option>
                                 <option>date</option>
                                 <option>string</option>
-                                <option>BLOB</option>
-                                <option>boolean</option>
+                                <option>blob</option>
                                 <option>array</option>
                             </select>`)
                             select.val(data.tableFuncs[i].valvalue)
@@ -979,8 +978,7 @@ $(function(){
                                                 <option>char</option>
                                                 <option>date</option>
                                                 <option>string</option>
-                                                <option>BLOB</option>
-                                                <option>boolean</option>
+                                                <option>blob</option>
                                                 <option>array</option>
                                             </select>
                                         </div>
