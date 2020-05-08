@@ -322,7 +322,7 @@
         <div class="ruleContent"> 
             <li><span>规则名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input maxlength="200" id="ruleName" type="text" placeholder="请输入规则名称"></li>
             <li><div style="width: 120px;float: left;text-align: right;margin-top: 20px;margin-right: 10px;">规则描述 </div><textarea maxlength="500" id="ruleRemark" type="text" placeholder="请输入规则描述"></textarea></li>
-            <li style="margin: 0"><span>分组名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input placeholder="请双击选择分组" id="gzGroupName" readonly type="text" ondblclick="groupTreeDataShow(3)"></li>
+            <li style="margin: 0"><span>分组名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </span><input placeholder="请双击选择分组" id="gzGroupName" type="text" ondblclick="groupTreeDataShow(3)"></li>
             <li style="display:none;"><span>备注 </span><input id="ruleDes" type="text" placeholder="请输入规则备注"></li>
             <button onclick="ruleSure()">确定</button>
         </div>
@@ -524,7 +524,7 @@
             </div>
             <div>
                 <span class="form-span">分组<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
-                <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" readonly placeholder="请双击选择分组">
+                <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" placeholder="请双击选择分组">
             </div>
             <!-- <div class="AlgorithInput">
                 <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
@@ -667,7 +667,7 @@
             <div class="lkr-frame-content">
                 <div style="margin: 15px 0;display: flex;align-items: center;">
                     <label style="line-height: 10px;width: 120px;text-align: right;margin-right: 10px;">模型所属组<i style="color: red;font-size: 16px;display: inline-block">*</i> </label>
-                    <input id='modulegroup' class="lkr-input" ondblclick="groupTreeDataShow(1)" readonly placeholder="请双击选择分组">
+                    <input id='modulegroup' class="lkr-input" ondblclick="groupTreeDataShow(1)" placeholder="请双击选择分组">
                     <input type='text' id='modulegroupshow' class="lkr-input" style="display: none;"/>
 
                 </div>
@@ -1019,7 +1019,7 @@
                         <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px" maxlength="500">
                     </div>
                     <div>
-                        <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input readonly type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
+                        <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
                     </div>
                     <input type="text" value="" id="zdStatus" style="display: none">
                 </div>
@@ -1833,7 +1833,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     }
 
     $('body').on('click','.lkr-list-edit',(e) => {
-        debugger
         window.bigData.frameType = 'edit'
         window.bigData.editmoduleId = $(e.target).attr('moduleId')
         $("#dataModulePage").show()
@@ -1852,7 +1851,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 $('.operate').show();
                 $('#fgiSource').show();
                 $('.addsjyth').show();
-                $("#modulegroup").val(data.modulegroup)
+                $("#modulegroup").val(data.modulegroup).removeAttr("readonly")
                 $("#mouldName").val(data.modulename).removeAttr("readonly")
                 $("#mouldRemark").val(data.des).removeAttr("readonly")
                 window.bigData.editmoduleId = data.id
@@ -1861,9 +1860,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
                     <td class="columnComment"><input type="text" value="${item.fieldname?item.fieldname:''}"></td> 
                     <td class="columnName"><input type="text" value="${item.englishname?item.englishname:''}"></td>
-                    <td class="columnType">
-                        <select class="moduleSelect">
-
+                    <td class="columnType" style="position:relative;width: 110px"><input type="text" class="moduleInputOne" value="${item.fieldtype?item.fieldtype:''}" style="background-color: rgba(0,0,0,0);border: none;outline: none;background-image: url(./static/select.png);background-size: 100% 100%;background-repeat: no-repeat;height: 30px;position: absolute;left:5px;top: 5px;width: 70px">
+                        <select class="moduleSelect" onchange="zdlxChange($(this))">
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -1878,34 +1876,18 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             <option value="boolean">boolean</option>
                             <option value="array">array</option>
                         </select>
-                        <input type="text" class="moduleInputOne" value="${item.fieldtype?item.fieldtype:''}" onchange="myFunction(event)">
                         </td>           
                     <td class="tableName"><input type="text" value="${item.tablename?item.tablename:''}"></td>
                     <td class="columnRemark"><input type="text" value="${item.remark?item.remark:''}"></td>
                     <td><img src="static/delete.png"  onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`
                 })
                 $('#addMb tbody').html(thStr)
-                $(".moduleSelect").change((e)=>{
-                    $(e.target).parent('.columnType').children('.moduleSelect').hide()
-                    $(e.target).parent('.columnType').children('.moduleInputOne').show()
-                    $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
-                })
             }
         })
     })
-    
-    
     function myFunction(e){
-        // debugger
         $(e.target).parent('.columnType').children('.moduleSelect').show()
         $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-        // if( $(e.target).val() == ""){
-           
-        // }else{
-        //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
-        //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
-        // }
-       
     }
 
     $('body').on('dblclick','.dbclickModule',(e) =>{
@@ -1957,6 +1939,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#addMb tbody").html("")
         $('#lkrFrame .lkr-button').show()
         $('#lkrFrame').show()
+        $("#modulegroup").attr("readonly",false);
         $("#mouldName").attr("readonly",false);
         $("#mouldRemark").attr("readonly",false);
         $.ajax({
@@ -2125,7 +2108,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 }
                 mouldParam.push({
                     fieldname:(items.children('.columnComment').text()).trim()?(items.children('.columnComment').text()).trim():(items.children('.columnComment').find('input').val()).trim(),
-                    fieldtype:items.children('.columnType').find('select').val()?items.children('.columnType').find('select').val():(items.children('.columnType').text()).trim(),
+                    fieldtype:items.find('.moduleInputOne').val()?items.find('.moduleInputOne').val():(items.children('.columnType').text()).trim(),
                     tablename:(items.children('.tableName').text()).trim()?(items.children('.tableName').text()).trim():(items.children('.tableName').find('input').val()).trim(),
                     englishname:(items.children('.columnName').text()).trim()?(items.children('.columnName').text()).trim():(items.children('.columnName').find('input').val()).trim(),
                     remark:(items.children('.columnRemark').text()).trim()?(items.children('.columnRemark').text()).trim():(items.children('.columnRemark').find('input').val()).trim(),
@@ -2235,15 +2218,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     flag = false
                     return false
                 }
-                var types;
-                if(items.children('.columnType').find('select').css("display") == "none"){
-                    types= items.children('.columnType').find('input').val()
-                } else {
-                    types = items.children('.columnType').find('select').val()
-                }
+                // var types;
+                // if(items.children('.columnType').find('select').css("display") == "none"){
+                //     types= items.children('.columnType').find('input').val()
+                // } else {
+                //     types = items.children('.columnType').find('select').val()
+                // }
                 mouldParam.push({
                     fieldname:items.children('.columnComment').find('input').val(),
-                    fieldtype:types,
+                    fieldtype:items.find('.moduleInputOne').val()?items.find('.moduleInputOne').val():(items.children('.columnType').text()).trim(),
                     tablename:items.children('.tableName').find('input').val(),
                     englishname:items.children('.columnName').find('input').val(),
                     remark:items.children('.columnRemark').find('input').val(),
@@ -2310,11 +2293,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $(v).prop('checked',false)
         })
     }
+    function zdlxChange(s) {
+        s.prev().val(s.val())
+    }
+
     function addsjyth(){
         $(".dataSourceTbody").append(`<tr>
             <td class="columnComment"><input type="text" value="" maxlength="20"></td>
             <td class="columnName"><input type="text" value="" maxlength="20"></td>
-            <td class="columnType"><select class="moduleSelect">
+            <td class="columnType" style="position:relative;width: 110px"><input type="text" class="moduleInputOne" value="" style="background-color: rgba(0,0,0,0);border: none;outline: none;background-image: url(./static/select.png);background-size: 100% 100%;background-repeat: no-repeat;height: 30px;position: absolute;left:5px;top: 5px;width: 70px">
+                        <select class="moduleSelect" onchange="zdlxChange($(this))">
                             <option value="byte">byte</option>
                             <option value="short">short</option>
                             <option value="int">int</option>
@@ -2329,24 +2317,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             <option value="boolean">boolean</option>
                             <option value="array">array</option>
                         </select>
-              <input type="text" style="display:none;"  class="moduleInputOne"  value="" onchange="myFunction(event)"></td>
+            </td>
             <td class="tableName"><input type="text" value="-"  maxlength="20"></td>
             <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
-             $('.moduleSelect').show()           
-            $(".moduleSelect").change((e)=>{
-                $(e.target).parent('.columnType').children('.moduleSelect').hide()
-                $(e.target).parent('.columnType').children('.moduleInputOne').show()
-                $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())  
-            })
-            function myFunction(e){
-
-                $(e.target).parent('.columnType').children('.moduleSelect').show()
-                $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-
-            
-            }
+            //  $('.moduleSelect').show()
+            // $(".moduleSelect").change((e)=>{
+            //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())
+            // })
+            // function myFunction(e){
+            //
+            //     $(e.target).parent('.columnType').children('.moduleSelect').show()
+            //     $(e.target).parent('.columnType').children('.moduleInputOne').hide()
+            //
+            //
+            // }
     }
    
     function ConfirmDel(){
@@ -3649,7 +3637,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             type=3
         }
         $("#groupDiv").show();
-        $("#groupInputName").attr("type",type)
+        $("#groupInputName").attr("types",type)
         $("#groupTable").empty();
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
@@ -3689,7 +3677,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#groupInputName").val("");
         $("#parentGroup").attr("parentid","");
         $("#parentGroup").val("");
-        var type = $("#groupInputName").attr("type");
+        var type = $("#groupInputName").attr("types");
     })
 
     $("#addGroupYes").click(()=>{
@@ -3707,7 +3695,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         }
         var tableGroupdata = {
             "groupname": $("#groupInputName").val(),
-            "grouptype":Number($("#groupInputName").attr("type")),
+            "grouptype":Number($("#groupInputName").attr("types")),
             "id": 0,
             "parentid": $("#parentGroup").attr("parentid") || 0
         }
@@ -3729,9 +3717,9 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
+                            data: {type :$("#groupInputName").attr("types")},
                             success(data) {
-                                var types = $("#groupInputName").attr("type");
+                                var types = $("#groupInputName").attr("types");
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
                                 if(data.length){
@@ -3751,11 +3739,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                            `)
                                     })
                                 }
-                                if($("#groupInputName").attr("type") == 1){
+                                if($("#groupInputName").attr("types") == 1){
                                     dataModlue()
-                                } else if($("#groupInputName").attr("type") == 2){
+                                } else if($("#groupInputName").attr("types") == 2){
                                     dictionary()
-                                } else if($("#groupInputName").attr("type") == 3){
+                                } else if($("#groupInputName").attr("types") == 3){
                                     ruleGroupShow()
                                 }
                             }
@@ -3785,11 +3773,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         $.ajax({
                             url: urlConfig.host + '/group/findAllGroupMessagesByType',
                             type:"get",
-                            data: {type :$("#groupInputName").attr("type")},
+                            data: {type :$("#groupInputName").attr("types")},
                             success(data) {
                                 $("#groupEditDiv").hide()
                                 $("#groupTable").empty()
-                                var typess = $("#groupInputName").attr("type");
+                                var typess = $("#groupInputName").attr("types");
                                 if(data.length){
                                     $("#groupTable").append(`<thead>
                                         <th style="width: 220px">分组名称</th>
@@ -3809,11 +3797,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                 }
                             }
                         })
-                        if($("#groupInputName").attr("type") == 1){
+                        if($("#groupInputName").attr("types") == 1){
                             dataModlue()
-                        } else if($("#groupInputName").attr("type") == 2){
+                        } else if($("#groupInputName").attr("types") == 2){
                             dictionary()
-                        } else if($("#groupInputName").attr("type") == 3){
+                        } else if($("#groupInputName").attr("types") == 3){
                             ruleGroupShow()
                         }
                     }
@@ -3828,7 +3816,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $.ajax({
                 url: urlConfig.host + '/group/findAllGroupMessagesByType',
                 type:"get",
-                data: {type:$("#groupInputName").attr("type")},
+                data: {type:$("#groupInputName").attr("types")},
                 success(data) {
                     data.map(s=>{
                         if(s.id == pid){
@@ -4052,7 +4040,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $.ajax({
             url: urlConfig.host + '/group/findAllGroupMessagesByType',
             type:"get",
-            data: {type:$("#groupInputName").attr("type")},
+            data: {type:$("#groupInputName").attr("types")},
             success(data) {
                 var treeData=[]
                 data.map(s=>{
@@ -4184,7 +4172,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     }
-    
 
 </script>
 </body>
