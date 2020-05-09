@@ -429,10 +429,6 @@ function ruleSure(){
         return false
      }
     editGzType = false;
-    parent.$("#currentGzName").text($("#ruleName").val());
-    parent.$("#currentGzName").attr("title",$("#ruleName").val())
-    parent.$("#currentGzDes").text($("#ruleRemark").val());
-    parent.$("#currentGzDes").attr("title",$("#ruleRemark").val());
     let algorithmRuleDataList = [] 
 
     //参数借口
@@ -564,11 +560,13 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
+                debugger
                 parent.$("#sureRule").hide()
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】保存成功！ </li>`)
                 parent.toastr.success(`【规则】保存成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 $("#canvasList ul .pageson span").text(data.tableRole.rolename)
+                zcData[$('.pageson .canvasLi').text()] = data.tableRole;
                 let isExportButton
                 if(window.canvasNowId == "canvas0"){
                     window.bigData.isExportId = data.tableRole.id

@@ -946,15 +946,12 @@
     <div id="groupDiv">
         <div class="title">
             <span>分组信息</span>
-            <span class="groupDivClose" style="color:#fff;float: right;cursor: pointer;margin-right: 50px">X</span>
+            <span class="groupDivClose" style="color:#fff;float: right;cursor: pointer;">X</span>
         </div>
         <div style="position: relative;top:70px;margin: 0 auto;margin-left: 30px">
             <input type="button" id="addGroup" value="新增分组">
-            <input type="button" id="updateGroup" value="修改分组">
-            <input type="button" id="deleteGroup" value="删除分组">
             <div style="height: 520px;overflow: auto">
                 <table id="groupTable"></table>
-                <ul id="groupDivTree" class="ztree" style="width: 250px;float: left;overflow: auto"></ul>
             </div>
         </div>
     </div>
@@ -1283,8 +1280,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.left="-10px";
                 document.getElementById(window.canvasNowId).style.top="-10px";
                 parent.$(".navbar-default").hide();
-                // document.getElementById(window.canvasNowId).canvas.lock(1)
-                // document.getElementById(window.canvasNowId).canvas.scale(1)
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.lock(1)
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.scale(1)
 
                 $('#'+window.canvasNowId).contents().find('#topo_canvas').off().on('dblclick',function(e){
                     var a = $(e.target).parent("#topo_canvas")
@@ -1328,8 +1325,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.zIndex="2";
                 document.getElementById(window.canvasNowId).style.left="10px";
                 document.getElementById(window.canvasNowId).style.top="0px";
-                document.getElementById(window.canvasNowId).canvas.lock(0)
-                document.getElementById(window.canvasNowId).canvas.scale(1)
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.lock(0)
+                parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.scale(1)
             }
         }
         
@@ -1388,9 +1385,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
     };
     $(".newBuilt").click(fun);
    
-
-
-
     $('body').on('click','#setAct',(e) =>{
         $("#actionDiv").show();
         var data,datas,local,res;
@@ -2439,31 +2433,8 @@ Date.prototype.Format = function (fmt) { // author: meizz
 
     //树节点点击
     function treeClick(event, treeId, node) {
-        if(node.type == "end"){
-            if(node.pid == 0){
-                $("#parentGroup").val("")
-            } else {
-                $.ajax({
-                    url: urlConfig.host + '/group/findAllGroupMessagesByType',
-                    type:"get",
-                    data: {type:$("#groupInputName").attr("types")},
-                    success(data) {
-                        data.map(s=>{
-                            if(s.id == node.pid){
-                                $("#parentGroup").val(s.groupname)
-                            }
-                        })
-                    }
-                })
-            }
-            parent.$("#moduleGroupDeleteYes").attr("deleteid",node.id)
-            parent.$("#parentGroup").attr("parentid",node.pid)
-            parent.$("#groupInputName").attr("modifyId",node.id)
-            parent.$("#groupInputName").val(node.name)
-            return
-        }
-        var allName = [];
-        allName.push(node.name);
+        var allName = []
+        allName.push(node.name)
         function names(parent) {
             if(parent.children){
                 parent.children.map(s=>{
@@ -3692,26 +3663,21 @@ Date.prototype.Format = function (fmt) { // author: meizz
             data: {type :type},
             success(data) {
                 if(data.length){
-                    // $("#groupTable").append(`<thead>
-                    // <th style="width: 220px">分组名称</th>
-                    // <th style="width: 220px">操作</th>
-                    // `)
-                    // data.map(s=>{
-                    //     $("#groupTable").append(
-                    //         `<tr>
-                    //         <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
-                    //         <td style="width: 220px">
-                    //            <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
-                    //            <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
-                    //         </td>
-                    //     </tr>
-                    //    `)
-                    // })
-                    var treeData=[]
+                    $("#groupTable").append(`<thead>
+                    <th style="width: 220px">分组名称</th>
+                    <th style="width: 220px">操作</th>
+                    `)
                     data.map(s=>{
-                        treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":"end"})
+                        $("#groupTable").append(
+                            `<tr>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
+                            <td style="width: 220px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
                     })
-                    $.fn.zTree.init($("#groupDivTree"),setting, treeData);
                 }
             }
         })
@@ -3771,13 +3737,26 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             type:"get",
                             data: {type :$("#groupInputName").attr("types")},
                             success(data) {
-                                $("#groupEditDiv").hide();
                                 var types = $("#groupInputName").attr("types");
-                                var treeData=[]
-                                data.map(s=>{
-                                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":"end"})
-                                })
-                                $.fn.zTree.init($("#groupDivTree"),setting, treeData);
+                                $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
+                                if(data.length){
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
+                                    data.map(s=>{
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id},${types})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
+                                    })
+                                }
                                 if($("#groupInputName").attr("types") == 1){
                                     dataModlue()
                                 } else if($("#groupInputName").attr("types") == 2){
@@ -3815,13 +3794,24 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             data: {type :$("#groupInputName").attr("types")},
                             success(data) {
                                 $("#groupEditDiv").hide()
+                                $("#groupTable").empty()
                                 var typess = $("#groupInputName").attr("types");
                                 if(data.length){
-                                    var treeData=[]
+                                    $("#groupTable").append(`<thead>
+                                        <th style="width: 220px">分组名称</th>
+                                        <th style="width: 220px">操作</th>
+                                        `)
                                     data.map(s=>{
-                                        treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":"end"})
+                                        $("#groupTable").append(
+                                            `<tr>
+                                                <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
+                                                <td style="width: 220px">
+                                                   <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                                                   <img src="static/delete.png" onclick="deleteGroup(${s.id},${typess})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                                                </td>
+                                            </tr>
+                                           `)
                                     })
-                                    $.fn.zTree.init($("#groupDivTree"),setting, treeData);
                                 }
                             }
                         })
@@ -4016,20 +4006,29 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 parent.toastr.info(`${res} ` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
                 parent.$("#moduleGroupDelete").hide();
-                var type = parent.$("#groupInputName").attr("types");
+                var type = parent.$("#moduleGroupDeleteYes").attr("type");
                 $.ajax({
                     url: urlConfig.host + '/group/findAllGroupMessagesByType',
                     type:"get",
                     data: {type :type},
                     success(data) {
-                        $("#groupEditDiv").hide();
+                        $("#groupTable").empty()
                         if(data.length){
-                            var types = $("#groupInputName").attr("types");
-                            var treeData=[]
+                            $("#groupTable").append(`<thead>
+                    <th style="width: 220px">分组名称</th>
+                    <th style="width: 220px">操作</th>
+                    `)
                             data.map(s=>{
-                                treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":"end"})
+                                $("#groupTable").append(
+                                    `<tr>
+                            <td style="width: 220px" title="${s.groupname}">${s.groupname}</td>
+                            <td style="width: 220px">
+                               <img src="static/edit.png" onclick="modifyGroupShow($(this),${s.id},${s.parentid})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer;margin-right: 30px">
+                               <img src="static/delete.png" onclick="deleteGroup(${s.id},${type})" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer">
+                            </td>
+                        </tr>
+                       `)
                             })
-                            $.fn.zTree.init($("#groupDivTree"),setting, treeData);
                         }
                         if(type == 1){
                             dataModlue()
@@ -4191,25 +4190,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     }
-    $("#updateGroup").click(()=>{
-        if($('#groupDivTree .curSelectedNode').length == 0){
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请先选中分组！</li>`)
-            parent.toastr.info(`请先选中分组!` )
-            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-            return
-        }
-        parent.$("#groupEditDiv").show()
-        parent.$(".groupTitle").text("修改分组")
-    })
-    $("#deleteGroup").click(()=>{
-        if($('#groupDivTree .curSelectedNode').length == 0){
-            parent.$('.noticeList').append(`<li>${parent.getTime()} 请先选中分组！</li>`)
-            parent.toastr.info(`请先选中分组!` )
-            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-            return
-        }
-        $("#moduleGroupDelete").show()
-    })
 
 </script>
 </body>
