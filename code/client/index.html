@@ -4235,6 +4235,13 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }
         }
     }
+    $.ajax({
+        url: urlConfig.host + '/loginforweb',
+        type: "get",
+        success(data){
+            console.log(data);
+        }
+    })
 </script>
 </body>
 </html>
