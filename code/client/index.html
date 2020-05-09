@@ -3564,6 +3564,15 @@ Date.prototype.Format = function (fmt) { // author: meizz
     $('#flex_tools span').click((e)=>{
         $('#flex_tools span').removeClass("liactive");
         $("#groupDiv").hide();
+        $("#dicDiv").hide()
+        $("#editDic").hide()
+        $("#gsFrame").hide()
+        $("#groupEditDiv").hide()
+        $("#dataModulePage").hide()
+        $("#lkrFrame").hide()
+        $("#gzDiv").hide()
+        $("#fileupload").hide()
+        $("#groupTreeDiv").hide()
         $("#searchName").val("");
         var activeName;
         if(e.target.localName == "i"){
@@ -3576,10 +3585,12 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if(activeName == "模型库"){
             $(".activeTypeName").text("模型管理")
             $(".activeGroupName").text("模型分组维护")
+            
         }
         if(activeName == "算法库"){
             $(".activeTypeName").text("算法管理")
             $(".activeGroupName").text("算法分组维护")
+           
         }
         if(activeName == "规则库"){
             $(".activeTypeName").text("规则管理")
@@ -3661,7 +3672,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if($('#flex_tools .liactive').text() == "模型库"){
             $('#dataModulePage').show()
             $(".mxGruopTable").html(" ")
-            getModuleList()
+            getModuleList()         
         }
         if($('#flex_tools .liactive').text() == "算法库"){
             $('#dicDiv').show()
