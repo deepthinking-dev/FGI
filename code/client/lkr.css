@@ -692,7 +692,7 @@ body{
     background: #409eff;
     width: 80px;
     color: #fff;
-    margin:15px 0;
+    margin:15px 15px;
     border: none;
     height: 30px;
 }
@@ -701,7 +701,6 @@ body{
     width: 80px;
     color: #fff;
     margin:15px 0;
-    margin-left:20px;
     border: none;
     height: 30px;
 }
@@ -1039,7 +1038,7 @@ body{
     background: #409eff;
     border: none;
     color: #fff;
-    margin: 15px 0;
+    margin: 15px 15px;
 }
 #fileupload button{
     position: absolute;
