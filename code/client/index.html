@@ -1781,7 +1781,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }catch(e){} 
             $('#' + delID).remove(); 
         }
-        if($("#canvasList ul li").length == 1){
+        if($("#canvasList ul li").length == 1 && $("#canvasList ul li").eq(0).css("display") == "none"){
             $("#canvasList").hide()
             $("#flex_canvas").hide();
         } 
@@ -2384,19 +2384,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             <td class="columnRemark"><input type="text" value="" maxlength="500"></td>
             
             <td><img src="static/delete.png"   onclick="delTab(event)" style="width: 24px;height: 24px;color: #fff;background: #0d1c4b;cursor: pointer"></td></tr>`)
-            //  $('.moduleSelect').show()
-            // $(".moduleSelect").change((e)=>{
-            //     $(e.target).parent('.columnType').children('.moduleSelect').hide()
-            //     $(e.target).parent('.columnType').children('.moduleInputOne').show()
-            //     $(e.target).parent('.columnType').children('.moduleInputOne').val($(e.target).val())
-            // })
-            // function myFunction(e){
-            //
-            //     $(e.target).parent('.columnType').children('.moduleSelect').show()
-            //     $(e.target).parent('.columnType').children('.moduleInputOne').hide()
-            //
-            //
-            // }
     }
    
     function ConfirmDel(){
