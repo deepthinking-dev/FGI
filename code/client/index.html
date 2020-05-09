@@ -1242,11 +1242,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             } else {
                 $('#topo_canvas').css({
                     // "background-color":"#fff",
-                    "background-image": "url('./static/lkr.png')",
+                    // "background-image": "url('./static/lkr.png')",
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
                     "width":"1505px",
-                    "height":"727px",
+                    "height":"726px",
                     "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
                     "border-radius": "8px"
                 })
@@ -1305,11 +1305,11 @@ Date.prototype.Format = function (fmt) { // author: meizz
             } else {
                 $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
                     // "background-color":"#fff",
-                    "background-image": "url('./static/lkr.png')",
+                    // "background-image": "url('./static/lkr.png')",
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
                     "width":"1505px",
-                    "height":"727px",
+                    "height":"726px",
                     "zIndex":"0",
                     "border-radius": "8px"
                 })
@@ -1338,6 +1338,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if ($("#canvasList").css("display") == "none") {
             $("#canvasList").show()
             $('#canvasList ul li').eq(0).addClass('pageson').show();
+            $('#canvasList ul li').eq(0).find("span").text("画布1")
             $("#flex_canvas").show();
             window.canvasNowId ="canvas0"
         }else{
@@ -1749,6 +1750,14 @@ Date.prototype.Format = function (fmt) { // author: meizz
             window.globalActionDatas =[]
             window.bigData.ruleType ="add"
             canvas.render();
+            if($("#canvasList ul li").length > 1){
+                $('.lkr-bg-canvas').children().hide();
+                let showId =$(e.target).parent("li").next().find("span").attr("canvasid")
+                $(e.target).parent("li").next().addClass('pageson');
+                $('#'+showId).show()
+                window.canvasNowId =showId
+                $('#'+showId)[0].contentWindow.canvasNowId = showId
+            }
         }else if(delID == nowID && delID != "canvas0"){
             $(e.target).parent("li").siblings().removeClass('pageson');
             $(e.target).parent("li").prev().addClass('pageson');

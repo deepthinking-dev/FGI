@@ -560,7 +560,6 @@ function ruleSure(){
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify(algorithmRuleSaveDataModel),
             success: function(data) {
-                debugger
                 parent.$("#sureRule").hide()
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】保存成功！ </li>`)
                 parent.toastr.success(`【规则】保存成功！` )
