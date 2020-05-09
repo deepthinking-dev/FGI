@@ -64,7 +64,7 @@
             color: #45a1e9;
         }
         .aqua{
-            color: aqua;!important;
+            color: aqua !important;
         }
         .red{
             color:red
@@ -269,6 +269,18 @@
                <button id="addAction" class="btn pointer" type="button" style="margin-right: 15px;background: #409eff;color: #fff;float: right">确定</button>
            </div>
        </div>
+
+     <div id="actionDivLine">
+         <div style="height: 35px">
+             <span class="actionDivLineInName" style="position: absolute;left: 20%;top:5px">输入参数</span>
+             <span class="actionDivLineOutName" style="position: absolute;left:65%;top:5px">输出参数</span>
+            <span class="closeActionDivLine" style="color:#fff;float: right;cursor: pointer;font-size: 16px;margin-right: 25px;margin-top: 5px">X</span>
+         </div>
+         <div style="margin: 10px 5px;height: 400px;overflow: auto;width: 47%;float: left;margin-left: 25px" id="actionDivLineIn"></div>
+         <div style="margin: 10px 5px;height: 400px;overflow: auto;width: 47%;float: left" id="actionDivLineOut"></div>
+         <input type="text" id="actionMsgInLine" disabled>
+         <input type="text" id="actionMsgOutLine" disabled>
+     </div>
        <!-- 动作弹窗选择参数-->
        <div id="actionSelectDiv">
            <div style="text-align: center;margin-top: 20px">
@@ -1013,26 +1025,6 @@
         </div>
         <button id="editDicYes">确定</button>
     </div>
-    <!-- <div id="colorDiv">
-        <ul>
-            <li style="background: #0eff23">常量</li>
-            <li style="background: #ff00e7">模型</li>
-            <li style="background: red">int</li>
-            <li style="background: #ff7749">byte</li>
-            <li style="background: #a4ff59">long</li>
-            <li style="background: #fb61ff">short</li>
-            <li style="background: blue">float</li>
-            <li style="background: green">double</li>
-            <li style="background: aqua">boolean</li>
-            <li style="background: orange">number</li>
-            <li style="background: #7cc6ff">char</li>
-            <li style="background: #ff4286">date</li>
-            <li style="background: #00c1ff">string</li>
-            <li style="background: #6a46ff">blob</li>
-            <li style="background: #ffe964">array</li>
-        </ul>
-    </div> -->
-
 <script src="config.js"></script>
 
 <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
@@ -1453,7 +1445,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
             success(response) {
                 response.tableFuncs.map(s=>{
                     if(s.parametername == fromParmaChinese){
-                        console.log(fromParmaChinese);
                         parent.$('#addActionButton').attr("from_name",s.varname);
                         parent.$('#addActionButton').attr("from_id",s.id);
                     }
@@ -4190,7 +4181,28 @@ Date.prototype.Format = function (fmt) { // author: meizz
             })
         }
     }
-
+    $("#updateGroup").click(()=>{
+        if($('#groupDivTree .curSelectedNode').length == 0){
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请先选中分组！</li>`)
+            parent.toastr.info(`请先选中分组!` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+            return
+        }
+        parent.$("#groupEditDiv").show()
+        parent.$(".groupTitle").text("修改分组")
+    })
+    $("#deleteGroup").click(()=>{
+        if($('#groupDivTree .curSelectedNode').length == 0){
+            parent.$('.noticeList').append(`<li>${parent.getTime()} 请先选中分组！</li>`)
+            parent.toastr.info(`请先选中分组!` )
+            parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
+            return
+        }
+        $("#moduleGroupDelete").show()
+    })
+    $(".closeActionDivLine").click(()=>{
+        $("#actionDivLine").hide()
+    })
 </script>
 </body>
 </html>

@@ -836,7 +836,7 @@ body{
 .gzGruopTable th{
     text-align: center;
 }
-#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect,#parentGroup,.search-input{
+#editDicName,#editDicDes,.zdcsCsmc,.zdcsText,.zdcsExport,.zdcsSelect,.zdcsTypeSelect,#gsXx,#ljName,#editAuthor,.inputButton,#selectedModlue,.MathJaxInput2,.MathJaxSelect,#ruleName,#ruleRemark,.actionSelected1,.actionSelected2,#varTypeInput,#actionDiv,.varNameInput,.varNameInput1,#company,#group,#groupInputName,#gzGroupName,#actionMsgIn,#actionMsgOut,#addLjSelect,#parentGroup,.search-input,#actionMsgInLine,#actionMsgOutLine{
     background-color: rgba(0,0,0,0);
     background-image: url(./static/select.png);
     background-size: 100% 100%;
@@ -1286,4 +1286,16 @@ body{
     position: absolute;
     left: 75px;
     top: 5px
+}
+#actionMsgInLine{
+    width: 400px;
+    height: 40px;
+    margin-left: 5%;
+    margin-top: 30px;
+}
+#actionMsgOutLine{
+    width: 400px;
+    height: 40px;
+    margin-left: 7%;
+    margin-top: 30px;
 }

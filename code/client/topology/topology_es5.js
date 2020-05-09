@@ -11,7 +11,7 @@ var selected = null;
 var locked = false;
 //右键菜单对应标记是否可用
 var ww = null
-
+var times = 0;
 var Topology = {
     data: {},
     load: false,
@@ -128,8 +128,7 @@ var Topology = {
             self.down_png();
         });
         // 画布右键属性
-
-        $("#flex_canvas").bind("contextmenu", function () {
+        $("#flex_canvas").bind("contextmenu", function (e) {
             //设置右键菜单
             if (selNodes != null) {
                 $("#showRk").show();
@@ -369,7 +368,9 @@ var Topology = {
 
                             self.initNode();
                             break;
+                            break;
                         case 'line':
+                            times++;
                             var out_small = data.from.id.split('---')[0]//输出小矩形uuid
                             var in_small =  data.to.id.split('---')[0]//输入小矩形uuid
                             if(window.top.canvasNowId == "canvas0"){
@@ -384,6 +385,239 @@ var Topology = {
                             canvas.render()
                             if(window.canvasNowId != "canvas0"){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
+                            }
+                            setTimeout(()=>{
+                                times = 0;
+                            },300)
+                            if(times >=2){
+                                $("#actionDivLine").show();
+                                parent.$("#actionMsgInLine").val("")
+                                parent.$("#actionMsgOutLine").val("")
+                                parent.$("#actionDivLineIn").empty();
+                                parent.$("#actionDivLineOut").empty();
+                                var datas,local,res;
+                                if(window.top.canvasNowId == "canvas0"){
+                                    datas = canvas.data;
+                                    local = globalActionDatas;
+                                    res =responseActionDatas
+                                }else{
+                                    datas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data;
+                                    local = parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas;
+                                    res = parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas
+                                }
+                                let id_in;//输入端算法id
+                                let id_out;//输出端算法id
+                                parent.$("#actionMsgIn").val("");
+                                parent.$("#actionMsgOut").val("");
+                                parent.$("#actionMsgIn").show();
+                                parent.$("#actionMsgOut").hide();
+                                parent.$(".menu-a-delete").css("display", "block");
+                                parent.$("#addActionButton").attr({
+                                    actionRelation:"",
+                                    preActionRelation:""
+                                })
+                                parent.$("#addActionButton").attr("resData","false")
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.from.id){
+                                        id_out = s.childStand.fid
+                                    }
+                                    if(s.id == data.to.id){
+                                        id_in = s.childStand.fid
+                                    }
+                                })
+                                if(window.canvasNowId != "canvas0"){
+                                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
+                                }
+                                var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
+                                var bigList=[];
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.from.id){
+                                        smallOutName = s.childStand.cstext;
+                                        out_big = s.childStand.fUUid;
+                                    }
+                                    if(s.id == data.to.id){
+                                        smallInName = s.childStand.cstext;
+                                        in_big = s.childStand.fUUid;
+                                    }
+                                })
+                                datas.nodes.map(s=>{
+                                    if(s.id == out_big){
+                                        bigOutName = s.text;
+                                    }
+                                    if(s.id == in_big){
+                                        bigInName = s.text;
+                                    }
+                                })
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.to.id){
+                                        fromParmaChinese = s.childStand.cstext
+                                    }
+                                })
+                                $(".actionDivLineInName").text(`${bigInName}的输入参数`)
+                                $(".actionDivLineOutName").text(`${bigOutName}的输出参数`)
+                                var localData = true;//使用本地缓存数据
+                                var responseCurrentData = false;
+                                var resBaseOut;
+                                var resBaseIn;
+                                if(res){//后台返回数据
+                                    res.map(t=>{
+                                        if((t.preParametersID == out_small) && (t.parametersID == in_small)){
+                                            responseCurrentData= t;
+                                            resBaseOut = [];
+                                            resBaseIn = [];
+                                            localData = false;
+                                        }
+                                    })
+                                    if(responseCurrentData){
+                                        parent.$("#actionMsgInLine").val(responseCurrentData.actionRelation)
+                                        parent.$("#actionMsgOutLine").val(responseCurrentData.preActionRelation)
+                                        responseCurrentData.algorithmconditions.map(s=>{
+                                            if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
+                                                resBaseOut.push(s)
+                                            }
+                                            if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
+                                                resBaseIn.push(s)
+                                            }
+                                        })
+                                        var resOutAll = {
+                                            "interfaceRoleDataModels":
+                                                {
+                                                    "algorithmconditions":resBaseOut,
+                                                    "des": "",
+                                                    "id": responseCurrentData.id,
+                                                    "interfaceID": responseCurrentData.interfaceID,
+                                                    "parametersID":responseCurrentData.parametersID,
+                                                    "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                    "preParametersID": responseCurrentData.preParametersID,
+                                                    "remark": "",
+                                                    "roleid": responseCurrentData.roleid,
+                                                }
+                                        }
+                                        var resInAll = {
+                                            "interfaceRoleDataModels":
+                                                {
+                                                    "algorithmconditions": resBaseIn,
+                                                    "des": "",
+                                                    "id": responseCurrentData.id,
+                                                    "interfaceID": responseCurrentData.interfaceID,
+                                                    "parametersID": responseCurrentData.parametersID,
+                                                    "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                    "preParametersID": responseCurrentData.preParametersID,
+                                                    "remark": "",
+                                                    "roleid": responseCurrentData.roleid,
+                                                }
+                                        }
+                                        try{
+                                            $.ajax({
+                                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                data:{algthId:id_in},
+                                                success(response) {
+                                                    var varname="";
+                                                    response.tableFuncs.map(s => {
+                                                        if(s.parametername == fromParmaChinese) {
+                                                            varname = s.varname
+                                                        }
+                                                    })
+                                                    resBaseIn.map((t,i)=>{
+                                                        parent.$("#actionDivLineIn").append(`
+                                                                <div style="margin: 10px 0" actionId=${t.id}>
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input value="${varname}" class="xwzly_in_line" disabled>
+                                                                       <span style="width: 40px;">行为</span><input class="xwSelect_in_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px;">表达式</span><input type="text" value="${t.expression}" class="bds_in_line" disabled>
+                                                                    </div>
+                                                                `)
+                                                    })
+                                                }
+                                            })
+                                            $.ajax({
+                                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                data:{algthId:id_out},
+                                                success(res) {
+                                                    res.tableFuncs.map(s=>{
+                                                        resBaseOut.map(x => {
+                                                            if (x.valuesources == s.id) {
+                                                                x.xwname = s.varname;
+                                                            }
+                                                        })
+                                                    })
+                                                    resBaseOut.map((t,i)=>{
+                                                        parent.$("#actionDivLineOut").append(`
+                                                              <div style="margin: 10px 0" actionId=${t.id}>
+                                                                   <i>${i+1}</i>
+                                                                   <span style="width: 80px">行为值来源</span><input class="xwzly_out_line" value="${t.xwname}" disabled>
+                                                                   <span style="width: 40px">行为</span><input class="xwSelect_out_line" value="${t.behavior}" disabled>
+                                                                   <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_out_line" disabled>
+                                                              </div>
+                                                        `)
+                                                    })
+                                                }
+                                            })
+                                        } catch (e) {
+                                            console.log(e);
+                                        }
+                                    }
+                                }
+                                if(localData){//本地缓存数据
+                                    local.map(s=>{
+                                        if(s.id == out_small + "AND" + in_small){
+                                            try{
+                                                var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                                var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                                                parent.$("#actionMsgInLine").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                                                parent.$("#actionMsgOutLine").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
+                                                $.ajax({
+                                                    url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                    data:{algthId:id_in},
+                                                    success(res) {
+                                                        var varname="";
+                                                        res.tableFuncs.map(s => {
+                                                            if(s.parametername == fromParmaChinese) {
+                                                                varname = s.varname
+                                                            }
+                                                        })
+                                                        lineDatas.map((t,i)=>{
+                                                            parent.$("#actionDivLineIn").append(`
+                                                                 <div style="margin: 10px 0">
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input value="${varname}" class="xwzly_in_line" disabled>
+                                                                       <span style="width: 40px">行为</span><input class="xwSelect_in_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_in_line" disabled>
+                                                                 </div>
+                                                            `)
+                                                        })
+                                                    }
+                                                })
+                                                $.ajax({
+                                                    url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                    data:{algthId:id_out},
+                                                    success(res) {
+                                                        res.tableFuncs.map(s=>{
+                                                            lineDatasOut.map(x => {
+                                                                if (x.valuesources == s.id) {
+                                                                    x.xwname = s.varname;
+                                                                }
+                                                            })
+                                                        })
+                                                        lineDatasOut.map((t,i)=>{
+                                                            parent.$("#actionDivLineOut").append(`
+                                                                 <div style="margin: 10px 0">
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input class="xwzly_out_line" value="${t.xwname}" disabled>
+                                                                       <span style="width: 40px">行为</span><input class="xwSelect_out_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_out_line" disabled>
+                                                                 </div>
+                                                            `)
+                                                        })
+                                                    }
+                                                })
+                                            } catch (e) {
+                                                console.log(e);
+                                            }
+                                        }
+                                    })
+                                }
+                                //-----
                             }
                             break;
                         case 'multi':
