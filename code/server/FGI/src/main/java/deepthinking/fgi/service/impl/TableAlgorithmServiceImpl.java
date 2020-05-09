@@ -10,12 +10,15 @@ import deepthinking.fgi.domain.*;
 import deepthinking.fgi.model.AlgorithmBaseInfo;
 import deepthinking.fgi.model.AlgorithmModel;
 import deepthinking.fgi.service.TableAlgorithmService;
+import deepthinking.fgi.service.TableGroupdataService;
+import deepthinking.fgi.util.UserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +42,10 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
     private TableOperatorinterfaceMapper tableOperatorinterfaceMapper;
 
     @Override
-    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName) {
+    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName,HttpServletRequest request) {
         List<AlgorithmBaseInfo> result=new ArrayList<>();
-        List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo(groupName);
+        String userId= UserData.getUserIdFromCookie(request.getCookies());
+        List<Map<String,Object>> tableAlgorithms=tableAlgorithmMapper.selectBaseInfo(groupName,userId);
         if(tableAlgorithms.size()>0){
             tableAlgorithms.forEach(data->{
                 AlgorithmBaseInfo algorithmBaseInfo=new AlgorithmBaseInfo();
@@ -63,10 +67,20 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         }
         return result;
     }
-
+    @Resource
+    private TableGroupdataService tableGroupdataService;
     @Override
-    public int addAlgorithm(AlgorithmModel algorithmModel) {
+    public int addAlgorithm(AlgorithmModel algorithmModel, HttpServletRequest request) {
         try {
+            String groupname=algorithmModel.getTableAlgorithm().getAlgorithmgroup();
+            List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,2);
+            if(list==null||list.size()==0){
+                TableGroupdata tableGroupdata=new TableGroupdata();
+                tableGroupdata.setGroupname(groupname);
+                tableGroupdata.setParentid(0);
+                tableGroupdata.setGrouptype(2);
+                tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+            }
             //算子名称不能重复
             TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
             tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(algorithmModel.getTableAlgorithm().getAlgorithmname())
@@ -77,6 +91,8 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
             }
             //设置状态
             algorithmModel.getTableAlgorithm().setStatus("未发布");
+            String userId= UserData.getUserIdFromCookie(request.getCookies());
+            algorithmModel.getTableAlgorithm().setRemark3(userId);
             insertSelective(algorithmModel.getTableAlgorithm());
             //获取算子ID
             int id=algorithmModel.getTableAlgorithm().getId();

@@ -1,15 +1,21 @@
 package deepthinking.fgi.controller;
 
 import deepthinking.fgi.service.ToOtherService;
+import deepthinking.fgi.util.UserData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +41,54 @@ public class ToOtherController {
             @ApiImplicitParam(name = "status", value = "状态值", dataType = "string", paramType = "query", required = true)})
     public boolean updateDataStatus(String type,int id,String status){
         return toOtherService.updateDataStatus(type,id,status);
+    }
+    @PostMapping("/loginFGI")
+    @ApiOperation(value = "07-03 同步登陆信息到FGI", notes = " 同步登陆信息到FGI", httpMethod = "POST")
+    @ApiImplicitParams({@ApiImplicitParam(name = "userName", value = "用户名", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "string", paramType = "query", required = true)})
+    public boolean loginFGI(String userName, String userId, HttpServletResponse response){
+        try{
+            Cookie cookie=new Cookie("fgi",userId);
+            response.addCookie(cookie);
+            UserData.saveUser(userName,userId,cookie);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    @GetMapping("/logoutFGI")
+    @ApiOperation(value = "07-04 退出FGI登陆", notes = " 同步登陆信息到FGI", httpMethod = "GET")
+    @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "string", paramType = "query", required = true)
+    public boolean logoutFGI(String userId){
+        try{
+            UserData.removeUser(userId);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    @GetMapping("/loginforweb")
+    @ApiOperation(value = "07-05 本系统前端同步cookie", notes = " 返回cookie信息", httpMethod = "GET")
+    public boolean loginforweb(HttpServletRequest request, HttpServletResponse response){
+        try{
+//            UserData.removeUser(userId);
+            Cookie[] cookies = request.getCookies();
+            boolean falg=true;
+            if(cookies.length>0){
+                for(Cookie cookie:cookies){
+                    if(cookie.getName().equals("fgi")){
+                        falg=false;
+                    }
+                }
+            }
+            if(falg){
+               Cookie cookie=new Cookie("fgi","fgiweb");
+               response.addCookie(cookie);
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
 }

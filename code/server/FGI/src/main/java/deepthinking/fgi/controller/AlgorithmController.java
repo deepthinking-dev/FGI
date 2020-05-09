@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,15 +30,15 @@ public class AlgorithmController {
     @GetMapping("/getAllAlgorithm")
     @ApiOperation(value = "03-01 根据分组获取所有算法,仅返回算法基本信息", notes = "返回算法基本信息", httpMethod = "GET")
     @ApiImplicitParam(name = "groupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
-    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName){
-        return tableAlgorithmService.getAllAlgorithm(groupName);
+    public List<AlgorithmBaseInfo> getAllAlgorithm(String groupName, HttpServletRequest request){
+        return tableAlgorithmService.getAllAlgorithm(groupName,request);
     }
 
     @PostMapping("/addAlgorithm")
     @ApiOperation(value = "03-02 添加算法信息(包括参数信息)", notes = "返回添加结果", httpMethod = "POST")
-    public ResultDto addAlgorithm(@ApiParam @RequestBody AlgorithmModel algorithmModel){
+    public ResultDto addAlgorithm(@ApiParam @RequestBody AlgorithmModel algorithmModel,HttpServletRequest request){
         ResultDto result=new ResultDto();
-        int i= tableAlgorithmService.addAlgorithm(algorithmModel);
+        int i= tableAlgorithmService.addAlgorithm(algorithmModel,request);
         result.setStatus(i);
         if(i==1){
             result.setMsg("新增成功");

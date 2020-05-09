@@ -2,6 +2,7 @@ package deepthinking.fgi.service;
 
 import deepthinking.fgi.domain.TableModule;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public interface TableModuleService extends BaseService<TableModule,Integer> {
      * 获取所有的模板信息列表
      * @return
      */
-    List<TableModule> GetAllModule();
+    List<TableModule> GetAllModule(HttpServletRequest request);
 
     /**
      * 获取所有模板分组
@@ -28,7 +29,7 @@ public interface TableModuleService extends BaseService<TableModule,Integer> {
      * @param moduleGroupName
      * @return
      */
-    List<TableModule> GetModuleByGroupName(String moduleGroupName);
+    List<TableModule> GetModuleByGroupName(String moduleGroupName,HttpServletRequest request);
 
     /**
      * 获取指定模板的详细信息
@@ -42,7 +43,7 @@ public interface TableModuleService extends BaseService<TableModule,Integer> {
      * @param module
      * @return
      */
-    boolean addModule (TableModule module);
+    boolean addModule (TableModule module,HttpServletRequest request);
 
     /**
      * 对指定的一个模板进行修改保存

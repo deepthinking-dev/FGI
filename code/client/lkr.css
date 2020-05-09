@@ -924,17 +924,6 @@ body{
     margin-right: 10px;
 }
 
-#groupDiv span{
-    text-align: right;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    width: 120px;
-    height: 40px;
-    vertical-align: top;
-    line-height: 40px;
-    margin-right: 20px;
-}
 #groupEditDiv span{
     text-align: right;
     font-size: 16px;
@@ -1000,7 +989,7 @@ body{
     position: relative;
     font-size: 16px;
     color: #fff;
-    top: 10px;
+    top: 20px;
     left: 20px;
     text-align: center;
 }
@@ -1147,6 +1136,22 @@ body{
 }
 #addGroup{
     background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin: 15px 0;
+    border: none;
+    height: 30px;
+}
+#updateGroup{
+    background: #409eff;
+    width: 80px;
+    color: #fff;
+    margin: 15px 10px;
+    border: none;
+    height: 30px;
+}
+#deleteGroup{
+    background: #f56c6c;
     width: 80px;
     color: #fff;
     margin: 15px 0;

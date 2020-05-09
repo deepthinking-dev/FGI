@@ -8,6 +8,7 @@ import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public class ModuleController {
 //            @ApiImplicitParam(name = "pageNum", value = "分页序号", dataType = "int", paramType = "query", required = true),
 //            @ApiImplicitParam(name = "pageSize", value = "单页大小", dataType = "int", paramType = "query", required = true)
 //    })
-    public List<TableModule> GetAllModule(){
-        return tableModuleService.GetAllModule();
+    public List<TableModule> GetAllModule(HttpServletRequest request){
+        return tableModuleService.GetAllModule(request);
     }
     @GetMapping("/GetModuleGroup")
     @ApiOperation(value = "01-02 获取所有模型分组", notes = "返回模型分组信息列表", httpMethod = "GET")
@@ -42,8 +43,8 @@ public class ModuleController {
     @GetMapping("/GetModuleByGroupName")
     @ApiOperation(value = "01-03 获取指定分组下的所有模模型", notes = "返回指定模型分组下的所有模型信息", httpMethod = "GET")
     @ApiImplicitParam(name = "moduleGroupName", value = "分组名称", dataType = "string", paramType = "query", required = true)
-    public List<TableModule> GetModuleByGroupName(String moduleGroupName){
-        return tableModuleService.GetModuleByGroupName(moduleGroupName);
+    public List<TableModule> GetModuleByGroupName(String moduleGroupName,HttpServletRequest request){
+        return tableModuleService.GetModuleByGroupName(moduleGroupName,request);
     }
     @GetMapping("/getModuleById")
     @ApiOperation(value = "01-04 获取指定模型的详细信息", notes = "返回获取指定模型的详细信息", httpMethod = "GET")
@@ -53,8 +54,8 @@ public class ModuleController {
     }
     @PostMapping("/addModule")
     @ApiOperation(value = "01-05 新建一个全新的模型（可以连同模型关联字段一起新增）", notes = "返回新建结果 true 或者 false ", httpMethod = "POST")
-    public boolean addModule (@ApiParam @RequestBody TableModule module){
-        return tableModuleService.addModule(module);
+    public boolean addModule (@ApiParam @RequestBody TableModule module,HttpServletRequest request){
+        return tableModuleService.addModule(module,request);
     }
     @PostMapping("/modModuleById")
     @ApiOperation(value = "01-06 修改一个全新的模型（可以连同模型关联字段一起修改，系统自动判断需要删除和新增的字段）", notes = "返回修改结果 true 或者 false ", httpMethod = "POST")

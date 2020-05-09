@@ -252,7 +252,7 @@ public interface TableAlgorithmMapper {
     @Select({
                     "select",
                     "ID, AlgorithmName,Status,AlgorithmAuthor,Des",
-                    "from table_algorithm where AlgorithmGroup = #{groupName}"
+                    "from table_algorithm where AlgorithmGroup = #{groupName} and Remark3 = #{userId}"
             })
     @Results({
             @Result(column="ID", property="id", jdbcType=JdbcType.INTEGER, id=true),
@@ -261,7 +261,7 @@ public interface TableAlgorithmMapper {
             @Result(column="AlgorithmAuthor", property="algorithmauthor", jdbcType=JdbcType.VARCHAR),
             @Result(column="Des", property="des", jdbcType=JdbcType.VARCHAR),
     })
-    List<Map<String,Object>> selectBaseInfo(String groupName);
+    List<Map<String,Object>> selectBaseInfo(String groupName,String userId);
 
     @Select({
             "select",
