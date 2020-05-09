@@ -314,7 +314,7 @@ body{
 }
 .lkr-frame{
     position: fixed;
-    z-index: 999;
+    z-index: 1001;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
@@ -1297,6 +1297,6 @@ body{
 #actionMsgOutLine{
     width: 400px;
     height: 40px;
-    margin-left: 7%;
+    margin-left:10%;
     margin-top: 30px;
 }
