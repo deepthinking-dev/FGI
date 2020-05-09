@@ -1343,7 +1343,6 @@ function ActionSure(){
         ruleType =window.frames[canvasNowId].contentWindow.bigData.ruleType
     }
     if(ruleType== "edit"){
-        debugger
         let interfaceName,roleID,childList
         if(window.canvasNowId == "canvas0"){
             interfaceName =window.Topology.dblclickNode.text

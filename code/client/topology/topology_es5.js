@@ -1667,7 +1667,6 @@ var Topology = {
                            if(window.canvasNowId != "canvas0" && parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.map((item,i)=>{
                                     if(item.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines[0].id){
-                                        debugger
                                         parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.splice(i,1)
                                         parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.render();
                                     }
