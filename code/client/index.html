@@ -404,8 +404,8 @@
         </div>
         <div class="addButtonModlue" style="position: relative;top:70px;margin:0 15px">
             <button class="addModlue" onclick="addModule()">新增</button>
-            <div style="height: 520px;overflow: auto">
-                <ul id="modelWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
+            <ul id="modelWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;height: 520px;"></ul>
+            <div style="height: 520px;overflow: auto;margin-left: 15px;float: left">
                 <table class="mxGruopTable" style="float: left;"></table>
             </div>
         </div>
@@ -929,12 +929,10 @@
                <span>规则信息</span>
                <span class="closeGzDiv" style="color:#fff;float: right;cursor: pointer;margin-right: 50px">X</span>
            </div>
-           <div style="position: relative;top:40px;margin: 0 auto;margin-left:15px">
-               <input type="button" value="导入规则" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff" onclick="uploadShow()">
-           </div>
-           <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
-               <div style="height: 480px;overflow: auto">
-                   <ul id="gzWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;"></ul>
+           <ul id="gzWinTree" class="ztree" style="width: 250px;float: left;overflow:auto;height: 520px;margin-top: 20px"></ul>
+           <input type="button" value="导入规则" style="height: 30px;line-height: 30px;background: #409eff;border: none;color: #fff;margin-left: 10px;position: absolute;top: 70px;" onclick="uploadShow()">
+           <div style="position: relative;top:50px;margin: 0 auto;">
+               <div style="height: 500px;overflow: auto;float: left;width: 650px;margin-left: 10px;margin-top: 10px">
                    <table class="gzGruopTable" style="float: left;"></table>
                </div>
            </div>
@@ -948,8 +946,8 @@
               <div style="position: relative;top:70px;margin: 0 auto;margin-left: 10px">
                   <input type="button" id="addDic" value="新增算法">
                   <input type="button" id="addSzBuuton" onclick="editAlgorithm()" value="编辑算法">
-                  <div style="height: 520px;overflow: auto">
-                      <ul id="sfWinTree" class="ztree" style="width: 250px;float: left;overflow: auto"></ul>
+                  <ul id="sfWinTree" class="ztree" style="width: 250px;float: left;overflow: auto;height: 520px"></ul>
+                  <div style="height: 520px;overflow: auto;margin-left: 15px;float: left;width: 650px">
                       <table class="sfGruopTable" style="float: left;"></table>
                   </div>
               </div>

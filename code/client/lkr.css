@@ -17,7 +17,7 @@ body{
     color: #45a1e9;
     height: 240px;
     border: 1px solid #45a1e9;
-    z-index: 99999;
+    z-index: 30;
 }
 .yjl_tools >div{
     position: relative;
@@ -692,7 +692,7 @@ body{
     background: #409eff;
     width: 80px;
     color: #fff;
-    margin:15px 0;
+    margin:15px 15px;
     border: none;
     height: 30px;
 }
@@ -701,7 +701,6 @@ body{
     width: 80px;
     color: #fff;
     margin:15px 0;
-    margin-left:20px;
     border: none;
     height: 30px;
 }
@@ -727,7 +726,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    z-index: 9;
+    z-index: 99;
 }
 #groupDiv{
     position: absolute;
@@ -775,6 +774,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    z-index: 999;
 }
 #dicTable{
     margin: 0 20px
@@ -1039,7 +1039,7 @@ body{
     background: #409eff;
     border: none;
     color: #fff;
-    margin: 15px 0;
+    margin: 15px 15px;
 }
 #fileupload button{
     position: absolute;

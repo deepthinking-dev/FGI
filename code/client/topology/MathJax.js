@@ -461,6 +461,7 @@ function ruleSure(){
         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
         return false
      }
+    var rName = $("#gzGroupName").val();
     editGzType = false;
     let algorithmRuleDataList = [] 
 
@@ -619,6 +620,11 @@ function ruleSure(){
                        
                     })
                 }
+                var zTreeObject = $.fn.zTree.getZTreeObj("ruleTree");
+                var node = zTreeObject.getNodeByParam('name',rName);
+                zTreeObject.cancelSelectedNode();
+                zTreeObject.selectNode(node, true);
+                freshClick("ruleTree")
             }
         })
     }else{
@@ -660,7 +666,6 @@ function ruleSure(){
                     }
 
                 }
-              
             }
         })
     }
