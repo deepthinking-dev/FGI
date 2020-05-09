@@ -32,20 +32,6 @@ $(function(){
             $("#actionMsgOut").val(val + " " + type)
         }
     })
-
-    // parent.$("#selectOutIn").change(()=> {
-    //     if (parent.$("#selectOutIn").val() == "1") {
-    //         parent.$("#actionInDiv").show();
-    //         parent.$("#actionMsgIn").show();
-    //         parent.$("#actionOutDiv").hide();
-    //         parent.$("#actionMsgOut").hide();
-    //     } else {
-    //         parent.$("#actionInDiv").hide();
-    //         parent.$("#actionMsgIn").hide();
-    //         parent.$("#actionOutDiv").show();
-    //         parent.$("#actionMsgOut").show();
-    //     }
-    // })
     $('body').on('click','.deleteActionData',(e) => {
         if($("#selectOutIn").val() == 1){
             $("#actionMsgIn").val("");
@@ -1247,6 +1233,19 @@ $(function(){
         parent.$("#dicDiv").hide();
         let AlgorithmId= $(e.target).attr('algorithmid')
         showMsg(AlgorithmId)
+    })
+    parent.$("#selectOutIn").change(()=> {
+        if (parent.$("#selectOutIn").val() == "1") {
+            parent.$("#actionInDiv").show();
+            parent.$("#actionMsgIn").show();
+            parent.$("#actionOutDiv").hide();
+            parent.$("#actionMsgOut").hide();
+        } else {
+            parent.$("#actionInDiv").hide();
+            parent.$("#actionMsgIn").hide();
+            parent.$("#actionOutDiv").show();
+            parent.$("#actionMsgOut").show();
+        }
     })
 })
 
