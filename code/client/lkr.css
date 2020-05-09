@@ -726,7 +726,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    z-index: 9;
+    z-index: 99;
 }
 #groupDiv{
     position: absolute;
