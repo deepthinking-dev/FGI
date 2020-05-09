@@ -538,18 +538,19 @@ function ruleSure(){
             success: function(data) {
                 if(window.canvasNowId == "canvas0"){
                     window.isRuleNow =true
-                    window.bigData.isExportId = tableRole.id
+                    window.bigData.isExportId = data.id
                     window.bigData.ruleType ="add"
                 }else{
                     window.frames[canvasNowId].contentWindow.isRuleNow =true
                     window.frames[canvasNowId].contentWindow.bigData.ruleType ="add"
-                    window.frames[canvasNowId].contentWindow.bigData.isExportId = tableRole.id
+                    window.frames[canvasNowId].contentWindow.bigData.isExportId = data.id
                 }
                 parent.$("#sureRule").fadeToggle(500)
                 parent.$('.noticeList').append(`<li>${parent.getTime()}【规则】修改成功！ </li>`)
                 parent.toastr.success(`【规则】修改成功！` )
                 parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-                $("#canvasList ul .pageson span").text(data.tableRole.rolename)
+                $("#canvasList ul .pageson span").text(data.rolename)
+                zcData[$('.pageson .canvasLi').text()] = data;
             }
         })
     }else{
