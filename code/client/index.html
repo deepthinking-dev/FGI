@@ -1145,62 +1145,62 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
 
     //拖拽弹框
-    $('body').on('mousedown','.head-hidden',(event) =>{
-        var e = event || window.event;
-        let  obj=$("#ruleAct"),disX = 0, disY = 0;
-        if(event.button==0){//判断是否点击鼠标左键  
-            /*  
-            * clientX和clientY代表鼠标当前的横纵坐标  
-            * offset()该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。  
-            * bind()绑定事件，同样unbind解绑定，此效果的实现最后必须要解绑定，否则鼠标松开后拖拽效果依然存在  
-            * getX获取当前鼠标横坐标和对象离屏幕左侧距离之差（也就是left）值，  
-            * getY和getX同样道理，这两个差值就是鼠标相对于对象的定位，因为拖拽后鼠标和拖拽对象的相对位置是不变的  
-            */  
-            // 鼠标相对于div左侧位置
-            disX = event.clientX-obj.offset().left;  
-            disY= event.clientY-obj.offset().top;
-            //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的  
-            $(document).bind("mousemove",move);  
-            //此处的$(document)可以改为obj  
-            $(document).bind("mouseup",stop); 
-            
-        }  
-        return false;//阻止默认事件或冒泡  
-        function move(event){ 
-
-            let leftNum = 0,topnNum = 0
-             // 获取浏览器可见区域宽高，div宽高
-	        var browserWidth = document.documentElement.clientWidth,
-	        browserHeight = document.documentElement.clientHeight,
-	        boxWidth = document.getElementById('ruleAct').offsetWidth,
-            boxHeight = document.getElementById('ruleAct').offsetHeight;
-            leftNum =event.clientX-disX 
-            if((leftNum -disX) < 0){
-                leftNum = 0
-            }
-            if((leftNum+boxWidth) > browserWidth){
-                leftNum = browserWidth -boxWidth
-            }
-            topnNum = event.clientY-disY 
-            if(topnNum < 0){
-                topnNum = 0
-            }
-            if((topnNum+boxHeight) >browserHeight){
-                topnNum = browserHeight - boxHeight
-            } 
-            obj.css({  
-                "left":leftNum+"px",  
-                "top":topnNum+"px"  
-            });  
-            return false;//阻止默认事件或冒泡  
-        }  
-        function stop(){  
-            //解绑定，这一步很必要，前面有解释  
-            $(document).unbind("mousemove",move);  
-            $(document).unbind("mouseup",stop);  
-            
-        }
-    })
+    // $('body').on('mousedown','.head-hidden',(event) =>{
+    //     var e = event || window.event;
+    //     let  obj=$("#ruleAct"),disX = 0, disY = 0;
+    //     if(event.button==0){//判断是否点击鼠标左键
+    //         /*
+    //         * clientX和clientY代表鼠标当前的横纵坐标
+    //         * offset()该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。
+    //         * bind()绑定事件，同样unbind解绑定，此效果的实现最后必须要解绑定，否则鼠标松开后拖拽效果依然存在
+    //         * getX获取当前鼠标横坐标和对象离屏幕左侧距离之差（也就是left）值，
+    //         * getY和getX同样道理，这两个差值就是鼠标相对于对象的定位，因为拖拽后鼠标和拖拽对象的相对位置是不变的
+    //         */
+    //         // 鼠标相对于div左侧位置
+    //         disX = event.clientX-obj.offset().left;
+    //         disY= event.clientY-obj.offset().top;
+    //         //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的
+    //         $(document).bind("mousemove",move);
+    //         //此处的$(document)可以改为obj
+    //         $(document).bind("mouseup",stop);
+    //
+    //     }
+    //     return false;//阻止默认事件或冒泡
+    //     function move(event){
+    //
+    //         let leftNum = 0,topnNum = 0
+    //          // 获取浏览器可见区域宽高，div宽高
+	//         var browserWidth = document.documentElement.clientWidth,
+	//         browserHeight = document.documentElement.clientHeight,
+	//         boxWidth = document.getElementById('ruleAct').offsetWidth,
+    //         boxHeight = document.getElementById('ruleAct').offsetHeight;
+    //         leftNum =event.clientX-disX
+    //         if((leftNum -disX) < 0){
+    //             leftNum = 0
+    //         }
+    //         if((leftNum+boxWidth) > browserWidth){
+    //             leftNum = browserWidth -boxWidth
+    //         }
+    //         topnNum = event.clientY-disY
+    //         if(topnNum < 0){
+    //             topnNum = 0
+    //         }
+    //         if((topnNum+boxHeight) >browserHeight){
+    //             topnNum = browserHeight - boxHeight
+    //         }
+    //         obj.css({
+    //             "left":leftNum+"px",
+    //             "top":topnNum+"px"
+    //         });
+    //         return false;//阻止默认事件或冒泡
+    //     }
+    //     function stop(){
+    //         //解绑定，这一步很必要，前面有解释
+    //         $(document).unbind("mousemove",move);
+    //         $(document).unbind("mouseup",stop);
+    //
+    //     }
+    // })
     document.addEventListener("fullscreenchange", function( event ) {
         if(window.canvasNowId == "canvas0"){
             if (document.fullscreenElement) {
@@ -4250,7 +4250,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#actionDivLine").hide()
     })
 
-    var dragId = ["dataModulePage","dicDiv","gzDiv","editDic","gsFrame","sureRule","actionDivLine","actionDiv","groupDiv","rkDiv"];
+    var dragId = ["dataModulePage","dicDiv","gzDiv","editDic","gsFrame","sureRule","actionDivLine","actionDiv","groupDiv","rkDiv","ruleAct"];
     for(let i=0;i<dragId.length;i++){
         let odiv = document.getElementById(dragId[i])
         odiv.onmousedown = function(ev) {
