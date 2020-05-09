@@ -1383,16 +1383,22 @@ Date.prototype.Format = function (fmt) { // author: meizz
             }else{
                 $('#canvasList ul li').siblings().removeClass('pageson');
             }
-            let canvasNum = $("#canvasList ul li").length
-            let newCanvasName = "画布"+ canvasNum
+            let canvasNum = 1
+            
             $("#canvasList ul li").each((i,v) => {
                 let items = $(v)
-                canvasName = items.children(".canvasLi").text()
-                if(canvasName == newCanvasName){
-                    canvasNum ++ 
-                    newCanvasName = "画布"+ canvasNum
+                let  canvasName = items.children(".canvasLi").text()
+                if( canvasName.indexOf("画布") != -1){
+                    canvasName = canvasName.slice(2)
+                }
+               
+                if(Number(canvasName)>= canvasNum ){
+
+                    canvasNum  = canvasName
+                   
                 }
             })
+            let newCanvasName = "画布"+ (Number(canvasNum)+1)
             $('#canvasList ul').append(`<li class="pageson"><span class="canvasLi" canvasId="${canvas_id}">${newCanvasName}</span> <i class="delCanvas">X</i></li>`)  
             $(".newBuilt").unbind("click");
             tiemer = setTimeout(function(){
