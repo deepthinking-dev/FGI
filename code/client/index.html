@@ -211,24 +211,7 @@
     </script>
 </head>
 <body>
-     <div id="showCsName" style="z-index: 999;color: #fff;">
-
-     </div>
-    <!-- 规则修改状态，是否清空画布 -->
-    <div class="lkr-frame" id='isClearCanvas'>
-        <div class="lkr-frame-div" style="height: 150px;">
-            <div class="lkr-frame-content">
-                <h3>
-                    确认清空此规则?
-                </h3>
-                
-            </div>
-            <div class="lkr-frame-foot">
-                <div class="lkr-button" onclick='isClearDelRule()' style="margin-right: 10px;">确定</div>
-                <div class="lkr-button" onclick='isClearClose()'>取消</div>
-            </div>
-        </div>
-    </div>
+     <div id="showCsName" style="z-index: 999;color: #fff;"></div>
        <!-- 关系选择 -->
     <div id="ruleAct">
         <div class="head-hidden" style="width: 100%;height: 50px;overflow: hidden;z-index: 99;position: relative;"></div>
@@ -1229,16 +1212,16 @@ Date.prototype.Format = function (fmt) { // author: meizz
     document.addEventListener("fullscreenchange", function( event ) {
         if(window.canvasNowId == "canvas0"){
             if (document.fullscreenElement) {
-            $('#topo_canvas').css({
-                // "background-color":"#fff",
-                "background-image": "url('./static/bigbg.jpg')",
-                "background-size": "100% 100%",
-                "background-repeat": "no-repeat",
-            })
+                $('#topo_canvas').css({
+                    // "background-color":"#fff",
+                    "background-image": "url('./static/bigbg.jpg')",
+                    "background-size": "100% 100%",
+                    "background-repeat": "no-repeat",
+                })
                 window.canvas.lock(1)
                 window.canvas.scale(1)
                 console.log("全屏")
-           $('#topo_canvas').on('dblclick',function(){
+           $('#topo_canvas').off().on('dblclick',function(){
                 html2canvas(document.querySelector("#topo_canvas")).then(canvas => {
                     imgUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-imgUrleam")
                     var saveFile = function(data, filename){
@@ -1256,7 +1239,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     };
                     var filename = (new Date()).getTime() + '.' + 'jpg';
                     saveFile(imgUrl,filename);
-                    
+                    document.exitFullscreen ? document.exitFullscreen() :
+                    document.mozCancelFullScreen ? document.mozCancelFullScreen() :
+                    document.webkitExitFullscreen ? document.webkitExitFullscreen() : '';
+
                 });
            });
             } else {
@@ -1266,7 +1252,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
                     "width":"1505px",
-                    "height":"725px",
+                    "height":"727px",
                     "box-shadow": "0 0 10px 10px rgba(0,0,0,0.2)",
                     "border-radius": "8px"
                 })
@@ -1294,8 +1280,34 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 document.getElementById(window.canvasNowId).style.left="-10px";
                 document.getElementById(window.canvasNowId).style.top="-10px";
                 parent.$(".navbar-default").hide();
-                document.getElementById(window.canvasNowId).canvas.lock(1)
-                document.getElementById(window.canvasNowId).canvas.scale(1)
+                // document.getElementById(window.canvasNowId).canvas.lock(1)
+                // document.getElementById(window.canvasNowId).canvas.scale(1)
+
+                $('#'+window.canvasNowId).contents().find('#topo_canvas').off().on('dblclick',function(e){
+                    var a = $(e.target).parent("#topo_canvas")
+                    html2canvas(a[0]).then(canvas => {
+                        imgUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-imgUrleam")
+                        var saveFile = function(data, filename){
+                        //这个地址我也不知道有什么用
+                        //(属于XML方法)createElementNS() 方法可创建带有指定命名空间的元素节点。
+                        //此方法可返回一个 Element 对象。
+                            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                            save_link.href = data;
+                            save_link.download = filename;
+                            //MouseEvents 貌似为固定值
+                            //CreateEvent是一个Windows API函数。它用来创建或打开一个命名的或无名的事件对象
+                            var event = document.createEvent('MouseEvents');
+                            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                            save_link.dispatchEvent(event);
+                        };
+                        var filename = (new Date()).getTime() + '.' + 'jpg';
+                        saveFile(imgUrl,filename);
+                        document.exitFullscreen ? document.exitFullscreen() :
+                        document.mozCancelFullScreen ? document.mozCancelFullScreen() :
+                        document.webkitExitFullscreen ? document.webkitExitFullscreen() : '';
+
+                    });
+                });
             } else {
                 $('#'+window.canvasNowId).contents().find("#topo_canvas").css({
                     // "background-color":"#fff",
@@ -1303,7 +1315,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     "background-size": "100% 100%",
                     "background-repeat": "no-repeat",
                     "width":"1505px",
-                    "height":"725px",
+                    "height":"727px",
                     "zIndex":"0",
                     "border-radius": "8px"
                 })
@@ -1331,6 +1343,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
     var fun = function bClick(){
         if ($("#canvasList").css("display") == "none") {
             $("#canvasList").show()
+            $('#canvasList ul li').eq(0).addClass('pageson').show();
             $("#flex_canvas").show();
             window.canvasNowId ="canvas0"
         }else{
@@ -1736,12 +1749,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
     
     $('body').on('click','.delCanvas',(e) =>{
         let delID = $(e.target).prev().attr("canvasid")
+        let nowID = $("#canvasList ul li.pageson").find("span").attr("canvasid")
         if(delID == "canvas0"){
-            if($("#canvasList ul li").length == 1){
-                $("#canvasList").hide()
-            }
+            $(e.target).parent("li").hide();
             $("#flex_canvas").hide();
-        }else{
+            window.canvas.data.nodes = []
+            window.canvas.data.lines = []
+            window.Topology.tools = {}
+            window.globalActionDatas =[]
+            window.bigData.ruleType ="add"
+            canvas.render();
+        }else if(delID == nowID && delID != "canvas0"){
             $(e.target).parent("li").siblings().removeClass('pageson');
             $(e.target).parent("li").prev().addClass('pageson');
             let showId =$(e.target).parent("li").prev().find("span").attr("canvasid")
@@ -1763,9 +1781,20 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 window.canvasNowId =showId
                 $('#'+showId)[0].contentWindow.canvasNowId = showId
             }
+        }else if(delID != nowID && delID != "canvas0"){
+            $(e.target).parent("li").remove();
+            var iframe = $('#' + delID).prop('contentWindow');    
+            $('#' + delID).attr('src', 'about:blank');       
+            try{ 
+                iframe.document.write(''); 
+                iframe.document.clear(); 
+            }catch(e){} 
+            $('#' + delID).remove(); 
         }
-      
-    
+        if($("#canvasList ul li").length == 1){
+            $("#canvasList").hide()
+            $("#flex_canvas").hide();
+        } 
     })
     $('body').on('click','.export',(e) =>{
         let isExportId
