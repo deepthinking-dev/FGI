@@ -25,19 +25,14 @@ body {
 }
 /*左侧工具栏样式*/
 #flex_tools {
-    /* width: 160px; */
     height: 90.5vh;
-    border: #DDDDDD solid 1px;
     float: left;
-    /*min-height: 50rem;*/
-    z-index: 99;
+    z-index: 2;
     overflow: auto;
-    border: none;
     background-image: url('/static/model.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-
 /*左侧工具栏图标样式*/
 .iconfont{
     margin-left: 4px;
