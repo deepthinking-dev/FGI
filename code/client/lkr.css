@@ -17,7 +17,7 @@ body{
     color: #45a1e9;
     height: 240px;
     border: 1px solid #45a1e9;
-    z-index: 99999;
+    z-index: 30;
 }
 .yjl_tools >div{
     position: relative;
@@ -774,6 +774,7 @@ body{
     background-image: url(./static/FrameBg.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    z-index: 999;
 }
 #dicTable{
     margin: 0 20px
