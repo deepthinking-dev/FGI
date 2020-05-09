@@ -492,7 +492,7 @@
         </div>
     </div>
     <!-- 公式编辑 -->
-    <div class="Frame">
+    <div class="Frame" id="gsFrame">
         <div class="title">
             <span class="gsTitle">公式编辑</span>
             <span onclick="FrameClose()" style="cursor: pointer;color:#fff;float: right;">X</span>
@@ -4224,6 +4224,40 @@ Date.prototype.Format = function (fmt) { // author: meizz
     $(".closeActionDivLine").click(()=>{
         $("#actionDivLine").hide()
     })
+
+    var dragId = ["dataModulePage","dicDiv","gzDiv","editDic","gsFrame","sureRule","actionDivLine","actionDiv","groupDiv"];
+    for(let i=0;i<dragId.length;i++){
+        let odiv = document.getElementById(dragId[i])
+        odiv.onmousedown = function(ev) {
+            var ev = ev || event;
+            var disX = ev.clientX - odiv.offsetLeft;
+            var disY = ev.clientY - odiv.offsetTop;
+            document.onmousemove = function(ev2) {
+                var ev2 = ev2 || event;
+                var left = ev2.clientX - disX;
+                var top = ev2.clientY - disY;
+                var w = document.documentElement.clientWidth || document.body.clientWidth;
+                var h = document.documentElement.clientHeight || document.body.clientHeight;
+                if(left > w - odiv.offsetWidth) {
+                    left = w - odiv.offsetWidth
+                }
+                if(left < 0) {
+                    left = 0;
+                }
+                if(top < 0) {
+                    top = 0;
+                }
+                if(top > h - odiv.offsetHeight) {
+                    top = h - odiv.offsetHeight
+                }
+                odiv.style.left = left + "px";
+                odiv.style.top = top + "px"
+            }
+            document.onmouseup = function(ev2) {
+                document.onmousemove = null
+            }
+        }
+    }
 </script>
 </body>
 </html>

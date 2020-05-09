@@ -367,7 +367,7 @@ var Topology = {
                             }
 
                             self.initNode();
-                            break;
+                            parent.$("#setAct").hide()
                             break;
                         case 'line':
                             times++;
