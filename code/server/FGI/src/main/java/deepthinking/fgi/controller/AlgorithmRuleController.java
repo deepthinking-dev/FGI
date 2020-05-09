@@ -118,9 +118,9 @@ public class AlgorithmRuleController {
 
     @PostMapping("/modAlgorithmRuleBase")
     @ApiOperation(value = "04-09 只修改规则基本信息", notes = "返回修改结果", httpMethod = "POST")
-    public TableRole modAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole){
-        tableRoleService.modAlgorithmRuleBase(tableRole);
-        return tableRole;
+    public AlgorithmRuleSaveDataModel modAlgorithmRuleBase(@ApiParam @RequestBody TableRole tableRole,HttpServletRequest request){
+        tableRoleService.modAlgorithmRuleBase(tableRole,request);
+        return tableRoleService.getAlgorithmRuleById(tableRole.getId().toString());
     }
 
     @GetMapping("/delAlgorithmRuleById")

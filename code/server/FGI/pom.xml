@@ -43,7 +43,7 @@
 					<groupId>com.google.guava</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>		
+		</dependency>
 <!-- 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-devtools</artifactId>
@@ -61,6 +61,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.9.2</version>
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<artifactId>guava</artifactId>-->
+<!--					<groupId>com.google.guava</groupId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -153,11 +159,14 @@
 			<artifactId>spring-test</artifactId>
 			<version>5.1.9.RELEASE</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-feign</artifactId>
-			<version>1.2.2.RELEASE</version>
+			<groupId>com.google.collect</groupId>
+			<artifactId>com.springsource.com.google.common.collect</artifactId>
+			<version>0.8.0.20080820</version>
 		</dependency>
+
+
 	</dependencies>
 	<build>
 		<finalName>fgiServer</finalName>
@@ -213,7 +222,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<compilerArguments>
-						<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>
+<!--						<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>-->
 					</compilerArguments>
 				</configuration>
 			</plugin>

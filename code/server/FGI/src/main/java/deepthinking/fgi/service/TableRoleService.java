@@ -79,7 +79,7 @@ public interface TableRoleService extends BaseService<TableRole,Integer> {
      * @param tableRole
      * @return
      */
-    boolean modAlgorithmRuleBase(TableRole tableRole);
+    boolean modAlgorithmRuleBase(TableRole tableRole,HttpServletRequest request);
 
     /**
      * 删除指定规则编号的算法规则

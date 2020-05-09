@@ -210,6 +210,15 @@ public class TableAlgorithmServiceImpl extends BaseServiceImpl<TableAlgorithm,In
         if(flag){
             return 2;
         }
+        String groupname=tableAlgorithm.getAlgorithmgroup();
+        List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,2);
+        if(list==null||list.size()==0){
+            TableGroupdata tableGroupdata=new TableGroupdata();
+            tableGroupdata.setGroupname(groupname);
+            tableGroupdata.setParentid(0);
+            tableGroupdata.setGrouptype(2);
+            tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+        }
         TableAlgorithmCriteria tableAlgorithmCriteria=new TableAlgorithmCriteria();
         tableAlgorithmCriteria.createCriteria().andAlgorithmnameEqualTo(tableAlgorithm.getAlgorithmname())
                 .andIdNotEqualTo(tableAlgorithm.getId()).andAlgorithmgroupEqualTo(tableAlgorithm.getAlgorithmgroup());

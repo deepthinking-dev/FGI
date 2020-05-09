@@ -25,8 +25,11 @@ public class UserData {
         users.remove(userId);
     }
     public static String getUserIdFromCookie(Cookie[] cookies){
+        if(cookies==null){
+            return "";
+        }
         String userId=null;
-        if(cookies.length>0){
+        if(cookies!=null&&cookies.length>0){
             for(Cookie cookie:cookies){
                 if(cookie.getName().equals("fgi")){
                     userId=cookie.getValue();

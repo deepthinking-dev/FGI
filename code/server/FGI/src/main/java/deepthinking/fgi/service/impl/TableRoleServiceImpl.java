@@ -1230,12 +1230,12 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     public AlgorithmRuleSaveDataModel saveAlgorithmRule(AlgorithmRuleSaveDataModel algorithmRuleSaveDataModel,HttpServletRequest request) {
         try {
             String groupname=algorithmRuleSaveDataModel.getTableRole().getRolegroup();
-            List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,1);
+            List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,3);
             if(list==null||list.size()==0){
                 TableGroupdata tableGroupdata=new TableGroupdata();
                 tableGroupdata.setGroupname(groupname);
                 tableGroupdata.setParentid(0);
-                tableGroupdata.setGrouptype(1);
+                tableGroupdata.setGrouptype(3);
                 tableGroupdataService.saveTableGroupMessage(tableGroupdata);
             }
             //保存最后算法规则信息
@@ -1412,8 +1412,19 @@ public class TableRoleServiceImpl extends BaseServiceImpl<TableRole,Integer> imp
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public boolean modAlgorithmRuleBase(TableRole tableRole) {
+    public boolean modAlgorithmRuleBase(TableRole tableRole,HttpServletRequest request) {
         try{
+            String groupname=tableRole.getRolegroup();
+            List<TableGroupdata> list=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,3);
+            if(list==null||list.size()==0){
+                TableGroupdata tableGroupdata=new TableGroupdata();
+                tableGroupdata.setGroupname(groupname);
+                tableGroupdata.setParentid(0);
+                tableGroupdata.setGrouptype(3);
+                tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+            }
+            String userId= UserData.getUserIdFromCookie(request.getCookies());
+            tableRole.setRemark2(userId);
             return updateByPrimaryKeySelective(tableRole)==1;
         }catch (Exception e){
             e.printStackTrace();

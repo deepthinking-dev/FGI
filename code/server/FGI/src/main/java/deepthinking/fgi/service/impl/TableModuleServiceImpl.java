@@ -111,6 +111,16 @@ public class TableModuleServiceImpl extends BaseServiceImpl<TableModule,Integer>
 
     @Override
     public boolean modModuleById(TableModule module) {
+        //查询是否添加分组
+        String groupname=module.getModulegroup();
+        List<TableGroupdata> listgroup=tableGroupdataService.findTableGroupdataByTypeAndName(groupname,1);
+        if(listgroup==null||listgroup.size()==0){
+            TableGroupdata tableGroupdata=new TableGroupdata();
+            tableGroupdata.setGroupname(groupname);
+            tableGroupdata.setParentid(0);
+            tableGroupdata.setGrouptype(1);
+            tableGroupdataService.saveTableGroupMessage(tableGroupdata);
+        }
         //修改模型
         int i=updateByPrimaryKeySelective(module);
         if(i==1){

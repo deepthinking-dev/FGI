@@ -1,12 +1,12 @@
 package deepthinking.fgi.controller;
 
+import deepthinking.fgi.service.OtherclientService;
 import deepthinking.fgi.service.ToOtherService;
 import deepthinking.fgi.util.UserData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,6 +67,9 @@ public class ToOtherController {
             return false;
         }
     }
+
+//    @Resource(name = "otherclient")
+//    OtherclientService otherclientService;
     @GetMapping("/loginforweb")
     @ApiOperation(value = "07-05 本系统前端同步cookie", notes = " 返回cookie信息", httpMethod = "GET")
     public boolean loginforweb(HttpServletRequest request, HttpServletResponse response){
@@ -74,7 +77,7 @@ public class ToOtherController {
 //            UserData.removeUser(userId);
             Cookie[] cookies = request.getCookies();
             boolean falg=true;
-            if(cookies.length>0){
+            if(cookies!=null&&cookies.length>0){
                 for(Cookie cookie:cookies){
                     if(cookie.getName().equals("fgi")){
                         falg=false;
@@ -85,6 +88,7 @@ public class ToOtherController {
                Cookie cookie=new Cookie("fgi","fgiweb");
                response.addCookie(cookie);
             }
+//            System.out.println(otherclientService.getUser());
             return true;
         }catch (Exception e){
             return false;
