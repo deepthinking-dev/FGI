@@ -544,6 +544,7 @@ $(function(){
                                 freshClick("sfTree")
                             }
                         })
+                        dictionaryShow()
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
                         parent.toastr.info(`${data.msg}` )
@@ -607,6 +608,7 @@ $(function(){
                                 freshClick("sfTree")
                             }
                         })
+                        dictionaryShow()
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
                         parent.toastr.info(`${data.msg}` )

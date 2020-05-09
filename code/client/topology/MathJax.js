@@ -173,6 +173,7 @@
                                 freshClick("sfTree")
                             }
                         })
+                        dictionaryShow()
                     } else {
                         $(".Frame").hide();
                         parent.$('.noticeList').append(`<li>${parent.getTime()} 【算法】${data.msg}！</li>`)
@@ -227,6 +228,7 @@
                                 freshClick("sfTree")
                             }
                         })
+                        dictionaryShow()
                     } else {
                         $(".Frame").hide();
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg}！</li>`)

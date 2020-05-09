@@ -101,7 +101,7 @@ body {
     height: 30px;
     line-height: 30px;
     border: 1px solid #45a1e9;
-    z-index: 9999;
+    z-index: 5;
 }
 #canvasList ul{
     padding: 0px;

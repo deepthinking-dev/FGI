@@ -2302,6 +2302,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         zTreeObject.selectNode(node, true);
                                     }
                                 })
+                                dataModlue()
                             }
                         })
                         $('#lkrFrame').fadeToggle(500)
@@ -2395,6 +2396,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                         freshClick("moduleTree")
                                     }
                                 })
+                                dataModlue()
                             }
                         })
                     }
@@ -4238,7 +4240,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         $("#actionDivLine").hide()
     })
 
-    var dragId = ["dataModulePage","dicDiv","gzDiv","editDic","gsFrame","sureRule","actionDivLine","actionDiv","groupDiv"];
+    var dragId = ["dataModulePage","dicDiv","gzDiv","editDic","gsFrame","sureRule","actionDivLine","actionDiv","groupDiv","rkDiv"];
     for(let i=0;i<dragId.length;i++){
         let odiv = document.getElementById(dragId[i])
         odiv.onmousedown = function(ev) {
