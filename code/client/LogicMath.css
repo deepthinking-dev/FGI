@@ -734,7 +734,7 @@ body .form-input{
     margin: 0 auto;
     top: 20%;
     left: 30%;
-    z-index: 999999;
+    z-index: 999;
     background-color: #084b69;
 }
 #sureRule .title{
@@ -850,6 +850,19 @@ body .form-input{
     margin:0 auto;
     z-index: 10000;
 }
+#actionDivLine{
+    position: absolute;
+    height:550px;
+    width: 1030px;
+    left: 20%;
+    top: 20%;
+    display: none;
+    background-image: url(./static/mum1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin:0 auto;
+    z-index: 10000;
+}
 #actionDiv span{
     text-align: right;
     font-size: 16px;
@@ -860,6 +873,16 @@ body .form-input{
     vertical-align: top;
     line-height: 30px;
     margin-right: 20px;
+}
+#actionDivLine span{
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    vertical-align: top;
+    line-height: 30px;
+    margin-right: 5px;
 }
 .xwzly_in,.xwzly_out,.bds_in,.bds_out,.xwSelect_in,.xwSelect_out{
     background-color: rgba(0,0,0,0);
@@ -997,4 +1020,16 @@ body .form-input{
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+}
+.xwzly_in_line,.xwzly_out_line,.bds_in_line,.bds_out_line,.xwSelect_in_line,.xwSelect_out_line{
+    background-color: rgba(0,0,0,0);
+    background-image: url(./static/select.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 85px;
+    height: 30px;
+    padding-left: 5px;
 }

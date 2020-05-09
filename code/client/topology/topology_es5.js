@@ -11,7 +11,7 @@ var selected = null;
 var locked = false;
 //右键菜单对应标记是否可用
 var ww = null
-
+var times = 0;
 var Topology = {
     data: {},
     load: false,
@@ -128,8 +128,7 @@ var Topology = {
             self.down_png();
         });
         // 画布右键属性
-
-        $("#flex_canvas").bind("contextmenu", function () {
+        $("#flex_canvas").bind("contextmenu", function (e) {
             //设置右键菜单
             if (selNodes != null) {
                 $("#showRk").show();
@@ -368,7 +367,9 @@ var Topology = {
 
                             self.initNode();
                             break;
+                            break;
                         case 'line':
+                            times++;
                             var out_small = data.from.id.split('---')[0]//输出小矩形uuid
                             var in_small =  data.to.id.split('---')[0]//输入小矩形uuid
                             if(window.top.canvasNowId == "canvas0"){
@@ -381,341 +382,242 @@ var Topology = {
                             currentLineData = data;
                             canvas.lockLines([data],true)
                             canvas.render()
-                            // let id_in;//输入端算法id
-                            // let id_out;//输出端算法id
-                            // parent.$("#actionMsgIn").val("");
-                            // parent.$("#actionMsgOut").val("");
-                            // parent.$("#actionMsgIn").show();
-                            // parent.$("#actionMsgOut").hide();
-                            // parent.$(".menu-a-delete").css("display", "block");
-                            // parent.$("#addActionButton").attr({
-                            //     actionRelation:"",
-                            //     preActionRelation:""
-                            // })
-                            // canvas.data.nodes.map(s=>{
-                            //     if(s.id == data.from.id){
-                            //         id_out = s.childStand.fid
-                            //     }
-                            //     if(s.id == data.to.id){
-                            //         id_in = s.childStand.fid
-                            //     }
-                            // })
                             if(window.canvasNowId != "canvas0"){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
                             }
-                            // var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
-                            // var bigList=[];
-                            // canvas.data.nodes.map(s=>{
-                            //     if(s.id == data.from.id){
-                            //         smallOutName = s.text;
-                            //         out_big = s.childStand.fUUid;
-                            //     }
-                            //     if(s.id == data.to.id){
-                            //         smallInName = s.text;
-                            //         in_big = s.childStand.fUUid;
-                            //     }
-                            // })
-                            // canvas.data.nodes.map(s=>{
-                            //     if(s.id == out_big){
-                            //         bigOutName = s.text;
-                            //     }
-                            //     if(s.id == in_big){
-                            //         bigInName = s.text;
-                            //     }
-                            // })
-                            // canvas.data.nodes.map(s=>{
-                            //     if(s.id == data.to.id){
-                            //         debugger
-                            //         fromParmaChinese = s.text
-                            //     }
-                            // })
-                            // $.ajax({
-                            //     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                            //     data:{algthId:id_in},
-                            //     success(response) {
-                            //         response.tableFuncs.map(s=>{
-                            //            if(s.parametername == fromParmaChinese){
-                            //                console.log(fromParmaChinese);
-                            //                parent.$('#addActionButton').attr("from_name",s.varname);
-                            //                parent.$('#addActionButton').attr("from_id",s.id);
-                            //            }
-                            //         })
-                            //         parent.$("#actionInDiv .xwzly_in").each((i,s)=>{
-                            //             parent.$(s).val(parent.$('#addActionButton').attr("from_name"));
-                            //             parent.$(s).attr(parent.$('#addActionButton').attr("from_id"))
-                            //         })
-                            //     }
-                            // })
-                            // parent.$("#selectOutIn").empty();
-                            // parent.$("#selectOutIn").append(`<option value="1">${bigInName}的输入参数</option><option value="2">${bigOutName}的输出参数</option>`)
-                            // parent.$('#selectOutIn').val('1')
-                            //
-                            // let out_small = data.from.id.split('---')[0]//输出小矩形uuid
-                            // let in_small =  data.to.id.split('---')[0]//输入小矩形uuid
-                            // parent.$("#addActionButton").attr({id_out,id_in,out_big,out_small,in_big,in_small})
-                            // window.lineDiv = true;
-                            // deleteLineDataId = out_small + "AND" + in_small;
-                            // parent.$("#actionInDiv").empty();
-                            // parent.$("#actionOutDiv").empty();
-                            //
-                            // var localData = true;//使用本地缓存数据
-                            // var responseCurrentData = false;
-                            // var resBaseOut;
-                            // var resBaseIn;
-                            // if(responseActionDatas){//后台返回数据
-                            //     responseActionDatas.map(t=>{
-                            //         if((t.preParametersID == out_small) && (t.parametersID == in_small)){
-                            //             responseCurrentData= t;
-                            //             resBaseOut = [];
-                            //             resBaseIn = [];
-                            //             localData = false;
-                            //         }
-                            //     })
-                            //     if(responseCurrentData){
-                            //         parent.$("#actionMsgIn").val(responseCurrentData.actionRelation)
-                            //         parent.$("#actionMsgOut").val(responseCurrentData.preActionRelation)
-                            //         parent.$("#addActionButton").attr({
-                            //             actionRelation:responseCurrentData.actionRelation,
-                            //             preActionRelation:responseCurrentData.preActionRelation
-                            //         })
-                            //         responseCurrentData.algorithmconditions.map(s=>{
-                            //             if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
-                            //                 resBaseOut.push(s)
-                            //             }
-                            //             if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
-                            //                 resBaseIn.push(s)
-                            //             }
-                            //         })
-                            //         var resOutAll = {
-                            //             "interfaceRoleDataModels":
-                            //                 {
-                            //                     "algorithmconditions":resBaseOut,
-                            //                     "des": "",
-                            //                     "id": responseCurrentData.id,
-                            //                     "interfaceID": responseCurrentData.interfaceID,
-                            //                     "parametersID":responseCurrentData.parametersID,
-                            //                     "preInterfaceID": responseCurrentData.preInterfaceID,
-                            //                     "preParametersID": responseCurrentData.preParametersID,
-                            //                     "remark": "",
-                            //                     "roleid": responseCurrentData.roleid,
-                            //                 }
-                            //         }
-                            //         var resInAll = {
-                            //             "interfaceRoleDataModels":
-                            //                 {
-                            //                     "algorithmconditions": resBaseIn,
-                            //                     "des": "",
-                            //                     "id": responseCurrentData.id,
-                            //                     "interfaceID": responseCurrentData.interfaceID,
-                            //                     "parametersID": responseCurrentData.parametersID,
-                            //                     "preInterfaceID": responseCurrentData.preInterfaceID,
-                            //                     "preParametersID": responseCurrentData.preParametersID,
-                            //                     "remark": "",
-                            //                     "roleid": responseCurrentData.roleid,
-                            //                 }
-                            //         }
-                            //         resCurrentLineData.dataIn = resInAll;
-                            //         resCurrentLineData.dataOut = resOutAll;
-                            //         parent.$("#addActionButton").attr("resData",true)
-                            //         try{
-                            //             resBaseIn.map((t,i)=>{
-                            //                 parent.$("#actionInDiv").append(`
-                            //                       <div style="margin: 10px 0" actionId=${t.id}>
-                            //                            <i>${i+1}</i>
-                            //                            <span>行为值来源</span><input class="xwzly_in" disabled>
-                            //                            <span>行为</span><select class="xwSelect_in">
-                            //                            <option value=">">></option>
-                            //                            <option value="<"><</option>
-                            //                            <option value="=">=</option>
-                            //                            <option value=">=">>=</option>
-                            //                            <option value="<="><=</option>
-                            //                            <option value="!=">!=</option>
-                            //                            <option value="assignment">赋值</option>
-                            //                        </select>
-                            //                            <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                            //                            <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                            //                            <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                            //                       </div>
-                            //                 `)
-                            //             })
-                            //             resBaseIn.map((t,i)=>{
-                            //                 parent.$('#actionDiv .xwSelect_in').eq(i).val(t.behavior)
-                            //             })
-                            //
-                            //             $.ajax({
-                            //                 url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                            //                 data:{algthId:parent.$("#addActionButton").attr("id_out")},
-                            //                 success(res) {
-                            //                     let optionx = "";
-                            //                     res.tableFuncs.map(s=>{
-                            //                         optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                            //                     })
-                            //                     resBaseOut.map((t,i)=>{
-                            //                         parent.$("#actionOutDiv").append(`
-                            //                               <div style="margin: 10px 0" actionId=${t.id}>
-                            //                                    <i>${i+1}</i>
-                            //                                    <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
-                            //                                    <span>行为</span><select class="xwSelect_out">
-                            //                                    <option value=">">></option>
-                            //                                    <option value="<"><</option>
-                            //                                    <option value="=">=</option>
-                            //                                    <option value=">=">>=</option>
-                            //                                    <option value="<="><=</option>
-                            //                                    <option value="!=">!=</option>
-                            //                                    <option value="assignment">赋值</option>
-                            //                                </select>
-                            //                                    <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                            //                                    <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                            //                                    <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                            //                               </div>
-                            //                         `)
-                            //                     })
-                            //                     resBaseOut.map((t,i)=>{
-                            //                         parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
-                            //                         parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                            //                     })
-                            //                     parent.$(".xwzly_out").off("change").on("change",(e)=>{
-                            //                         if($(e.target).find('option:selected').attr('type') == 3){
-                            //                             $(e.target).next().next().empty();
-                            //                             $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
-                            //                         } else {
-                            //                             $(e.target).next().next().empty();
-                            //                             $(e.target).next().next().append(`<option value=">">></option>
-                            //    <option value="<"><</option>
-                            //    <option value="=">=</option>
-                            //    <option value=">=">>=</option>
-                            //    <option value="<="><=</option>
-                            //    <option value="!=">!=</option>
-                            //    <option value="assignment">赋值</option>`)
-                            //                         }
-                            //                     })
-                            //                     parent.$(".xwzly_out").each((i,s)=>{
-                            //                         if($(s).find('option:selected').attr('type') == 3){
-                            //                             try {
-                            //                                 $(s).next().next().empty();
-                            //                                 $(s).next().next().append(`<option value="assignment">赋值</option>`)
-                            //                             }catch (e) {
-                            //                                 console.log(e);
-                            //                             }
-                            //                         }
-                            //                     })
-                            //                 }
-                            //             })
-                            //         } catch (e) {
-                            //             console.log(e);
-                            //         }
-                            //     }
-                            // }
-                            // if(localData){//本地缓存数据
-                            //     globalActionDatas.map(s=>{
-                            //         if(s.id == out_small + "AND" + in_small){
-                            //             try{
-                            //                 parent.$("#actionMsgIn").val("");
-                            //                 parent.$("#actionMsgIn").val(s.dataIn.interfaceRoleDataModels.actionRelation);
-                            //                 parent.$("#actionMsgOut").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
-                            //                 var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
-                            //                 var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
-                            //                 lineDatas.map((t,i)=>{
-                            //                     parent.$("#actionInDiv").append(`
-                            //                          <div style="margin: 10px 0">
-                            //                                <i>${i+1}</i>
-                            //                                <span>行为值来源</span><input class="xwzly_in" disabled>
-                            //                                <span>行为</span><select class="xwSelect_in">
-                            //                                <option value=">">></option>
-                            //                                <option value="<"><</option>
-                            //                                <option value="=">=</option>
-                            //                                <option value=">=">>=</option>
-                            //                                <option value="<="><=</option>
-                            //                                <option value="!=">!=</option>
-                            //                                <option value="assignment">赋值</option>
-                            //                                 </select>
-                            //                                <span>表达式</span><input type="text" value="${t.expression}" class="bds_in">
-                            //                                <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                            //                                <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                            //                          </div>
-                            //                     `)
-                            //                 })
-                            //                 lineDatas.map((t,i)=>{
-                            //                     parent.$('#actionInDiv .xwSelect_in').eq(i).val(t.behavior)
-                            //                 })
-                            //                 $.ajax({
-                            //                     url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
-                            //                     data:{algthId:parent.$("#addActionButton").attr("id_out")},
-                            //                     success(res) {
-                            //                         let optionx = "";
-                            //                         res.tableFuncs.map(s => {
-                            //                             optionx += `<option value=${s.id} type=${s.vartype} valvalue=${s.valvalue}>${s.varname}</option>`
-                            //                         })
-                            //                         lineDatasOut.map((t,i)=>{
-                            //                             parent.$("#actionOutDiv").append(`
-                            //                                  <div style="margin: 10px 0">
-                            //                                        <i>${i+1}</i>
-                            //                                        <span>行为值来源</span><select class="xwzly_out">${optionx}</select>
-                            //                                        <span>行为</span><select class="xwSelect_out">
-                            //                                        <option value=">">></option>
-                            //                                        <option value="<"><</option>
-                            //                                        <option value="=">=</option>
-                            //                                        <option value=">=">>=</option>
-                            //                                        <option value="<="><=</option>
-                            //                                        <option value="!=">!=</option>
-                            //                                        <option value="assignment">赋值</option>
-                            //                                         </select>
-                            //                                        <span>表达式</span><input type="text" value="${t.expression}" class="bds_out">
-                            //                                        <button class="addLjgx" type="button"  style="background: #409eff;color: #fff;margin-left: 5px;height: 20px;border: none;width: 22px">+</button>
-                            //                                        <button class="deleteActionData" type="button"  style="background: #f56c6c;color: #fff;margin-left: 10px;height: 20px;border: none">X</button>
-                            //                                  </div>
-                            //                             `)
-                            //                         })
-                            //                         lineDatasOut.map((t,i)=>{
-                            //                             parent.$('#actionOutDiv .xwzly_out').eq(i).val(t.valuesources)
-                            //                             parent.$('#actionOutDiv .xwSelect_out').eq(i).val(t.behavior)
-                            //                         })
-                            //                         parent.$(".xwzly_out").off("change").on("change",(e)=>{
-                            //                             if($(e.target).find('option:selected').attr('type') == 3){
-                            //                                 $(e.target).next().next().empty();
-                            //                                 $(e.target).next().next().append(`<option value="assignment">赋值</option>`)
-                            //                             } else {
-                            //                                 $(e.target).next().next().empty();
-                            //                                 $(e.target).next().next().append(`<option value=">">></option>
-                            //                                    <option value="<"><</option>
-                            //                                    <option value="=">=</option>
-                            //                                    <option value=">=">>=</option>
-                            //                                    <option value="<="><=</option>
-                            //                                    <option value="!=">!=</option>
-                            //                                    <option value="assignment">赋值</option>`)
-                            //                             }
-                            //                         })
-                            //                         parent.$(".xwzly_out").each((i,s)=>{
-                            //                             if($(s).find('option:selected').attr('type') == 3){
-                            //                                 try {
-                            //                                     $(s).next().next().empty();
-                            //                                     $(s).next().next().append(`<option value="assignment">赋值</option>`)
-                            //                                 }catch (e) {
-                            //                                     console.log(e);
-                            //                                 }
-                            //                             }
-                            //                         })
-                            //                     }
-                            //                 })
-                            //             } catch (e) {
-                            //                 console.log(e);
-                            //             }
-                            //         }
-                            //     })
-                            // }
-                            // setTimeout(()=>{
-                            //     if(window.lineDiv){
-                            //         parent.$('#actionDiv').show();
-                            //     }
-                            // },300)
-                            // parent.$('#actionInDiv').show();
-                            // selected = {
-                            //     "type": event,
-                            //     "data": data
-                            // };
-                            // window.currentId = `${data.from.id}_${data.id}_${data.to.id}`;
-                            // locked = data.locked;
-                            // self.initLine();
+                            setTimeout(()=>{
+                                times = 0;
+                            },300)
+                            if(times >=2){
+                                $("#actionDivLine").show();
+                                parent.$("#actionMsgInLine").val("")
+                                parent.$("#actionMsgOutLine").val("")
+                                parent.$("#actionDivLineIn").empty();
+                                parent.$("#actionDivLineOut").empty();
+                                var datas,local,res;
+                                if(window.top.canvasNowId == "canvas0"){
+                                    datas = canvas.data;
+                                    local = globalActionDatas;
+                                    res =responseActionDatas
+                                }else{
+                                    datas = parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data;
+                                    local = parent.$('#'+window.top.canvasNowId)[0].contentWindow.globalActionDatas;
+                                    res = parent.$('#'+window.top.canvasNowId)[0].contentWindow.responseActionDatas
+                                }
+                                let id_in;//输入端算法id
+                                let id_out;//输出端算法id
+                                parent.$("#actionMsgIn").val("");
+                                parent.$("#actionMsgOut").val("");
+                                parent.$("#actionMsgIn").show();
+                                parent.$("#actionMsgOut").hide();
+                                parent.$(".menu-a-delete").css("display", "block");
+                                parent.$("#addActionButton").attr({
+                                    actionRelation:"",
+                                    preActionRelation:""
+                                })
+                                parent.$("#addActionButton").attr("resData","false")
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.from.id){
+                                        id_out = s.childStand.fid
+                                    }
+                                    if(s.id == data.to.id){
+                                        id_in = s.childStand.fid
+                                    }
+                                })
+                                if(window.canvasNowId != "canvas0"){
+                                    parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines =[data]
+                                }
+                                var bigOutName,smallOutName,bigInName,smallInName,out_big,in_big,fromParmaChinese;
+                                var bigList=[];
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.from.id){
+                                        smallOutName = s.childStand.cstext;
+                                        out_big = s.childStand.fUUid;
+                                    }
+                                    if(s.id == data.to.id){
+                                        smallInName = s.childStand.cstext;
+                                        in_big = s.childStand.fUUid;
+                                    }
+                                })
+                                datas.nodes.map(s=>{
+                                    if(s.id == out_big){
+                                        bigOutName = s.text;
+                                    }
+                                    if(s.id == in_big){
+                                        bigInName = s.text;
+                                    }
+                                })
+                                datas.nodes.map(s=>{
+                                    if(s.id == data.to.id){
+                                        fromParmaChinese = s.childStand.cstext
+                                    }
+                                })
+                                $(".actionDivLineInName").text(`${bigInName}的输入参数`)
+                                $(".actionDivLineOutName").text(`${bigOutName}的输出参数`)
+                                var localData = true;//使用本地缓存数据
+                                var responseCurrentData = false;
+                                var resBaseOut;
+                                var resBaseIn;
+                                if(res){//后台返回数据
+                                    res.map(t=>{
+                                        if((t.preParametersID == out_small) && (t.parametersID == in_small)){
+                                            responseCurrentData= t;
+                                            resBaseOut = [];
+                                            resBaseIn = [];
+                                            localData = false;
+                                        }
+                                    })
+                                    if(responseCurrentData){
+                                        parent.$("#actionMsgInLine").val(responseCurrentData.actionRelation)
+                                        parent.$("#actionMsgOutLine").val(responseCurrentData.preActionRelation)
+                                        responseCurrentData.algorithmconditions.map(s=>{
+                                            if(responseCurrentData.preParametersID ==  s.interfaceparametersid){//输出
+                                                resBaseOut.push(s)
+                                            }
+                                            if(responseCurrentData.parametersID ==  s.interfaceparametersid){//输入
+                                                resBaseIn.push(s)
+                                            }
+                                        })
+                                        var resOutAll = {
+                                            "interfaceRoleDataModels":
+                                                {
+                                                    "algorithmconditions":resBaseOut,
+                                                    "des": "",
+                                                    "id": responseCurrentData.id,
+                                                    "interfaceID": responseCurrentData.interfaceID,
+                                                    "parametersID":responseCurrentData.parametersID,
+                                                    "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                    "preParametersID": responseCurrentData.preParametersID,
+                                                    "remark": "",
+                                                    "roleid": responseCurrentData.roleid,
+                                                }
+                                        }
+                                        var resInAll = {
+                                            "interfaceRoleDataModels":
+                                                {
+                                                    "algorithmconditions": resBaseIn,
+                                                    "des": "",
+                                                    "id": responseCurrentData.id,
+                                                    "interfaceID": responseCurrentData.interfaceID,
+                                                    "parametersID": responseCurrentData.parametersID,
+                                                    "preInterfaceID": responseCurrentData.preInterfaceID,
+                                                    "preParametersID": responseCurrentData.preParametersID,
+                                                    "remark": "",
+                                                    "roleid": responseCurrentData.roleid,
+                                                }
+                                        }
+                                        try{
+                                            $.ajax({
+                                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                data:{algthId:id_in},
+                                                success(response) {
+                                                    var varname="";
+                                                    response.tableFuncs.map(s => {
+                                                        if(s.parametername == fromParmaChinese) {
+                                                            varname = s.varname
+                                                        }
+                                                    })
+                                                    resBaseIn.map((t,i)=>{
+                                                        parent.$("#actionDivLineIn").append(`
+                                                                <div style="margin: 10px 0" actionId=${t.id}>
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input value="${varname}" class="xwzly_in_line" disabled>
+                                                                       <span style="width: 40px;">行为</span><input class="xwSelect_in_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px;">表达式</span><input type="text" value="${t.expression}" class="bds_in_line" disabled>
+                                                                    </div>
+                                                                `)
+                                                    })
+                                                }
+                                            })
+                                            $.ajax({
+                                                url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                data:{algthId:id_out},
+                                                success(res) {
+                                                    res.tableFuncs.map(s=>{
+                                                        resBaseOut.map(x => {
+                                                            if (x.valuesources == s.id) {
+                                                                x.xwname = s.varname;
+                                                            }
+                                                        })
+                                                    })
+                                                    resBaseOut.map((t,i)=>{
+                                                        parent.$("#actionDivLineOut").append(`
+                                                              <div style="margin: 10px 0" actionId=${t.id}>
+                                                                   <i>${i+1}</i>
+                                                                   <span style="width: 80px">行为值来源</span><input class="xwzly_out_line" value="${t.xwname}" disabled>
+                                                                   <span style="width: 40px">行为</span><input class="xwSelect_out_line" value="${t.behavior}" disabled>
+                                                                   <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_out_line" disabled>
+                                                              </div>
+                                                        `)
+                                                    })
+                                                }
+                                            })
+                                        } catch (e) {
+                                            console.log(e);
+                                        }
+                                    }
+                                }
+                                if(localData){//本地缓存数据
+                                    local.map(s=>{
+                                        if(s.id == out_small + "AND" + in_small){
+                                            try{
+                                                var lineDatas = s.dataIn.interfaceRoleDataModels.algorithmconditions;
+                                                var lineDatasOut = s.dataOut.interfaceRoleDataModels.algorithmconditions;
+                                                parent.$("#actionMsgInLine").val(s.dataIn.interfaceRoleDataModels.actionRelation);
+                                                parent.$("#actionMsgOutLine").val(s.dataOut.interfaceRoleDataModels.preActionRelation);
+                                                $.ajax({
+                                                    url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                    data:{algthId:id_in},
+                                                    success(res) {
+                                                        var varname="";
+                                                        res.tableFuncs.map(s => {
+                                                            if(s.parametername == fromParmaChinese) {
+                                                                varname = s.varname
+                                                            }
+                                                        })
+                                                        lineDatas.map((t,i)=>{
+                                                            parent.$("#actionDivLineIn").append(`
+                                                                 <div style="margin: 10px 0">
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input value="${varname}" class="xwzly_in_line" disabled>
+                                                                       <span style="width: 40px">行为</span><input class="xwSelect_in_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_in_line" disabled>
+                                                                 </div>
+                                                            `)
+                                                        })
+                                                    }
+                                                })
+                                                $.ajax({
+                                                    url:urlConfig.host+'/operatorMaintenance/getAlgorithmById',
+                                                    data:{algthId:id_out},
+                                                    success(res) {
+                                                        res.tableFuncs.map(s=>{
+                                                            lineDatasOut.map(x => {
+                                                                if (x.valuesources == s.id) {
+                                                                    x.xwname = s.varname;
+                                                                }
+                                                            })
+                                                        })
+                                                        lineDatasOut.map((t,i)=>{
+                                                            parent.$("#actionDivLineOut").append(`
+                                                                 <div style="margin: 10px 0">
+                                                                       <i>${i+1}</i>
+                                                                       <span style="width: 80px">行为值来源</span><input class="xwzly_out_line" value="${t.xwname}" disabled>
+                                                                       <span style="width: 40px">行为</span><input class="xwSelect_out_line" value="${t.behavior}" disabled>
+                                                                       <span style="width: 60px">表达式</span><input type="text" value="${t.expression}" class="bds_out_line" disabled>
+                                                                 </div>
+                                                            `)
+                                                        })
+                                                    }
+                                                })
+                                            } catch (e) {
+                                                console.log(e);
+                                            }
+                                        }
+                                    })
+                                }
+                                //-----
+                            }
                             break;
                         case 'multi':
                             locked = true;
