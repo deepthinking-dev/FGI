@@ -653,7 +653,7 @@ var Topology = {
                             });
                            parent.$("#setAct").hide();
                            parent.$("#showAllmag").hide()
-                            canvas.lock(0)
+                          canvas.lock(0)
                             break;
                         case 'moveNodes':
                             data[0].anchors.map((obj,i) => {
@@ -720,8 +720,6 @@ var Topology = {
                                             item.textMaxLine = 1
                                             item.hideRotateCP=true,
                                             item.hideSizeCP=true
-                                            // item.bkType = 0
-                                            // item.fillStyle = "red"
                                         }else{                                         
                                             out_num ++                                            
                                             item.rect.x = data[0].rect.x +data[0].rect.width
@@ -766,8 +764,6 @@ var Topology = {
                                             item.rotatedAnchors[3].y = item.rect.ey 
                                             item.hideRotateCP=true,
                                             item.hideSizeCP=true
-                                            // item.bkType = 0
-                                            // item.fillStyle = "red"
                                         }
                                         canvas.render()                                       
                                     }
@@ -1209,6 +1205,7 @@ var Topology = {
                                     canvas.render();
                                 } 
                             }
+                            
                             let ruleType ,editRuleId
                             if(window.canvasNowId == "canvas0"){
                                 ruleType = window.bigData.ruleType
