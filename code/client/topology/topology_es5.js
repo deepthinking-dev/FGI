@@ -1855,7 +1855,7 @@ var Topology = {
                                                         item.tableInterfaceparametersList.map(inter=>{
                                                             dataAl.tableFuncs.map(index =>{ 
                                                                 if(inter.parameterssources == index.id){
-                                                                    str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
+                                                                    str +=`<div class="actionInfo" data-uuid='${inter.id}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${inter.remark}' data-parametername='${index.parametername}'>`
                                                                     if(inter.inorout == 1){
                                                                         str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                                     }else{
@@ -1875,9 +1875,10 @@ var Topology = {
                                                                     }      
                                                                                                                            
                                                                         str+=`</div>`     
+                                                                    parent.$('.ruleContentDiv').html(str)
                                                                 }
 
-                                                                parent.$('.ruleContentDiv').html(str)
+                                                                
                                                             })
                                                         })
                                                        
@@ -1885,7 +1886,7 @@ var Topology = {
                                                     if(item.id == data.id&&item.tableInterfaceparametersList.length < nowLists.length){ 
                                                         isNewSZ =false
                                                         nowLists.map(index =>{                                                           
-                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${index.remark}' data-parametername='${index.parametername}'>`
+                                                            str +=`<div class="actionInfo" data-uuid='${index.uuid}' Funcs-id='${index.id}' data-name='${index.varname}' data-title='${inter.remark}' data-parametername='${index.parametername}'>`
                                                             if(index.inorout == 1){
                                                                 str+=`<input value="输出" class="actionSelected1" disabled>  `
                                                             }else{

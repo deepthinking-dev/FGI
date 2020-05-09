@@ -1325,6 +1325,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                     "zIndex":"0",
                     "border-radius": "8px"
                 })
+                $('#'+window.canvasNowId).contents().find('#topo_canvas').off('dblclick')
                 parent.$(".navbar-default").show();
                 document.getElementById(window.canvasNowId).style.height="75vh";
                 document.getElementById(window.canvasNowId).style.width="100%";
@@ -1334,17 +1335,17 @@ Date.prototype.Format = function (fmt) { // author: meizz
                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.lock(0)
                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.scale(1)
                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.nodes.map(item=>{
-                            if(!item.childStand){
-                                item.anchors.map((obj,i) => {
-                                    obj.x = 0;
-                                    obj.y = 0;
-                                })
-                                item.rotatedAnchors.map((obj,i) => {
-                                    obj.x = 0;
-                                    obj.y = 0
-                                })
-                            }
+                    if(!item.childStand){
+                        item.anchors.map((obj,i) => {
+                            obj.x = 0;
+                            obj.y = 0;
                         })
+                        item.rotatedAnchors.map((obj,i) => {
+                            obj.x = 0;
+                            obj.y = 0
+                        })
+                    }
+                })
             }
         }
         
