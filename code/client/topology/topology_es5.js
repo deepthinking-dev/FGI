@@ -351,6 +351,7 @@ var Topology = {
                 canvas.disableScale =true
                 // 监听画布
                 function onMessage(event, data) {
+                    console.log(event,data)
                     switch (event) {
                         case 'node':
                             selNodes = [data];
@@ -1666,7 +1667,7 @@ var Topology = {
                             }catch (e) {
                                 console.log(e);
                             }
-                           if(window.canvasNowId != "canvas0"){
+                           if(window.canvasNowId != "canvas0" && parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines){
                                 parent.$('#'+window.top.canvasNowId)[0].contentWindow.canvas.data.lines.map((item,i)=>{
                                     if(item.id == parent.$('#'+window.top.canvasNowId)[0].contentWindow.selLines[0].id){
                                         debugger
