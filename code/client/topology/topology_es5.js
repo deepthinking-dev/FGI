@@ -390,7 +390,7 @@ var Topology = {
                                 times = 0;
                             },300)
                             if(times >=2){
-                                $("#actionDivLine").show();
+                                parent.$("#actionDivLine").show();
                                 parent.$("#actionMsgInLine").val("")
                                 parent.$("#actionMsgOutLine").val("")
                                 parent.$("#actionDivLineIn").empty();
