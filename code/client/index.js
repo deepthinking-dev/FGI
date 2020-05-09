@@ -429,7 +429,7 @@ $(function(){
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
-      
+        var rName = $("#group").val();
         let des =  $("#editDicDes").val();
         let dataAll = {
             "tableAlgorithm": {
@@ -525,9 +525,25 @@ $(function(){
                         parent.toastr.success(`【算法】${data.msg}` )
                         $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
                         $("#editDic").hide()
-                        freshClick("sfWinTree")
-                        freshClick("sfTree")
                         $("#dicDiv").show()
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type:2},
+                            success(data) {
+                                var treeData=[]
+                                data.map(s=>{
+                                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                                })
+                                $.fn.zTree.init($("#sfWinTree"),setting, treeData);
+                                var zTreeObject = $.fn.zTree.getZTreeObj("sfWinTree");
+                                var node = zTreeObject.getNodeByParam('name',rName);
+                                zTreeObject.cancelSelectedNode();
+                                zTreeObject.selectNode(node, true);
+                                freshClick("sfWinTree")
+                                freshClick("sfTree")
+                            }
+                        })
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()} ${data.msg}！ </li>`)
                         parent.toastr.info(`${data.msg}` )
@@ -573,8 +589,24 @@ $(function(){
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
                         parent.toastr.info(`${data.msg}` )
                         parent.$("#flex_props1_home").scrollTop(parent.$("#flex_props1_home")[0].scrollHeight);
-                        freshClick("sfWinTree")
-                        freshClick("sfTree")
+                        $.ajax({
+                            url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                            type:"get",
+                            data: {type:2},
+                            success(data) {
+                                var treeData=[]
+                                data.map(s=>{
+                                    treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                                })
+                                $.fn.zTree.init($("#sfWinTree"),setting, treeData);
+                                var zTreeObject = $.fn.zTree.getZTreeObj("sfWinTree");
+                                var node = zTreeObject.getNodeByParam('name',rName);
+                                zTreeObject.cancelSelectedNode();
+                                zTreeObject.selectNode(node, true);
+                                freshClick("sfWinTree")
+                                freshClick("sfTree")
+                            }
+                        })
                     } else {
                         parent.$('.noticeList').append(`<li>${parent.getTime()}【算法】 ${data.msg} </li>`)
                         parent.toastr.info(`${data.msg}` )

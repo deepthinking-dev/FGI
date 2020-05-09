@@ -2168,6 +2168,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
             $("#flex_props1_home").scrollTop($("#flex_props1_home")[0].scrollHeight);
             return false;
         }
+        var rName=$("#modulegroup").val();
         if(window.bigData.frameType == 'add'){
             let flag = true
             if($("#mouldName").val() == ""){
@@ -2246,8 +2247,6 @@ Date.prototype.Format = function (fmt) { // author: meizz
                                     $("#mouldName").val("")
                                     $("#mouldRemark").val("")
                                     $('#addMb tbody').html('')
-                                    freshClick("modelWinTree")
-                                    freshClick("moduleTree")
                                 }
                             }
                         })
@@ -2287,6 +2286,22 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             `)
                                     })
                                 }
+                                $.ajax({
+                                    url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                                    type:"get",
+                                    data: {type :1},
+                                    success(data) {
+                                        var treeData=[]
+                                        data.map(s=>{
+                                            treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                                        })
+                                        $.fn.zTree.init($("#modelWinTree"),setting, treeData);
+                                        var zTreeObject = $.fn.zTree.getZTreeObj("modelWinTree");
+                                        var node = zTreeObject.getNodeByParam('name',rName);
+                                        zTreeObject.cancelSelectedNode();
+                                        zTreeObject.selectNode(node, true);
+                                    }
+                                })
                             }
                         })
                         $('#lkrFrame').fadeToggle(500)
@@ -2362,14 +2377,29 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             success: function(data) {
                                 $('#lkrFrame').fadeToggle(500)
                                 $("#dataModulePage").show()
-                                freshClick("modelWinTree")
-                                freshClick("moduleTree")
+                                $.ajax({
+                                    url: urlConfig.host + '/group/findAllGroupMessagesByType',
+                                    type:"get",
+                                    data: {type :1},
+                                    success(data) {
+                                        var treeData=[]
+                                        data.map(s=>{
+                                            treeData.push({"name":s.groupname,"id":s.id,"pid":s.parentid,"type":s.grouptype})
+                                        })
+                                        $.fn.zTree.init($("#modelWinTree"),setting, treeData);
+                                        var zTreeObject = $.fn.zTree.getZTreeObj("modelWinTree");
+                                        var node = zTreeObject.getNodeByParam('name',rName);
+                                        zTreeObject.cancelSelectedNode();
+                                        zTreeObject.selectNode(node, true);
+                                        freshClick("modelWinTree")
+                                        freshClick("moduleTree")
+                                    }
+                                })
                             }
                         })
                     }
                 })
             }
-
         }
     }
     function reseTabs(){
