@@ -26,7 +26,7 @@ body {
 /*左侧工具栏样式*/
 #flex_tools {
     /* width: 160px; */
-    height: 90vh;
+    height: 90.5vh;
     border: #DDDDDD solid 1px;
     float: left;
     /*min-height: 50rem;*/
