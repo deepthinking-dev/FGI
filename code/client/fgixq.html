@@ -1,0 +1,490 @@
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit"/>
+    <title>FGI</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link href="./plugins/bootstrap/3.3.5/bootstrap.min.css" rel="stylesheet">
+    <link href="./plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <link href="./plugins/topology/layout.css" rel="stylesheet">
+    <link href="./lkr.css" rel="stylesheet">
+    <link href="./LogicMath.css" rel="stylesheet">
+    <link href="./toastr.css" rel="stylesheet">
+    <link href="plugins/tree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <link href="./plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <link href="http://at.alicdn.com/t/font_1113798_0532l8oa6jqp.css" rel="stylesheet"/>
+    <link href="http://at.alicdn.com/t/font_1331132_5lvbai88wkb.css" rel="stylesheet"/>
+    <style>
+        .left-list{
+            width: 65%;
+            margin: auto;
+        }
+        .left-list-event{
+            border: 1px dashed #4295ec;
+            display: flex;
+            justify-content: space-between;
+        }
+        .left-list-tilte{
+            color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            background-image: url(./static/mum1.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            margin: 10px 0;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            width: 192px;
+            line-height: 50px;
+            text-align: center;
+        }
+        i{
+            font-style:normal
+        }
+        .liactive{
+            /* color: #4cb1ff!important; */
+            opacity: 1 !important;
+        }
+        .divactive{
+            color: aqua!important;
+        }
+        #edui1_elementpath,#edui1_wordcount,#edui1_scale{
+            display: none;
+        }
+        #editor .edui-editor-imagescale{
+            display: none !important;
+        }
+        .ztree li span{
+            color: #45a1e9;
+        }
+        .aqua{
+            color: aqua !important;
+        }
+        .red{
+            color:red
+        }
+        .modelDiv{
+            font-size: 12px;
+            background-image: url(./static/alert.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            width: 90%;
+            height: 90%;
+            position: absolute;
+            left: 5%;
+            top:5%;
+        }
+    </style>
+    <script src="config.js"></script>
+    <script src="./plugins/topology/topology.bundle.js"></script>
+    <script src="./plugins/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="./plugins/bootstrap/3.3.5/bootstrap.min.js"></script>
+    <script src="./topology/formula.js"></script>
+    <script src="./plugins/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+    <script src="./toastr.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/addKityFormulaDialog.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/getKfContent.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/kityformula-plugin/defaultFilterFix.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/tree/js/tree.all.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="topology/topology_es5.js"></script>
+</head>
+<body>
+<div class="lkr-frame" id='lkrFrame'>
+    <div class="modelDiv">
+        <div class="lkr-frame-tilte">
+            模型详情
+        </div>
+        <div class="lkr-frame-content">
+            <div style="margin: 15px 0;display: flex;align-items: center;">
+                <label style="line-height: 10px;width: 120px;text-align: right;margin-right: 10px;">模型所属组<i style="color: red;font-size: 16px;display: inline-block">*</i> </label>
+                <input id='modulegroup' class="lkr-input" ondblclick="groupTreeDataShow(1)" placeholder="请双击选择分组">
+                <input type='text' id='modulegroupshow' class="lkr-input" style="display: none;"/>
+
+            </div>
+            <div style="margin: 15px 0;display: flex;align-items: center;">
+                <label style="line-height: 10px;width: 120px;text-align: right;margin-right: 10px;">模型名称<i style="color: red;font-size: 16px;display: inline-block">*</i> </label>
+                <input type='text' id='mouldName' maxlength="50" class="lkr-input"/>
+            </div>
+            <div style="margin: 15px 0;display: flex;align-items: center;">
+                <label style="line-height: 10px;width: 120px;text-align: right;margin-right: 10px;">描述 </label>
+                <textarea style="resize: none" type='text'  maxlength="500" id='mouldRemark' class="lkr-input"></textarea>
+            </div>
+            <div id='addMb'>
+                <table class="lkr-table" border="1">
+                    <thead>
+                    <tr>
+                        <td>
+                            中文名称
+                        </td>
+                        <td>
+                            英文名称
+                        </td>
+                        <td>
+                            字段类型
+                        </td>
+                        <td>
+                            字段表名
+                        </td>
+                        <td>
+                            备注
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody class="dataSourceTbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editDic" style="width: 90%;left: 5%;height: 90%;top: 5%">
+    <div class="title">
+        <span id="editDicTitle">算法详情</span>
+    </div>
+    <div style="position: relative;top: 70px;margin: 0 auto;">
+        <h4 style="color:#fff;margin-left: 30px;color: aqua">基本信息</h4>
+        <div style="margin-left: 30px">
+            <div style="margin: 8px 0">
+                <span> 作 者 </span><input type="text" id="editAuthor" style="width: 350px;height: 30px" maxlength="20">
+            </div>
+            <div style="margin: 8px 0">
+                <span>单位信息</span><input type="text" id="company" style="width: 350px;height: 30px" maxlength="100">
+            </div>
+            <div style="margin: 8px 0">
+                <span>算法名称<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="editDicName" style="width: 350px;height: 30px" maxlength="200">
+            </div>
+            <div style="margin: 8px 0">
+                <span>算法描述</span><input type="text" id="editDicDes" style="width: 350px;height: 30px" maxlength="500">
+            </div>
+            <div>
+                <span>分组<i style="color: red;font-size: 16px;display: inline-block">*</i></span><input type="text" id="group" style="width: 350px;height: 30px" placeholder="请双击选择分组" ondblclick="groupTreeDataShow(2,1)">
+            </div>
+            <input type="text" value="" id="zdStatus" style="display: none">
+        </div>
+        <h4 style="color: aqua;margin: 20px 0 20px 30px">参数信息</h4>
+        <div id="zdcsList"></div>
+    </div>
+</div>
+<div class="Frame" id="gsFrame" style="width: 90%;left: 5%;top: 5%;height: 90%">
+    <div class="title">
+        <span class="gsTitle">公式编辑</span>
+    </div>
+    <div class="form-group">
+        <div id="authorShow">
+            <input type="text" style="display: none" value="" id="gsStatus">
+            <input type="text" style="display: none" value="" id="updateSzId">
+            <div>
+                <span class="form-span">作者</span>
+                <input id="gsName" type="text" maxlength="20">
+            </div>
+            <div style="margin: 8px 0">
+                <span class="form-span">单位信息</span>
+                <input type="text" id="companyGs" maxlength="100">
+            </div>
+            <div>
+                <span class="form-span">描述</span>
+                <input id="gsDes" type="text" maxlength="500">
+            </div>
+        </div>
+        <div>
+            <span class="form-span">算法名称<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+            <input id="AlgorithmnameY" type="text" maxlength="200">
+        </div>
+        <div>
+            <span class="form-span">分组<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+            <input type="text" id="groupGs" ondblclick="groupTreeDataShow(2,2)" placeholder="请双击选择分组">
+        </div>
+
+        <div>
+            <span class="form-span">公式编辑<span style="color: red;font-size: 16px;display: inline-block">*</span></span>
+            <script id="editor" type="text/plain" style="position: relative; display: inline-block;width: 500px;z-index: 999999;"></script>
+        </div>
+    </div>
+    <div class="form-group MathJaxEdit">
+    </div>
+</div>
+<div id="gzShow">
+    <div style="width:20%;height: 100%;float: left">
+        <div style="margin: 40% 10px">
+            <div style="color: #fff;width: 20%;float: left;">规则名称</div><input style="width: 70%;height: 39px" maxlength="200" id="ruleName" type="text">
+            <div style="margin: 50px 0">
+                <div style="width: 20%;float: left;color: #fff;margin-top:50px">规则描述 </div><textarea style="width: 70%" maxlength="500" id="ruleRemark" type="text"></textarea>
+            </div>
+            <div style="color: #fff;width: 20%;float: left;">分组名称</div><input style="width: 70%" id="gzGroupName" type="text">
+        </div>
+    </div>
+    <div style="width:80%;height: 100%;float: left">
+        <div id="flex_canvas" style="height: 100vh">
+            <div id="topo_canvas" style=" width: 100%; height: 75vh;border: none;"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var url = window.location.search;
+    setTimeout(()=>{
+        $(window.top.frames['ueditor_0'].contentWindow.document.body).attr('contenteditable',false)
+    },500)
+    var ue = UE.getEditor('editor',{
+        toolbars: [[
+
+            '|', 'kityformula',
+        ]]
+    });
+    // showModel("82")
+    function showModel(id){
+        $.ajax({
+            url:urlConfig.host+'/module/getModuleById',
+            data:{moduleId:id},
+            success: function(data) {
+                console.log(data);
+                $("#lkrFrame").show();
+                $("#mouldName").val(data.modulename).attr({"readonly":"readonly"});
+                $("#modulegroup").val(data.modulegroup).attr({"readonly":"readonly"}).hide();
+                $("#modulegroupshow").val(data.modulegroup).attr({"readonly":"readonly"}).show();
+                $("#mouldRemark").val(data.des).attr({"readonly":"readonly"});
+                var thStr=""
+                data.modulefields.map(item => {
+                    thStr += `<tr id="${item.id}" moduleid="${item.moduleid}">
+                <td class="columnComment">${item.fieldname?item.fieldname:''}</td>
+                <td class="columnName">${item.englishname?item.englishname:''}</td>
+                <td class="columnType">${item.fieldtype?item.fieldtype:''}</td>
+                <td class="tableName">${item.tablename?item.tablename:''}</td>
+                <td class="columnRemark">${item.remark?item.remark:''}</td>
+                </tr>`
+                })
+                $('#addMb tbody').html(thStr)
+            }
+        })
+    }
+    function Confirm() {
+        $("#lkrFrame").hide();
+    }
+    showMsg(65)
+    function showMsg(AlgorithmId){
+        $.ajax({
+            url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
+            data:{algthId:AlgorithmId} ,
+            type:"get",
+            success(data) {
+                if(data.tableAlgorithm.algorithmtype == 1){
+                    $("#group").val("")
+                    $("#group").val(data.tableAlgorithm.algorithmgroup)
+                    $("#group").attr("disabled",true)
+                    $("#editAuthor").val("");
+                    $("#editDicName").val("");
+                    $("#editDicDes").val("");
+                    $("#company").val("");
+                    $("#editAuthor").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
+                    $("#editDicName").val(data.tableAlgorithm.algorithmname).attr({"disabled":"disabled"});
+                    $("#editDicDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    $("#company").val(data.tableAlgorithm.remark).attr({"disabled":"disabled"});
+                    $("#zdcsList").empty();
+                    $("#addZdcs").hide();
+                    $("#editDic").show();
+                    data.tableFuncs.map(t=>{
+                        $("#zdcsList").append(`
+                         <div divId="${t.id}" class="zdcsDiv" style="margin-bottom: 15px">
+                            <i style="margin-top: 5px">
+                                <span style="color:#fff;">中文名</span>
+                                <input class="zdcsCsmc" disabled type="text" value="${t.parametername}">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">英文名</span>
+                                <input class="variable" disabled type="text" value="${t.varname}">
+                            </i>
+                            <i>
+                                <span style="color:#fff;">类型</span>
+                                <select class="zdcsSelect" disabled>
+                                    <option value="2">常量</option>
+                                    <option value="3">模型</option>
+                                    <option value="1">基本类型</option>
+                                </select>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">取值</span>
+                                <input type="text" value="" class="zdcsText" disabled>
+                            </i>
+                            <i>
+                                <span style="color:#fff;">输入输出</span>
+                                <select class="zdcsExport" disabled>
+                                    <option value="0">输入</option>
+                                    <option value="1">输出</option>
+                                </select>
+                            </i>
+                        </div>
+                    `)
+                    })
+                    for(var i=0;i<data.tableFuncs.length;i++){
+                        $("#editDic .zdcsSelect").eq(i).val(data.tableFuncs[i].vartype)
+                        $("#editDic .zdcsExport").eq(i).val(data.tableFuncs[i].inorout)
+                        if(data.tableFuncs[i].vartype == 2){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                        } else if(data.tableFuncs[i].vartype == 3){
+                            $("#editDic .zdcsText").eq(i).val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsText").eq(i).prev().text("模型名称")
+                        } else {
+                            $("#editDic .zdcsText").eq(i).hide();
+                            let select= $(`
+                        <select class="zdcsTypeSelect" disabled>
+                            <option>int</option>
+                            <option>long</option>
+                            <option>byte</option>
+                            <option>short</option>
+                            <option>float</option>
+                            <option>double</option>
+                            <option>boolean</option>
+                            <option>number</option>
+                            <option>char</option>
+                            <option>date</option>
+                            <option>string</option>
+                            <option>blob</option>
+                            <option>array</option>
+                        </select>`)
+                            select.val(data.tableFuncs[i].valvalue)
+                            $("#editDic .zdcsSelect").eq(i).parent().next().find("span").text("数据项")
+                            $("#editDic .zdcsSelect").eq(i).parent().next().append(select)
+                        }
+                    }
+                } else if(data.tableAlgorithm.algorithmtype == 2){
+                    parent.$(".gsTitle").text("算法详情")
+                    parent.$('.Frame').show()
+                    parent.$("#gsName").val(data.tableAlgorithm.algorithmauthor).attr({"disabled":"disabled"});
+                    parent.$("#gsDes").val(data.tableAlgorithm.des).attr({"disabled":"disabled"});
+                    parent.$('#AlgorithmnameY').val(data.tableAlgorithm.algorithmname).attr({"bleAlgorithmid":data.tableAlgorithm.id,"tableAlmoduleid":data.tableAlgorithm.moduleid,"disabled":"disabled"})
+                    parent.$('#MathInput').attr("disabled","disabled");
+                    parent.$('#companyGs').attr("disabled","disabled");
+                    parent.$('#companyGs').val("");
+                    parent.$('#companyGs').val(data.tableAlgorithm.remark);
+                    parent.$("#groupGs").val("")
+                    parent.$("#groupGs").val(data.tableAlgorithm.algorithmgroup)
+                    parent.$("#groupGs").attr("disabled",true)
+                    parent.$('.closeGsButton').hide();
+                    try{
+                        setTimeout(()=>{
+                            ue.setContent('');
+                            ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
+                        },200)
+                       }catch (e) {
+                        console.log(e);
+                    }
+                    if(data.tableFuncs.length>0){
+                        let str =``
+                        data.tableFuncs.map((item)=>{
+                            str +=`<div class="MathJaxParam" formulaid="${item.id}" formulaModuleId="${item.algorithmid}">
+                                    <div class="width-50">
+                                        <span>中文名</span>
+                                        <input type="text" readonly="readonly" value="${item.parametername}" class="MathJaxInputCs inputButton">
+                                    </div>
+                                    <div class="width-50">
+                                        <span>英文名</span>
+                                        <input type="text" readonly="readonly" value="${item.varname}" class="MathJaxInput1 inputButton">
+                                    </div>
+                                    <div class="width-50 width-select">
+                                        <span>类型</span>
+                                        <select  class="MathJaxInput2 inputButton" disabled="disabled">
+                                            <option value="2">常量</option>
+                                            <option value="1">基本类型</option>
+                                        </select>
+                                    </div>
+                                    <div class="width-50 isShow1">
+                                            <span>取值</span >
+                                            <input type="text" readonly="readonly" class="MathJaxInput3 inputButton">
+                                    </div>
+                                    <div class="width-50 isShow2">
+                                        <span>基本类型</span>
+                                        <select class="MathJaxSelect" disabled="disabled">
+                                            <option>byte</option>
+                                            <option>short</option>
+                                            <option>int</option>
+                                            <option>long</option>
+                                            <option>float</option>
+                                            <option>double</option>
+                                            <option>boolean</option>
+                                            <option>char</option>
+                                            <option>date</option>
+                                            <option>string</option>
+                                            <option>blob</option>
+                                            <option>array</option>
+                                        </select>
+                                    </div>
+                                    <div class="width-50">
+                                            <span>描述</span>
+                                            <input type="text" readonly="readonly" class="MathJaxInput4 inputButton" value="${item.remark}">
+                                    </div>
+                                </div>`
+                        })
+                        $(".MathJaxEdit").html(str)
+                        for(let j=0;j<data.tableFuncs.length;j++){
+                            for(k=0;k<$('.MathJaxParam').length;k++){
+                                let vType = data.tableFuncs[j].vartype
+                                if(j == k){
+                                    $('.MathJaxParam').eq(k).find(".MathJaxInput2").find("option[value='"+vType+"']").attr("selected",true);
+                                    if(vType == "2"){
+                                        $('.MathJaxParam').eq(k).find('.isShow2').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow1").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                    }
+                                    if(vType == "1"){
+                                        $('.MathJaxParam').eq(k).find('.isShow1').attr("style","display:none;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").attr("style","display:block;");
+                                        $('.MathJaxParam').eq(k).find(".isShow2").find('input').attr("value",data.tableFuncs[j].valvalue)
+                                        $('.MathJaxParam').eq(k).find(".MathJaxSelect").val(data.tableFuncs[j].valvalue)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+    // showGz(68)
+    function showGz(ruleid) {
+        $.ajax({
+            url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
+            type:"get",
+            data: {Id:ruleid},
+            success(data) {
+                if(data){
+                    $("#gzShow").show()
+                    let ruleData = data.tableRole.coordinate;
+                    $("#flex_canvas").show();
+                    $('#ruleName').val(data.tableRole.rolename)
+                    $("#canvasList ul .pageson span").text(data.tableRole.rolename)
+                    $('#ruleRemark').val(data.tableRole.des)
+                    $("#currentGzName").text(data.tableRole.rolename);
+                    $("#currentGzName").attr("title",data.tableRole.rolename)
+                    $("#currentGzDes").text(data.tableRole.des);
+                    $("#currentGzDes").attr("title",data.tableRole.des);
+                    $('#gzGroupName').val(data.tableRole.rolegroup)
+                    $("#bzMsg").val(data.tableRole.entrancenote);
+                    $("#ruleDes").attr("data",data.tableRole.entrancenote)
+                    canvas.open(JSON.parse(ruleData))
+                    canvas.data.nodes.map(item=>{
+                        if(!item.childStand){
+                            item.anchors.map((obj,i) => {
+                                obj.x = 0;
+                                obj.y = 0;
+                            })
+                            item.rotatedAnchors.map((obj,i) => {
+                                obj.x = 0;
+                                obj.y = 0
+                            })
+                        }
+                    })
+                }
+            }
+        })
+    }
+</script>
+</html>
