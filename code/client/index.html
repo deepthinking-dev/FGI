@@ -1231,10 +1231,10 @@ Date.prototype.Format = function (fmt) { // author: meizz
                             };
                             var filename = (new Date()).getTime() + '.' + 'jpg';
                             saveFile(imgUrl,filename);
+                            window.top.imgurl = imgUrl;
                             document.exitFullscreen ? document.exitFullscreen() :
                             document.mozCancelFullScreen ? document.mozCancelFullScreen() :
                             document.webkitExitFullscreen ? document.webkitExitFullscreen() : '';
-
                         });
                 });
             } else {
@@ -1306,6 +1306,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
                         };
                         var filename = (new Date()).getTime() + '.' + 'jpg';
                         saveFile(imgUrl,filename);
+                        window.top.imgurl = imgUrl;
                         document.exitFullscreen ? document.exitFullscreen() :
                         document.mozCancelFullScreen ? document.mozCancelFullScreen() :
                         document.webkitExitFullscreen ? document.webkitExitFullscreen() : '';

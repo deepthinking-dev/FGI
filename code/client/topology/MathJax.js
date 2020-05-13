@@ -541,7 +541,7 @@ function ruleSure(){
         rolename:$("#ruleName").val(),
         uuserid:0,
         remark2:'',
-        remark3:'',
+        remark3:window.top.imgurl || "",
         status:"",
         rolegroup:$("#gzGroupName").val(),
     }
