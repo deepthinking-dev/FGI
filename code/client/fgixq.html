@@ -73,10 +73,10 @@
             background-image: url(./static/alert.png);
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            width: 90%;
+            width: 80%;
             height: 90%;
             position: absolute;
-            left: 5%;
+            left: 10%;
             top:5%;
         }
         .MathJaxEdit{
@@ -153,7 +153,7 @@
         </div>
     </div>
 </div>
-<div id="editDic" style="width: 90%;left: 5%;height: 90%;top: 5%">
+<div id="editDic" style="width:80%;left: 10%;height: 90%;top: 5%">
     <div class="title">
         <span id="editDicTitle">算法详情</span>
     </div>
@@ -222,11 +222,11 @@
 <div id="gzShow">
     <div style="width:20%;height: 100%;float: left">
         <div style="margin: 40% 10px">
-            <div style="color: #fff;width: 20%;float: left;">规则名称</div><input style="width: 70%;height: 39px" maxlength="200" id="ruleName" type="text">
+            <div style="color: #fff;width: 20%;float: left;">规则名称</div><input disabled style="width: 70%;height: 39px" maxlength="200" id="ruleName" type="text">
             <div style="margin: 50px 0">
-                <div style="width: 20%;float: left;color: #fff;margin-top:50px">规则描述 </div><textarea style="width: 70%" maxlength="500" id="ruleRemark" type="text"></textarea>
+                <div style="width: 20%;float: left;color: #fff;margin-top:50px">规则描述 </div><textarea disabled style="width: 70%" maxlength="500" id="ruleRemark" type="text"></textarea>
             </div>
-            <div style="color: #fff;width: 20%;float: left;">分组名称</div><input style="width: 70%" id="gzGroupName" type="text">
+            <div style="color: #fff;width: 20%;float: left;">分组名称</div><input disabled style="width: 70%" id="gzGroupName" type="text">
         </div>
     </div>
     <div style="width:80%;height: 100%;float: left">
@@ -383,6 +383,7 @@
                     parent.$("#groupGs").attr("disabled",true)
                     parent.$('.closeGsButton').hide();
                     try{
+                        $("#edui10").remove()
                         setTimeout(()=>{
                             ue.setContent('');
                             ue.execCommand('inserthtml', `<img class="kfformula" src=${data.tableAlgorithm.remark2} data-latex=${data.tableAlgorithm.algorithmfun}/>`);
