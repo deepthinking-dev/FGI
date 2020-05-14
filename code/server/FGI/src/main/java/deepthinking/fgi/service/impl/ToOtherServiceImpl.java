@@ -9,10 +9,12 @@ import deepthinking.fgi.domain.TableRole;
 import deepthinking.fgi.service.ToOtherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,20 +30,34 @@ public class ToOtherServiceImpl implements ToOtherService {
     @Resource
     private TableRoleMapper tableRoleMapper;
 
+    @Value("${server.port}")
+    private int serverPort;
+
     @Override
-    public List<Map<String, Object>> findAlgorithmMessage(String status, String type) {
-        List<Map<String, Object>> result=new ArrayList<>();
-        switch (type){
-            case "algorithm":
-                result=tableAlgorithmMapper.selectInfoByStatus(status);
-                break;
-            case "rule":
-                result=tableRoleMapper.selectInfoByStatus(status);
-                break;
-            case "model":
-                result=tableModuleMapper.selectInfoByStatus(status);
+    public String findAlgorithmMessage(String type, int id) {
+//        List<Map<String, Object>> result=new ArrayList<>();
+        String url=null;
+        InetAddress address = null;
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return result;
+        url="http://"+address.getHostAddress()+":"+this.serverPort+"/fgixq.html?id="+id+"&type="+type;
+//        switch (type){
+//            case "algorithm":
+////                result=tableAlgorithmMapper.selectInfoByStatus(status);
+//                url="http://"+address.getHostAddress()+":"+this.serverPort+"/fgixq.html?id="+id+"&type="+type;
+//                break;
+//            case "rule":
+//                url="http://"+address.getHostAddress()+":"+this.serverPort;
+////                result=tableRoleMapper.selectInfoByStatus(status);
+//                break;
+//            case "model":
+//                url="http://"+address.getHostAddress()+":"+this.serverPort;
+////                result=tableModuleMapper.selectInfoByStatus(status);
+//        }
+        return url;
     }
 
     @Override

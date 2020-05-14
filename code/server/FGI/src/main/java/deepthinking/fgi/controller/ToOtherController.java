@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,11 +28,11 @@ public class ToOtherController {
     private ToOtherService toOtherService;
 
     @GetMapping("/findAlgorithmMessage")
-    @ApiOperation(value = "07-01 根据类别和状态获取数据信息", notes = "返回的map信息包含：ID，名称，描述，url等", httpMethod = "GET")
-    @ApiImplicitParams({@ApiImplicitParam(name = "status", value = "状态值", dataType = "string", paramType = "query", required = true),
-            @ApiImplicitParam(name = "type", value = "类型", dataType = "string", paramType = "query", required = true)})
-    public List<Map<String,Object>> findAlgorithmMessage(String status, String type){
-        return toOtherService.findAlgorithmMessage(status,type);
+    @ApiOperation(value = "07-01 根据类别和ID获取数据详情信息", notes = "url地址", httpMethod = "GET")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "类别", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "id", value = "ID", dataType = "int", paramType = "query", required = true)})
+    public String findAlgorithmMessage(String type, int id){
+        return toOtherService.findAlgorithmMessage(type,id);
     }
 
     @GetMapping("/updateDataStatus")
@@ -68,13 +69,10 @@ public class ToOtherController {
         }
     }
 
-//    @Resource(name = "otherclient")
-//    OtherclientService otherclientService;
     @GetMapping("/loginforweb")
     @ApiOperation(value = "07-05 本系统前端同步cookie", notes = " 返回cookie信息", httpMethod = "GET")
     public boolean loginforweb(HttpServletRequest request, HttpServletResponse response){
         try{
-//            UserData.removeUser(userId);
             Cookie[] cookies = request.getCookies();
             boolean falg=true;
             if(cookies!=null&&cookies.length>0){
@@ -88,11 +86,18 @@ public class ToOtherController {
                Cookie cookie=new Cookie("fgi","fgiweb");
                response.addCookie(cookie);
             }
-//            System.out.println(otherclientService.getUser());
             return true;
         }catch (Exception e){
             return false;
         }
+    }
+
+   @Autowired
+    OtherclientService otherclientService;
+    @GetMapping("/testOther")
+    public String testOhterServer(){
+        String str=otherclientService.getUser().toString();
+        return str;
     }
 
 }

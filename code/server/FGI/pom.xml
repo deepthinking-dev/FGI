@@ -166,6 +166,36 @@
 			<version>0.8.0.20080820</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>2.0.2.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>archaius-core</artifactId>
+					<groupId>com.netflix.archaius</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+			<version>9.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-slf4j</artifactId>
+			<version>9.7.0</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>

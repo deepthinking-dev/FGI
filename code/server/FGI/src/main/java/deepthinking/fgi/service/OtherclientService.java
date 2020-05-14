@@ -1,6 +1,6 @@
 package deepthinking.fgi.service;
 
-//import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * otherclient
  */
 @Service
-//@FeignClient(url = "192.168.0.11",name = "otherclient")
+@FeignClient(url = "${otherclient.url}",name = "otherclient")
 public interface OtherclientService {
     /**
      * 获取用户数据  目前测试

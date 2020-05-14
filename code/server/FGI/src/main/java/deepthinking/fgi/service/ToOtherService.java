@@ -9,12 +9,12 @@ import java.util.Map;
  */
 public interface ToOtherService {
     /**
-     * 根据类别和状态获取数据信息，返回的map信息包含：ID，名称，描述，url等
-     * @param status
+     * 根据类别和ID获取数据详情信息
      * @param type
+     * @param id
      * @return
      */
-    List<Map<String,Object>> findAlgorithmMessage(String status, String type);
+    String findAlgorithmMessage(String type, int id);
 
     /**
      * 修改数据的审批状态

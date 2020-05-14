@@ -7,6 +7,6 @@ spring:
     active: dev
   jackson:
     time-zone: GMT+8
-#otherclient:
-  #url: 192.168.0.11:11000
+otherclient:
+  url: 192.168.0.11:11000
 debug: true
