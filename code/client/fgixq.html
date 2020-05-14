@@ -79,6 +79,13 @@
             left: 5%;
             top:5%;
         }
+        .MathJaxEdit{
+            position: relative;
+            top: 65px;
+            width: 60%;
+            height: 200px;
+            overflow: auto;
+        }
     </style>
     <script src="config.js"></script>
     <script src="./plugins/topology/topology.bundle.js"></script>
@@ -174,7 +181,7 @@
         <div id="zdcsList"></div>
     </div>
 </div>
-<div class="Frame" id="gsFrame" style="width: 90%;left: 5%;top: 5%;height: 90%">
+<div class="Frame" id="gsFrame" style="width: 80%;left: 10%;top: 5%;height: 90%">
     <div class="title">
         <span class="gsTitle">公式编辑</span>
     </div>
@@ -230,17 +237,25 @@
 </div>
 </body>
 <script>
-    var url = window.location.search;
+    var type = window.location.search.split('type=')[1];
+    var id = window.location.search.split('&type')[0].split('=')[1];
     setTimeout(()=>{
         $(window.top.frames['ueditor_0'].contentWindow.document.body).attr('contenteditable',false)
     },500)
     var ue = UE.getEditor('editor',{
         toolbars: [[
-
             '|', 'kityformula',
         ]]
     });
-    // showModel("82")
+    if(type == "model"){
+        showModel(id)
+    }
+    if(type == "algorithm"){
+        showMsg(id)
+    }
+    if(type == "rule"){
+        showGz(id)
+    }
     function showModel(id){
         $.ajax({
             url:urlConfig.host+'/module/getModuleById',
@@ -263,19 +278,17 @@
                 </tr>`
                 })
                 $('#addMb tbody').html(thStr)
+                $("#gzShow").hide()
             }
         })
     }
-    function Confirm() {
-        $("#lkrFrame").hide();
-    }
-    showMsg(65)
     function showMsg(AlgorithmId){
         $.ajax({
             url:urlConfig.host +"/operatorMaintenance/getAlgorithmById",
             data:{algthId:AlgorithmId} ,
             type:"get",
             success(data) {
+                $("#gzShow").hide()
                 if(data.tableAlgorithm.algorithmtype == 1){
                     $("#group").val("")
                     $("#group").val(data.tableAlgorithm.algorithmgroup)
@@ -448,7 +461,6 @@
             }
         })
     }
-    // showGz(68)
     function showGz(ruleid) {
         $.ajax({
             url: urlConfig.host + '/algorithmRule/getAlgorithmRuleById',
