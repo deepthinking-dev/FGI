@@ -214,13 +214,13 @@ create table Table_Role
    RoleName             varchar(200) comment '规则名称',
    Des                  varchar(500) comment '规则描述',
    EntranceNote         varchar(500) comment '入口备注',
-   coordinate           text comment '坐标',
+   coordinate           longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '坐标',
    UuserID              int comment '用户ID',
    RoleGroup            varchar(100) comment '所属组',
    Status               varchar(100) comment '状态',
    Remark               varchar(500) comment '备注',
    Remark2              varchar(500) comment '备注2',
-   Remark3              varchar(500) comment '备注3',
+   Remark3              longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '备注3',
    primary key (ID)
 );
 

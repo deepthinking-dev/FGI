@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!fgiServer.jar
 *.war
 *.nar
 *.ear
