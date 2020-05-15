@@ -52,7 +52,8 @@ public class AlgorithmRuleController {
         String path = FileUtils.getProjectPath() + "/" + filename;
         System.out.println("path:" + path);
         try {
-            XMLUtil.convertToXml(tableRoleService.GetTableExportData(id), path);
+            RuleXmlModel ruleXmlModel=tableRoleService.GetTableExportData(id);
+            XMLUtil.convertToXml(ruleXmlModel, path);
             // 以流的形式下载文件。
             InputStream fis = new BufferedInputStream(new FileInputStream(path));
             byte[] buffer = new byte[fis.available()];
@@ -62,7 +63,7 @@ public class AlgorithmRuleController {
             response.reset();
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("算法规则导出.xml", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(ruleXmlModel.getName()+".xml", "UTF-8"));
             toClient.write(buffer);
             toClient.flush();
             toClient.close();
